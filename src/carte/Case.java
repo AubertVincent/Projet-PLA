@@ -1,5 +1,0 @@
-package carte;
-
-class Case {
-
-}
