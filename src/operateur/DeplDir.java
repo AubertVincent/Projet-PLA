@@ -4,21 +4,21 @@ import entite.Entite;
 
 public class DeplDir extends Mouvement {
 	
-	public DeplDir(){
-		
-	}
+	Direction dir;
+	int lg;
 	
-	public void deplacement(Entite e, int longueur, Direction d){
+	
+	public void execute(Entite e){
 		int x = e.getX();
 		int y = e.getY();
 		
-		e.setD(d);
+		e.setD(dir);
 		
-		switch(d){
-		case NORD : y = y+longueur; e.setY(y); break;
-		case SUD : y = y-longueur; e.setY(y); break;
-		case EST : x = x+longueur; e.setX(x); break;
-		case OUEST : x = x-longueur; e.setX(x); break;
+		switch(dir){
+		case NORD : y = y+lg; e.setY(y); break;
+		case SUD : y = y-lg; e.setY(y); break;
+		case EST : x = x+lg; e.setX(x); break;
+		case OUEST : x = x-lg; e.setX(x); break;
 		}	
 		
 	}
