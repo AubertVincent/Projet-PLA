@@ -12,6 +12,11 @@ public abstract class Entite {
 	private int y;
 	private Direction d;
 
+	public Entite(){
+		x=0;
+		y=0;
+		
+	}
 	public void Position(int x, int y) {
 		this.setX(x);
 		this.setY(y);
