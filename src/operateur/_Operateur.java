@@ -1,4 +1,4 @@
-package Operateur;
+package operateur;
 
 public interface _Operateur {
 
