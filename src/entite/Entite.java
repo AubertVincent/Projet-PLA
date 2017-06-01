@@ -15,7 +15,6 @@ public abstract class Entite {
 	public Entite(){
 		x=0;
 		y=0;
-		
 	}
 	public void Position(int x, int y) {
 		this.setX(x);
