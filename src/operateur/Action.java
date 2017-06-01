@@ -1,5 +1,5 @@
 package operateur;
 
-public abstract class Action implements _Operateur {
+public abstract class Action extends Operateur {
 
 }

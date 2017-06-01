@@ -1,5 +1,5 @@
 package operateur;
 
-public abstract class Comportement implements _Operateur {
+public abstract class Comportement extends Operateur {
 
 }
