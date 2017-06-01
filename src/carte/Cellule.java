@@ -20,7 +20,7 @@ public class Cellule {
 	
 	//@Override 
 	public boolean isEmpty(){
-		return entite.isEmpty();
+		return entite.isNul();
 	}
 	
 	public void setEntite(Entite ent){

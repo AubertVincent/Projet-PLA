@@ -17,4 +17,7 @@ public abstract class Personnage {
 		
 	}
 	
+	public boolean isPickable(){
+		return false;
+	}
 }
