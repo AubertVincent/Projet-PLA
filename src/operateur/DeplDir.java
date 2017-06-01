@@ -4,6 +4,9 @@ import entite.Entite;
 
 public class DeplDir extends Mouvement {
 	
+	public DeplDir(){
+		
+	}
 	
 	public void deplacement(Entite e, int longueur, Direction d){
 		int x = e.getX();
