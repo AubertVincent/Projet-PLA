@@ -1,18 +1,35 @@
 package carte;
 
-import carte.Cellule;
+import java.util.concurrent.ThreadLocalRandom;
+
+import operateur.Operateur;
 
 public class Carte {
 
-	private static final int size = 32;
-	protected final Cellule[][] carte = new Cellule[size][size];
+	private static final int nbrOpInit = 128; // une chance sur 4 de trouver un opérateur sur une cellule
+	private static final int largeur = 32;
+	private static final int hauteur = 16;
+	public static final Cellule[][] carte = new Cellule[hauteur][largeur];
 
 	public Carte() {
-		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
+		for (int i = 0; i < hauteur; i++) {
+			for (int j = 0; j < largeur; j++) {
 				carte[i][j] = new Cellule(i,j);
 			}
 		}
+	}
 	
+	public static void initCarte(){
+		int randomLine;
+		int randomColumn;
+		int i=0;
+		while(i<nbrOpInit){
+			randomLine = ThreadLocalRandom.current().nextInt(0,hauteur);
+			randomColumn = ThreadLocalRandom.current().nextInt(0,largeur);
+			if(carte[randomLine][randomColumn].isEmpty()){
+				carte[randomLine][randomColumn].setEntite(Operateur.randomOp());
+				i++;
+			}
+		}
 	}
 }
