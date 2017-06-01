@@ -2,6 +2,8 @@ package entite;
 
 public abstract class Entite {
 
+	public abstract boolean isPickable();
+	
 	public enum Direction {
 		NORD, SUD, EST, OUEST;
 	}
@@ -38,4 +40,6 @@ public abstract class Entite {
 	public Direction getD() {
 		return this.d;
 	}
+	
+	
 }
