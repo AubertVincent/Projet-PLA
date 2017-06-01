@@ -1,4 +1,4 @@
-package src.Operateur;
+package Operateur;
 
 public interface _Operateur {
 
