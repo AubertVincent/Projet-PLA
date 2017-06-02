@@ -9,9 +9,9 @@ import personnages.Joueur;
 
 public class Game {
 
-	static Game game;
+	private Game game;
 
-	public static void main(String[] args) throws SlickException {
+	public void main(String[] args) throws SlickException {
 
 		game = new Game();
 	}
@@ -57,7 +57,7 @@ public class Game {
 				FinPartie = JouerTour(joueur2);
 			}
 			
-			
+			//TODO
 			nbrRound++;
 		}
 	}
