@@ -2,6 +2,10 @@ package operateur;
 
 public abstract class Operateur extends entite.Entite {
 
+	public Operateur(int x, int y, Direction d) {
+		super(x, y, d);
+	}
+
 	public int disponibilite;
 
 	public boolean isPickable() {

@@ -6,8 +6,6 @@ import personnages.*;
 
 public class ClassiqueAtq extends Attaque {
 
-	Personnage ennemi;
-
 	// Uniquement executable d'un joueur vers un personnage
 	public void execute(Joueur attaquant, Personnage ennemi) {
 		int vieA = attaquant.getVie();
@@ -23,7 +21,17 @@ public class ClassiqueAtq extends Attaque {
 	}
 
 	@Override
-	public void execute(Entite e) {
+	public boolean isDoable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void execute(Entite e) throws GameException {
+		
+		if (!isDoable()){
+			throw new GameException("Cette action n'est pas réalisable");
+		}	
 		int x = e.getX();
 		int y = e.getY();
 		Direction d;
@@ -43,7 +51,8 @@ public class ClassiqueAtq extends Attaque {
 				d = Direction.SUD;
 				e.setD(d);
 			}
-			else{throw new GameException("Il n'y a personne à attaquer");}
+			else{
+				throw new GameException("Il n'y a personne à attaquer");}
 			
 		}
 	}
