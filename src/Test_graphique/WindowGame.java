@@ -4,13 +4,20 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
+//import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.gui.AbstractComponent;
+import org.newdawn.slick.gui.ComponentListener;
+import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.tiled.TiledMap;
+
+import java.awt.Font;
+import org.newdawn.slick.UnicodeFont;
 
 //Fichier de test graphique
 
@@ -23,7 +30,14 @@ public class WindowGame extends BasicGame {
 	private int direction = 2;
 	private boolean moving = false;
 	private final Animation[] animations = new Animation[8];
+	private TextField nameInput;
+	protected String message;
 
+ 
+	
+	
+	
+	
 	public static void main(String[] args) throws SlickException {
 		new AppGameContainer(new WindowGame(), 1024+64, 512+64, false).start();
 	}
@@ -35,9 +49,9 @@ public class WindowGame extends BasicGame {
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		this.container = container;
-		this.map = new TiledMap("/media/bastien/DATA/polytech/projetpla/tiles/newmap.tmx");
+		this.map = new TiledMap("/home/enzo/newmap.tmx");
 
-		SpriteSheet spriteSheet = new SpriteSheet("/media/bastien/DATA/polytech/projetpla/tiles/spriteSheetAnim.png", 64, 64);
+		SpriteSheet spriteSheet = new SpriteSheet("/home/enzo/SpriteSheetAnim.png", 64, 64);
 		this.animations[0] = loadAnimation(spriteSheet, 0, 1, 0);
 		this.animations[1] = loadAnimation(spriteSheet, 0, 1, 1);
 		this.animations[2] = loadAnimation(spriteSheet, 0, 1, 2);
@@ -46,8 +60,31 @@ public class WindowGame extends BasicGame {
 		this.animations[5] = loadAnimation(spriteSheet, 1, 9, 1);
 		this.animations[6] = loadAnimation(spriteSheet, 1, 9, 2);
 		this.animations[7] = loadAnimation(spriteSheet, 1, 9, 3);
+	
+		Font font = new Font("Verdana", Font.BOLD, 20);
+		UnicodeFont uFont = new UnicodeFont(font, font.getSize(), font.isBold(), font.isItalic());
+		nameInput = new TextField(container, uFont, 150,20,500,35, new ComponentListener()
+	        {
+	         public void componentActivated(AbstractComponent source) {
+	            message = "Entered1: "+nameInput.getText();
+	            nameInput.setFocus(true);
+	         }
+
+	    });
+		
+//		ComponentListener listener = new ComponentListener();
+//		TextField nameInput = new TextField(arg0, truetypefont, 150,20,500,35, listener);
+//		
+//		{
+//	        public void componentActivated(AbstractComponent source) {
+//	           System.out.println("Entered1: "+nameInput.getText());
+//	        }
+//	   });
+	
 	}
 
+ 
+	
 	private Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y) {
 		Animation animation = new Animation();
 		for (int x = startX; x < endX; x++) {
@@ -65,6 +102,7 @@ public class WindowGame extends BasicGame {
 		g.drawAnimation(animations[direction + (moving ? 4 : 0)], (int) x - 32, (int) y - 60);
 		this.map.render(0, 0, 1);
 		this.map.render(0, 0, 2);
+		nameInput.render(container, g);
 	}
 
 	@Override
