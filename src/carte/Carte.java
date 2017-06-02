@@ -20,7 +20,7 @@ public class Carte {
 		}
 	}
 
-	public static void initCarte() {
+	public void initCarte() {
 		int randomLine;
 		int randomColumn;
 		int i = 0;
