@@ -10,6 +10,7 @@ public class Carte {
 												// opérateur sur une cellule
 	private static final int largeur = 32;
 	private static final int hauteur = 16;
+
 	public static final Cellule[][] carte = new Cellule[hauteur][largeur];
 
 	public Carte() {

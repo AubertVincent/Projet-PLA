@@ -17,7 +17,8 @@ public class Game {
 	}
 
 	/**
-	 * @param j Le joueur dont on va jouer le tour
+	 * @param j
+	 *            Le joueur dont on va jouer le tour
 	 * 
 	 * @return Nouvelle valeur de NbrRound, -1 si fin de partie
 	 */
@@ -27,7 +28,8 @@ public class Game {
 	}
 
 	/**
-	 * Methode permettant de jouer 	une partie
+	 * Methode permettant de jouer une partie
+	 * 
 	 * @throws SlickException
 	 */
 	public Game() throws SlickException {
@@ -46,18 +48,18 @@ public class Game {
 		int nbrRound = 0;
 		// Indique si la partie est terminé
 		boolean FinPartie = false;
-		
+
 		// On tourne tant qu'on est pas en fin de partie
 		while (!FinPartie) {
 
 			FinPartie = JouerTour(joueur1);
-			
+
 			// Le Joueur 2 peut jouer son tour si la partie n'est pas fini
 			if (!FinPartie) {
 				FinPartie = JouerTour(joueur2);
 			}
-			
-			//TODO
+
+			// TODO
 			nbrRound++;
 		}
 	}
