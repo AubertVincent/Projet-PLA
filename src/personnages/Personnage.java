@@ -57,4 +57,6 @@ public abstract class Personnage {
 	public boolean isPickable(){
 		return false;
 	}
+	public  boolean isPersonnage(){return true;}
+	public  boolean isOperateur(){return false;}
 }

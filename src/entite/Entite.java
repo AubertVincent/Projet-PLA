@@ -2,7 +2,14 @@ package entite;
 
 public abstract class Entite {
 
+	
+	public abstract boolean isPersonnage();
+	public abstract boolean isOperateur();
+	public abstract boolean isJoueur();
+	public abstract boolean isRobot();
 	public abstract boolean isPickable();
+	
+	
 	
 	public enum Direction {
 		NORD, SUD, EST, OUEST;
