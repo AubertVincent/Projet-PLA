@@ -2,20 +2,20 @@ package carte;
 import java.util.ArrayList;
 import java.util.List;
 
-import entite.Entite;
+import entite.Entity;
 
 public class Cellule {
 	protected int x;
 	protected int y;
-	protected List<Entite> listeEntites ;
+	protected List<Entity> listeEntites ;
 	
 	public Cellule(int x, int y){
 		this.x = x;
 		this.y = y;
-		this.listeEntites = new ArrayList<Entite>();
+		this.listeEntites = new ArrayList<Entity>();
 	}
 	
-	public Cellule(int x, int y, List<Entite> listeEnt){
+	public Cellule(int x, int y, List<Entity> listeEnt){
 		this.x = x;
 		this.y = y;
 		this.listeEntites = listeEnt;
@@ -26,7 +26,7 @@ public class Cellule {
 		return listeEntites.isEmpty();
 	}
 	
-	public void setEntite(Entite ent){
+	public void setEntite(Entity ent){
 		listeEntites.add(ent);
 	}
 	

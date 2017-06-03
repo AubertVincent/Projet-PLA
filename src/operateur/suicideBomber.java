@@ -1,10 +1,13 @@
 package operateur;
 
-import entite.Entite;
-import entite.GameException;
+import entite.*;
 import personnages.*;
 
-public class KamikazeAtq extends Attaque {
+public class suicideBomber extends Attack {
+
+	public suicideBomber(int x, int y) {
+		super(x, y);
+	}
 
 	@Override
 	public boolean isDoable() {
@@ -13,16 +16,17 @@ public class KamikazeAtq extends Attaque {
 	}
 
 	@Override
-	public void execute(Entite e) throws GameException {
+	public void execute(Entity e) throws GameException {
 		if (!isDoable()) {
 			throw new GameException("Cette action n'est pas réalisable");
 		}
-		int x = e.getX();
-		int y = e.getY();
-		Direction d;
-		if (!e.isPersonnage()) {
+		if (!e.isCaracter()) {
 			throw new GameException("Cette entité n'est pas un personnage");
 		} else {
+			int x = e.getX();
+			int y = e.getY();
+			Direction d;
+
 			// TODO
 		}
 
