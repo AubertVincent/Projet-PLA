@@ -1,11 +1,10 @@
 package operateur;
 
+import carte.Cellule;
 import entite.*;
 import personnages.*;
 
 public class ClassicAck extends Attack {
-
-	
 
 	public ClassicAck(int x, int y) {
 		super(x, y);
@@ -32,34 +31,38 @@ public class ClassicAck extends Attack {
 
 	@Override
 	public void execute(Entity e) throws GameException {
-		
-		if (!isDoable()){
+
+		if (!isDoable()) {
 			throw new GameException("Cette action n'est pas réalisable");
-		}	
+		}
 		int x = e.getX();
 		int y = e.getY();
 		Direction d;
-		if (!e.isCaracter()){
+		Cellule testEast = new Cellule(x + 1, y);
+		Cellule testSouth = new Cellule(x, y - 1);
+		Cellule testNorth = new Cellule(x, y + 1);
+		Cellule testWest = new Cellule(x - 1, y);
+		if (!e.isCaracter()) {
 			throw new GameException("Cette entité n'est pas un personnage");
-		}else{
-			if (/*TODO cellule Est pleine*/){
+		} else {
+			if (!(testEast.isEmpty())) {
 				d = Direction.EAST;
-				((Caracter) e).setDirection(d);			
-			}else if (/*TODO cellule Nord pleine*/){
+				((Caracter) e).setDirection(d);
+			} else if (!(testNorth.isEmpty())) {
 				d = Direction.NORTH;
 				((Caracter) e).setDirection(d);
-			}else if (/*TODO cellule Ouest pleine*/){
+			} else if (!(testWest.isEmpty())) {
 				d = Direction.WEST;
 				((Caracter) e).setDirection(d);
-			}else if (/*TODO cellule Sud pleine*/){
+			} else if (!(testSouth.isEmpty())) {
 				d = Direction.SOUTH;
 				((Caracter) e).setDirection(d);
+			} else {
+				throw new GameException("Il n'y a personne à attaquer");
 			}
-			else{
-				throw new GameException("Il n'y a personne à attaquer");}
-			
+			((Caracter) e).classicAtk();
+
 		}
 	}
-
 
 }
