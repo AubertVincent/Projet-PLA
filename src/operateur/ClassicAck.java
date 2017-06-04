@@ -25,7 +25,10 @@ public class ClassicAck extends Attack {
 
 	@Override
 	public boolean isDoable() {
-		// TODO Auto-generated method stub
+		// TODO il faudrait la position de l'opponent ? ça veut dire quoi une
+		// attaque classique est faisable ?
+		// Ou vérifier que la personne qu'on ne va pas se faire tuer en
+		// attaquant la personne?
 		return false;
 	}
 
