@@ -13,13 +13,15 @@ public class RandomBar extends Behavior {
 		int n = r.nextInt(2);
 		return (n == 0);
 	}
-	
-	public void aleatoire(Action a, Action b){
-		//TODO Créer une nouvelle classe qui prend une séquence et qui gère l'execution des actions
-		if (test()){
-		//TODO	a.execute();
-		}else{
-		//TODO	b.execute();
+
+	public void aleatoire(Action a, Action b) {
+		// TODO Créer une nouvelle classe qui prend une séquence et qui gère
+		// l'execution des actions
+		if (test()) {
+			// TODO a.execute();
+		} else {
+			// TODO b.execute();
 		}
 	}
+
 }

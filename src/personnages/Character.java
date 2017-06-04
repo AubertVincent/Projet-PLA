@@ -3,7 +3,7 @@ package personnages;
 import entite.Direction;
 import entite.Entity;
 
-public abstract class Caracter extends Entity {
+public abstract class Character extends Entity {
 
 	private Direction direction;
 
@@ -14,7 +14,7 @@ public abstract class Caracter extends Entity {
 	protected int movePoints;
 	protected int recall;
 
-	public Caracter(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
+	public Character(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
 			int recall) {
 		super(x, y);
 		this.direction = direction;
@@ -30,7 +30,7 @@ public abstract class Caracter extends Entity {
 
 	public abstract boolean isRobot();
 
-	public boolean isCaracter() {
+	public boolean isCharacter() {
 		return true;
 	}
 

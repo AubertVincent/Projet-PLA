@@ -2,7 +2,7 @@ package personnages;
 
 import entite.Direction;
 
-public class Player extends Caracter {
+public class Player extends Character {
 
 	public Player(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
 			int recall) {
@@ -18,8 +18,7 @@ public class Player extends Caracter {
 	public boolean isRobot() {
 		return false;
 	}
-  
-	//TODO Keyboard reaction
-	
-	
+
+	// TODO Keyboard reaction
+
 }

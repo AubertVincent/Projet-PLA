@@ -8,7 +8,7 @@ public abstract class Operator extends entite.Entity {
 		super(x, y);
 	}
 
-	public boolean isCaracter() {
+	public boolean isCharacter() {
 		return false;
 	}
 

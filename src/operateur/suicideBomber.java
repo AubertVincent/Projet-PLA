@@ -1,7 +1,6 @@
 package operateur;
 
 import entite.*;
-import personnages.*;
 
 public class suicideBomber extends Attack {
 
@@ -20,7 +19,7 @@ public class suicideBomber extends Attack {
 		if (!isDoable()) {
 			throw new GameException("Cette action n'est pas réalisable");
 		}
-		if (!e.isCaracter()) {
+		if (!e.isCharacter()) {
 			throw new GameException("Cette entité n'est pas un personnage");
 		} else {
 			int x = e.getX();

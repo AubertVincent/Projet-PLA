@@ -2,10 +2,9 @@ package entite;
 
 public abstract class Entity {
 
-	public abstract boolean isCaracter();
+	public abstract boolean isCharacter();
 
 	public abstract boolean isOperator();
-
 
 	private int x;
 	private int y;
