@@ -104,11 +104,10 @@ public abstract class Character extends Entity {
 
 		switch (direction) {
 		case NORTH:
-			setY(getY() + lg);
+			setY(getY() - lg);
 			break;
 		case SOUTH:
-			setY(getY() - lg);
-			;
+			setY(getY() + lg);
 			break;
 		case EAST:
 			setX(getX() + lg);
@@ -121,5 +120,10 @@ public abstract class Character extends Entity {
 
 	public void classicAtk() {
 		// TODO
+	}
+	
+	public void teleport(int x, int y){
+		setX(x);
+		setY(y);
 	}
 }

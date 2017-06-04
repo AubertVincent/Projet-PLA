@@ -18,7 +18,7 @@ public class Recall extends Movement {
 	public void execute(Entity e) throws GameException {
 		// TODO Intégrer la notion de temps, ce callback s'excute dès qu'on
 		// l'appelle.
-		((Character) e).goTo(Direction.SOUTH, 0);
+		((Character) e).goTo(Direction.SOUTH, 0); // ??
 	}
 
 	@Override
