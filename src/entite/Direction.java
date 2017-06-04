@@ -2,7 +2,7 @@ package entite;
 
 public enum Direction {
 
-	NORD(0), OUEST(1), SUD(2), EST(3);
+	NORTH(0), WEST(1), SOUTH(2), EAST(3);
 	
 	private final int value ;
 	
