@@ -3,23 +3,25 @@ package carte;
 import java.util.ArrayList;
 import java.util.List;
 
-import entite.Entite;
+import entite.Entity;
 
 public class Cellule {
 	protected int x;
 	protected int y;
-	protected List<Entite> listeEntites;
+	
+
+	protected List<Entity> listeEntites;
 	boolean isfree;
 
 	public Cellule(int x, int y) {
 		this.x = x;
 		this.y = y;
-		listeEntites = new ArrayList<Entite>();
+		listeEntites = new ArrayList<Entity>();
 		isfree = true;
 	}
 
-	public Cellule(int x, int y, List<Entite> listeEnt) {
-		this.x = x;
+	public Cellule(int x, int y, List<Entity> listeEnt) {
+
 		this.y = y;
 		listeEntites = listeEnt;
 		isfree = false;
@@ -29,11 +31,13 @@ public class Cellule {
 		return listeEntites.isEmpty();
 	}
 
+
 	public boolean isFree() {
 		return isfree;
 	}
 
-	public void setEntite(Entite ent) {
+	
+	public void setEntite(Entity ent){
 		listeEntites.add(ent);
 	}
 

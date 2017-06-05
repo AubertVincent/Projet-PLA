@@ -2,7 +2,7 @@ package carte;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import operateur.Operateur;
+import operateur.Operator;
 
 public class Carte {
 
@@ -29,7 +29,7 @@ public class Carte {
 			randomLine = ThreadLocalRandom.current().nextInt(0, hauteur);
 			randomColumn = ThreadLocalRandom.current().nextInt(0, largeur);
 			if (carte[randomLine][randomColumn].isEmpty()) {
-				carte[randomLine][randomColumn].setEntite(Operateur.randomOp());
+				carte[randomLine][randomColumn].setEntite(Operator.randomOp());
 				i++;
 			}
 		}
