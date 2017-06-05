@@ -38,16 +38,16 @@ public class ClassicAck extends Attack {
 		if (!isDoable()) {
 			throw new GameException("Cette action n'est pas réalisable");
 		}
-		int x = e.getX();
-		int y = e.getY();
-		Direction d;
-		Cellule testEast = new Cellule(x + 1, y);
-		Cellule testSouth = new Cellule(x, y - 1);
-		Cellule testNorth = new Cellule(x, y + 1);
-		Cellule testWest = new Cellule(x - 1, y);
 		if (!e.isCharacter()) {
 			throw new GameException("Cette entité n'est pas un personnage");
 		} else {
+			int x = e.getX();
+			int y = e.getY();
+			Direction d;
+			Cellule testEast = new Cellule(x + 1, y);
+			Cellule testSouth = new Cellule(x, y - 1);
+			Cellule testNorth = new Cellule(x, y + 1);
+			Cellule testWest = new Cellule(x - 1, y);
 			if (!(testEast.isEmpty())) {
 				d = Direction.EAST;
 				((Character) e).setDirection(d);
