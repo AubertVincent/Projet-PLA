@@ -1,23 +1,14 @@
 package gui;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
-//import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.gui.AbstractComponent;
-import org.newdawn.slick.gui.ComponentListener;
-import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.tiled.TiledMap;
-
-import java.awt.Font;
-import org.newdawn.slick.UnicodeFont;
 
 import entite.Direction;
 
@@ -33,13 +24,7 @@ public class GUI extends BasicGame {
 	protected static final int cellHeight = 32;
 	protected static final int cellWidth = 32;
 
-	private GUIBehaviourInput inputTextField;
-
 	private GUICharacter perso1;
-	// private float x = 300, y = 300;
-	// private int direction = 2;
-	// private boolean moving = false;
-	// private final Animation[] animations = new Animation[8];
 
 	public static void main(String[] args) throws SlickException {
 		new AppGameContainer(new GUI(), WindowWidth, WindowHeight, false).start();
