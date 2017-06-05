@@ -1,27 +1,16 @@
 package gui;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
-//import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.gui.AbstractComponent;
-import org.newdawn.slick.gui.ComponentListener;
-import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.tiled.TiledMap;
 
-import java.awt.Font;
-import org.newdawn.slick.UnicodeFont;
-
 import entite.Direction;
-
-//Fichier de test graphique
 
 public class GUI extends BasicGame {
 
@@ -29,17 +18,15 @@ public class GUI extends BasicGame {
 	private TiledMap map;
 	private static final int WindowHeight = 576;
 	private static final int WindowWidth = 1088;
+	private static final int TextFieldHeight = 50;
 
 	protected static final int cellHeight = 32;
 	protected static final int cellWidth = 32;
 
-	private GUIBehaviourInput inputTextField;
+	private GUIBehaviorInput inputTextField;
+	protected static boolean behaviorInputNeeded = false;
 
 	private GUICharacter perso1;
-	// private float x = 300, y = 300;
-	// private int direction = 2;
-	// private boolean moving = false;
-	// private final Animation[] animations = new Animation[8];
 
 	public static void main(String[] args) throws SlickException {
 		new AppGameContainer(new GUI(), WindowWidth, WindowHeight, false).start();
@@ -54,6 +41,7 @@ public class GUI extends BasicGame {
 		this.container = container;
 		this.map = new TiledMap("res/map.tmx");
 		this.perso1 = new GUICharacter(5, 12, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
+		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "{D3H | D}*");
 	}
 
 	@Override
@@ -65,26 +53,30 @@ public class GUI extends BasicGame {
 		this.perso1.render(g);
 		this.map.render(0, 0, 4);
 		this.map.render(0, 0, 5);
-		// this.inputTextField.render(container, g);
+
+		if (behaviorInputNeeded) {
+			this.inputTextField.render(container, g);
+		}
 	}
 
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
 		perso1.update(this, delta);
+		this.inputTextField.update(container);
 	}
 
 	public static int pixelToCellX(float x) {
 		// System.out.println("pixelToCellX(" + x + ") = " + ((int) (x - (0.5 *
 		// cellWidth)) / cellWidth + 1));
-		//return (int) (x - (0.5f * cellWidth)) / cellWidth;
-		return (int) (x - (x % cellWidth))/ cellWidth ;
+		// return (int) (x - (0.5f * cellWidth)) / cellWidth;
+		return (int) (x - (x % cellWidth)) / cellWidth;
 	}
 
 	public static int pixelToCellY(float y) {
 		// System.out.println("pixelToCellY(" + y + ") = " + ((int) (y - (0.5 *
 		// cellWidth)) / cellWidth + 1));
-		//return (int) (y - (0.5f * cellHeight)) / cellHeight;
-		return (int) (y - (y % cellHeight))/ cellHeight ;
+		// return (int) (y - (0.5f * cellHeight)) / cellHeight;
+		return (int) (y - (y % cellHeight)) / cellHeight;
 	}
 
 	public static float cellToPixelX(int x) {
@@ -95,6 +87,15 @@ public class GUI extends BasicGame {
 		return (y + 0.5f) * cellHeight;
 	}
 
+	/**
+	 * return true if there is an obstacle on the given cell of the GUI
+	 * 
+	 * @param x
+	 *            x coordinate of the cell
+	 * @param y
+	 *            y coordinate of the cell
+	 * @return
+	 */
 	protected boolean isObstacle(float x, float y) {
 		int tileW = this.map.getTileWidth();
 		int tileH = this.map.getTileHeight();
