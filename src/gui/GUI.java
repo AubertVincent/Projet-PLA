@@ -54,7 +54,6 @@ public class GUI extends BasicGame {
 		this.container = container;
 		this.map = new TiledMap("res/map.tmx");
 		this.perso1 = new GUICharacter(5, 12, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
-		System.out.println("Position courante : (" + perso1.getCurrentX() + ", " + perso1.getCurrentY() + ").");
 	}
 
 	@Override
@@ -77,14 +76,15 @@ public class GUI extends BasicGame {
 	public static int pixelToCellX(float x) {
 		// System.out.println("pixelToCellX(" + x + ") = " + ((int) (x - (0.5 *
 		// cellWidth)) / cellWidth + 1));
-		return (int) (x - (0.5 * cellWidth)) / cellWidth + 1;
-
+		//return (int) (x - (0.5f * cellWidth)) / cellWidth;
+		return (int) (x - (x % cellWidth))/ cellWidth ;
 	}
 
 	public static int pixelToCellY(float y) {
 		// System.out.println("pixelToCellY(" + y + ") = " + ((int) (y - (0.5 *
 		// cellWidth)) / cellWidth + 1));
-		return (int) (y - (0.5 * cellWidth)) / cellWidth + 1;
+		//return (int) (y - (0.5f * cellHeight)) / cellHeight;
+		return (int) (y - (y % cellHeight))/ cellHeight ;
 	}
 
 	public static float cellToPixelX(int x) {
@@ -110,7 +110,6 @@ public class GUI extends BasicGame {
 
 	@Override
 	public void keyReleased(int key, char c) {
-		this.perso1.setMoving(false);
 		if (Input.KEY_ESCAPE == key) {
 			this.container.exit();
 		}
@@ -120,35 +119,16 @@ public class GUI extends BasicGame {
 	public void keyPressed(int key, char c) {
 		switch (key) {
 		case Input.KEY_UP:
-			perso1.setDirection(Direction.NORTH);
-			System.out.println("A droite");
-			System.out.println("Position x (px) : " + xPx + "position y" );
-			// Coordinates in pixels
-			private float xPx, yPx;
-			// Coordinates to reach in pixels
-			private float xPxTarget, yPxTarget;
-			// Coordinates in cell's position in map
-			private int xCell, yCell;
-			// Coordinates to reach in cell's position in map
-			private int xCellTarget, yCellTarget;
-
-			System.out.println("On demande : getCurrentY -> " + (perso1.getCurrentY() - 1));
-			perso1.setTargetY(perso1.getCurrentY() - 1);
+			perso1.goToDirection(Direction.NORTH);
 			break;
 		case Input.KEY_LEFT:
-			perso1.setDirection(Direction.WEST);
-			System.out.println("On demande : getCurrentX -> " + (perso1.getCurrentX() - 1));
-			perso1.setTargetX(perso1.getCurrentX() - 1);
+			perso1.goToDirection(Direction.WEST);
 			break;
 		case Input.KEY_DOWN:
-			perso1.setDirection(Direction.SOUTH);
-			System.out.println("On demande : getCurrentY -> " + (perso1.getCurrentY() + 1));
-			perso1.setTargetY(perso1.getCurrentY() + 1);
+			perso1.goToDirection(Direction.SOUTH);
 			break;
 		case Input.KEY_RIGHT:
-			perso1.setDirection(Direction.EAST);
-			System.out.println("On demande : getCurrentX -> " + (perso1.getCurrentX() + 1));
-			perso1.setTargetX(perso1.getCurrentX() + 1);
+			perso1.goToDirection(Direction.EAST);
 			break;
 		}
 	}

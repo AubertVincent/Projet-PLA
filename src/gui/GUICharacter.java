@@ -77,32 +77,74 @@ public class GUICharacter {
 	public void render(Graphics g) {
 		g.setColor(new Color(0, 0, 0, .5f));
 		g.fillOval((int) xPx - 16, (int) yPx - 8, 32, 16);
-		// -32 et -60 pour centrer calque
+		// -32 et -60 to center in cell
 		g.drawAnimation(animation_depl[dir.toInt() + (isMoving() ? 4 : 0)], (int) xPx - 32, (int) yPx - 60);
-
 	}
 
 	protected void update(GUI gui, int delta) {
-		if (!isInPlace()) {
-			setMoving(true);
-			float nextXPx = getNextXPx(delta);
-			float nextYPx = getNextYPx(delta);
-//			if (gui.isObstacle(nextXPx, nextYPx)) {
-//				setMoving(false);
-//			} else {
-				this.xPx = nextXPx;
-				setCurrentX(GUI.pixelToCellX(nextXPx));
-				this.yPx = nextYPx;
-				setCurrentY(GUI.pixelToCellY(nextYPx));
-//			}
-		} else {
-			setMoving(false);
+		if (isMoving()) {
+
+			float nextXPx = getCurrentXPx(), nextYPx = getCurrentYPx();
+
+			if (getDirection() == Direction.WEST || getDirection() == Direction.EAST) {
+				nextXPx = getNextXPx(delta);
+			} else {
+				nextYPx = getNextYPx(delta);
+			}
+
+			if (isInPlace()) {
+				setMoving(false);
+			} else {
+				if (gui.isObstacle(nextXPx, nextYPx)) {
+					System.out.println("Obstacle détecté :|");
+					setMoving(false);
+				} else {
+					this.xPx = nextXPx;
+					setCurrentX(GUI.pixelToCellX(nextXPx));
+					this.yPx = nextYPx;
+					setCurrentY(GUI.pixelToCellY(nextYPx));
+				}
+			}
 		}
 	}
 
 	private boolean isInPlace() {
-		return false ;
-//		return getCurrentX() == getTargetX() && getCurrentY() == getTargetY();
+		// return false ;
+		float tolerance = 1f;
+
+		float maximumAcceptableHeight, maximumAcceptableWidth, minimumAcceptableHeight, minimumAcceptableWidth;
+		boolean isInPlaceHeight, isInPlaceWidth;
+
+		maximumAcceptableHeight = getTargetYPx() + tolerance;
+		maximumAcceptableWidth = getTargetXPx() + tolerance;
+		minimumAcceptableHeight = getTargetYPx() - tolerance;
+		minimumAcceptableWidth = getTargetXPx() - tolerance;
+
+		isInPlaceWidth = getCurrentXPx() <= maximumAcceptableWidth && getCurrentXPx() >= minimumAcceptableWidth;
+		isInPlaceHeight = getCurrentYPx() <= maximumAcceptableHeight && getCurrentYPx() >= minimumAcceptableHeight;
+
+		return getCurrentX() == getTargetX() && getCurrentY() == getTargetY() && isInPlaceHeight && isInPlaceWidth;
+		// return getCurrentX() == getTargetX() && getCurrentY() ==
+		// getTargetY();
+	}
+
+	public void goToDirection(Direction dir) {
+		setDirection(dir);
+		switch (dir) {
+		case NORTH:
+			setTargetY(getCurrentY() - 1);
+			break;
+		case WEST:
+			setTargetX(getCurrentX() - 1);
+			break;
+		case SOUTH:
+			setTargetY(getCurrentY() + 1);
+			break;
+		case EAST:
+			setTargetX(getCurrentX() + 1);
+			break;
+		}
+		setMoving(true);
 	}
 
 	private float getNextXPx(int delta) {
@@ -175,7 +217,6 @@ public class GUICharacter {
 		return yPxTarget;
 	}
 
-	
 	public int getCurrentX() {
 		return xCell;
 	}
@@ -194,24 +235,22 @@ public class GUICharacter {
 
 	public void setCurrentX(int x) {
 		xCell = x;
-//		xPx = GUI.cellToPixelX(xCell);
+		// xPx = GUI.cellToPixelX(xCell);
 	}
 
 	public void setCurrentY(int y) {
 		yCell = y;
-//		xPx = GUI.cellToPixelY(xCell);
+		// xPx = GUI.cellToPixelY(xCell);
 	}
 
 	public void setTargetX(int x) {
 		xCellTarget = x;
 		xPxTarget = GUI.cellToPixelX(xCellTarget);
-		System.out.println("On a voulu se placer a : " + x + " notre nouveau xCellTarget est : " + xCellTarget + " soit en px : " + xPxTarget);
 	}
 
 	public void setTargetY(int y) {
 		yCellTarget = y;
 		yPxTarget = GUI.cellToPixelY(yCellTarget);
-		System.out.println("On a voulu se placer a : " + y + " notre nouveau yCellTarget est : " + yCellTarget + " soit en px : " + yPxTarget);
 	}
 
 	public Direction getDirection() {
