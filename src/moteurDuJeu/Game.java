@@ -5,13 +5,14 @@ import org.newdawn.slick.SlickException;
 
 import Test_graphique.WindowGame;
 import carte.Carte;
-import personnages.Joueur;
+import entite.GameException;
+import personnages.Player;
 
 public class Game {
 
 	private Game game;
 
-	public void main(String[] args) throws SlickException {
+	public void main(String[] args) throws SlickException, GameException {
 
 		game = new Game();
 	}
@@ -22,8 +23,10 @@ public class Game {
 	 * 
 	 * @return Nouvelle valeur de NbrRound, -1 si fin de partie
 	 */
-	private boolean JouerTour(Joueur j) {
+	private boolean JouerTour(Player j) {
 		// TODO
+		// 1. Faire deplacer son héros au joueur
+		// 2. Faire le choix de la création de robot
 		return false;
 	}
 
@@ -32,10 +35,11 @@ public class Game {
 	 * 
 	 * @throws SlickException
 	 */
-	public Game() throws SlickException {
+	public Game() throws SlickException, GameException {
 		// Création des deux joueurs
-		Joueur joueur1 = new Joueur();
-		Joueur joueur2 = new Joueur();
+		// TODO choisir la position de base
+		Player joueur1 = new Player();
+		Player joueur2 = new Player();
 
 		// Initialisation de la carte en background
 		Carte map = new Carte();
@@ -60,6 +64,7 @@ public class Game {
 			}
 
 			// TODO
+			// Faire l'execution des automates des robots
 			nbrRound++;
 		}
 	}
