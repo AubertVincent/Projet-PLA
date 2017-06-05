@@ -1,5 +1,6 @@
 doc/
 .classpath
+doc/
 
 # Compiled class file
 *.class

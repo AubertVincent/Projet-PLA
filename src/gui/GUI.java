@@ -66,16 +66,10 @@ public class GUI extends BasicGame {
 	}
 
 	public static int pixelToCellX(float x) {
-		// System.out.println("pixelToCellX(" + x + ") = " + ((int) (x - (0.5 *
-		// cellWidth)) / cellWidth + 1));
-		// return (int) (x - (0.5f * cellWidth)) / cellWidth;
 		return (int) (x - (x % cellWidth)) / cellWidth;
 	}
 
 	public static int pixelToCellY(float y) {
-		// System.out.println("pixelToCellY(" + y + ") = " + ((int) (y - (0.5 *
-		// cellWidth)) / cellWidth + 1));
-		// return (int) (y - (0.5f * cellHeight)) / cellHeight;
 		return (int) (y - (y % cellHeight)) / cellHeight;
 	}
 

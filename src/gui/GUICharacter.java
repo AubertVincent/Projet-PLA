@@ -11,8 +11,6 @@ import org.newdawn.slick.SpriteSheet;
 
 import entite.Direction;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 // Contenu a rajouter a personnages.Personnage 
 public class GUICharacter {
 
@@ -27,12 +25,14 @@ public class GUICharacter {
 
 	private Direction dir;
 
+	// TODO
 	// Tableau etat -> booleen
 	// Map<entite.Etat, Boolean> tableauEtat = new HashMap<entite.Etat,
 	// Boolean>();
 	// Pour l'instant : booleen moving
 	private boolean moving;
 
+	// TODO
 	// Tableau action -> animation[] (plus tard)
 	// Map<operateur.Action, Animation[]> listeAnimations = new
 	// HashMap<operateur.Action, Animation[]>();
@@ -47,8 +47,8 @@ public class GUICharacter {
 		return animation;
 	}
 
-	// TODO : modifier pour adapter a map
-	public void init_animation(String spriteSheetLocation, int spriteSheetWidth, int spriteSheetHeight,
+	// TODO : adapt to HashMap
+	private void initAnimation(String spriteSheetLocation, int spriteSheetWidth, int spriteSheetHeight,
 			int animationDuration) throws SlickException {
 		SpriteSheet spriteSheet = new SpriteSheet(spriteSheetLocation, spriteSheetWidth, spriteSheetHeight);
 		this.animation_depl[0] = loadAnimation(spriteSheet, 0, 1, 0, animationDuration);
@@ -61,6 +61,22 @@ public class GUICharacter {
 		this.animation_depl[7] = loadAnimation(spriteSheet, 1, 9, 3, animationDuration);
 	}
 
+	/**
+	 * Creates the GUICharacter corresponding to a character, its graphical
+	 * representation.
+	 * 
+	 * @param x
+	 *            x coordinate in the map grid
+	 * @param y
+	 *            y coordinate in the map grid
+	 * @param dir
+	 *            Direction of the character
+	 * @param spriteSheetAnimation
+	 *            Path to the sprite sheet of the moving animation (TODO : adapt
+	 *            to any animation)
+	 * @throws SlickException
+	 *             Indicates a failure of the loading of a sprite sheet
+	 */
 	public GUICharacter(int x, int y, Direction dir, String spriteSheetAnimation) throws SlickException {
 		super();
 		this.xCell = x;
@@ -71,9 +87,15 @@ public class GUICharacter {
 		this.yPx = GUI.cellToPixelY(getCurrentY());
 		this.dir = dir;
 		this.setMoving(false);
-		this.init_animation(spriteSheetAnimation, 64, 64, 100);
+		this.initAnimation(spriteSheetAnimation, 64, 64, 100);
 	}
 
+	/**
+	 * Renders the GUICharacters in the given Graphics
+	 * 
+	 * @param g
+	 *            A Graphics to represent the GUICharacter in
+	 */
 	public void render(Graphics g) {
 		g.setColor(new Color(0, 0, 0, .5f));
 		g.fillOval((int) xPx - 16, (int) yPx - 8, 32, 16);
@@ -81,7 +103,16 @@ public class GUICharacter {
 		g.drawAnimation(animation_depl[dir.toInt() + (isMoving() ? 4 : 0)], (int) xPx - 32, (int) yPx - 60);
 	}
 
-	protected void update(GUI gui, int delta) {
+	/**
+	 * Updates the GUICharacter relying on the delta delay elapsed since last
+	 * call to this method.
+	 *
+	 * @param gui
+	 *            The GUI which the GUICharacters lives in
+	 * @param delta
+	 *            The delay (in milliseconds) since the last call of this method
+	 */
+	public void update(GUI gui, int delta) {
 		if (isMoving()) {
 
 			float nextXPx = getCurrentXPx(), nextYPx = getCurrentYPx();
@@ -108,6 +139,7 @@ public class GUICharacter {
 		}
 	}
 
+	// returns true if GUIChararcter is in targetCell
 	private boolean isInPlace() {
 		// return false ;
 		float tolerance = 1f;
@@ -128,6 +160,12 @@ public class GUICharacter {
 		// getTargetY();
 	}
 
+	/**
+	 * Makes the GUICharacter move of one cell in the given direction
+	 * 
+	 * @param dir
+	 *            The direction in which the GUICharacter will move
+	 */
 	public void goToDirection(Direction dir) {
 		setDirection(dir);
 		switch (dir) {
@@ -171,93 +209,71 @@ public class GUICharacter {
 		return nextY;
 	}
 
-	public Direction getNextDirection() {
-		if (isInPlace()) {
-			return getDirection();
-		} else {
-			if (getCurrentY() > getTargetY()) {
-				return Direction.NORTH;
-			}
-			if (getCurrentY() < getTargetY()) {
-				return Direction.SOUTH;
-			}
-			if (getCurrentX() > getTargetX()) {
-				return Direction.WEST;
-			}
-			if (getCurrentX() < getTargetX()) {
-				return Direction.EAST;
-			}
-		}
-		return null;
-	}
-
-	// TODO : Temporaire en attendant 'boolean isState(Etat state)'
-	public boolean isMoving() {
+	// TODO : Temporary until adapt to 'boolean isState(State state)'
+	private boolean isMoving() {
 		return moving;
 	}
 
 	// TODO : Temporaire en attendant 'boolean setState(Etat state)'
-	public void setMoving(boolean moving) {
+	private void setMoving(boolean moving) {
 		this.moving = moving;
 	}
 
-	public float getCurrentXPx() {
+	private float getCurrentXPx() {
 		return xPx;
 	}
 
-	public float getCurrentYPx() {
+	private float getCurrentYPx() {
 		return yPx;
 	}
 
-	public float getTargetXPx() {
+	private float getTargetXPx() {
 		return xPxTarget;
 	}
 
-	public float getTargetYPx() {
+	private float getTargetYPx() {
 		return yPxTarget;
 	}
 
-	public int getCurrentX() {
+	private int getCurrentX() {
 		return xCell;
 	}
 
-	public int getCurrentY() {
+	private int getCurrentY() {
 		return yCell;
 	}
 
-	public int getTargetX() {
+	private int getTargetX() {
 		return xCellTarget;
 	}
 
-	public int getTargetY() {
+	private int getTargetY() {
 		return yCellTarget;
 	}
 
-	public void setCurrentX(int x) {
+	private void setCurrentX(int x) {
 		xCell = x;
-		// xPx = GUI.cellToPixelX(xCell);
 	}
 
-	public void setCurrentY(int y) {
+	private void setCurrentY(int y) {
 		yCell = y;
-		// xPx = GUI.cellToPixelY(xCell);
 	}
 
-	public void setTargetX(int x) {
+	private void setTargetX(int x) {
 		xCellTarget = x;
 		xPxTarget = GUI.cellToPixelX(xCellTarget);
 	}
 
-	public void setTargetY(int y) {
+	private void setTargetY(int y) {
 		yCellTarget = y;
 		yPxTarget = GUI.cellToPixelY(yCellTarget);
 	}
 
-	public Direction getDirection() {
+	private Direction getDirection() {
 		return dir;
 	}
 
-	public void setDirection(Direction dir) {
+	private void setDirection(Direction dir) {
 		this.dir = dir;
 	}
 }
