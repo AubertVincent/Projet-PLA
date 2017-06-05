@@ -122,8 +122,8 @@ public abstract class Character extends Entity {
 		// TODO
 	}
 	
-	public void teleport(int x, int y){
-		setX(x);
-		setY(y);
+	public void teleport(Character c, int x, int y){
+		c.setX(x);
+		c.setY(y);
 	}
 }

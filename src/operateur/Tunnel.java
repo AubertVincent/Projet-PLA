@@ -15,7 +15,7 @@ public class Tunnel extends Movement {
 
 	@Override
 	public void execute(Entity e) throws GameException {
-		((Character) e).teleport(x, y);
+		((Character) e).teleport((Character) e,x, y);
 	}
 
 	@Override

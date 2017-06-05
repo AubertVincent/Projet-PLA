@@ -1,8 +1,6 @@
 package operateur;
 
-import entite.Direction;
-import entite.Entity;
-import entite.GameException;
+import entite.*;
 import personnages.Character;
 
 public class Recall extends Movement {
@@ -11,14 +9,13 @@ public class Recall extends Movement {
 
 	public Recall(int x, int y) {
 		super(x, y);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void execute(Entity e) throws GameException {
 		// TODO Intégrer la notion de temps, ce callback s'excute dès qu'on
 		// l'appelle.
-		((Character) e).goTo(Direction.SOUTH, 0); // ??
+		((Character) e).teleport((Character) e,0,0); // TODO différencier pour les deux joueurs
 	}
 
 	@Override
