@@ -10,33 +10,30 @@ public class RandomBar extends Behavior {
 	}
 
 	@Override
-	protected boolean isDoable() {
-		// TODO Auto-generated method stub
-		return false;
+	protected boolean isDoable(Entity e) {
+		return A.isDoable(e) || B.isDoable(e);
 	}
 
-	private boolean test() {
+	private Action randomAction(Action A, Action B) {
 		Random r = new Random();
 		int n = r.nextInt(2);
-		return (n == 0);
+		if (n == 0) {
+			return A;
+		} else {
+			return B;
+		}
 	}
 
 	@Override
 	protected void execute(Entity e) throws GameException {
-		// TODO Créer une nouvelle classe qui prend une séquence et qui gère
-		// l'execution des actions
-		if (!(A.isDoable())) {
-			if (!(B.isDoable())) {
-				throw new GameException("aucune des deux actions n'est possible");
-			} else {
-				B.execute(e);
-			}
-		} else if (!(B.isDoable())) {
-			A.execute(e);
-		} else if (test()) {
+		if (!(isDoable(e))) {
+			throw new GameException("Aucune des deux actions n'est possible");
+		} else if (!(A.isDoable(e))) {
+			B.execute(e);
+		} else if (!(B.isDoable(e))) {
 			A.execute(e);
 		} else {
-			B.execute(e);
+			randomAction(A, B).execute(e);
 		}
 	}
 

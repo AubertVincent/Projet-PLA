@@ -1,18 +1,27 @@
 package operateur;
 
 import entite.*;
+import personnages.Character;
 
 public class SuicideBomber extends Attack {
 
+	public SuicideBomber(Character opponent, Character attacker) {
+		super(opponent, attacker);
+	}
+
+	public SuicideBomber() {
+		super();
+	}
+
 	@Override
-	protected boolean isDoable() {
-		// TODO Auto-generated method stub
+	protected boolean isDoable(Entity e) {
+		// TODO Verify the ennemy presence
 		return false;
 	}
 
 	@Override
 	protected void execute(Entity e) throws GameException {
-		if (!isDoable()) {
+		if (!isDoable(e)) {
 			throw new GameException("Cette action n'est pas réalisable");
 		}
 		if (!e.isCharacter()) {

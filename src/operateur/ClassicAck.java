@@ -1,22 +1,40 @@
 package operateur;
 
-import carte.Cellule;
+import carte.*;
 import entite.*;
 import personnages.Character;
 
 public class ClassicAck extends Attack {
 
+	public ClassicAck(Character opponent, Character attacker) {
+		super(opponent, attacker);
+	}
+
+	public ClassicAck() {
+		super();
+	}
+
 	@Override
-	protected boolean isDoable() {
-		// TODO Auto-generated method stub
-		return false;
+	protected boolean isDoable(Entity e) { // Care, here an obstacle is
+											// attackable
+		int x = e.getX();
+		int y = e.getY();
+		Cell testEast = new Cell(x + 1, y);
+		Cell testSouth = new Cell(x, y - 1);
+		Cell testNorth = new Cell(x, y + 1);
+		Cell testWest = new Cell(x - 1, y);
+		if (testEast.isFree() && testSouth.isFree() && testNorth.isFree() && testWest.isFree()) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	@Override
 	protected void execute(Entity e) throws GameException {
 
-		if (!isDoable()) {
-			throw new GameException("Cette action n'est pas réalisable");
+		if (!isDoable(e)) {
+			throw new GameException("Il n'y a personne à attacker");
 		}
 		if (!e.isCharacter()) {
 			throw new GameException("Cette entité n'est pas un personnage");
@@ -24,10 +42,10 @@ public class ClassicAck extends Attack {
 			int x = e.getX();
 			int y = e.getY();
 			Direction d;
-			Cellule testEast = new Cellule(x + 1, y);
-			Cellule testSouth = new Cellule(x, y - 1);
-			Cellule testNorth = new Cellule(x, y + 1);
-			Cellule testWest = new Cellule(x - 1, y);
+			Cell testEast = new Cell(x + 1, y);
+			Cell testSouth = new Cell(x, y - 1);
+			Cell testNorth = new Cell(x, y + 1);
+			Cell testWest = new Cell(x - 1, y);
 			if (!(testEast.isEmpty())) {
 				d = Direction.EAST;
 				((Character) e).setDirection(d);
@@ -40,14 +58,10 @@ public class ClassicAck extends Attack {
 			} else if (!(testSouth.isEmpty())) {
 				d = Direction.SOUTH;
 				((Character) e).setDirection(d);
-			} else {
-				throw new GameException("Il n'y a personne à attaquer");
 			}
 			((Character) e).classicAtk(attacker, opponent);
 
 		}
 	}
-
-
 
 }

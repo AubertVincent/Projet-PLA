@@ -1,40 +1,55 @@
 package carte;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import entite.Entity;
 
-public class Cellule {
+public class Cell {
 	protected int x;
 	protected int y;
-	protected List<Entity> listeEntites ;
-	
-	public Cellule(int x, int y){
+
+	protected List<Entity> listeEntites;
+	boolean isfree;
+
+	public Cell(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.listeEntites = new ArrayList<Entity>();
+		listeEntites = new ArrayList<Entity>();
+		isfree = true;
 	}
-	
-	public Cellule(int x, int y, List<Entity> listeEnt){
-		this.x = x;
+
+	public Cell(int x, int y, List<Entity> listeEnt) {
+
 		this.y = y;
-		this.listeEntites = listeEnt;
+		listeEntites = listeEnt;
+		isfree = false;
 	}
-	
-	//@Override 
-	public boolean isEmpty(){
+
+	public boolean isEmpty() {
 		return listeEntites.isEmpty();
 	}
-	
-	public void setEntite(Entity ent){
+
+	public boolean isFree() {
+		return isfree;
+	}
+
+	public void setEntity(Entity ent) {
 		listeEntites.add(ent);
 	}
+
+	public void FreeCell(){
+		isfree=true;
+		listeEntites.clear();
+	}
 	
-	public int getX(){
+	private int getX() {
 		return this.x;
 	}
-	
-	public int getY(){
+
+	private int getY() {
 		return this.y;
 	}
+	
+	
 }

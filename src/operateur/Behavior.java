@@ -15,5 +15,7 @@ public abstract class Behavior extends Operator {
 		this.A = A;
 		this.B = B;
 	}
-
+	
+	
+	
 }

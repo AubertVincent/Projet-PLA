@@ -4,25 +4,24 @@ import entite.*;
 
 public class Priority extends Behavior {
 
-
 	public Priority(Action A, Action B) {
 		super(A, B);
 	}
 
 	@Override
-	protected void execute(Entity e) throws GameException {
-		if (A.isDoable()) {
-			A.execute(e);
-		} else if (B.isDoable()){
-			B.execute(e);
-		}else{
-			throw new GameException("Aucune des deux actions n'est possible");
-		}
+	protected boolean isDoable(Entity e) {
+		return A.isDoable(e) || B.isDoable(e);
 	}
 
 	@Override
-	protected boolean isDoable() {
-		// TODO Auto-generated method stub
-		return false;
+	protected void execute(Entity e) throws GameException {
+		if (isDoable(e)) {
+			throw new GameException("Aucune des deux actions n'est possible");
+		}
+		if (A.isDoable(e)) {
+			A.execute(e);
+		} else {
+			B.execute(e);
+		}
 	}
 }

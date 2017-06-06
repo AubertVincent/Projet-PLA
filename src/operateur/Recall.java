@@ -7,10 +7,17 @@ public class Recall extends Movement {
 
 	protected int time;
 
+	public Recall(int time) {
+		super();
+		this.time = time;
+	}
+
+	public Recall() {
+		super();
+	}
+
 	@Override
-	protected boolean isDoable() {
-		// TODO
-		// Toujours vraie ?
+	protected boolean isDoable(Entity e) {
 		return true;
 	}
 

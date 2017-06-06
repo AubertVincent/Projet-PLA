@@ -8,13 +8,17 @@ public class Succession extends Behavior {
 		super(A, B);
 	}
 
+	@Override
+	protected boolean isDoable(Entity e) {
+		return A.isDoable(e) && B.isDoable(e);
+	}
+
 	protected void execute(Entity e) throws GameException {
+		if(!(isDoable(e))){
+			throw new GameException("Une des deux actions n'est pas réalisable");
+		}
 		A.execute(e);
 		B.execute(e);
 	}
 
-	@Override
-	protected boolean isDoable() {
-		return A.isDoable() && B.isDoable();
-	}
 }
