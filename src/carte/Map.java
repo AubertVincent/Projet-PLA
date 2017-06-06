@@ -1,5 +1,6 @@
 package carte;
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import entite.Entity;
@@ -55,11 +56,17 @@ public class Map {
 		map[x][y].setEntity(ent);
 	}
 
-	public Cell getCell(int x, int y) {
+	public static Cell getCell(int x, int y) {
 		return map[x][y];
 	}
-	
-	public static boolean isFree(int x, int y){
+
+	public static boolean isFree(int x, int y) {
 		return map[x][y].isFree();
 	}
+
+	public static List<Entity> getListEntity(int x, int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

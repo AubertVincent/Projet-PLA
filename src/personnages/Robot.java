@@ -1,14 +1,17 @@
 package personnages;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import carte.Map;
 import entite.Direction;
+import entite.Entity;
 import operateur.*;
 
 public class Robot extends Character {
 
-	protected static List<Class <? extends Action>> possibleActionsList = new LinkedList<Class <? extends Action>>();
+	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 
 	public Robot(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
 			int recall) {
@@ -20,7 +23,7 @@ public class Robot extends Character {
 		possibleActionsList.add(SuicideBomber.class);
 	}
 
-	public static List<Class <? extends Action>> getPossibleActionsList() {
+	public static List<Class<? extends Action>> getPossibleActionsList() {
 		return possibleActionsList;
 	}
 
@@ -34,7 +37,37 @@ public class Robot extends Character {
 		return true;
 	}
 
-	public void suicideBomber() {
-		// TODO
+	public void suicideBomber(Entity e) {
+		int x = e.getX();
+		int y = e.getY();
+		List<Entity> testNorth = Map.getListEntity(x, y - 1);
+		List<Entity> testSouth = Map.getListEntity(x, y + 1);
+		List<Entity> testWest = Map.getListEntity(x - 1, y);
+		List<Entity> testEast = Map.getListEntity(x + 1, y);
+
+		for (Iterator<Entity> i = testNorth.iterator(); i.hasNext();) {
+			Entity eCourant = i.next();
+			if (eCourant instanceof Robot) {
+				((Robot) eCourant).setLife(0);
+			}
+		}
+		for (Iterator<Entity> i = testSouth.iterator(); i.hasNext();) {
+			Entity eCourant = i.next();
+			if (eCourant instanceof Robot) {
+				((Robot) eCourant).setLife(0);
+			}
+		}
+		for (Iterator<Entity> i = testWest.iterator(); i.hasNext();) {
+			Entity eCourant = i.next();
+			if (eCourant instanceof Robot) {
+				((Robot) eCourant).setLife(0);
+			}
+		}
+		for (Iterator<Entity> i = testEast.iterator(); i.hasNext();) {
+			Entity eCourant = i.next();
+			if (eCourant instanceof Robot) {
+				((Robot) eCourant).setLife(0);
+			}
+		}
 	}
 }

@@ -1,11 +1,7 @@
 package personnages;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import entite.Direction;
 import entite.Entity;
-import operateur.Action;
 
 public abstract class Character extends Entity {
 
@@ -32,7 +28,7 @@ public abstract class Character extends Entity {
 
 	protected abstract boolean isPlayer();
 
-	protected abstract boolean isRobot();
+	public abstract boolean isRobot();
 
 	public boolean isCharacter() {
 		return true;

@@ -6,8 +6,13 @@ import personnages.Character;
 
 public class ClassicAck extends Attack {
 
-	public ClassicAck(Character opponent, Character attacker) {
-		super(opponent, attacker);
+	protected Character opponent;
+	protected Character attacker;
+
+	public ClassicAck(Character attacker, Character opponent) {
+		super();
+		this.opponent = opponent;
+		this.attacker = attacker;
 	}
 
 	public ClassicAck() {
@@ -42,10 +47,10 @@ public class ClassicAck extends Attack {
 			int x = e.getX();
 			int y = e.getY();
 			Direction d;
-			Cell testEast = new Cell(x + 1, y);
-			Cell testSouth = new Cell(x, y - 1);
-			Cell testNorth = new Cell(x, y + 1);
-			Cell testWest = new Cell(x - 1, y);
+			Cell testEast = Map.getCell(x + 1, y);
+			Cell testSouth = Map.getCell(x, y - 1);
+			Cell testNorth = Map.getCell(x, y + 1);
+			Cell testWest = Map.getCell(x - 1, y);
 			if (!(testEast.isEmpty())) {
 				d = Direction.EAST;
 				((Character) e).setDirection(d);
