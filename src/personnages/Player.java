@@ -1,14 +1,19 @@
 package personnages;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import entite.Direction;
 import operateur.*;
+import pickable.*;
 
 public class Player extends Character {
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
+
+	public Map<Class<? extends PickAble>, Integer> besace = new HashMap<Class<? extends PickAble>, Integer>();
 
 	/**
 	 * Set a new Player
@@ -39,6 +44,15 @@ public class Player extends Character {
 		possibleActionsList.add(MoveDir.class);
 		possibleActionsList.add(Tunnel.class);
 		possibleActionsList.add(Recall.class);
+		besace.put(PickClassicAck.class,0);
+		besace.put(PickSuicideBomber.class,0);
+		besace.put(PickTunnel.class, 0);
+		besace.put(PickMoveDir.class,0);
+		besace.put(PickRecall.class,0);
+		besace.put(PickPickUp.class,0);
+		besace.put(PickSuccession.class,0);
+		besace.put(PickRandomBar.class,0);
+		besace.put(PickPriority.class,0);
 	}
 
 	public static List<Class<? extends Action>> getPossibleActionsList() {

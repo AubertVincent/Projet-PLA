@@ -65,6 +65,12 @@ public class Robot extends Character {
 	 * @param e
 	 *            The Robot which is suiciding
 	 */
+	public Player isToPlayer(){
+		//TODO
+		return null;
+		
+	}
+	
 	public void suicideBomber(Entity e) {
 		int x = e.getX();
 		int y = e.getY();

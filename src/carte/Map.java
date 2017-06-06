@@ -5,6 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import entite.Entity;
 import operateur.Operator;
+import pickable.PickAble;
 
 public class Map {
 
@@ -67,6 +68,16 @@ public class Map {
 	public static List<Entity> getListEntity(int x, int i) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public static Class<PickAble> ramassable(int x, int y) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static void freePick(Class<PickAble> ramasse, int x, int y) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
