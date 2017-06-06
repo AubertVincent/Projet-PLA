@@ -34,7 +34,7 @@ public class GUI extends BasicGame {
 	public static void main(String[] args) throws SlickException {
 		new Map();
 		Map.initMap();
-		new Engine();
+		//new Engine();
 		new AppGameContainer(new GUI(), WindowWidth, WindowHeight, false).start();
 	}
 

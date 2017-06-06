@@ -1,16 +1,18 @@
 package moteurDuJeu;
 
+import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
 
 import carte.Map;
 import entite.Direction;
+import gui.GUI;
 import gui.GUICharacter;
 import personnages.Player;
 
 public class Engine {
 
-	private static Player player1;// = new Player(2, 4, Direction.SOUTH, 1, 1, 1, 1, 5, 1);
-	private static Player player2;// = new Player(30, 15, Direction.SOUTH, 1, 1, 1, 1, 5, 1);
+	private static Player player1 = new Player(2, 4, Direction.SOUTH, 1, 1, 1, 1, 5, 1);
+	private static Player player2 = new Player(30, 15, Direction.SOUTH, 1, 1, 1, 1, 5, 1);
 	private static Map map;
 	private static int nbrRound;
 	private static boolean EndGame;
@@ -84,7 +86,9 @@ public class Engine {
 				}
 
 				break;
+				
 			}
+			System.out.println("coordonnee de la case : "+ player1.getX() + ";" + player2.getY());
 		} else if (player2.getMovePoints() > 0 && joueur == 2) {
 
 			switch (dir) {
@@ -103,7 +107,7 @@ public class Engine {
 			case NORTH:
 
 				if (Map.isFree(player2.getX() - 1, player2.getY())) {
-					//System.out.println("case libre ? : " + Map.isFree(player2.getX() - 1, player2.getY()));
+					System.out.println("case libre ? : " + Map.isFree(player2.getX() - 1, player2.getY()));
 					player2.setX(player2.getX() - 1);
 					Map.Free(player2.getX() + 1, player1.getY());
 					Map.Add(player2.getX(), player2.getY(), player2);
@@ -135,6 +139,7 @@ public class Engine {
 				}
 				break;
 			}
+			System.out.println("coordonnee de la case : "+ player2.getX() + ";" + player2.getY());
 		} else {
 			System.out.println("Plus de point de déplacement \n");
 			return false;

@@ -12,8 +12,8 @@ public class Map {
 
 	private static final int nbrOpInit = 128; // une chance sur 4 de trouver un
 												// opérateur sur une cellule
-	private static final int width = 32;
-	private static final int height = 16;
+	private static final int width = 34;
+	private static final int height = 20;
 
 	public static final Cell[][] map = new Cell[width][height];
 
