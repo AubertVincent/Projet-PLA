@@ -58,4 +58,8 @@ public class Map {
 	public Cell getCell(int x, int y) {
 		return map[x][y];
 	}
+	
+	public boolean isFree(int x, int y){
+		return map[x][y].isFree();
+	}
 }

@@ -12,7 +12,7 @@ import personnages.Player;
 public class Game {
 
 	private Game game;
-
+	
 	public void main(String[] args) throws SlickException, GameException {
 
 		game = new Game();

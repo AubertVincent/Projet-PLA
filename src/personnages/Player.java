@@ -50,8 +50,13 @@ public class Player extends Caracter {
 		return besace.get(op);
 	}
 
+	public List<Robot> getListRobot() {
+		return listRobot;
+	}
+
+	// TODO
 	public void CreateRobot() {
-		
+
 	}
 
 	@Override
