@@ -2,20 +2,20 @@ package operateur;
 
 import entite.*;
 
-public class suicideBomber extends Attack {
+public class SuicideBomber extends Attack {
 
-	public suicideBomber(int x, int y) {
-		super(x, y);
+	public SuicideBomber() {
+		super();
 	}
 
 	@Override
-	public boolean isDoable() {
+	protected boolean isDoable() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public void execute(Entity e) throws GameException {
+	protected void execute(Entity e) throws GameException {
 		if (!isDoable()) {
 			throw new GameException("Cette action n'est pas réalisable");
 		}

@@ -6,22 +6,22 @@ import personnages.Character;
 
 public class Tunnel extends Movement {
 
-	public Tunnel(int x, int y) {
-		super(x, y);
+	public Tunnel() {
+		super();
 	}
 
-	int x;
-	int y;
+	protected int x;
+	protected int y;
 
 	@Override
-	public void execute(Entity e) throws GameException {
-		((Character) e).teleport((Character) e,x, y);
-	}
-
-	@Override
-	public boolean isDoable() {
+	protected boolean isDoable() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	protected void execute(Entity e) throws GameException {
+		((Character) e).teleport((Character) e, x, y);
 	}
 
 }

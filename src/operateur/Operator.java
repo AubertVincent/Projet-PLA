@@ -2,17 +2,21 @@ package operateur;
 
 import entite.*;
 
-public abstract class Operator extends entite.Entity {
+public abstract class Operator {
 
-	public Operator(int x, int y) {
-		super(x, y);
+	public Operator() {
+		super();
 	}
+	
+	protected abstract void execute(Entity e) throws GameException;
 
-	public boolean isCharacter() {
+	protected abstract boolean isDoable();
+	
+	protected boolean isCharacter() {
 		return false;
 	}
 
-	public boolean isOperator() {
+	protected boolean isOperator() {
 		return true;
 	}
 

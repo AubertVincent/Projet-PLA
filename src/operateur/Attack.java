@@ -4,11 +4,11 @@ import personnages.Character;
 
 public abstract class Attack extends Action {
 
-	public Attack(int x, int y) {
-		super(x, y);
+	public Attack() {
+		super();
 	}
 
-	Character opponent;
-	Character attacker;
+	protected Character opponent;
+	protected Character attacker;
 
 }

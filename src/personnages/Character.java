@@ -5,7 +5,7 @@ import entite.Entity;
 
 public abstract class Character extends Entity {
 
-	private Direction direction;
+	protected Direction direction;
 
 	protected int life;
 	protected int vision;
@@ -26,9 +26,9 @@ public abstract class Character extends Entity {
 		this.recall = recall;
 	}
 
-	public abstract boolean isPlayer();
+	protected abstract boolean isPlayer();
 
-	public abstract boolean isRobot();
+	protected abstract boolean isRobot();
 
 	public boolean isCharacter() {
 		return true;
@@ -94,11 +94,7 @@ public abstract class Character extends Entity {
 		this.recall = recall;
 	}
 
-	public void move() {
-		// TODO
-	}
-
-	public void goTo(Direction dir, int lg) {
+	public void goTo(Direction dir, int lg) { // lg?
 
 		direction = dir;
 
@@ -118,8 +114,17 @@ public abstract class Character extends Entity {
 		}
 	}
 
-	public void classicAtk() {
-		// TODO
+	public void classicAtk(Character attacker, Character opponent) {
+		int lifeA = attacker.getLife();
+		int lifeE = opponent.getLife();
+		int atkA = attacker.getAttack();
+		int atkE = opponent.getAttack();
+
+		lifeA = java.lang.Math.max(lifeA - atkE, 0);
+		lifeE = java.lang.Math.max(lifeE - atkA, 0);
+
+		attacker.setLife(lifeA);
+		opponent.setLife(lifeE);
 	}
 
 	public void teleport(Character c, int x, int y) {

@@ -5,20 +5,20 @@ import personnages.Character;
 
 public class MoveDir extends Movement {
 
-	public MoveDir(int x, int y) {
-		super(x, y);
+	public MoveDir() {
+		super();
 	}
 
-	Direction dir;
-	int lg;
+	protected Direction dir;
+	protected int lg;
 
 	@Override
-	public boolean isDoable() {
+	protected boolean isDoable() {
 		// TODO
 		return true;
 	}
 
-	public void execute(Entity e) throws GameException {
+	protected void execute(Entity e) throws GameException {
 
 		if (!isDoable()) {
 			throw new GameException("Cette action n'est pas réalisable");

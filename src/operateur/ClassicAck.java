@@ -6,34 +6,19 @@ import personnages.Character;
 
 public class ClassicAck extends Attack {
 
-	public ClassicAck(int x, int y) {
-		super(x, y);
+	public ClassicAck() {
+		super();
 	}
 
-	public void execute(Character attacker, Character opponent) {
-		int lifeA = attacker.getLife();
-		int lifeE = opponent.getLife();
-		int atkA = attacker.getAttack();
-		int atkE = opponent.getAttack();
-
-		lifeA = java.lang.Math.max(lifeA - atkE, 0);
-		lifeE = java.lang.Math.max(lifeE - atkA, 0);
-
-		attacker.setLife(lifeA);
-		opponent.setLife(lifeE);
-	}
 
 	@Override
-	public boolean isDoable() {
-		// TODO il faudrait la position de l'opponent ? ça veut dire quoi une
-		// attaque classique est faisable ?
-		// Ou vérifier que la personne qu'on ne va pas se faire tuer en
-		// attaquant la personne?
+	protected boolean isDoable() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public void execute(Entity e) throws GameException {
+	protected void execute(Entity e) throws GameException {
 
 		if (!isDoable()) {
 			throw new GameException("Cette action n'est pas réalisable");
@@ -63,9 +48,11 @@ public class ClassicAck extends Attack {
 			} else {
 				throw new GameException("Il n'y a personne à attaquer");
 			}
-			((Character) e).classicAtk();
+			((Character) e).classicAtk(attacker, opponent);
 
 		}
 	}
+
+
 
 }
