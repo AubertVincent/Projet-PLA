@@ -34,6 +34,7 @@ public class GUI extends BasicGame {
 	public static void main(String[] args) throws SlickException {
 		new Map();
 		Map.initMap();
+		new Engine();
 		new AppGameContainer(new GUI(), WindowWidth, WindowHeight, false).start();
 	}
 
@@ -122,35 +123,35 @@ public class GUI extends BasicGame {
 	public void keyPressed(int key, char c) {
 		switch (key) {
 		case Input.KEY_UP:
-			Engine.update(Direction.NORTH, perso1);
+			Engine.update(Direction.NORTH, perso1, 1);
 			// perso1.goToDirection(Direction.NORTH);
 			break;
 		case Input.KEY_LEFT:
-			Engine.update(Direction.WEST, perso1);
+			Engine.update(Direction.WEST, perso1, 1);
 			// perso1.goToDirection(Direction.WEST);
 			break;
 		case Input.KEY_DOWN:
-			Engine.update(Direction.SOUTH, perso1);
+			Engine.update(Direction.SOUTH, perso1, 1);
 			// perso1.goToDirection(Direction.SOUTH);
 			break;
 		case Input.KEY_RIGHT:
-			Engine.update(Direction.EAST, perso1);
+			Engine.update(Direction.EAST, perso1, 1);
 			// perso1.goToDirection(Direction.EAST);
 			break;
 		case Input.KEY_Z:
-			Engine.update(Direction.NORTH, perso2);
+			Engine.update(Direction.NORTH, perso2, 2);
 			// perso1.goToDirection(Direction.NORTH);
 			break;
 		case Input.KEY_Q:
-			Engine.update(Direction.WEST, perso2);
+			Engine.update(Direction.WEST, perso2, 2);
 			// perso1.goToDirection(Direction.WEST);
 			break;
 		case Input.KEY_W:
-			Engine.update(Direction.SOUTH, perso2);
+			Engine.update(Direction.SOUTH, perso2, 2);
 			// perso1.goToDirection(Direction.SOUTH);
 			break;
 		case Input.KEY_S:
-			Engine.update(Direction.EAST, perso2);
+			Engine.update(Direction.EAST, perso2, 2);
 			// perso1.goToDirection(Direction.EAST);
 			break;
 		}

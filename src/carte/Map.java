@@ -15,11 +15,11 @@ public class Map {
 	private static final int width = 32;
 	private static final int height = 16;
 
-	public static final Cell[][] map = new Cell[height][width];
+	public static final Cell[][] map = new Cell[width][height];
 
 	public Map() {
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
 				map[i][j] = new Cell(i, j);
 			}
 		}
@@ -29,8 +29,8 @@ public class Map {
 		int randomLine;
 		int randomColumn;
 		int i = 0;
-		map[2][4].setEntity(new Player(5, 12, Direction.NORTH, 1, 1, 1, 1, 5, 1));
-		//map[30][15].setEntity(new Player(30, 15, Direction.NORTH, 1, 1, 1, 1, 5, 1));
+		map[4][2].setEntity(new Player(5, 12, Direction.NORTH, 1, 1, 1, 1, 5, 1));
+		map[30][15].setEntity(new Player(30, 15, Direction.NORTH, 1, 1, 1, 1, 5, 1));
 //		while (i < nbrOpInit) {
 //			randomLine = ThreadLocalRandom.current().nextInt(0, height);
 //			randomColumn = ThreadLocalRandom.current().nextInt(0, width);
