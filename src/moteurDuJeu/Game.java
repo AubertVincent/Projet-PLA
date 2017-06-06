@@ -9,6 +9,7 @@ import entite.Direction;
 import entite.GameException;
 import personnages.Player;
 import personnages.Robot;
+import java.util.List;
 
 public class Game {
 
@@ -47,11 +48,19 @@ public class Game {
 	}
 
 	private boolean RoundRobot(Player player1, Player player2) {
-		for (Robot r : player2.getListRobot()) {
-			r.execute();
-		}
-		for (Robot r : player1.getListRobot()) {
-			r.execute();
+		List<Robot> listR1 = player1.getListRobot();
+		List<Robot> listR2 = player2.getListRobot();
+		int size1 = listR1.size();
+		int size2 = listR2.size();
+		int i = 0;
+		while (i < size1 || i < size2) {
+			if (i < size1) {
+				(listR1.get(i)).execute();
+			}
+			if (i < size2) {
+				(listR2.get(i)).execute();
+			}
+			i++;
 		}
 		if (player1.getLife() == 0 || player2.getLife() == 0) {
 			return true;
