@@ -10,7 +10,9 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
+import carte.Map;
 import entite.Direction;
+import moteurDuJeu.Engine;
 
 public class GUI extends BasicGame {
 
@@ -27,8 +29,11 @@ public class GUI extends BasicGame {
 	protected static boolean behaviorInputNeeded = false;
 
 	private GUICharacter perso1;
+	private GUICharacter perso2;
 
 	public static void main(String[] args) throws SlickException {
+		new Map();
+		Map.initMap();
 		new AppGameContainer(new GUI(), WindowWidth, WindowHeight, false).start();
 	}
 
@@ -40,7 +45,8 @@ public class GUI extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 		this.container = container;
 		this.map = new TiledMap("res/map.tmx");
-		this.perso1 = new GUICharacter(5, 12, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
+		this.perso1 = new GUICharacter(2, 4, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
+		this.perso2 = new GUICharacter(30, 15, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
 		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "{D3H | D}*");
 	}
 
@@ -51,6 +57,7 @@ public class GUI extends BasicGame {
 		this.map.render(0, 0, 1);
 		this.map.render(0, 0, 2);
 		this.perso1.render(g);
+		this.perso2.render(g);
 		this.map.render(0, 0, 4);
 		this.map.render(0, 0, 5);
 
@@ -62,6 +69,7 @@ public class GUI extends BasicGame {
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
 		perso1.update(this, delta);
+		perso2.update(this, delta);
 		this.inputTextField.update(container);
 	}
 
@@ -114,16 +122,36 @@ public class GUI extends BasicGame {
 	public void keyPressed(int key, char c) {
 		switch (key) {
 		case Input.KEY_UP:
-			perso1.goToDirection(Direction.NORTH);
+			Engine.update(Direction.NORTH, perso1);
+			// perso1.goToDirection(Direction.NORTH);
 			break;
 		case Input.KEY_LEFT:
-			perso1.goToDirection(Direction.WEST);
+			Engine.update(Direction.WEST, perso1);
+			// perso1.goToDirection(Direction.WEST);
 			break;
 		case Input.KEY_DOWN:
-			perso1.goToDirection(Direction.SOUTH);
+			Engine.update(Direction.SOUTH, perso1);
+			// perso1.goToDirection(Direction.SOUTH);
 			break;
 		case Input.KEY_RIGHT:
-			perso1.goToDirection(Direction.EAST);
+			Engine.update(Direction.EAST, perso1);
+			// perso1.goToDirection(Direction.EAST);
+			break;
+		case Input.KEY_Z:
+			Engine.update(Direction.NORTH, perso2);
+			// perso1.goToDirection(Direction.NORTH);
+			break;
+		case Input.KEY_Q:
+			Engine.update(Direction.WEST, perso2);
+			// perso1.goToDirection(Direction.WEST);
+			break;
+		case Input.KEY_W:
+			Engine.update(Direction.SOUTH, perso2);
+			// perso1.goToDirection(Direction.SOUTH);
+			break;
+		case Input.KEY_S:
+			Engine.update(Direction.EAST, perso2);
+			// perso1.goToDirection(Direction.EAST);
 			break;
 		}
 	}
