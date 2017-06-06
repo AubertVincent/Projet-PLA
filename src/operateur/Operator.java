@@ -3,22 +3,19 @@ package operateur;
 import entite.*;
 
 public abstract class Operator {
-
-	public Operator() {
-		super();
-	}
 	
+	/**
+	 * execute an operator on an Entity
+	 * @param e The Entity which will execute the action
+	 * @throws GameException
+	 */
 	protected abstract void execute(Entity e) throws GameException;
 
+	/**
+	 * Check if an action can be done
+	 * @return true is it can be done, else return false
+	 */
 	protected abstract boolean isDoable();
-	
-	protected boolean isCharacter() {
-		return false;
-	}
-
-	protected boolean isOperator() {
-		return true;
-	}
 
 	public static Entity randomOp() {
 		// TODO 

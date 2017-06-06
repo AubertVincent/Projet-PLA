@@ -4,10 +4,6 @@ import entite.*;
 
 public class SuicideBomber extends Attack {
 
-	public SuicideBomber() {
-		super();
-	}
-
 	@Override
 	protected boolean isDoable() {
 		// TODO Auto-generated method stub

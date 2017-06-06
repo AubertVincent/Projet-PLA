@@ -4,6 +4,7 @@ import entite.*;
 
 public class Priority extends Behavior {
 
+
 	public Priority(Action A, Action B) {
 		super(A, B);
 	}

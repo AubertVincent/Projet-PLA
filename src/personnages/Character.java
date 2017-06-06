@@ -1,7 +1,11 @@
 package personnages;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import entite.Direction;
 import entite.Entity;
+import operateur.Action;
 
 public abstract class Character extends Entity {
 
@@ -32,10 +36,6 @@ public abstract class Character extends Entity {
 
 	public boolean isCharacter() {
 		return true;
-	}
-
-	public boolean isOperator() {
-		return false;
 	}
 
 	public Direction getDirection() {

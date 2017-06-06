@@ -6,10 +6,6 @@ import personnages.Character;
 
 public class Tunnel extends Movement {
 
-	public Tunnel() {
-		super();
-	}
-
 	protected int x;
 	protected int y;
 

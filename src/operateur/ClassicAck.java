@@ -6,11 +6,6 @@ import personnages.Character;
 
 public class ClassicAck extends Attack {
 
-	public ClassicAck() {
-		super();
-	}
-
-
 	@Override
 	protected boolean isDoable() {
 		// TODO Auto-generated method stub

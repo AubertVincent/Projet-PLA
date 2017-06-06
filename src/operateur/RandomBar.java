@@ -5,24 +5,16 @@ import entite.*;
 
 public class RandomBar extends Behavior {
 
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @param A
-	 * @param B
-	 */
 	public RandomBar(Action A, Action B) {
 		super(A, B);
 	}
 
-	
 	@Override
 	protected boolean isDoable() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	private boolean test() {
 		Random r = new Random();
 		int n = r.nextInt(2);
@@ -47,7 +39,5 @@ public class RandomBar extends Behavior {
 			B.execute(e);
 		}
 	}
-
-	
 
 }
