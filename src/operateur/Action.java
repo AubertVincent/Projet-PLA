@@ -1,10 +1,15 @@
 package operateur;
-import entite.Entite;
+
+import entite.*;
 import entite.GameException;
 
-public abstract class Action extends Operateur {
-	
-	
-	public abstract void execute(Entite e) throws GameException;
+public abstract class Action extends Operator {
+
+	public Action(int x, int y) {
+		super(x, y);
+	}
+
+	public abstract void execute(Entity e) throws GameException;
+
 	public abstract boolean isDoable();
 }

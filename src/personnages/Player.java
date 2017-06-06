@@ -2,24 +2,23 @@ package personnages;
 
 import entite.Direction;
 
-public class Robot extends Character {
+public class Player extends Character {
 
-	public Robot(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
+	public Player(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
 			int recall) {
 		super(x, y, direction, life, vision, attack, range, movePoints, recall);
 	}
 
 	@Override
 	public boolean isPlayer() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isRobot() {
-		return true;
+		return false;
 	}
 
-	public void suicideBomber() {
-		// TODO
-	}
+	// TODO Keyboard reaction
+
 }
