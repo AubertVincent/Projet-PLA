@@ -2,21 +2,23 @@ package operateur;
 
 import entite.Entity;
 import entite.GameException;
+import personnages.Character;
 
 public class PickUp extends Action {
-	
+
 	@Override
 	protected boolean isDoable(Entity e) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	protected void execute(Entity e) throws GameException {
-		// TODO Auto-generated method stub
-
+		if (isDoable(e)) {
+			throw new GameException("Imoossible de ramasser"); //Should never happen
+		}
+		else{
+			((Character) e).pickUp(e);
+		}
 	}
-
-	
 
 }

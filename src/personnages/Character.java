@@ -2,6 +2,7 @@ package personnages;
 
 import entite.Direction;
 import entite.Entity;
+import pickable.*;
 
 public abstract class Character extends Entity {
 
@@ -175,4 +176,16 @@ public abstract class Character extends Entity {
 		e.setX(x);
 		e.setY(y);
 	}
+
+	/**
+	 * Pick up an entity
+	 * 
+	 * @param e
+	 *            The entity which is picking up
+	 */
+	public void pickUp(Entity e) {
+		// TODO
+		PickAble.pick(e);
+	}
+
 }

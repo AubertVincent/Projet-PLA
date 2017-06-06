@@ -65,16 +65,19 @@ public class Map {
 		return map[x][y].isFree();
 	}
 
-	public static List<Entity> getListEntity(int x, int i) {
+	//return the list of the entities present on the cell(x,y)
+	public static List<Entity> getListEntity(int x, int y) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public static Class<PickAble> ramassable(int x, int y) {
+	//return the class of an entity present on the cell
+	public static Class<PickAble> pickableEntity(int x, int y) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	//Take out the object of the cell
 	public static void freePick(Class<PickAble> ramasse, int x, int y) {
 		// TODO Auto-generated method stub
 		
