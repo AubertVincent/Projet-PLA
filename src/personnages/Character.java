@@ -7,12 +7,12 @@ public abstract class Character extends Entity {
 
 	private Direction direction;
 
-	protected int life;
-	protected int vision;
-	protected int attack;
-	protected int range;
-	protected int movePoints;
-	protected int recall;
+	private int life;
+	private int vision;
+	private int attack;
+	private int range;
+	private int movePoints;
+	private int recall;
 
 	public Character(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
 			int recall) {
@@ -94,10 +94,6 @@ public abstract class Character extends Entity {
 		this.recall = recall;
 	}
 
-	public void move() {
-		// TODO
-	}
-
 	public void goTo(Direction dir, int lg) {
 
 		direction = dir;
@@ -121,8 +117,8 @@ public abstract class Character extends Entity {
 	public void classicAtk() {
 		// TODO
 	}
-	
-	public void teleport(Character c, int x, int y){
+
+	public void teleport(Character c, int x, int y) {
 		c.setX(x);
 		c.setY(y);
 	}

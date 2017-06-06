@@ -1,0 +1,290 @@
+options
+{
+  DEBUG_PARSER = false;
+  STATIC = false;
+}
+
+PARSER_BEGIN(Parser)
+package reader;
+import java.io.*;
+
+public class Parser
+{
+  //TODO Mettre un return pour retourner l'arbre et modifier le nom de la fonction
+  public static void main(String [] args)
+  {
+    try
+    {
+      Parser.importe("boot.ll");
+    }
+    catch (ParserException e)
+    {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    catch (FileNotFoundException e)
+    {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }	
+    while (true)
+    {
+      System.out.print(" >");
+      System.out.println(read().eval());	
+    }
+  }
+
+  /** le support de lecture */
+  //Utiliser une String comme InputStream
+  //InputStream stream = new ByteArrayInputStream(exampleString.getBytes(StandardCharsets.UTF_8));
+  protected static java.io.Parser in = new BufferedParser(new InputStreamParser(System.in));
+
+  protected static Parser parser = new Parser(System.in);
+
+  /** lecture d'une SEQUENCE au terminal
+* @return SEQUENCE : la SEQUENCE construite.
+* @throws ParserException une erreur de syntaxe
+*/
+  public static Sequence read() throws ParserException
+  {
+    parser.ReInit(System.in);
+    try
+    {
+      return parser.SEQUENCE();
+    }
+    catch (ParseException e)
+    {
+      throw new ParserException(e);
+    }
+  }
+
+  /** lecture d'une S-EXPR à partir de la chaîne
+* @param s : la chaîne
+* @return SEQUENCE : la SEQUENCE construite.
+* @throws ParserException une erreur de syntaxe
+*/
+  public static Sequence read(String s) throws ParserException
+  {
+    java.io.Parser save = in;
+    in = new StringParser(s);
+    Sequence r = read();
+    in = save;
+    return r;
+  }
+
+  /** évaluation de la séquence S-EXPRs à partir du fichier s
+* @param s : le nom du fichier
+* @return SEQUENCE : symbole du nom du fichier.
+* @throws ParserException une erreur de lecture
+*/
+  public static Sequence importe(String s) throws ParserException, FileNotFoundException
+  {
+    parser.ReInit(new FileInputStream(s));
+    try
+    {
+      parser.LISTE();
+    }
+    catch (ParseException e)
+    {
+      throw new ParserException(e);
+    }
+    return Symbole.newSymbole(s);
+  }
+
+  private Sequence quote(Sequence s)
+  {
+    return new Scons(Symbole.newSymbole("quote"), new Scons(s, Nil.Nil));
+  }
+
+  private Sequence quote(Sequence s1, Sequence s2)
+  {
+    return new Scons(s1, s2);
+  }
+}
+
+PARSER_END(Parser)
+
+// les caractères ignorés
+SKIP :
+{
+  " "
+| "\t"
+| "\r"
+| "\n"
+  // attention élimine la notion de fin de ligne
+  //| "" /***********************************************JAI CACHE L'ERREUR HEIN, A VOIR TODO 
+| "\u0001"
+| "\u0002"
+| "\u0003"
+| "\u0004"
+| "\u0005"
+| "\u0006"
+| "\u0007"
+| "\u0008"
+| "\u000b"
+| "\u000c"
+| "\u000e"
+| "\u000f"
+| "\u0010"
+| "\u0011"
+| "\u0012"
+| "\u0013"
+| "\u0014"
+| "\u0015"
+| "\u0016"
+| "\u0017"
+| "\u0018"
+| "\u0019"
+| "\u001a"
+| "\u001b"
+| "\u001c"
+| "\u001d"
+| "\u001e"
+| "\u001f"
+| "\u007f"
+}
+
+MORE :
+{
+  "//" : IN_SL_COMMENT
+| "/*" : IN_ML_COMMENT
+}
+
+< IN_SL_COMMENT >
+SPECIAL_TOKEN :
+{
+  < SL_COMMENT :
+    "\n"
+  | "\r"
+  | "\r\n" > : DEFAULT
+}
+
+< IN_ML_COMMENT >
+SPECIAL_TOKEN :
+{
+  < ML_COMMENT : "*/" > : DEFAULT
+}
+
+< IN_SL_COMMENT, IN_ML_COMMENT >
+SKIP :
+{
+  < ~[ ] >
+} // les lexèmes du langage
+
+TOKEN :
+{
+  < #LETTER :
+    [ "a"-"z" ]
+  | [ "A"-"Z" ] >
+| < #DIGIT : [ "0"-"9" ] >
+| < LPAR : "(" >
+| < RPAR : ")" >
+| < BARRE : "|" >
+| < SEMICOLON : ";" >
+| < CHEVRON : ">" >
+| < ID :
+    (
+      < LETTER >
+    | < DIGIT >
+    )+ >
+| < OP :
+    (
+      < BARRE >
+    | < SEMICOLON >
+    | < CHEVRON >
+    ) 
+  >
+}
+
+/******************************************/
+Sequence ACTION() :
+{
+  Sequence s1;
+}
+{
+  s1 = SYMBOLE()
+  {
+    return s1;
+  }
+}
+
+Sequence SYMBOLE() :
+{
+  Token t;
+}
+{
+  t = < ID >
+  {
+    return Symbole.newSymbole(t.image);
+  }
+}
+
+//SEXPR LISTE() : { } { < LPAR > ATOME() < RPAR >}
+Sequence LISTE() :
+{
+  Sequence s1;
+}
+{
+  (
+    s1 = SEQUENCE()
+    {
+      s1.Sequence();//s1.eval;
+    }
+  )*
+  < EOF >
+  {}
+}
+
+/*Sexpr SEXPRESSION() :
+{
+  Sexpr s1;
+}
+{
+  (
+    s1 = SEXPR()
+    {
+      s1 = s1.eval();
+    }
+  )*
+  < EOF >
+  {
+    return Symbole.newSymbole("...");
+  }
+  < EOF >
+}*/
+
+Behavior OP() :
+{
+  Sequence s1;
+  Behavior c;
+  //RandomBar rb(a,b);
+}
+{
+  < BARRE >
+  {
+    return "|"; // Retourne une barre ????
+  }
+| < SEMICOLON >
+  {
+    return ";";
+  }
+| < CHEVRON >
+  {
+    return ">";
+  }
+}
+
+Sequence SEQUENCE() :
+{
+  Sequence s1, s2, op;
+}
+{
+  < LPAR > s1 = SEQUENCE() op = OP() s2 = SEQUENCE() < RPAR >
+  {
+    return s1 + op + s2;
+  }
+| s1 = ACTION()
+  {
+    return quote(s1); // Executer une action a.execute
+  }
+}
