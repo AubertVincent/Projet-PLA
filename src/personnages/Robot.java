@@ -22,4 +22,8 @@ public class Robot extends Caracter {
 	public void suicideBomber(){
 		//TODO
 	}
+	
+	public void execute(){
+		//TODO exécution de tous les opérateurs de l'arbre
+	}
 }
