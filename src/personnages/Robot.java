@@ -18,9 +18,9 @@ public class Robot extends Caracter {
 	public boolean isRobot() {
 		return true;
 	}
-	
-	public void suicideBomber(){
-		//TODO
+
+	public void suicideBomber() {
+		// TODO
 	}
 	
 	public void execute(){

@@ -5,6 +5,7 @@ import org.newdawn.slick.SlickException;
 
 import Test_graphique.WindowGame;
 import carte.Map;
+import entite.Direction;
 import entite.GameException;
 import personnages.Player;
 import personnages.Robot;
@@ -15,7 +16,7 @@ public class Game {
 	private Player player1;
 	private Player player2;
 	private Map map;
-	
+
 	public void main(String[] args) throws SlickException, GameException {
 
 		game = new Game();
@@ -27,14 +28,20 @@ public class Game {
 	 * 
 	 * @return New value of EndGame, True if the game is over
 	 */
+
 	private boolean RoundPlayer(Player j) {
+
 		// TODO
 		// 1. The player moves his hero
+		while (j.getMovePoints() > 0) {
+			j.WalkOn();
+		}
+
 		// 2. The player decides to create a robot or not
 
-		if(player1.getLife() == 0 || player2.getLife() == 0){
+		if (player1.getLife() == 0 || player2.getLife() == 0) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
@@ -46,12 +53,12 @@ public class Game {
 		for (Robot r : player1.getListRobot()) {
 			r.execute();
 		}
-		if(player1.getLife() == 0 || player2.getLife() == 0){
+		if (player1.getLife() == 0 || player2.getLife() == 0) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
-		
+
 	}
 
 	/**
@@ -63,8 +70,9 @@ public class Game {
 	public Game() throws SlickException, GameException {
 		// Création of the two players
 		// TODO Choose the player initial position
-		player1 = new Player();
-		player2 = new Player();
+
+		Player player1 = new Player(10, 10, Direction.NORTH, 1, 1, 1, 1, 1, 1);
+		Player player2 = new Player(100, 100, Direction.NORTH, 1, 1, 1, 1, 1, 1);
 
 		// Initialisation of the background map
 		map = new Map();
@@ -90,6 +98,7 @@ public class Game {
 				if (!EndGame) {
 					EndGame = RoundRobot(player1, player2);
 				}
+
 			}
 
 			nbrRound++;
