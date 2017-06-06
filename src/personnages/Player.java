@@ -70,7 +70,8 @@ public class Player extends Caracter {
 	}
 
 	// TODO Keyboard reaction
-	public void WalkOn() {
+	public void WalkOn(GUI gui,) {
+		
 		// TODO Permet d'avancer d'un pas
 		super.movePoints--;
 	}
