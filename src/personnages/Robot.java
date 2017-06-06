@@ -13,6 +13,28 @@ public class Robot extends Character {
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 
+	/**
+	 * Set a new Robot
+	 * 
+	 * @param x
+	 *            x coordinate on the map
+	 * @param y
+	 *            y coordinate on the map
+	 * @param direction
+	 *            Where the character is oriented
+	 * @param life
+	 *            Robot's life
+	 * @param vision
+	 *            Robot's vision range
+	 * @param attack
+	 *            Robot's attack
+	 * @param range
+	 *            Robot's range
+	 * @param movePoints
+	 *            Robot's move points
+	 * @param recall
+	 *            Robot's recall's time
+	 */
 	public Robot(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
 			int recall) {
 		super(x, y, direction, life, vision, attack, range, movePoints, recall);
@@ -37,6 +59,12 @@ public class Robot extends Character {
 		return true;
 	}
 
+	/**
+	 * Suicide a Robot and kill the Robots next to it
+	 * 
+	 * @param e
+	 *            The Robot which is suiciding
+	 */
 	public void suicideBomber(Entity e) {
 		int x = e.getX();
 		int y = e.getY();

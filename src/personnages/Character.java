@@ -16,15 +16,25 @@ public abstract class Character extends Entity {
 
 	/**
 	 * Set a new character
-	 * @param x x coordinate on the map
-	 * @param y y coordinate on the map
-	 * @param direction Where the character is oriented
-	 * @param life Character's life
-	 * @param vision Character's vision range
-	 * @param attack Character's attack
-	 * @param range Character's range
-	 * @param movePoints Character's move points
-	 * @param recall Character's recall's time
+	 * 
+	 * @param x
+	 *            x coordinate on the map
+	 * @param y
+	 *            y coordinate on the map
+	 * @param direction
+	 *            Where the character is oriented
+	 * @param life
+	 *            Character's life
+	 * @param vision
+	 *            Character's vision range
+	 * @param attack
+	 *            Character's attack
+	 * @param range
+	 *            Character's range
+	 * @param movePoints
+	 *            Character's move points
+	 * @param recall
+	 *            Character's recall's time
 	 */
 	public Character(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
 			int recall) {
@@ -104,8 +114,11 @@ public abstract class Character extends Entity {
 
 	/**
 	 * Move a character in the direction given of the length given
-	 * @param dir Direction of the move
-	 * @param lg Length of the move
+	 * 
+	 * @param dir
+	 *            Direction of the move
+	 * @param lg
+	 *            Length of the move
 	 */
 	public void goTo(Direction dir, int lg) { // lg?
 
@@ -129,8 +142,11 @@ public abstract class Character extends Entity {
 
 	/**
 	 * Make an interaction between two fighters
-	 * @param attacker the initiator of the attack
-	 * @param opponent the target
+	 * 
+	 * @param attacker
+	 *            the initiator of the attack
+	 * @param opponent
+	 *            the target
 	 */
 	public void classicAtk(Character attacker, Character opponent) {
 		int lifeA = attacker.getLife();
@@ -147,9 +163,13 @@ public abstract class Character extends Entity {
 
 	/**
 	 * Teleport an entity to the coordinates given
-	 * @param e the entity
-	 * @param x x coordinate on the map
-	 * @param y y coordinate on the map
+	 * 
+	 * @param e
+	 *            the entity
+	 * @param x
+	 *            x coordinate on the map
+	 * @param y
+	 *            y coordinate on the map
 	 */
 	public void teleport(Entity e, int x, int y) {
 		e.setX(x);
