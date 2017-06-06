@@ -6,7 +6,6 @@ public abstract class Entity {
 
 	public abstract boolean isOperator();
 
-
 	private int x;
 	private int y;
 

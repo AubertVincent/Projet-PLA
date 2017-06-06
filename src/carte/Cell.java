@@ -8,7 +8,6 @@ import entite.Entity;
 public class Cell {
 	protected int x;
 	protected int y;
-	
 
 	protected List<Entity> listeEntites;
 	boolean isfree;
@@ -31,21 +30,26 @@ public class Cell {
 		return listeEntites.isEmpty();
 	}
 
-
 	public boolean isFree() {
 		return isfree;
 	}
 
-	
-	public void setEntity(Entity ent){
+	public void setEntity(Entity ent) {
 		listeEntites.add(ent);
 	}
 
-	public int getX() {
+	public void FreeCell(){
+		isfree=true;
+		listeEntites.clear();
+	}
+	
+	private int getX() {
 		return this.x;
 	}
 
-	public int getY() {
+	private int getY() {
 		return this.y;
 	}
+	
+	
 }

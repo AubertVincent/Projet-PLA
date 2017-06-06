@@ -2,6 +2,7 @@ package carte;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import entite.Entity;
 import operateur.Operator;
 
 public class Map {
@@ -21,7 +22,7 @@ public class Map {
 		}
 	}
 
-	public void initCarte() {
+	public void initMap() {
 		int randomLine;
 		int randomColumn;
 		int i = 0;
@@ -46,4 +47,15 @@ public class Map {
 		return my_bool;
 	}
 
+	public void Free(int x, int y) {
+		map[x][y].FreeCell();
+	}
+
+	public void Add(int x, int y, Entity ent) {
+		map[x][y].setEntity(ent);
+	}
+
+	public Cell getCell(int x, int y) {
+		return map[x][y];
+	}
 }

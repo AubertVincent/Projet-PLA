@@ -4,7 +4,7 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
 
 import Test_graphique.WindowGame;
-import carte.Carte;
+import carte.Map;
 import entite.GameException;
 import personnages.Player;
 
@@ -18,49 +18,49 @@ public class Game {
 	}
 
 	/**
-	 * @param j
-	 *            Le joueur dont on va jouer le tour
+	 * @param j The player who's gonna play his turn
 	 * 
-	 * @return Nouvelle valeur de NbrRound, -1 si fin de partie
+	 * @return New value of EndGame, True if the game is over
 	 */
 	private boolean JouerTour(Player j) {
 		// TODO
-		// 1. Faire deplacer son héros au joueur
-		// 2. Faire le choix de la création de robot
+		// 1. The player moves his hero
+		// 2. The player decides to create a robot or not
+		
 		return false;
 	}
 
 	/**
-	 * Methode permettant de jouer une partie
+	 * Method Allowing to play a game
 	 * 
-	 * @throws SlickException
+	 * @throws SlickException, GameException
 	 */
 	public Game() throws SlickException, GameException {
-		// Création des deux joueurs
-		// TODO choisir la position de base
+		// Création of the two players
+		// TODO Choose the player initial position
 		Player joueur1 = new Player();
 		Player joueur2 = new Player();
 
-		// Initialisation de la carte en background
-		Carte map = new Carte();
-		map.initCarte();
+		// Initialisation of the background map
+		Map map = new Map();
+		map.initMap();
 
-		// Création de la fenetre graphique
+		// Creation of a new graphique windows
 		new AppGameContainer(new WindowGame(), 1024 + 64, 512 + 64, false).start();
 
-		// Compte le nombre de tour
+		// Count the number of round
 		int nbrRound = 0;
-		// Indique si la partie est terminé
-		boolean FinPartie = false;
+		// checked if the game is over
+		boolean EndGame = false;
 
-		// On tourne tant qu'on est pas en fin de partie
-		while (!FinPartie) {
+		// Loop while not EndGame
+		while (!EndGame) {
 
-			FinPartie = JouerTour(joueur1);
+			EndGame = JouerTour(joueur1);
 
-			// Le Joueur 2 peut jouer son tour si la partie n'est pas fini
-			if (!FinPartie) {
-				FinPartie = JouerTour(joueur2);
+			// Player 2 can play if the Game isn't over
+			if (!EndGame) {
+				EndGame = JouerTour(joueur2);
 			}
 
 			// TODO
