@@ -9,6 +9,14 @@ public class ClassicAck extends Attack {
 	protected Character opponent;
 	protected Character attacker;
 
+	/**
+	 * Set a new classicAck by leans of its attacker and its opponent
+	 * 
+	 * @param attacker
+	 *            the initiator of the attack
+	 * @param opponent
+	 *            the target
+	 */
 	public ClassicAck(Character attacker, Character opponent) {
 		super();
 		this.opponent = opponent;
@@ -19,6 +27,9 @@ public class ClassicAck extends Attack {
 		super();
 	}
 
+	/**
+	 * A classicAck is doable if there is an opponent entity
+	 */
 	@Override
 	protected boolean isDoable(Entity e) { // Care, here an obstacle is
 											// attackable
@@ -28,6 +39,7 @@ public class ClassicAck extends Attack {
 		Cell testSouth = new Cell(x, y - 1);
 		Cell testNorth = new Cell(x, y + 1);
 		Cell testWest = new Cell(x - 1, y);
+		// TODO not isFree but !isOpponentEntity
 		if (testEast.isFree() && testSouth.isFree() && testNorth.isFree() && testWest.isFree()) {
 			return false;
 		} else {

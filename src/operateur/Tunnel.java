@@ -10,6 +10,14 @@ public class Tunnel extends Movement {
 	protected int x;
 	protected int y;
 
+	/**
+	 * set a new Tunnel by means of its arrival coordinates
+	 * 
+	 * @param x
+	 *            x coordinate on the map
+	 * @param y
+	 *            y coordinate on the map
+	 */
 	public Tunnel(int x, int y) {
 		super();
 		this.x = x;
@@ -20,10 +28,13 @@ public class Tunnel extends Movement {
 		super();
 	}
 
+	/**
+	 * Check if there is no obstacle on the arrival
+	 */
 	@Override
 	protected boolean isDoable(Entity e) {
 		Cell test = new Cell(x, y);
-		return test.isEmpty();
+		return test.isFree();
 	}
 
 	@Override
@@ -31,7 +42,7 @@ public class Tunnel extends Movement {
 		if (!isDoable(e)) {
 			throw new GameException("La case d'arrivée est occupée");
 		}
-		((Character) e).teleport((Character) e, x, y);
+		((Character) e).teleport(e, x, y);
 	}
 
 }

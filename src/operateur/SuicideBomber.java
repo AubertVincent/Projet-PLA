@@ -1,22 +1,10 @@
 package operateur;
 
-import java.util.Iterator;
-import java.util.List;
-
-import carte.*;
 import entite.*;
 import personnages.*;
 import personnages.Character;
 
 public class SuicideBomber extends Attack {
-
-	// public SuicideBomber(Character opponent, Character attacker) {
-	// super(opponent, attacker);
-	// }
-	//
-	// public SuicideBomber() {
-	// super();
-	// }
 
 	@Override
 	protected boolean isDoable(Entity e) {

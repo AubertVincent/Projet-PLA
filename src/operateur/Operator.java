@@ -24,5 +24,10 @@ public abstract class Operator {
 		return null;
 	}
 
+	/**
+	 * Check is an entity is able to execute an action
+	 * @param e The entity which do the action
+	 * @return
+	 */
 	protected abstract boolean isDoable(Entity e);
 }

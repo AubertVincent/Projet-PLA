@@ -9,6 +9,14 @@ public class MoveDir extends Movement {
 	protected Direction dir;
 	protected int lg;
 
+	/**
+	 * Set a new move by means of its direction and its length
+	 * 
+	 * @param dir
+	 *            Direction of the move
+	 * @param lg
+	 *            Length of the move
+	 */
 	public MoveDir(Direction dir, int lg) {
 		super();
 		this.dir = dir;
@@ -19,6 +27,9 @@ public class MoveDir extends Movement {
 		super();
 	}
 
+	/**
+	 * A move can be done if there is no obstacle
+	 */
 	@Override
 	protected boolean isDoable(Entity e) {
 		int x = e.getX();
