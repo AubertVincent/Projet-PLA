@@ -9,7 +9,7 @@ import operateur.*;
 public class Player extends Character {
 
 	protected static List<Action> possibleActionsList = new LinkedList<Action>();
-	
+
 	public Player(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
 			int recall) {
 		super(x, y, direction, life, vision, attack, range, movePoints, recall);
@@ -18,15 +18,10 @@ public class Player extends Character {
 		possibleActionsList.add(new Tunnel());
 		possibleActionsList.add(new Recall());
 	}
-	
 
-	
-
-	
 	public static List<Action> getPossibleActionsList() {
 		return possibleActionsList;
 	}
-	
 
 	@Override
 	public boolean isPlayer() {
