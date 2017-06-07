@@ -16,39 +16,21 @@ public class Robot extends Character {
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 
 	_Sequence myAutomata;
+	Player isToPlayer;
 
-	/**
-	 * Set a new Robot
-	 * 
-	 * @param x
-	 *            x coordinate on the map
-	 * @param y
-	 *            y coordinate on the map
-	 * @param entityMap
-	 *            The map on which the entity is located
-	 * @param direction
-	 *            Where the character is oriented
-	 * @param life
-	 *            Robot's life
-	 * @param vision
-	 *            Robot's vision range
-	 * @param attack
-	 *            Robot's attack
-	 * @param range
-	 *            Robot's range
-	 * @param movePoints
-	 *            Robot's move points
-	 * @param recall
-	 *            Robot's recall's time
-	 */
-
-	public static List<Class<? extends Action>> getPossibleActionsList() {
-		return possibleActionsList;
+	public Player getIsToPlayer() {
+		return isToPlayer;
 	}
 
 	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int player) {
+			int movePoints, int recall, int player, _Sequence myAutomata, Player isToPlayer) {
 		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, player);
+		this.myAutomata = myAutomata;
+		this.isToPlayer = isToPlayer;
+	}
+
+	public static List<Class<? extends Action>> getPossibleActionsList() {
+		return possibleActionsList;
 	}
 
 	@Override
@@ -67,11 +49,6 @@ public class Robot extends Character {
 	 * @param e
 	 *            The Robot which is suiciding
 	 */
-	public Player isToPlayer() {
-		// TODO
-		return null;
-
-	}
 
 	/**
 	 * Suicide a robot and kill the robots around it
@@ -109,9 +86,9 @@ public class Robot extends Character {
 			}
 		}
 	}
-	
-	public void execute() throws NotDoableException{
+
+	public void execute() throws NotDoableException {
 		myAutomata.execute(this);
 	}
-	
+
 }

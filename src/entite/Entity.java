@@ -11,6 +11,8 @@ public abstract class Entity {
 	public abstract boolean isCharacter();
 
 	public abstract boolean isPickAble();
+	
+	public abstract boolean isObstacle();
 
 	/**
 	 * 

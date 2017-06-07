@@ -59,7 +59,6 @@ public class ClassicAck extends Attack {
 			Cell target = null;
 			if (testEast.opponentHere(player)) {
 				d = Direction.EAST;
-
 				r.setDirection(d);
 				target = testEast;
 			} else if (testNorth.opponentHere(player)) {
@@ -80,4 +79,43 @@ public class ClassicAck extends Attack {
 		}
 	}
 
+	@Override
+	public void cancel(Robot r) throws NotDoableException {
+		if (!isDoable(r)) {
+			throw new NotDoableException("Il n'y a personne à attaquer");
+		} else {
+
+			int x = r.getX();
+			int y = r.getY();
+			int player = r.getPlayer();
+			Map myMap = r.getEntityMap();
+
+			Direction d;
+			Cell testEast = myMap.getCell(x + 1, y);
+			Cell testSouth = myMap.getCell(x, y - 1);
+			Cell testNorth = myMap.getCell(x, y + 1);
+			Cell testWest = myMap.getCell(x - 1, y);
+			Cell target = null;
+			if (testEast.opponentHere(player)) {
+				d = Direction.EAST;
+				r.setDirection(d);
+				target = testEast;
+			} else if (testNorth.opponentHere(player)) {
+				d = Direction.NORTH;
+				r.setDirection(d);
+				target = testNorth;
+			} else if (testWest.opponentHere(player)) {
+				d = Direction.WEST;
+				r.setDirection(d);
+				target = testWest;
+			} else if (testSouth.opponentHere(player)) {
+				d = Direction.SOUTH;
+				r.setDirection(d);
+				target = testSouth;
+			}
+			r.classicAtk(target);
+
+		}
+
+	}
 }

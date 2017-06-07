@@ -30,11 +30,8 @@ public class Tunnel extends Movement {
 	 * Check if there is no obstacle on the arrival
 	 */
 	@Override
-	// TODO
 	protected boolean isDoable(Robot r) {
-		// Cell test = new Cell(x, y);
-		// return test.isFree();
-		return true;
+		return (r.getEntityMap().isReachable(x, y));
 	}
 
 	@Override
@@ -42,8 +39,12 @@ public class Tunnel extends Movement {
 		if (!isDoable(r)) {
 			throw new NotDoableException("La case d'arrivée est occupée");
 		}
-
 		r.teleport(x, y);
+	}
+
+	@Override
+	public void cancel(Robot r) throws NotDoableException {
+		// TODO Auto-generated method stub
 
 	}
 
