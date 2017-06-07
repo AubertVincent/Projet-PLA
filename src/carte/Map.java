@@ -25,8 +25,8 @@ public class Map {
 	}
 
 	public static void initMap() {
-		map[5][3].setEntity(new Player(5, 12, Direction.NORTH, 1, 1, 1, 1, 5, 1));
-		map[31][16].setEntity(new Player(30, 15, Direction.NORTH, 1, 1, 1, 1, 5, 1));
+		map[2][4].setEntity(new Player(2, 4, Direction.NORTH, 1, 1, 1, 1, 5, 1));
+		map[31][15].setEntity(new Player(31, 15, Direction.NORTH, 1, 1, 1, 1, 5, 1));
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				if (GUI.isObstacle(GUI.cellToPixelX(i), GUI.cellToPixelY(j))) {
@@ -35,7 +35,6 @@ public class Map {
 				}
 			}
 		}
-
 	}
 
 	public static boolean isEmpty() {
@@ -74,7 +73,6 @@ public class Map {
 			for (int j = 0; j < height; j++) {
 				System.out.println("case :" + i + ',' + j + " " + map[i][j].isFree());
 			}
-			// System.out.println("\n");
 		}
 	}
 

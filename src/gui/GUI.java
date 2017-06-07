@@ -43,9 +43,9 @@ public class GUI extends BasicGame {
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		this.container = container;
-		this.map = new TiledMap("res/map.tmx");
+		map = new TiledMap("res/map.tmx");
 		this.perso1 = new GUICharacter(2, 4, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
-		this.perso2 = new GUICharacter(30, 15, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
+		this.perso2 = new GUICharacter(31, 15, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
 		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "{D3H | D}*");
 		new Map();
 		Map.initMap();
@@ -53,14 +53,14 @@ public class GUI extends BasicGame {
 
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
-		this.map.render(0, 0, 3);
-		this.map.render(0, 0, 0);
-		this.map.render(0, 0, 1);
-		this.map.render(0, 0, 2);
-		this.perso1.render(g);
-		this.perso2.render(g);
-		this.map.render(0, 0, 4);
-		this.map.render(0, 0, 5);
+		map.render(0, 0, 3);
+		map.render(0, 0, 0);
+		map.render(0, 0, 1);
+		map.render(0, 0, 2);
+		perso1.render(g);
+		perso2.render(g);
+		map.render(0, 0, 4);
+		map.render(0, 0, 5);
 
 		if (behaviorInputNeeded) {
 			this.inputTextField.render(container, g);
@@ -146,11 +146,11 @@ public class GUI extends BasicGame {
 			Engine.update(Direction.WEST, perso2, 2);
 			// perso1.goToDirection(Direction.WEST);
 			break;
-		case Input.KEY_W:
+		case Input.KEY_S:
 			Engine.update(Direction.SOUTH, perso2, 2);
 			// perso1.goToDirection(Direction.SOUTH);
 			break;
-		case Input.KEY_S:
+		case Input.KEY_D:
 			Engine.update(Direction.EAST, perso2, 2);
 			// perso1.goToDirection(Direction.EAST);
 			break;
