@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import entite.Entity;
-import entite.GameException;
-import operateur.Operator;
+import exceptions.NotDoableException;
 import pickable.PickAble;
 
 public class Map {
@@ -37,7 +36,7 @@ public class Map {
 			randomLine = ThreadLocalRandom.current().nextInt(0, height);
 			randomColumn = ThreadLocalRandom.current().nextInt(0, width);
 			if (map[randomLine][randomColumn].isFree()) {
-				map[randomLine][randomColumn].setEntity(Operator.randomOp());
+				//map[randomLine][randomColumn].setEntity(Operator.randomOp());
 				i++;
 			}
 		}
@@ -88,7 +87,7 @@ public class Map {
 	 * @throws GameException
 	 */
 	@SuppressWarnings("unchecked")
-	public Class<PickAble> pickableEntity(int x, int y) throws GameException {
+	public Class<PickAble> pickableEntity(int x, int y) throws NotDoableException {
 		List<Entity> l = map[x][y].getListEntity();
 		int i = 0;
 		while (i < l.size() - 1) {
@@ -96,7 +95,7 @@ public class Map {
 				return ((Class<PickAble>) l.get(i).getClass());
 			}
 		}
-		throw new GameException("Rien à ramasser ici");
+		throw new NotDoableException("Rien à ramasser ici");
 	}
 
 

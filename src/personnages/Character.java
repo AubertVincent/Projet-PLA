@@ -4,7 +4,7 @@ import carte.Cell;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
-import entite.GameException;
+import exceptions.NotDoableException;
 import pickable.*;
 
 public abstract class Character extends Entity {
@@ -165,18 +165,23 @@ public abstract class Character extends Entity {
 	 *            The cell targeted
 	 * @throws GameException
 	 */
-	public void classicAtk(Cell target) throws GameException {
-		Character opponent = target.getOpponent(this.player);
-		int lifeA = this.getLife();
-		int lifeE = opponent.getLife();
-		int atkA = this.getAttack();
-		int atkE = opponent.getAttack();
+	public void classicAtk(Cell target) throws NotDoableException {
+		try {
+			Character opponent = target.getOpponent(this.player);
+			int lifeA = this.getLife();
+			int lifeE = opponent.getLife();
+			int atkA = this.getAttack();
+			int atkE = opponent.getAttack();
 
-		lifeA = java.lang.Math.max(lifeA - atkE, 0);
-		lifeE = java.lang.Math.max(lifeE - atkA, 0);
+			lifeA = java.lang.Math.max(lifeA - atkE, 0);
+			lifeE = java.lang.Math.max(lifeE - atkA, 0);
 
-		this.setLife(lifeA);
-		opponent.setLife(lifeE);
+			this.setLife(lifeA);
+			opponent.setLife(lifeE);
+
+		} catch (NotDoableException e) {
+			throw new NotDoableException("Personne à attaquer");
+		}
 	}
 
 	/**
@@ -199,7 +204,7 @@ public abstract class Character extends Entity {
 	 * 
 	 * @throws GameException
 	 */
-	public void pickUp() throws GameException {
+	public void pickUp() throws NotDoableException {
 		Map myMap = this.getEntityMap();
 		Class<PickAble> picked = myMap.pickableEntity(this.getX(), this.getY());
 		myMap.freePick(picked, this.getX(), this.getY());

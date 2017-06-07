@@ -2,7 +2,8 @@ package operateur;
 
 import carte.*;
 import entite.*;
-import personnages.Character;
+import exceptions.NotDoableException;
+import personnages.Robot;
 
 public class MoveDir extends Movement {
 
@@ -31,10 +32,11 @@ public class MoveDir extends Movement {
 	 * A move can be done if there is no obstacle
 	 */
 	@Override
-	protected boolean isDoable(Entity e) {
-		int x = e.getX();
-		int y = e.getY();
-		Map myMap = e.getEntityMap();
+
+	protected boolean isDoable(Robot r) {
+		int x = r.getX();
+		int y = r.getY();
+		Map myMap = r.getEntityMap();
 
 		for (int i = 0; i < lg; i++) {
 			switch (dir) {
@@ -63,13 +65,13 @@ public class MoveDir extends Movement {
 		return true;
 	}
 
-	protected void execute(Entity e) throws GameException {
+	public void execute(Robot r) throws NotDoableException {
 
-		if (!isDoable(e)) {
-			throw new GameException("Un obstacle est sur votre chemin");
+		if (!isDoable(r)) {
+			throw new NotDoableException("Un obstacle est sur votre chemin");
 		}
 
-		((Character) e).goTo(dir, lg);
+		r.goTo(dir, lg);
 
 	}
 

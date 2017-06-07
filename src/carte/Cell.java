@@ -5,6 +5,7 @@ import java.util.List;
 
 import entite.*;
 import personnages.Character;
+import exceptions.*;
 
 public class Cell {
 	protected int x;
@@ -48,7 +49,7 @@ public class Cell {
 		return listeEntites;
 	}
 
-	public Character getOpponent(int player) throws GameException {
+	public Character getOpponent(int player) throws NotDoableException {
 		int i = 0;
 		Entity e;
 		while (i < this.listeEntites.size() - 1) {
@@ -59,7 +60,7 @@ public class Cell {
 				}
 			}
 		}
-		throw new GameException("Il est vrai j'ai trop d'adversaire ... mais pas là");
+		throw new NotDoableException("Il est vrai j'ai trop d'adversaire ... mais pas là");
 	}
 
 	public boolean opponentHere(int player) {

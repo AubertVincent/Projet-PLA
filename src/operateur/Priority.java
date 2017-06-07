@@ -1,6 +1,9 @@
 package operateur;
 
 import entite.*;
+import exceptions.GameException;
+import exceptions.NotDoableException;
+import sequence._Sequence;
 
 public class Priority extends Behavior {
 
@@ -12,27 +15,43 @@ public class Priority extends Behavior {
 	 * @param B
 	 *            Second action
 	 */
-	public Priority(Action A, Action B) {
-		super(A, B);
+	public Priority() {
+		super();
 	}
 
-	/**
-	 * check if one of the two actions is doable
-	 */
+//	/**
+//	 * check if one of the two actions is doable
+//	 */
+//	@Override
+//	protected boolean isDoable(Entity e) {
+//		return A.isDoable(e) || B.isDoable(e);
+//	}
+
+	
+	
 	@Override
-	protected boolean isDoable(Entity e) {
-		return A.isDoable(e) || B.isDoable(e);
+	public void execute(_Sequence left, _Sequence right) throws NotDoableException {
+		try {
+			left.execute();
+		} catch (NotDoableException e) {
+			try {
+				right.execute();
+			} catch (NotDoableException e2) {
+				throw new NotDoableException();
+			}
+		}
+		
 	}
 
-	@Override
-	protected void execute(Entity e) throws GameException {
-		if (isDoable(e)) {
-			throw new GameException("Aucune des deux actions n'est possible");
-		}
-		if (A.isDoable(e)) {
-			A.execute(e);
-		} else {
-			B.execute(e);
-		}
-	}
+//	@Override
+//	protected void execute(Entity e) throws GameException {
+//		if (isDoable(e)) {
+//			throw new GameException("Aucune des deux actions n'est possible");
+//		}
+//		if (A.isDoable(e)) {
+//			A.execute(e);
+//		} else {
+//			B.execute(e);
+//		}
+//	}
 }

@@ -1,7 +1,7 @@
 package operateur;
 
-import entite.*;
-import personnages.Character;
+import exceptions.NotDoableException;
+import personnages.Robot;
 
 public class Recall extends Movement {
 
@@ -25,16 +25,18 @@ public class Recall extends Movement {
 	 * A recall is always doable
 	 */
 	@Override
-	protected boolean isDoable(Entity e) {
+	protected boolean isDoable(Robot r) {
 		return true;
 	}
 
 	@Override
-	protected void execute(Entity e) throws GameException {
+	public void execute(Robot r) throws NotDoableException {
 		// TODO Intégrer la notion de temps, ce callback s'excute dès qu'on
 		// l'appelle.
-		((Character) e).teleport(0, 0); // TODO différencier pour
-														// les deux joueurs
+
+		r.teleport(0, 0); // TODO différencier pour
+							// les deux joueurs
+
 	}
 
 }
