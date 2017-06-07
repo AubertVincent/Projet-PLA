@@ -24,7 +24,7 @@ public class GUI extends BasicGame {
 	protected static final int cellWidth = 32;
 
 	private GUIBehaviorInput inputTextField;
-	protected static boolean behaviorInputNeeded = false;
+	protected static boolean behaviorInputNeeded = true;
 
 	private GUICharacter perso1;
 
@@ -124,6 +124,18 @@ public class GUI extends BasicGame {
 			break;
 		case Input.KEY_RIGHT:
 			perso1.goToDirection(Direction.EAST);
+			break;
+		case Input.KEY_Z:
+			perso1.Attack(Direction.NORTH);
+			break;
+		case Input.KEY_Q:
+			perso1.Attack(Direction.WEST);
+			break;
+		case Input.KEY_S:
+			perso1.Attack(Direction.SOUTH);
+			break;
+		case Input.KEY_D:
+			perso1.Attack(Direction.EAST);
 			break;
 		}
 	}

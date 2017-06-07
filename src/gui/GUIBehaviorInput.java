@@ -48,17 +48,18 @@ public class GUIBehaviorInput {
 		if (!inputUpToDate) {
 			// get sent behavior instructions on an enter_key press
 			if (this.textField.hasFocus()) {
-				if (container.getInput().isKeyPressed(Input.KEY_ENTER)) {
+				if (container.getInput().isKeyDown(Input.KEY_ENTER)) {
 					receivedString = textField.getText();
 					inputUpToDate = true;
 					GUI.behaviorInputNeeded = false;
+					this.textField.setFocus(false);
 					System.out.println("> " + receivedString);
 				}
 			}
 		}
 
 		// Get (and print in console to test) mouse position in case of a click
-		if (container.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+		if (container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			double mouseX = MouseInfo.getPointerInfo().getLocation().getX();
 			double mouseY = MouseInfo.getPointerInfo().getLocation().getY();
 			System.out.println("X:" + mouseX);
@@ -80,6 +81,7 @@ public class GUIBehaviorInput {
 		this.textField.setBorderColor(backgroundField);
 		this.textField.render(container, g);
 		inputUpToDate = false;
+//		this.textField.setFocus(true);
 	}
 
 }
