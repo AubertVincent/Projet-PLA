@@ -33,15 +33,15 @@ public class Recall extends Movement {
 	public void execute(Robot r) throws NotDoableException {
 		// TODO Intégrer la notion de temps, ce callback s'excute dès qu'on
 		// l'appelle.
-//		int time = r.getRecall();;
-//		if (r.getRecall() == 3) {
-		if (r.getPlayer()==1){
+		// int time = r.getRecall();;
+		// if (r.getRecall() == 0) {
+		if (r.getPlayer() == 1) {
 			r.teleport(2, 4);
-		} else if (r.getPlayer()==2){
+		} else if (r.getPlayer() == 2) {
 			r.teleport(31, 15);
 		}
 
-		//r.setRecall(time--);
+		// r.setRecall(time--);
 	}
 
 }
