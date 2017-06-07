@@ -248,7 +248,7 @@ public class GUICharacter {
 	}
 
 	// TODO : Temporary until adapt to 'boolean isState(State state)'
-	private boolean isMoving() {
+	protected boolean isMoving() {
 		return moving;
 	}
 

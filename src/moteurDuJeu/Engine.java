@@ -23,15 +23,15 @@ public class Engine {
 	 * @throws SlickException
 	 */
 	public Engine(GUI guy) throws SlickException {
-		player1 = new Player(2, 4, Direction.SOUTH, 1, 1, 1, 1, 50, 1);
-		player2 = new Player(31, 15, Direction.SOUTH, 1, 1, 1, 1, 50, 1);
+		player1 = new Player(2, 4, Direction.SOUTH, 1, 1, 1, 1, 500, 1);
+		player2 = new Player(31, 15, Direction.SOUTH, 1, 1, 1, 1, 500, 1);
 		nbrRound = 0;
 		EndGame = false;
 		ma_map = new Map();
 		ma_map.initMap(guy);
 	}
 
-	private boolean doMove(Direction dir, GUICharacter perso, int joueur, Map map, GUI guy) {
+	private void doMove(Direction dir, GUICharacter perso, int joueur, Map map, GUI guy) {
 
 		// Mise a jour de la position du joueur 1
 		if (player1.getMovePoints() > 0 && joueur == 1) {
@@ -89,7 +89,8 @@ public class Engine {
 				break;
 
 			}
-			System.out.println("coordonnee de la case : " + player1.getX() + ";" + player1.getY());
+			// System.out.println("coordonnee de la case : " + player1.getX() +
+			// ";" + player1.getY());
 		} else if (player2.getMovePoints() > 0 && joueur == 2) {
 
 			switch (dir) {
@@ -121,7 +122,7 @@ public class Engine {
 				if (map.isFree(player2.getX() - 1, player2.getY())) {
 					System.out.println("case libre ? : " + map.isFree(player2.getX(), player2.getY() - 1));
 					player2.setX(player2.getX() - 1);
-					map.Free(player2.getX()+ 1, player2.getY() );
+					map.Free(player2.getX() + 1, player2.getY());
 					map.Add(player2.getX(), player2.getY(), player2);
 					perso.goToDirection(Direction.WEST);
 					player2.setMovePoints(player2.getMovePoints() - 1);
@@ -130,7 +131,7 @@ public class Engine {
 
 			case EAST:
 
-				if (map.isFree(player2.getX()+ 1, player2.getY() )) {
+				if (map.isFree(player2.getX() + 1, player2.getY())) {
 					System.out.println("case libre ? : " + map.isFree(player2.getX(), player2.getY() + 1));
 					player2.setX(player2.getX() + 1);
 					map.Free(player2.getX() - 1, player2.getY());
@@ -143,19 +144,19 @@ public class Engine {
 			System.out.println("coordonnee de la case : " + player2.getX() + ";" + player2.getY());
 		} else {
 			System.out.println("Plus de point de déplacement \n");
-			return false;
+			this.EndGame = false;
 		}
 
-		return true;
+		this.EndGame = true;
 	}
 
-	public boolean update(Direction dir, GUICharacter perso, int joueur, Map map, GUI guy) {
+	public void update(Direction dir, GUICharacter perso, int joueur, Map map, GUI guy) {
 
 		// Allow to do the move for 5 MP
-		boolean smth_append = doMove(dir, perso, joueur, map, guy);
+		doMove(dir, perso, joueur, map, guy);
 
 		// Set to 5 the MP if all has been consume
-		if (smth_append == false) {
+		if (this.EndGame == true) {
 			nbrRound++;
 			switch (joueur) {
 			case 1:
@@ -168,7 +169,6 @@ public class Engine {
 		}
 
 		// TODO Creation of robot
-		return smth_append;
 	}
 
 	// private boolean RoundRobot(Player player1, Player player2) {
