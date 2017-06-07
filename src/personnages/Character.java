@@ -121,8 +121,8 @@ public abstract class Character extends Entity {
 	public void classicAtk() {
 		// TODO
 	}
-	
-	public void teleport(Character c, int x, int y){
+
+	public void teleport(Character c, int x, int y) {
 		c.setX(x);
 		c.setY(y);
 	}

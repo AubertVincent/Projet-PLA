@@ -1,11 +1,12 @@
 package operateur;
 
 import java.util.Random;
+import entite.*;
 
 public class RandomBar extends Behavior {
 
-	public RandomBar(int x, int y) {
-		super(x, y);
+	public RandomBar(int x, int y, Action A, Action B) {
+		super(x, y, A, B);
 	}
 
 	public boolean test() {
@@ -14,13 +15,13 @@ public class RandomBar extends Behavior {
 		return (n == 0);
 	}
 
-	public void aleatoire(Action a, Action b) {
+	public void random(Entity e) throws GameException {
 		// TODO Créer une nouvelle classe qui prend une séquence et qui gère
 		// l'execution des actions
 		if (test()) {
-			// TODO a.execute();
+			A.execute(e);
 		} else {
-			// TODO b.execute();
+			B.execute(e);
 		}
 	}
 
