@@ -1,21 +1,10 @@
 package operateur;
 
-public abstract class Behavior extends Operator {
+import sequence._Sequence;
+import exceptions.*;
 
-	protected Action A;
-	protected Action B;
+public abstract class Behavior {
 
-	/**
-	 * Set a new Behavior by means of its 2 actions
-	 * @param A First action
-	 * @param B Second action
-	 */
-	public Behavior(Action A, Action B) {
-		super();
-		this.A = A;
-		this.B = B;
-	}
-	
-	
-	
+	public abstract void execute(_Sequence left, _Sequence right) throws NotDoableException;
+
 }
