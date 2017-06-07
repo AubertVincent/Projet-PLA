@@ -10,7 +10,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
-import carte.Map;
 import entite.Direction;
 import moteurDuJeu.Engine;
 
@@ -18,9 +17,9 @@ public class GUI extends BasicGame {
 
 	private GameContainer container;
 	private static TiledMap map;
-	private static final int WindowHeight = 576;
-	private static final int WindowWidth = 1088;
-	private static final int TextFieldHeight = 50;
+	private final static int WindowHeight = 576;
+	private final static int WindowWidth = 1088;
+	private final int TextFieldHeight = 50;
 
 	protected static final int cellHeight = 32;
 	protected static final int cellWidth = 32;
@@ -31,6 +30,9 @@ public class GUI extends BasicGame {
 	private GUICharacter perso1;
 	private GUICharacter perso2;
 
+	//private Map ma_map;
+	private Engine engine; 
+	
 	public static void main(String[] args) throws SlickException {
 
 		new AppGameContainer(new GUI(), WindowWidth, WindowHeight, false).start();
@@ -47,8 +49,7 @@ public class GUI extends BasicGame {
 		this.perso1 = new GUICharacter(2, 4, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
 		this.perso2 = new GUICharacter(31, 15, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
 		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "{D3H | D}*");
-		new Map();
-		Map.initMap();
+		engine = new Engine(this);
 	}
 
 	@Override
@@ -99,7 +100,7 @@ public class GUI extends BasicGame {
 	 *            y coordinate of the cell
 	 * @return
 	 */
-	public static boolean isObstacle(float x, float y) {
+	public boolean isCollision(float x, float y) {
 		int tileW = map.getTileWidth();
 		int tileH = map.getTileHeight();
 		int logicLayer = map.getLayerIndex("obstacles");
@@ -112,6 +113,15 @@ public class GUI extends BasicGame {
 		return collision;
 	}
 
+	public boolean isObstacle(float x, float y) {
+		int tileW = map.getTileWidth();
+		int tileH = map.getTileHeight();
+		int logicLayer = map.getLayerIndex("obstacles");
+		Image tile = map.getTileImage((int) x / tileW, (int) y / tileH, logicLayer);
+		boolean collision = tile != null;
+		return collision;
+	}
+	
 	@Override
 	public void keyReleased(int key, char c) {
 		if (Input.KEY_ESCAPE == key) {
@@ -123,35 +133,35 @@ public class GUI extends BasicGame {
 	public void keyPressed(int key, char c) {
 		switch (key) {
 		case Input.KEY_UP:
-			Engine.update(Direction.NORTH, perso1, 1);
+			engine.update(Direction.NORTH, perso1, 1, engine.ma_map, this);
 			// perso1.goToDirection(Direction.NORTH);
 			break;
 		case Input.KEY_LEFT:
-			Engine.update(Direction.WEST, perso1, 1);
+			engine.update(Direction.WEST, perso1, 1, engine.ma_map, this);
 			// perso1.goToDirection(Direction.WEST);
 			break;
 		case Input.KEY_DOWN:
-			Engine.update(Direction.SOUTH, perso1, 1);
+			engine.update(Direction.SOUTH, perso1, 1, engine.ma_map, this);
 			// perso1.goToDirection(Direction.SOUTH);
 			break;
 		case Input.KEY_RIGHT:
-			Engine.update(Direction.EAST, perso1, 1);
+			engine.update(Direction.EAST, perso1, 1, engine.ma_map, this);
 			// perso1.goToDirection(Direction.EAST);
 			break;
 		case Input.KEY_Z:
-			Engine.update(Direction.NORTH, perso2, 2);
+			engine.update(Direction.NORTH, perso2, 2, engine.ma_map, this);
 			// perso1.goToDirection(Direction.NORTH);
 			break;
 		case Input.KEY_Q:
-			Engine.update(Direction.WEST, perso2, 2);
+			engine.update(Direction.WEST, perso2, 2, engine.ma_map, this);
 			// perso1.goToDirection(Direction.WEST);
 			break;
 		case Input.KEY_S:
-			Engine.update(Direction.SOUTH, perso2, 2);
+			engine.update(Direction.SOUTH, perso2, 2, engine.ma_map, this);
 			// perso1.goToDirection(Direction.SOUTH);
 			break;
 		case Input.KEY_D:
-			Engine.update(Direction.EAST, perso2, 2);
+			engine.update(Direction.EAST, perso2, 2, engine.ma_map, this);
 			// perso1.goToDirection(Direction.EAST);
 			break;
 		}

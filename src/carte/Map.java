@@ -11,10 +11,10 @@ public class Map {
 
 	//private static final int nbrOpInit = 128; // une chance sur 4 de trouver un
 												// opérateur sur une cellule
-	private static final int width = 34;
-	private static final int height = 18;
+	private int width = 34;
+	private int height = 18;
 
-	public static final Cell[][] map = new Cell[width][height];
+	public final Cell[][] map = new Cell[width][height];
 
 	public Map() {
 		for (int i = 0; i < width; i++) {
@@ -24,20 +24,20 @@ public class Map {
 		}
 	}
 
-	public static void initMap() {
+	public void initMap(GUI guy) {
 		map[2][4].setEntity(new Player(2, 4, Direction.NORTH, 1, 1, 1, 1, 5, 1));
 		map[31][15].setEntity(new Player(31, 15, Direction.NORTH, 1, 1, 1, 1, 5, 1));
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				if (GUI.isObstacle(GUI.cellToPixelX(i), GUI.cellToPixelY(j))) {
+				if (guy.isObstacle(GUI.cellToPixelX(i), GUI.cellToPixelY(j))) {
 					map[i][j].setEntity(new Obstacle(i, j));
-					System.out.println("Cette case contient un obstacle : " + i + ";" + j);
+				//	System.out.println("Cette case contient un obstacle : " + i + ";" + j);
 				}
 			}
 		}
 	}
 
-	public static boolean isEmpty() {
+	public boolean isEmpty() {
 
 		boolean my_bool = true;
 		for (int i = 0; i < height && my_bool; i++) {
@@ -48,33 +48,33 @@ public class Map {
 		return my_bool;
 	}
 
-	public static void Free(int x, int y) {
+	public void Free(int x, int y) {
 		map[x][y].FreeCell();
 	}
 
-	public static void Add(int x, int y, Entity ent) {
+	public void Add(int x, int y, Entity ent) {
 		map[x][y].setEntity(ent);
 	}
 
-	public static Cell getCell(int x, int y) {
+	public Cell getCell(int x, int y) {
 		return map[x][y];
 	}
 
-	public static boolean isFree(int x, int y) {
+	public boolean isFree(int x, int y) {
 		return map[x][y].isFree();
 	}
 
-	public static List<Entity> getEntity(int x, int y) {
+	public List<Entity> getEntity(int x, int y) {
 		return map[x][y].getListEntity();
 	}
 
-	private static void printMap() {
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
-				System.out.println("case :" + i + ',' + j + " " + map[i][j].isFree());
-			}
-		}
-	}
+//	private void printMap() {
+//		for (int i = 0; i < width; i++) {
+//			for (int j = 0; j < height; j++) {
+//				System.out.println("case :" + i + ',' + j + " " + map[i][j].isFree());
+//			}
+//		}
+//	}
 
 	// public static void main(String[] args) {
 	// Map ma_map = new Map();
