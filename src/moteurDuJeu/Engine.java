@@ -31,7 +31,7 @@ public class Engine {
 		ma_map.initMap(guy);
 	}
 
-	private void doMove(Direction dir, GUICharacter perso, int joueur, Map map, GUI guy) {
+	private void doMove(Direction dir, GUICharacter perso, int joueur, Map map) {
 
 		// Mise a jour de la position du joueur 1
 		if (player1.getMovePoints() > 0 && joueur == 1) {
@@ -39,9 +39,9 @@ public class Engine {
 			switch (dir) {
 
 			case SOUTH:
-				// System.out.println("case " + (player1.getX()+1) + ";" +
-				// player1.getY() + " libre ? : " + map.isFree(player1.getX() +
-				// 1, player1.getY()));
+//				 System.out.println("case " + (player1.getX()+1) + ";" +
+//				 player1.getY() + " libre ? : " + map.isFree(player1.getX() +
+//				 1, player1.getY()));
 				if (map.isFree(player1.getX(), player1.getY() + 1)) {
 
 					player1.setY(player1.getY() + 1);
@@ -89,8 +89,7 @@ public class Engine {
 				break;
 
 			}
-			// System.out.println("coordonnee de la case : " + player1.getX() +
-			// ";" + player1.getY());
+			System.out.println(" Joueur 1 : coordonnee de la case : " + player1.getX() +";" + player1.getY());
 		} else if (player2.getMovePoints() > 0 && joueur == 2) {
 
 			switch (dir) {
@@ -99,7 +98,7 @@ public class Engine {
 				if (map.isFree(player2.getX(), player2.getY() + 1)) {
 					System.out.println("case libre ? : " + map.isFree(player2.getX() + 1, player2.getY()));
 					player2.setY(player2.getY() + 1);
-					map.Free(player2.getX(), player1.getY() - 1);
+					map.Free(player2.getX(), player2.getY() - 1);
 					map.Add(player2.getX(), player2.getY(), player2);
 					perso.goToDirection(Direction.SOUTH);
 					player2.setMovePoints(player2.getMovePoints() - 1);
@@ -141,7 +140,7 @@ public class Engine {
 				}
 				break;
 			}
-			System.out.println("coordonnee de la case : " + player2.getX() + ";" + player2.getY());
+			System.out.println("Joueur 2 : coordonnee de la case : " + player2.getX() + ";" + player2.getY());
 		} else {
 			System.out.println("Plus de point de déplacement \n");
 			this.EndGame = false;
@@ -150,10 +149,10 @@ public class Engine {
 		this.EndGame = true;
 	}
 
-	public void update(Direction dir, GUICharacter perso, int joueur, Map map, GUI guy) {
+	public void update(Direction dir, GUICharacter perso, int joueur, Map map) {
 
 		// Allow to do the move for 5 MP
-		doMove(dir, perso, joueur, map, guy);
+		doMove(dir, perso, joueur, map);
 
 		// Set to 5 the MP if all has been consume
 		if (this.EndGame == true) {
