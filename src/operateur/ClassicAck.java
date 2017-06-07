@@ -32,8 +32,9 @@ public class ClassicAck extends Attack {
 		Cell testSouth = new Cell(x, y - 1);
 		Cell testNorth = new Cell(x, y + 1);
 		Cell testWest = new Cell(x - 1, y);
-	
-		if (!(testEast.opponentHere(player)) && !(testWest.opponentHere(player)) && !(testSouth.opponentHere(player)) && !(testNorth.opponentHere(player))){
+
+		if (!(testEast.opponentHere(player)) && !(testWest.opponentHere(player)) && !(testSouth.opponentHere(player))
+				&& !(testNorth.opponentHere(player))) {
 			return false;
 		} else {
 			return true;
@@ -42,12 +43,12 @@ public class ClassicAck extends Attack {
 
 	@Override
 	protected void execute(Entity e) throws GameException {
-
+		
+		if (!e.isCharacter()) { //should be impossible
+			throw new GameException("Cette entité n'est pas un personnage");
+		}
 		if (!isDoable(e)) {
 			throw new GameException("Il n'y a personne à attacker");
-		}
-		if (!e.isCharacter()) {
-			throw new GameException("Cette entité n'est pas un personnage");
 		} else {
 
 			int x = e.getX();

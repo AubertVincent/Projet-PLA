@@ -5,7 +5,6 @@ import java.util.List;
 
 import entite.*;
 import personnages.Character;
-import pickable.PickAble;
 
 public class Cell {
 	protected int x;

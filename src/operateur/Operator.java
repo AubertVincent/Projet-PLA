@@ -22,15 +22,5 @@ public abstract class Operator {
 	 */
 	protected abstract void execute(Entity e) throws GameException;
 
-	/**
-	 * Check if an action can be done
-	 * 
-	 * @return true is it can be done, else return false
-	 */
-
-	public static Entity randomOp() {
-		// TODO
-		return null;
-	}
 
 }
