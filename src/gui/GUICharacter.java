@@ -1,8 +1,5 @@
 package gui;
 
-import java.util.Map;
-import java.util.HashMap;
-
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -126,15 +123,15 @@ public class GUICharacter {
 			if (isInPlace()) {
 				setMoving(false);
 			} else {
-//				if (gui.isObstacle(nextXPx, nextYPx)) {
-//					System.out.println("Obstacle détecté :|");
-//					setMoving(false);
-//				} else {
+				if (gui.isObstacle(nextXPx, nextYPx)) {
+					System.out.println("Obstacle détecté :|");
+					setMoving(false);
+				} else {
 					this.xPx = nextXPx;
 					setCurrentX(GUI.pixelToCellX(nextXPx));
 					this.yPx = nextYPx;
 					setCurrentY(GUI.pixelToCellY(nextYPx));
-//				}
+				}
 			}
 		}
 	}
