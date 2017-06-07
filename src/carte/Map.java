@@ -5,7 +5,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import entite.Entity;
 import entite.GameException;
-import operateur.Operator;
 import pickable.PickAble;
 
 public class Map {
@@ -37,7 +36,7 @@ public class Map {
 			randomLine = ThreadLocalRandom.current().nextInt(0, height);
 			randomColumn = ThreadLocalRandom.current().nextInt(0, width);
 			if (map[randomLine][randomColumn].isFree()) {
-				map[randomLine][randomColumn].setEntity(Operator.randomOp());
+				//map[randomLine][randomColumn].setEntity(Operator.randomOp());
 				i++;
 			}
 		}
