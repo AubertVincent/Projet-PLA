@@ -2,18 +2,41 @@ package personnages;
 
 import entite.Direction;
 import entite.Entity;
+import pickable.*;
 
 public abstract class Character extends Entity {
 
-	private Direction direction;
+	protected Direction direction;
 
-	private int life;
-	private int vision;
-	private int attack;
-	private int range;
-	private int movePoints;
-	private int recall;
+	protected int life;
+	protected int vision;
+	protected int attack;
+	protected int range;
+	protected int movePoints;
+	protected int recall;
 
+	/**
+	 * Set a new character
+	 * 
+	 * @param x
+	 *            x coordinate on the map
+	 * @param y
+	 *            y coordinate on the map
+	 * @param direction
+	 *            Where the character is oriented
+	 * @param life
+	 *            Character's life
+	 * @param vision
+	 *            Character's vision range
+	 * @param attack
+	 *            Character's attack
+	 * @param range
+	 *            Character's range
+	 * @param movePoints
+	 *            Character's move points
+	 * @param recall
+	 *            Character's recall's time
+	 */
 	public Character(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
 			int recall) {
 		super(x, y);
@@ -26,16 +49,12 @@ public abstract class Character extends Entity {
 		this.recall = recall;
 	}
 
-	public abstract boolean isPlayer();
+	protected abstract boolean isPlayer();
 
 	public abstract boolean isRobot();
 
 	public boolean isCharacter() {
 		return true;
-	}
-
-	public boolean isOperator() {
-		return false;
 	}
 
 	public Direction getDirection() {
@@ -94,7 +113,15 @@ public abstract class Character extends Entity {
 		this.recall = recall;
 	}
 
-	public void goTo(Direction dir, int lg) {
+	/**
+	 * Move a character in the direction given of the length given
+	 * 
+	 * @param dir
+	 *            Direction of the move
+	 * @param lg
+	 *            Length of the move
+	 */
+	public void goTo(Direction dir, int lg) { // lg?
 
 		direction = dir;
 
@@ -114,12 +141,50 @@ public abstract class Character extends Entity {
 		}
 	}
 
-	public void classicAtk() {
-		// TODO
+	/**
+	 * Make an interaction between two fighters
+	 * 
+	 * @param attacker
+	 *            the initiator of the attack
+	 * @param opponent
+	 *            the target
+	 */
+	public void classicAtk(Character attacker, Character opponent) {
+		int lifeA = attacker.getLife();
+		int lifeE = opponent.getLife();
+		int atkA = attacker.getAttack();
+		int atkE = opponent.getAttack();
+
+		lifeA = java.lang.Math.max(lifeA - atkE, 0);
+		lifeE = java.lang.Math.max(lifeE - atkA, 0);
+
+		attacker.setLife(lifeA);
+		opponent.setLife(lifeE);
 	}
 
-	public void teleport(Character c, int x, int y) {
-		c.setX(x);
-		c.setY(y);
+	/**
+	 * Teleport an entity to the coordinates given
+	 * 
+	 * @param e
+	 *            the entity
+	 * @param x
+	 *            x coordinate on the map
+	 * @param y
+	 *            y coordinate on the map
+	 */
+	public void teleport(Entity e, int x, int y) {
+		e.setX(x);
+		e.setY(y);
 	}
+
+	/**
+	 * Pick up an entity
+	 * 
+	 * @param e
+	 *            The entity which is picking up
+	 */
+	public void pickUp(Entity e) {
+		PickAble.pick(e);
+	}
+
 }
