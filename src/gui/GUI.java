@@ -30,9 +30,9 @@ public class GUI extends BasicGame {
 	private GUICharacter perso1;
 	private GUICharacter perso2;
 
-	//private Map ma_map;
-	private Engine engine; 
-	
+	// private Map ma_map;
+	private Engine engine;
+
 	public static void main(String[] args) throws SlickException {
 
 		new AppGameContainer(new GUI(), WindowWidth, WindowHeight, false).start();
@@ -122,7 +122,6 @@ public class GUI extends BasicGame {
 		return collision;
 	}
 
-	
 	@Override
 	public void keyReleased(int key, char c) {
 		if (Input.KEY_ESCAPE == key) {
@@ -132,39 +131,50 @@ public class GUI extends BasicGame {
 
 	@Override
 	public void keyPressed(int key, char c) {
+		// if (!perso1.isMoving() && !perso2.isMoving()) {
 		switch (key) {
 		case Input.KEY_UP:
-			engine.update(Direction.NORTH, perso1, 1, engine.ma_map, this);
-			// perso1.goToDirection(Direction.NORTH);
+			if (!perso1.isMoving()) {
+				engine.update(Direction.NORTH, perso1, 1, engine.ma_map, this);
+			}
 			break;
 		case Input.KEY_LEFT:
-			engine.update(Direction.WEST, perso1, 1, engine.ma_map, this);
-			// perso1.goToDirection(Direction.WEST);
+			if (!perso1.isMoving()) {
+				engine.update(Direction.WEST, perso1, 1, engine.ma_map, this);
+			}
 			break;
 		case Input.KEY_DOWN:
-			engine.update(Direction.SOUTH, perso1, 1, engine.ma_map, this);
-			// perso1.goToDirection(Direction.SOUTH);
+			if (!perso1.isMoving()) {
+
+				engine.update(Direction.SOUTH, perso1, 1, engine.ma_map, this);
+			}
 			break;
 		case Input.KEY_RIGHT:
-			engine.update(Direction.EAST, perso1, 1, engine.ma_map, this);
-			// perso1.goToDirection(Direction.EAST);
+			if (!perso1.isMoving()) {
+				engine.update(Direction.EAST, perso1, 1, engine.ma_map, this);
+			}
 			break;
 		case Input.KEY_Z:
-			engine.update(Direction.NORTH, perso2, 2, engine.ma_map, this);
-			// perso1.goToDirection(Direction.NORTH);
+			if (!perso2.isMoving()) {
+				engine.update(Direction.NORTH, perso2, 2, engine.ma_map, this);
+			}
 			break;
 		case Input.KEY_Q:
-			engine.update(Direction.WEST, perso2, 2, engine.ma_map, this);
-			// perso1.goToDirection(Direction.WEST);
+			if (!perso2.isMoving()) {
+				engine.update(Direction.WEST, perso2, 2, engine.ma_map, this);
+			}
 			break;
 		case Input.KEY_S:
-			engine.update(Direction.SOUTH, perso2, 2, engine.ma_map, this);
-			// perso1.goToDirection(Direction.SOUTH);
+			if (!perso2.isMoving()) {
+				engine.update(Direction.SOUTH, perso2, 2, engine.ma_map, this);
+			}
 			break;
 		case Input.KEY_D:
-			engine.update(Direction.EAST, perso2, 2, engine.ma_map, this);
-			// perso1.goToDirection(Direction.EAST);
+			if (!perso2.isMoving()) {
+				engine.update(Direction.EAST, perso2, 2, engine.ma_map, this);
+			}
 			break;
 		}
+		// }
 	}
 }
