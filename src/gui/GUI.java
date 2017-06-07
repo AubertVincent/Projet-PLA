@@ -164,16 +164,16 @@ public class GUI extends BasicGame {
 			engine.update(Direction.EAST, perso2, 2, engine.ma_map, this);
 			// perso1.goToDirection(Direction.EAST);
 			break;
-		case Input.KEY_Z:
+		case Input.KEY_O:
 			perso1.Attack(Direction.NORTH);
 			break;
-		case Input.KEY_Q:
+		case Input.KEY_K:
 			perso1.Attack(Direction.WEST);
 			break;
-		case Input.KEY_S:
+		case Input.KEY_L:
 			perso1.Attack(Direction.SOUTH);
 			break;
-		case Input.KEY_D:
+		case Input.KEY_M:
 			perso1.Attack(Direction.EAST);
 			break;
 		}
