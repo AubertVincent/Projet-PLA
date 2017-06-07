@@ -1,9 +1,8 @@
 package operateur;
 
-import java.util.Random;
 import entite.*;
 
-public class RandomBar extends Behavior {
+public class Priority extends Behavior {
 
 	/**
 	 * Set a new behavior by means of its 2 actions
@@ -13,7 +12,7 @@ public class RandomBar extends Behavior {
 	 * @param B
 	 *            Second action
 	 */
-	public RandomBar(Action A, Action B) {
+	public Priority(Action A, Action B) {
 		super(A, B);
 	}
 
@@ -25,27 +24,15 @@ public class RandomBar extends Behavior {
 		return A.isDoable(e) || B.isDoable(e);
 	}
 
-	private Action randomAction(Action A, Action B) {
-		Random r = new Random();
-		int n = r.nextInt(2);
-		if (n == 0) {
-			return A;
-		} else {
-			return B;
-		}
-	}
-
 	@Override
 	protected void execute(Entity e) throws GameException {
-		if (!(isDoable(e))) {
+		if (isDoable(e)) {
 			throw new GameException("Aucune des deux actions n'est possible");
-		} else if (!(A.isDoable(e))) {
-			B.execute(e);
-		} else if (!(B.isDoable(e))) {
+		}
+		if (A.isDoable(e)) {
 			A.execute(e);
 		} else {
-			randomAction(A, B).execute(e);
+			B.execute(e);
 		}
 	}
-
 }

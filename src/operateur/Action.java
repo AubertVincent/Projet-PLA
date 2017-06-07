@@ -1,13 +1,10 @@
 package operateur;
-
-import entite.*;
-import entite.GameException;
 import sequence._Sequence;
 
 public abstract class Action extends Operator implements _Sequence {
 
 	public Action(int x, int y) {
-		super(x, y);
+		super();
 	}
 
 	@Override
@@ -24,8 +21,6 @@ public abstract class Action extends Operator implements _Sequence {
 	public boolean isTree() {
 		return false;
 	}
-
-	public abstract void execute(Entity e) throws GameException;
 
 	public abstract boolean isDoable();
 }

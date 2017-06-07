@@ -1,53 +1,68 @@
 package operateur;
 
-import carte.Cellule;
+import carte.*;
 import entite.*;
 import personnages.Character;
 
 public class ClassicAck extends Attack {
 
-	public ClassicAck(int x, int y) {
-		super(x, y);
+	protected Character opponent;
+	protected Character attacker;
+
+	/**
+	 * Set a new classicAck by leans of its attacker and its opponent
+	 * 
+	 * @param attacker
+	 *            the initiator of the attack
+	 * @param opponent
+	 *            the target
+	 */
+	public ClassicAck(Character attacker, Character opponent) {
+		super();
+		this.opponent = opponent;
+		this.attacker = attacker;
 	}
 
-	public void execute(Character attacker, Character opponent) {
-		int lifeA = attacker.getLife();
-		int lifeE = opponent.getLife();
-		int atkA = attacker.getAttack();
-		int atkE = opponent.getAttack();
-
-		lifeA = java.lang.Math.max(lifeA - atkE, 0);
-		lifeE = java.lang.Math.max(lifeE - atkA, 0);
-
-		attacker.setLife(lifeA);
-		opponent.setLife(lifeE);
+	public ClassicAck() {
+		super();
 	}
 
+	/**
+	 * A classicAck is doable if there is an opponent entity
+	 */
 	@Override
-	public boolean isDoable() {
-		// TODO il faudrait la position de l'opponent ? ça veut dire quoi une
-		// attaque classique est faisable ?
-		// Ou vérifier que la personne qu'on ne va pas se faire tuer en
-		// attaquant la personne?
-		return false;
-	}
-
-	@Override
-	public void execute(Entity e) throws GameException {
-
-		if (!isDoable()) {
-			throw new GameException("Cette action n'est pas réalisable");
-		}
+	protected boolean isDoable(Entity e) { // Care, here an obstacle is
+											// attackable
 		int x = e.getX();
 		int y = e.getY();
-		Direction d;
-		Cellule testEast = new Cellule(x + 1, y);
-		Cellule testSouth = new Cellule(x, y - 1);
-		Cellule testNorth = new Cellule(x, y + 1);
-		Cellule testWest = new Cellule(x - 1, y);
+		Cell testEast = new Cell(x + 1, y);
+		Cell testSouth = new Cell(x, y - 1);
+		Cell testNorth = new Cell(x, y + 1);
+		Cell testWest = new Cell(x - 1, y);
+		// TODO not isFree but !isOpponentEntity
+		if (testEast.isFree() && testSouth.isFree() && testNorth.isFree() && testWest.isFree()) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	@Override
+	protected void execute(Entity e) throws GameException {
+
+		if (!isDoable(e)) {
+			throw new GameException("Il n'y a personne à attacker");
+		}
 		if (!e.isCharacter()) {
 			throw new GameException("Cette entité n'est pas un personnage");
 		} else {
+			int x = e.getX();
+			int y = e.getY();
+			Direction d;
+			Cell testEast = Map.getCell(x + 1, y);
+			Cell testSouth = Map.getCell(x, y - 1);
+			Cell testNorth = Map.getCell(x, y + 1);
+			Cell testWest = Map.getCell(x - 1, y);
 			if (!(testEast.isEmpty())) {
 				d = Direction.EAST;
 				((Character) e).setDirection(d);
@@ -60,10 +75,8 @@ public class ClassicAck extends Attack {
 			} else if (!(testSouth.isEmpty())) {
 				d = Direction.SOUTH;
 				((Character) e).setDirection(d);
-			} else {
-				throw new GameException("Il n'y a personne à attaquer");
 			}
-			((Character) e).classicAtk();
+			((Character) e).classicAtk(attacker, opponent);
 
 		}
 	}
