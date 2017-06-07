@@ -67,12 +67,12 @@ public class Cell {
 	public static void main(String[] args) {
 		Cell ma_Cell = new Cell(4, 5);
 		System.out.println("is free ? : " + ma_Cell.isFree());
-		ma_Cell.setEntity(new Player(5, 12, Direction.NORTH, 1, 1, 1, 1, 5, 1));
+		ma_Cell.setEntity(new Player(5, 12, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1));
 		System.out.println("is free ? : " + ma_Cell.isFree());
 		System.out.println(ma_Cell.getListEntity().toString());
 		ma_Cell.FreeCell();
 		System.out.println("is free ? : " + ma_Cell.isFree());
-		Cell ma_cell2 = new Cell(7, 6, new Player(6, 7, Direction.NORTH, 1, 1, 1, 1, 5, 1));
+		Cell ma_cell2 = new Cell(7, 6, new Player(6, 7, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1));
 		System.out.println("cell 2 is free ? : " + ma_cell2.isFree());
 		System.out.println(ma_cell2.getListEntity().toString());
 		

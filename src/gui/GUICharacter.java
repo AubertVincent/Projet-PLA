@@ -22,6 +22,8 @@ public class GUICharacter {
 
 	private Direction dir;
 
+	private int team;
+
 	// TODO
 	// Tableau etat -> booleen
 	// Map<entite.Etat, Boolean> tableauEtat = new HashMap<entite.Etat,
@@ -74,7 +76,7 @@ public class GUICharacter {
 	 * @throws SlickException
 	 *             Indicates a failure of the loading of a sprite sheet
 	 */
-	public GUICharacter(int x, int y, Direction dir, String spriteSheetAnimation) throws SlickException {
+	public GUICharacter(int x, int y, Direction dir, String spriteSheetAnimation, int team) throws SlickException {
 		super();
 		this.xCell = x;
 		this.yCell = y;
@@ -85,6 +87,7 @@ public class GUICharacter {
 		this.dir = dir;
 		this.setMoving(false);
 		this.initAnimation(spriteSheetAnimation, 64, 64, 100);
+		this.team = team;
 	}
 
 	/**
@@ -248,6 +251,10 @@ public class GUICharacter {
 		return yCellTarget;
 	}
 
+	public int getTeam() {
+		return team;
+	}
+
 	private void setCurrentX(int x) {
 		xCell = x;
 	}
@@ -273,4 +280,5 @@ public class GUICharacter {
 	private void setDirection(Direction dir) {
 		this.dir = dir;
 	}
+
 }

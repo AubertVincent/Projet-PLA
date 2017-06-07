@@ -9,14 +9,14 @@ import entite.Direction;
 import operateur.ClassicAck;
 import operateur.Operator;
 
-public class Player extends Caracter {
+public class Player extends Character {
 
 	public List<Robot> listRobot;
 	public static Map<Operator, Integer> besace;
 
 	public Player(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
-			int recall) {
-		super(x, y, direction, life, vision, attack, range, movePoints, recall);
+			int recall, int aP) {
+		super(x, y, direction, life, vision, attack, range, movePoints, recall, aP);
 		listRobot = new ArrayList<Robot>();
 		besace = new HashMap<Operator, Integer>();
 	}
@@ -89,14 +89,14 @@ public class Player extends Caracter {
 
 	// Tests main
 	public static void main(String[] args) {
-		Player joueur = new Player(5, 12, Direction.NORTH, 1, 1, 1, 1, 5, 1);
+		Player joueur = new Player(5, 12, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1);
 		
 		System.out.println("is player ? " + joueur.isPlayer());
 		System.out.println("is Robot ? " + joueur.isRobot());
-		joueur.addRobot(new Robot(0, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
-		joueur.addRobot(new Robot(1, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
-		joueur.addRobot(new Robot(2, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
-		joueur.addRobot(new Robot(3, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
+		joueur.addRobot(new Robot(0, 0, Direction.EAST, 1, 0, 1, 1, 1, 1, 0));
+		joueur.addRobot(new Robot(1, 0, Direction.EAST, 1, 0, 1, 1, 1, 1, 0));
+		joueur.addRobot(new Robot(2, 0, Direction.EAST, 1, 0, 1, 1, 1, 1, 0));
+		joueur.addRobot(new Robot(3, 0, Direction.EAST, 1, 0, 1, 1, 1, 1, 0));
 		System.out.println(joueur.getListRobot().size());
 		System.out.println("Position avant : " + joueur.getX() + " " + joueur.getY());
 		joueur.setX(10);

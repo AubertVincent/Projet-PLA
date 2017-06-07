@@ -46,8 +46,8 @@ public class GUI extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 		this.container = container;
 		map = new TiledMap("res/map.tmx");
-		this.perso1 = new GUICharacter(2, 4, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
-		this.perso2 = new GUICharacter(31, 15, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
+		this.perso1 = new GUICharacter(2, 4, entite.Direction.SOUTH, "res/SpriteSheetAnim.png", 1);
+		this.perso2 = new GUICharacter(31, 15, entite.Direction.SOUTH, "res/SpriteSheetAnim.png", 2);
 		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "{D3H | D}*");
 		engine = new Engine(this);
 	}
@@ -135,43 +135,43 @@ public class GUI extends BasicGame {
 		switch (key) {
 		case Input.KEY_UP:
 			if (!perso1.isMoving()) {
-				engine.update(Direction.NORTH, perso1, 1, engine.ma_map);
+				engine.update(Direction.NORTH, perso1, engine.ma_map);
 			}
 			break;
 		case Input.KEY_LEFT:
 			if (!perso1.isMoving()) {
-				engine.update(Direction.WEST, perso1, 1, engine.ma_map);
+				engine.update(Direction.WEST, perso1, engine.ma_map);
 			}
 			break;
 		case Input.KEY_DOWN:
 			if (!perso1.isMoving()) {
 
-				engine.update(Direction.SOUTH, perso1, 1, engine.ma_map);
+				engine.update(Direction.SOUTH, perso1, engine.ma_map);
 			}
 			break;
 		case Input.KEY_RIGHT:
 			if (!perso1.isMoving()) {
-				engine.update(Direction.EAST, perso1, 1, engine.ma_map);
+				engine.update(Direction.EAST, perso1, engine.ma_map);
 			}
 			break;
 		case Input.KEY_Z:
 			if (!perso2.isMoving()) {
-				engine.update(Direction.NORTH, perso2, 2, engine.ma_map);
+				engine.update(Direction.NORTH, perso2, engine.ma_map);
 			}
 			break;
 		case Input.KEY_Q:
 			if (!perso2.isMoving()) {
-				engine.update(Direction.WEST, perso2, 2, engine.ma_map);
+				engine.update(Direction.WEST, perso2, engine.ma_map);
 			}
 			break;
 		case Input.KEY_S:
 			if (!perso2.isMoving()) {
-				engine.update(Direction.SOUTH, perso2, 2, engine.ma_map);
+				engine.update(Direction.SOUTH, perso2, engine.ma_map);
 			}
 			break;
 		case Input.KEY_D:
 			if (!perso2.isMoving()) {
-				engine.update(Direction.EAST, perso2, 2, engine.ma_map);
+				engine.update(Direction.EAST, perso2, engine.ma_map);
 			}
 			break;
 		}

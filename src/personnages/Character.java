@@ -3,7 +3,7 @@ package personnages;
 import entite.Direction;
 import entite.Entity;
 
-public abstract class Caracter extends Entity {
+public abstract class Character extends Entity {
 
 	private Direction direction;
 
@@ -13,9 +13,10 @@ public abstract class Caracter extends Entity {
 	protected int range;
 	protected int movePoints;
 	protected int recall;
+	protected int attackPoints;
 
-	public Caracter(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
-			int recall) {
+	public Character(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
+			int recall, int aP) {
 		super(x, y);
 		this.direction = direction;
 		this.life = life;
@@ -24,13 +25,14 @@ public abstract class Caracter extends Entity {
 		this.range = range;
 		this.movePoints = movePoints;
 		this.recall = recall;
+		this.attackPoints = aP;
 	}
 
 	public abstract boolean isPlayer();
 
 	public abstract boolean isRobot();
 
-	public boolean isCaracter() {
+	public boolean isCharacter() {
 		return true;
 	}
 
@@ -93,11 +95,15 @@ public abstract class Caracter extends Entity {
 	public void setRecall(int recall) {
 		this.recall = recall;
 	}
-
-	public void move() {
-		// TODO
+	
+	public int getAttackPoints(){
+		return this.attackPoints;
 	}
-
+	
+	public void setAttackPoints(int aP){
+		this.attackPoints = aP;
+	}
+	
 	public void goTo(Direction dir, int lg) {
 
 		direction = dir;

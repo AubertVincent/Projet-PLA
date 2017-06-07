@@ -4,7 +4,7 @@ import carte.Cell;
 import entite.Direction;
 import entite.Entity;
 import entite.GameException;
-import personnages.Caracter;
+import personnages.Character;
 
 public class ClassicAck extends Attack {
 
@@ -12,7 +12,7 @@ public class ClassicAck extends Attack {
 		super(x, y);
 	}
 
-	public void execute(Caracter attacker, Caracter opponent) {
+	public void execute(Character attacker, Character opponent) {
 		int lifeA = attacker.getLife();
 		int lifeE = opponent.getLife();
 		int atkA = attacker.getAttack();
@@ -49,20 +49,20 @@ public class ClassicAck extends Attack {
 		} else {
 			if (!(testEast.isEmpty())) {
 				d = Direction.EAST;
-				((Caracter) e).setDirection(d);
+				((Character) e).setDirection(d);
 			} else if (!(testNorth.isEmpty())) {
 				d = Direction.NORTH;
-				((Caracter) e).setDirection(d);
+				((Character) e).setDirection(d);
 			} else if (!(testWest.isEmpty())) {
 				d = Direction.WEST;
-				((Caracter) e).setDirection(d);
+				((Character) e).setDirection(d);
 			} else if (!(testSouth.isEmpty())) {
 				d = Direction.SOUTH;
-				((Caracter) e).setDirection(d);
+				((Character) e).setDirection(d);
 			} else {
 				throw new GameException("Il n'y a personne à attaquer");
 			}
-			((Caracter) e).classicAtk();
+			((Character) e).classicAtk();
 
 		}
 	}
