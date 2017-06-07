@@ -15,7 +15,12 @@ import pickable.*;
 public class Player extends Character {
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
-
+	static{
+		possibleActionsList.add(ClassicAck.class);
+		possibleActionsList.add(MoveDir.class);
+//		possibleActionsList.add(Tunnel.class);
+//		possibleActionsList.add(Recall.class);
+	}
 	public Map<Class<? extends PickAble>, Integer> besace = new HashMap<Class<? extends PickAble>, Integer>();
 
 	/**
@@ -52,10 +57,6 @@ public class Player extends Character {
 	public Player(int x, int y, carte.Map entityMap, Direction direction, int life, int vision, int attack, int range,
 			int movePoints, int recall, int player) {
 		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, player);
-		possibleActionsList.add(ClassicAck.class);
-		possibleActionsList.add(MoveDir.class);
-		possibleActionsList.add(Tunnel.class);
-		possibleActionsList.add(Recall.class);
 		besace.put(PickClassicAck.class, 0);
 		besace.put(PickSuicideBomber.class, 0);
 		besace.put(PickTunnel.class, 0);

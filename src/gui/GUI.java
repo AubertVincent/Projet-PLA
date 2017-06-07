@@ -46,9 +46,19 @@ public class GUI extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 		this.container = container;
 		map = new TiledMap("res/map.tmx");
-		perso1 = new GUIPlayer(2, 4, entite.Direction.SOUTH, "res/SpriteSheetAnimSoral.png", 1);
-		perso2 = new GUIPlayer(31, 15, entite.Direction.SOUTH, "res/SpriteSheetAnimSoral.png", 2);
-		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "{D3H | D}*");
+		try {
+			perso1 = new GUIPlayer(2, 4, entite.Direction.SOUTH, 100, 1);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			perso2 = new GUIPlayer(31, 15, entite.Direction.SOUTH, 100, 2);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "(MC2E | (AC;(MC3W>MT8.3)))");
 		engine = new Engine(this);
 	}
 

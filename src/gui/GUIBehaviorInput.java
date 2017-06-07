@@ -9,6 +9,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.gui.TextField;
 
+import reader.Reader;
+
 public class GUIBehaviorInput {
 
 	TextField textField;
@@ -54,6 +56,7 @@ public class GUIBehaviorInput {
 					GUI.behaviorInputNeeded = false;
 					this.textField.setFocus(false);
 					System.out.println("> " + receivedString);
+					Reader.parse(receivedString);
 				}
 			}
 		}
