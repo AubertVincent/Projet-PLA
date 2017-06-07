@@ -1,5 +1,8 @@
 package gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -45,6 +48,9 @@ public class GUICharacter {
 	private final Animation[] animation_atk = new Animation[8];
 	private int team;
 
+	public final List<GUICharacter> listRobot;
+	
+	
 	private Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y, int animationDuration) {
 		Animation animation = new Animation();
 		for (int x = startX; x < endX; x++) {
@@ -112,6 +118,7 @@ public class GUICharacter {
 		this.initAnimation(spriteSheetAnimation, 64, 64, 100);
 		this.initAnimationAtk(spriteSheetAnimation, 64, 64, 100);
 		this.team = team;
+		listRobot = new ArrayList<GUICharacter>();
 	}
 
 	/**
@@ -365,7 +372,10 @@ public class GUICharacter {
 	}
 
 	private void setAttackTarget(Direction dir) {
-		// TODO Attack the cell on the abscissa
-
+		// TODO Attack the cell on the absciss
+	}
+	
+	public void createRobot(int x, int y, int team) throws SlickException {
+		listRobot.add(new GUICharacter(x, y, Direction.SOUTH, "res/spriteSheetAnimation", team));
 	}
 }

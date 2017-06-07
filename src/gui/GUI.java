@@ -182,5 +182,4 @@ public class GUI extends BasicGame {
 			break;
 		}
 	}
-
 }
