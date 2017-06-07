@@ -184,7 +184,6 @@ public abstract class Character extends Entity {
 	 *            The entity which is picking up
 	 */
 	public void pickUp(Entity e) {
-		// TODO
 		PickAble.pick(e);
 	}
 
