@@ -24,7 +24,7 @@ public class MoveDir extends Movement {
 			throw new GameException("Cette action n'est pas réalisable");
 		}
 
-		((Caracter) e).goTo(dir, lg);
+		((Character) e).goTo(dir, lg);
 
 	}
 

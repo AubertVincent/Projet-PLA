@@ -26,6 +26,8 @@ public class GUICharacter {
 
 	private Direction dir;
 
+	private int team;
+
 	// TODO
 	// Tableau etat -> booleen
 	// Map<entite.Etat, Boolean> tableauEtat = new HashMap<entite.Etat,
@@ -46,7 +48,7 @@ public class GUICharacter {
 	private int AckDuration;
 
 	private final Animation[] animation_atk = new Animation[8];
-	private int team;
+	
 
 	public final List<GUICharacter> listRobot;
 	
@@ -119,6 +121,7 @@ public class GUICharacter {
 		this.initAnimationAtk(spriteSheetAnimation, 64, 64, 100);
 		this.team = team;
 		listRobot = new ArrayList<GUICharacter>();
+
 	}
 
 	/**
@@ -186,10 +189,6 @@ public class GUICharacter {
 				}
 			}
 		}
-	}
-
-	public int getTeam() {
-		return this.team;
 	}
 
 	protected void movePlayer(Engine engine, Direction direction) {
@@ -309,6 +308,10 @@ public class GUICharacter {
 		return yCellTarget;
 	}
 
+	public int getTeam() {
+		return team;
+	}
+
 	private void setCurrentX(int x) {
 		xCell = x;
 	}
@@ -379,3 +382,4 @@ public class GUICharacter {
 		listRobot.add(new GUICharacter(x, y, Direction.SOUTH, "res/spriteSheetAnimation", team));
 	}
 }
+

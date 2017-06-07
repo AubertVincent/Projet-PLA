@@ -179,6 +179,7 @@ public class GUI extends BasicGame {
 			break;
 		case Input.KEY_B:
 			perso2.Attack(Direction.EAST);
+
 			break;
 		}
 	}

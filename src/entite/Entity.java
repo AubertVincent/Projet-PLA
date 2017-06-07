@@ -2,7 +2,7 @@ package entite;
 
 public abstract class Entity {
 
-	public abstract boolean isCaracter();
+	public abstract boolean isCharacter();
 
 	public abstract boolean isOperator();
 

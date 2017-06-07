@@ -2,11 +2,11 @@ package personnages;
 
 import entite.Direction;
 
-public class Robot extends Caracter {
+public class Robot extends Character {
 
 	public Robot(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
-			int recall) {
-		super(x, y, direction, life, vision, attack, range, movePoints, recall);
+			int recall, int aP) {
+		super(x, y, direction, life, vision, attack, range, movePoints, recall, aP);
 	}
 
 	@Override
@@ -22,6 +22,7 @@ public class Robot extends Caracter {
 	public void suicideBomber() {
 		// TODO
 	}
+
 
 	@Override
 	public boolean isObstacle() {
