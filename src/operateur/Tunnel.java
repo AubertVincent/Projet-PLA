@@ -5,8 +5,8 @@ import personnages.Robot;
 
 public class Tunnel extends Movement {
 
-	protected int x;
-	protected int y;
+	protected Integer x;
+	protected Integer y;
 
 	/**
 	 * set a new Tunnel by means of its arrival coordinates
@@ -47,4 +47,12 @@ public class Tunnel extends Movement {
 
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString() + "(" + x.toString() + "," + y.toString() + ")";
+	}
+
+	
+	
 }

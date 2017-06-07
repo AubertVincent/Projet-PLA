@@ -8,7 +8,14 @@ import personnages.Robot;
 public class MoveDir extends Movement {
 
 	protected Direction dir;
-	protected int lg;
+	protected Integer lg;
+
+	
+	
+	@Override
+	public String toString() {
+		return (super.toString() + "(" + dir.toString() + ", " + lg.toString() + ")");
+	}
 
 	/**
 	 * Set a new move by means of its direction and its length

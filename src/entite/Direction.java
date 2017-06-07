@@ -14,5 +14,20 @@ public enum Direction {
 		return value;
 	}
 
-}
+	@Override
+	public String toString() {
+		switch (value) {
+		case 0:
+			return "NORTH";
+		case 1:
+			return "WEST";
+		case 2:
+			return "SOUTH";
+		case 3:
+			return "EAST";
+		default:
+			return "";
+		}
+	}
 
+}

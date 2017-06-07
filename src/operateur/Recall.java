@@ -5,7 +5,7 @@ import personnages.Robot;
 
 public class Recall extends Movement {
 
-	protected int time;
+	protected Integer time;
 
 	/**
 	 * Set a new recall by means of its time
@@ -39,4 +39,11 @@ public class Recall extends Movement {
 
 	}
 
+	@Override
+	public String toString() {
+		return super.toString() + "(" + time.toString() + ")";
+	}
+
+	
+	
 }
