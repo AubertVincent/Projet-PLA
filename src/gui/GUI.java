@@ -135,43 +135,43 @@ public class GUI extends BasicGame {
 		switch (key) {
 		case Input.KEY_UP:
 			if (!perso1.isMoving()) {
-				engine.update(Direction.NORTH, perso1, 1, engine.ma_map, this);
+				engine.update(Direction.NORTH, perso1, 1, engine.ma_map);
 			}
 			break;
 		case Input.KEY_LEFT:
 			if (!perso1.isMoving()) {
-				engine.update(Direction.WEST, perso1, 1, engine.ma_map, this);
+				engine.update(Direction.WEST, perso1, 1, engine.ma_map);
 			}
 			break;
 		case Input.KEY_DOWN:
 			if (!perso1.isMoving()) {
 
-				engine.update(Direction.SOUTH, perso1, 1, engine.ma_map, this);
+				engine.update(Direction.SOUTH, perso1, 1, engine.ma_map);
 			}
 			break;
 		case Input.KEY_RIGHT:
 			if (!perso1.isMoving()) {
-				engine.update(Direction.EAST, perso1, 1, engine.ma_map, this);
+				engine.update(Direction.EAST, perso1, 1, engine.ma_map);
 			}
 			break;
 		case Input.KEY_Z:
 			if (!perso2.isMoving()) {
-				engine.update(Direction.NORTH, perso2, 2, engine.ma_map, this);
+				engine.update(Direction.NORTH, perso2, 2, engine.ma_map);
 			}
 			break;
 		case Input.KEY_Q:
 			if (!perso2.isMoving()) {
-				engine.update(Direction.WEST, perso2, 2, engine.ma_map, this);
+				engine.update(Direction.WEST, perso2, 2, engine.ma_map);
 			}
 			break;
 		case Input.KEY_S:
 			if (!perso2.isMoving()) {
-				engine.update(Direction.SOUTH, perso2, 2, engine.ma_map, this);
+				engine.update(Direction.SOUTH, perso2, 2, engine.ma_map);
 			}
 			break;
 		case Input.KEY_D:
 			if (!perso2.isMoving()) {
-				engine.update(Direction.EAST, perso2, 2, engine.ma_map, this);
+				engine.update(Direction.EAST, perso2, 2, engine.ma_map);
 			}
 			break;
 		}
