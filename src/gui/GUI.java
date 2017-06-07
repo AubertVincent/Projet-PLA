@@ -46,8 +46,8 @@ public class GUI extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 		this.container = container;
 		map = new TiledMap("res/map.tmx");
-		this.perso1 = new GUICharacter(2, 4, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
-		this.perso2 = new GUICharacter(31, 15, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
+		this.perso1 = new GUICharacter(2, 4, entite.Direction.SOUTH, "res/SpriteSheetAnim.png", 1);
+		this.perso2 = new GUICharacter(31, 15, entite.Direction.SOUTH, "res/SpriteSheetAnim.png", 2);
 		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "{D3H | D}*");
 		engine = new Engine(this);
 	}
@@ -131,48 +131,30 @@ public class GUI extends BasicGame {
 
 	@Override
 	public void keyPressed(int key, char c) {
-		// if (!perso1.isMoving() && !perso2.isMoving()) {
 		switch (key) {
 		case Input.KEY_UP:
-			if (!perso1.isMoving()) {
-				engine.update(Direction.NORTH, perso1, 1, engine.ma_map, this);
-			}
+			perso1.movePlayer(engine, Direction.NORTH);
 			break;
 		case Input.KEY_LEFT:
-			if (!perso1.isMoving()) {
-				engine.update(Direction.WEST, perso1, 1, engine.ma_map, this);
-			}
+			perso1.movePlayer(engine, Direction.WEST);
 			break;
 		case Input.KEY_DOWN:
-			if (!perso1.isMoving()) {
-
-				engine.update(Direction.SOUTH, perso1, 1, engine.ma_map, this);
-			}
+			perso1.movePlayer(engine, Direction.SOUTH);
 			break;
 		case Input.KEY_RIGHT:
-			if (!perso1.isMoving()) {
-				engine.update(Direction.EAST, perso1, 1, engine.ma_map, this);
-			}
+			perso1.movePlayer(engine, Direction.EAST);
 			break;
 		case Input.KEY_Z:
-			if (!perso2.isMoving()) {
-				engine.update(Direction.NORTH, perso2, 2, engine.ma_map, this);
-			}
+			perso2.movePlayer(engine, Direction.NORTH);
 			break;
 		case Input.KEY_Q:
-			if (!perso2.isMoving()) {
-				engine.update(Direction.WEST, perso2, 2, engine.ma_map, this);
-			}
+			perso2.movePlayer(engine, Direction.WEST);
 			break;
 		case Input.KEY_S:
-			if (!perso2.isMoving()) {
-				engine.update(Direction.SOUTH, perso2, 2, engine.ma_map, this);
-			}
+			perso2.movePlayer(engine, Direction.SOUTH);
 			break;
 		case Input.KEY_D:
-			if (!perso2.isMoving()) {
-				engine.update(Direction.EAST, perso2, 2, engine.ma_map, this);
-			}
+			perso2.movePlayer(engine, Direction.EAST);
 			break;
 		case Input.KEY_O:
 			perso1.Attack(Direction.NORTH);
@@ -186,7 +168,18 @@ public class GUI extends BasicGame {
 		case Input.KEY_M:
 			perso1.Attack(Direction.EAST);
 			break;
+		case Input.KEY_F:
+			perso2.Attack(Direction.NORTH);
+			break;
+		case Input.KEY_C:
+			perso2.Attack(Direction.WEST);
+			break;
+		case Input.KEY_V:
+			perso2.Attack(Direction.SOUTH);
+			break;
+		case Input.KEY_B:
+			perso2.Attack(Direction.EAST);
+			break;
 		}
-		// }
 	}
 }

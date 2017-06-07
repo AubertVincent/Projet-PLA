@@ -31,10 +31,10 @@ public class Engine {
 		ma_map.initMap(guy);
 	}
 
-	private void doMove(Direction dir, GUICharacter perso, int joueur, Map map, GUI guy) {
+	public void doMove(Direction dir, GUICharacter perso, Map map) {
 
 		// Mise a jour de la position du joueur 1
-		if (player1.getMovePoints() > 0 && joueur == 1) {
+		if (player1.getMovePoints() > 0 && perso.getTeam() == 1) {
 
 			switch (dir) {
 
@@ -91,13 +91,13 @@ public class Engine {
 			}
 			// System.out.println("coordonnee de la case : " + player1.getX() +
 			// ";" + player1.getY());
-		} else if (player2.getMovePoints() > 0 && joueur == 2) {
+		} else if (player2.getMovePoints() > 0 && perso.getTeam() == 2) {
 
 			switch (dir) {
 
 			case SOUTH:
-				if (map.isFree(player2.getX(), player2.getY() + 1)) {
 					System.out.println("case libre ? : " + map.isFree(player2.getX() + 1, player2.getY()));
+					if (map.isFree(player2.getX(), player2.getY() + 1)) {
 					player2.setY(player2.getY() + 1);
 					map.Free(player2.getX(), player2.getY() - 1);
 					map.Add(player2.getX(), player2.getY(), player2);
@@ -153,7 +153,7 @@ public class Engine {
 	public void update(Direction dir, GUICharacter perso, int joueur, Map map, GUI guy) {
 
 		// Allow to do the move for 5 MP
-		doMove(dir, perso, joueur, map, guy);
+		doMove(dir, perso, map);
 
 		// Set to 5 the MP if all has been consume
 		if (this.EndGame == true) {

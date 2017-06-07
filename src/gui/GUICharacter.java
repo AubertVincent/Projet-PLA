@@ -7,6 +7,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 import entite.Direction;
+import moteurDuJeu.Engine;
 
 // Contenu a rajouter a personnages.Personnage 
 public class GUICharacter {
@@ -40,9 +41,9 @@ public class GUICharacter {
 	private boolean attacking;
 	private int beginAck;
 	private int AckDuration;
-	private int realTime;
 
 	private final Animation[] animation_atk = new Animation[8];
+	private int team;
 
 	private Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y, int animationDuration) {
 		Animation animation = new Animation();
@@ -96,7 +97,7 @@ public class GUICharacter {
 	 * @throws SlickException
 	 *             Indicates a failure of the loading of a sprite sheet
 	 */
-	public GUICharacter(int x, int y, Direction dir, String spriteSheetAnimation) throws SlickException {
+	public GUICharacter(int x, int y, Direction dir, String spriteSheetAnimation, int team) throws SlickException {
 		super();
 		this.xCell = x;
 		this.yCell = y;
@@ -108,6 +109,7 @@ public class GUICharacter {
 		this.setMoving(false);
 		this.initAnimation(spriteSheetAnimation, 64, 64, 100);
 		this.initAnimationAtk(spriteSheetAnimation, 64, 64, 100);
+		this.team = team;
 	}
 
 	/**
@@ -143,10 +145,8 @@ public class GUICharacter {
 				setAckRequest(false);
 				beginAck = (int) System.currentTimeMillis();
 			}else{
-				System.out.println("beginAck+Duration : " + beginAck + " -- " + AckDuration + " -- time : " + (int) System.currentTimeMillis());
 				if((beginAck+AckDuration) <= (int) System.currentTimeMillis()){
 					setAttacking(false);
-					realTime = 0;
 				}
 			}
 		}
@@ -176,6 +176,16 @@ public class GUICharacter {
 					setCurrentY(GUI.pixelToCellY(nextYPx));
 				}
 			}
+		}
+	}
+	
+	public int getTeam(){
+		return this.team;
+	}
+	
+	protected void movePlayer(Engine engine, Direction direction){
+		if (!isMoving() && !isAttacking()) {
+			engine.doMove(direction, this, engine.ma_map);
 		}
 	}
 
@@ -319,16 +329,16 @@ public class GUICharacter {
 		setDirection(dir);
 		switch (dir) {
 		case NORTH:
-			setAttackTargetY(getCurrentY() - 1);
+			setAttackTarget(dir);
 			break;
 		case WEST:
-			setAttackTargetX(getCurrentX() - 1);
+			setAttackTarget(dir);
 			break;
 		case SOUTH:
-			setAttackTargetY(getCurrentY() + 1);
+			setAttackTarget(dir);
 			break;
 		case EAST:
-			setAttackTargetX(getCurrentX() + 1);
+			setAttackTarget(dir);
 			break;
 		}
 		setAckRequest(true);
@@ -347,13 +357,8 @@ public class GUICharacter {
 		this.attacking = attacking;
 	}
 
-	private void setAttackTargetX(int i) {
+	private void setAttackTarget(Direction dir) {
 		// TODO Attack the cell on the abscissa
-
-	}
-
-	private void setAttackTargetY(int i) {
-		// TODO Attack the cell on the ordinate
 
 	}
 }
