@@ -2,7 +2,7 @@ options
 {
   static = true;
   DEBUG_PARSER = false;
-  DEBUG_TOKEN_MANAGER = false ;
+  DEBUG_TOKEN_MANAGER = false;
 }
 
 PARSER_BEGIN(Reader)
@@ -18,43 +18,45 @@ import personnages.*;
 import pickable.*;
 import sequence.*;
 
-
 public class Reader
 {
-  //TODO Mettre un return pour retourner l'arbre et modifier le nom de la fonction
-  public static void main(String [] args)
+
+
+  public static _Sequence parse(String stringToParse)
   {
-    String str = Test.giveString();
-	Reader parser = new Reader(new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8)));
-	try
-	{
-	  _Sequence resultingSequence = Reader.SEQUENCE();
-	}
-	catch (Exception e)
-	{
-	  System.out.println("NOK");
-	  System.out.println(e.getMessage());
-	  Reader.ReInit(new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8)));
-	}
-	catch (Error e)
-	{
-	  System.out.println("Oops");
-	  System.out.println(e.getMessage());
-	}
-    //return _Sequence ;
+    Reader parser = new Reader(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
+	_Sequence resultingSequence = null ;
+    try
+    {
+      resultingSequence = Reader.SEQUENCE();
+      System.out.println(resultingSequence.toString());
+      return resultingSequence ;
+    }
+    catch (Exception e)
+    {
+      System.out.println("NOK");
+      System.out.println(e.getMessage());
+      Reader.ReInit(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
+    }
+    catch (Error e)
+    {
+      System.out.println("Oops");
+      System.out.println(e.getMessage());
+    }
+    return resultingSequence ;
   }
 }
 
 PARSER_END(Reader)
 
-
 // les caractères ignorés
 SKIP :
 {
-  " "
+  ""
+| " "
 | "\t"
 | "\r"
-| "\n" 
+| "\n"
 | "\u0001"
 | "\u0002"
 | "\u0003"
@@ -115,7 +117,7 @@ SKIP :
 
 TOKEN :
 {
- < A : "A" >
+  < A : "A" >
 | < M : "M" >
 | < C : "C" >
 | < S : "S" >
@@ -124,17 +126,18 @@ TOKEN :
 | < N : "N" >
 | < W : "W" >
 | < E : "E" >
-| < LETTER : [ "a"-"z", "A"-"Z" ] >
-| < DIGIT : [ "0"-"9" ] > 
+  //| < LETTER : [ "a"-"z", "A"-"Z" ] >
+| < DIGIT : [ "0"-"9" ] >
 | < LPAR : "(" >
 | < RPAR : ")" >
 | < BARRE : "|" >
 | < SEMICOLON : ";" >
 | < CHEVRON : ">" >
-| < ID :
+| < PT : "." >
+| < ID : 
     (
-      < LETTER >
-    | < DIGIT >
+    < DIGIT >
+    //    | < LETTER >
     )+ >
 | < BEH :
     (
@@ -145,16 +148,13 @@ TOKEN :
   >
 }
 
-
-
-
 Behavior BEH() :
 {
 }
 {
   < BARRE >
   {
-    return new RandomBar(); 
+    return new RandomBar();
   }
 | < SEMICOLON >
   {
@@ -169,97 +169,96 @@ Behavior BEH() :
 
 _Sequence SEQUENCE() :
 {
-  Action act ;
-  Behavior beh ;
-  _Sequence left, right ;
+  Action act;
+  Behavior beh;
+  _Sequence left, right;
 }
 {
   < LPAR > left = SEQUENCE() beh = BEH() right = SEQUENCE() < RPAR >
-	{
-	return new Tree(beh, left, right) ;
-	}
-
+  {
+    return new Tree(beh, left, right);
+  }
 | act = ACTION()
-	{
-	return act;
-	}
+  {
+    return act;
+  }
 }
-Action ACTION():
+
+Action ACTION() :
 {
-	Movement mov ;
-	Attack att ;
+  Movement mov;
+  Attack att;
 }
 {
   < M > mov = MOVEMENT()
   {
-	return mov ;
+    return mov;
   }
 | < A > att = ATT()
   {
-	return att ;
+    return att;
   }
-// Add rest of grammar  
+  // Add rest of grammar  
 }
 
 Attack ATT() :
 {
 }
 {
-	< C >
-	{
-	  return new ClassicAck();
-	}
+  < C >
+  {
+    return new ClassicAck();
+  }
 | 	< S >
-	{
-	  return new SuicideBomber();
-	}
+  {
+    return new SuicideBomber();
+  }
 }
 
 Movement MOVEMENT() :
 {
-  	Token tok1, tok2 ;
-  	int len ;
-	int x, y;
-	Direction dir;
+  Token tok1, tok2;
+  int len;
+  int x, y;
+  Direction dir;
 }
 {
-	< C > tok1 = < DIGIT > dir = DIRECTION()
-	{
-	  len = Integer.parseInt( tok1.image );
-	  return new MoveDir(dir, len);
-	}
+  < C > tok1 = < DIGIT > dir = DIRECTION()
+  {
+    len = Integer.parseInt(tok1.image);
+    return new MoveDir(dir, len);
+  }
 | < R > tok1 = < DIGIT >
-	{
-	  len = Integer.parseInt( tok1.image );
-	  return new Recall(len);
-	}
-| < T > tok1 = < DIGIT > tok2 = < DIGIT >
-	{
-	  x = Integer.parseInt( tok1.image );
-	  y = Integer.parseInt( tok2.image );
-	  return new Tunnel(x, y);
-	}
+  {
+    len = Integer.parseInt(tok1.image);
+    return new Recall(len);
+  }
+| < T > tok1 = < DIGIT > < PT > tok2 = < DIGIT >
+  {
+    x = Integer.parseInt(tok1.image);
+    y = Integer.parseInt(tok2.image);
+    return new Tunnel(x, y);
+  }
 }
 
-Direction DIRECTION() : 
+Direction DIRECTION() :
 {
 }
 {
-	< N >
-	{
-	  return Direction.NORTH;
-	}
-	< W >
-	{
-	  return Direction.WEST;
-	}
-	< S >
-	{
-	  return Direction.SOUTH;
-	}
-	< E >
-	{
-	  return Direction.EAST;
-	}	  	
+  < N >
+  {
+    return Direction.NORTH;
+  }
+| 	< W >
+  {
+    return Direction.WEST;
+  }
+| 	< S >
+  {
+    return Direction.SOUTH;
+  }
+| < E >
+  {
+    return Direction.EAST;
+  }		
 }
-
