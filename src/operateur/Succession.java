@@ -24,7 +24,7 @@ public class Succession extends Behavior {
 			left.execute(r);
 			right.execute(r);
 		} catch (NotDoableException e) {
-			throw new NotDoableException();
+			throw new NotDoableException("Action impossible");
 		}
 	}
 
