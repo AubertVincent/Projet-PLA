@@ -1,13 +1,13 @@
-package reader;
+package sequence;
 import operateur.*;
 
-public interface Sequence {
+public interface _Sequence {
 
 	public boolean isNil();
 	public boolean isAction();
 	public boolean isTree();
 	
-	public Sequence s();
+	//public _Sequence s();
 	/*
 	Operator noeud;
 	Sequence fg;
