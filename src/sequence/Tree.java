@@ -14,12 +14,12 @@ public class Tree implements _Sequence {
 	}
 
 	@Override
-	public boolean IsAction() {
+	public boolean isAction() {
 		return false;
 	}
 
 	@Override
-	public boolean IsTree() {
+	public boolean isTree() {
 		return true;
 	}
 
