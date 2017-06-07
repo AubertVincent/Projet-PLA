@@ -1,23 +1,26 @@
 package operateur;
 
 import entite.Entity;
-import entite.GameException;
+import exceptions.GameException;
+import exceptions.NotDoableException;
 import personnages.Character;
+import personnages.Robot;
 
 public class PickUp extends Action {
 
 	@Override
-	protected boolean isDoable(Entity e) {
+	protected boolean isDoable(Robot r) {
 		return true;
 	}
 
 	@Override
-	protected void execute(Entity e) throws GameException {
-		if (isDoable(e)) {
-			throw new GameException("Imoossible de ramasser"); //Should never happen
-		}
-		else{
-			((Character) e).pickUp(e);
+	public void execute(Robot r) throws NotDoableException {
+		if (isDoable(r)) {
+			throw new NotDoableException("Imoossible de ramasser"); // Should
+																	// never
+																	// happen
+		} else {
+			r.pickUp(r);
 		}
 	}
 

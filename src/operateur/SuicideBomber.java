@@ -1,6 +1,7 @@
 package operateur;
 
 import entite.*;
+import exceptions.GameException;
 import personnages.Character;
 import personnages.Robot;
 

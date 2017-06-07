@@ -1,13 +1,16 @@
 package sequence;
 
-import operateur.Operator;
+import exceptions.GameException;
+import exceptions.NotDoableException;
+import operateur.Behavior;
+import personnages.Robot;
 
 public class Tree implements _Sequence {
 
-	Operator op;
+	Behavior op;
 	_Sequence left, right;
 
-	public Tree(Operator op, _Sequence left, _Sequence right) {
+	public Tree(Behavior op, _Sequence left, _Sequence right) {
 		this.op = op;
 		this.left = left;
 		this.right = right;
@@ -21,6 +24,10 @@ public class Tree implements _Sequence {
 	@Override
 	public boolean isTree() {
 		return true;
+	}
+	
+	public void execute(Robot r) throws NotDoableException{
+		op.execute(left, right);
 	}
 
 }
