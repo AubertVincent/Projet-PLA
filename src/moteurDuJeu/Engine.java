@@ -22,9 +22,10 @@ public class Engine {
 	 * 
 	 * @throws SlickException
 	 */
+	
 	public Engine(GUI guy) throws SlickException {
-		player1 = new Player(2, 4, Direction.SOUTH, 1, 1, 1, 1, 500, 1);
-		player2 = new Player(31, 15, Direction.SOUTH, 1, 1, 1, 1, 500, 1);
+		player1 = new Player(2, 4, ma_map, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1);
+		player2 = new Player(31, 15, ma_map, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 2);
 		nbrRound = 0;
 		EndGame = false;
 		ma_map = new Map();

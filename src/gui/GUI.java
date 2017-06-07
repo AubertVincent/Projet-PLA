@@ -27,8 +27,8 @@ public class GUI extends BasicGame {
 	private GUIBehaviorInput inputTextField;
 	protected static boolean behaviorInputNeeded = true;
 
-	private GUICharacter perso1;
-	private GUICharacter perso2;
+	private GUIPlayer perso1;
+	private GUIPlayer perso2;
 
 	// private Map ma_map;
 	private Engine engine;
@@ -46,8 +46,8 @@ public class GUI extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 		this.container = container;
 		map = new TiledMap("res/map.tmx");
-		this.perso1 = new GUICharacter(2, 4, entite.Direction.SOUTH, "res/SpriteSheetAnim.png", 1);
-		this.perso2 = new GUICharacter(31, 15, entite.Direction.SOUTH, "res/SpriteSheetAnimSoral.png", 2);
+		perso1 = new GUIPlayer(2, 4, entite.Direction.SOUTH, "res/SpriteSheetAnimSoral.png", 1);
+		perso2 = new GUIPlayer(31, 15, entite.Direction.SOUTH, "res/SpriteSheetAnimSoral.png", 2);
 		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "{D3H | D}*");
 		engine = new Engine(this);
 	}
@@ -60,11 +60,11 @@ public class GUI extends BasicGame {
 		map.render(0, 0, 2);
 		perso1.render(g);
 		perso2.render(g);
-				 
-		for (GUICharacter s : perso1.listRobot) {
+
+		for (GUIRobot s : perso1.listRobot) {
 			s.render(g);
 		}
-		
+
 		map.render(0, 0, 4);
 		map.render(0, 0, 5);
 

@@ -1,7 +1,10 @@
 package gui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
@@ -11,11 +14,16 @@ import org.newdawn.slick.SpriteSheet;
 
 import entite.Direction;
 import moteurDuJeu.Engine;
+import operateur.Action;
+import personnages.Player;
 import personnages.Robot;
 
 // Contenu a rajouter a personnages.Personnage 
-public class GUICharacter {
+public abstract class GUICharacter {
 
+	private static final int spriteSheetWidth = 64;
+	private static final int spriteSheetHeight = 64;
+	
 	// Coordinates in pixels
 	private float xPx, yPx;
 	// Coordinates to reach in pixels
@@ -36,8 +44,7 @@ public class GUICharacter {
 
 	// TODO
 	// Tableau action -> animation[] (plus tard)
-	// Map<operateur.Action, Animation[]> listeAnimations = new
-	// HashMap<operateur.Action, Animation[]>();
+	Map<Class<? extends operateur.Action>, Animation[]> listeAnimations = new HashMap<Class<? extends operateur.Action>, Animation[]>();
 	// Pour l'instant : animation[]
 	private final Animation[] animation_depl = new Animation[8];
 	
@@ -49,9 +56,7 @@ public class GUICharacter {
 	private final Animation[] animation_atk = new Animation[8];
 	private int team;
 	
-	public final List<GUICharacter> listRobot;
-
-	private Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y, int animationDuration) {
+	protected Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y, int animationDuration) {
 		Animation animation = new Animation();
 		for (int x = startX; x < endX; x++) {
 			animation.addFrame(spriteSheet.getSprite(x, y), animationDuration);
@@ -59,6 +64,76 @@ public class GUICharacter {
 		return animation;
 	}
 
+	// TODO : adapt to HashMap
+//	protected void initAnimations(int animationDuration) throws SlickException, Exception {
+//
+//		Animation[] currentAnimation = new Animation[8];
+//
+//		// Get possibleActionList of the current Character
+//		List<Class<? extends Action>> possibleActionList ;
+//		if (this instanceof GUIPlayer){
+//			possibleActionList = Player.getPossibleActionsList();
+//		}
+//		else if (this instanceof GUIRobot){
+//			possibleActionList = Robot.getPossibleActionsList();	
+//		}
+//		else {
+//			throw new Exception("Unknown Character subclass");
+//		}
+//		// load the animation of each action element of the possibleActionList
+//		for (Iterator<Class<? extends Action>> action = possibleActionList.iterator(); action.hasNext();) {
+//			Class<? extends Action> currentAction = action.next();
+//			SpriteSheet currentSpriteSheet ;
+//			if (this instanceof GUIPlayer){
+//				currentSpriteSheet = new SpriteSheet(GUIPlayer.actionSpritePath.get(currentAction), spriteSheetWidth, spriteSheetHeight);
+//				currentNumberOfSprites = 
+//			}
+//			else if (this instanceof GUIRobot){
+//				currentSpriteSheet = new SpriteSheet(GUIRobot.actionSpritePath.get(currentAction), spriteSheetWidth, spriteSheetHeight);					
+//			}
+//			else {
+//				throw new Exception("Unknown Charcter subclass");
+//			}
+//			
+//			
+//			currentAnimation[0] = loadAnimation(currentSpriteSheet, 0, 1, 0, animationDuration);
+//			currentAnimation[1] = loadAnimation(currentSpriteSheet, 0, 1, 1, animationDuration);
+//			currentAnimation[2] = loadAnimation(currentSpriteSheet, 0, 1, 2, animationDuration);
+//			currentAnimation[3] = loadAnimation(currentSpriteSheet, 0, 1, 3, animationDuration);
+//			currentAnimation[4] = loadAnimation(currentSpriteSheet, 1, numberOfSprites, 0, animationDuration);
+//			currentAnimation[5] = loadAnimation(currentSpriteSheet, 1, numberOfSprites, 1, animationDuration);
+//			currentAnimation[6] = loadAnimation(currentSpriteSheet, 1, numberOfSprites, 2, animationDuration);
+//			currentAnimation[7] = loadAnimation(currentSpriteSheet, 1, numberOfSprites, 3, animationDuration);
+//			
+//			
+//			
+//		}
+//
+//	}
+	//	protected abstract void initAnimations(int animationDuration) throws SlickException;
+	// protected void initAnimations(Map<Action, String> spriteSheetLocation,
+	// int spriteSheetWidth, int spriteSheetHeight,
+	// int animationDuration) throws SlickException {
+	// SpriteSheet spriteSheet = new SpriteSheet(spriteSheetLocation,
+	// spriteSheetWidth, spriteSheetHeight);
+	// this.animation_depl[0] = loadAnimation(spriteSheet, 0, 1, 0,
+	// animationDuration);
+	// this.animation_depl[1] = loadAnimation(spriteSheet, 0, 1, 1,
+	// animationDuration);
+	// this.animation_depl[2] = loadAnimation(spriteSheet, 0, 1, 2,
+	// animationDuration);
+	// this.animation_depl[3] = loadAnimation(spriteSheet, 0, 1, 3,
+	// animationDuration);
+	// this.animation_depl[4] = loadAnimation(spriteSheet, 1, 9, 0,
+	// animationDuration);
+	// this.animation_depl[5] = loadAnimation(spriteSheet, 1, 9, 1,
+	// animationDuration);
+	// this.animation_depl[6] = loadAnimation(spriteSheet, 1, 9, 2,
+	// animationDuration);
+	// this.animation_depl[7] = loadAnimation(spriteSheet, 1, 9, 3,
+	// animationDuration);
+	// }
+	
 	// TODO : adapt to HashMap
 	private void initAnimation(String spriteSheetLocation, int spriteSheetWidth, int spriteSheetHeight,
 			int animationDuration) throws SlickException {
@@ -75,7 +150,7 @@ public class GUICharacter {
 
 	private void initAnimationAtk(String spriteSheetLocation, int spriteSheetWidth, int spriteSheetHeight,
 			int animationDuration) throws SlickException {
-		SpriteSheet spriteSheet = new SpriteSheet("res/SpriteSheetAnimAttack.png", spriteSheetWidth, spriteSheetHeight);
+		SpriteSheet spriteSheet = new SpriteSheet("res/SpriteSheetAnimSoralAttack.png", spriteSheetWidth, spriteSheetHeight);
 		this.animation_atk[0] = loadAnimation(spriteSheet, 0, 1, 0, animationDuration);
 		this.animation_atk[1] = loadAnimation(spriteSheet, 0, 1, 1, animationDuration);
 		this.animation_atk[2] = loadAnimation(spriteSheet, 0, 1, 2, animationDuration);
@@ -115,7 +190,6 @@ public class GUICharacter {
 		this.setMoving(false);
 		this.initAnimation(spriteSheetAnimation, 64, 64, 100);
 		this.initAnimationAtk(spriteSheetAnimation, 64, 64, 100);
-		listRobot = new ArrayList<GUICharacter>();
 		this.team = team;
 	}
 
@@ -370,6 +444,6 @@ public class GUICharacter {
 	}
 	
 	public void createRobot(int x, int y) throws SlickException{
-		listRobot.add(new GUICharacter(2, 4, Direction.SOUTH, "res/SpriteSheetAnimRobot.png", 1));
+//		listRobot.add(new GUIRobot(2, 4, Direction.SOUTH, "res/SpriteSheetAnimRobot.png", 1));
 	}
 }

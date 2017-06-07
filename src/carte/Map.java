@@ -1,9 +1,9 @@
 package carte;
-
 import java.util.List;
-
 import entite.Direction;
 import entite.Entity;
+import exceptions.NotDoableException;
+import pickable.PickAble;
 import gui.GUI;
 import personnages.Player;
 
@@ -25,12 +25,12 @@ public class Map {
 	}
 
 	public void initMap(GUI guy) {
-		map[2][4].setEntity(new Player(2, 4, Direction.NORTH, 1, 1, 1, 1, 5, 1));
-		map[31][15].setEntity(new Player(31, 15, Direction.NORTH, 1, 1, 1, 1, 5, 1));
+		map[2][4].setEntity(new Player(2, 4, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1));
+		map[31][15].setEntity(new Player(31, 15, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 2));
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				if (guy.isObstacle(GUI.cellToPixelX(i), GUI.cellToPixelY(j))) {
-					map[i][j].setEntity(new Obstacle(i, j));
+					map[i][j].setEntity(new Obstacle(i, j, this));
 				//	System.out.println("Cette case contient un obstacle : " + i + ";" + j);
 				}
 			}
@@ -82,5 +82,52 @@ public class Map {
 	// Map.printMap();
 	//
 	// }
+
+	/**
+	 * return the list of the entities present on the cell(x,y)
+	 * @param x x coordinate on the map
+	 * @param y y coordinate on the map
+	 * @return the list of the entities present on the cell
+	 */
+	public List<Entity> getListEntity(int x, int y) {
+		return map[x][y].getListEntity();
+	}
+
+	/**
+	 * return the class of an entity present on the cell
+	 * @param x x coordinate on the map
+	 * @param y y coordinate on the map
+	 * @return the class of the first pickAble object
+	 * @throws GameException
+	 */
+	@SuppressWarnings("unchecked")
+	public Class<PickAble> pickableEntity(int x, int y) throws NotDoableException {
+		List<Entity> l = map[x][y].getListEntity();
+		int i = 0;
+		while (i < l.size() - 1) {
+			if (l.get(i).isPickAble()) {
+				return ((Class<PickAble>) l.get(i).getClass());
+			}
+		}
+		throw new NotDoableException("Rien à ramasser ici");
+	}
+
+
+	/**
+	 * Take out the object of the cell
+	 * @param ramasse
+	 * @param x x coordinate on the map
+	 * @param y y coordinate on the map
+	 */
+	public void freePick(Class<PickAble> ramasse, int x, int y) {
+		List<Entity> l = map[x][y].getListEntity();
+		int i = 0;
+		while (i < l.size() - 1) {
+			if (l.get(i).getClass() == ramasse){
+				l.remove(i);
+			}
+		}
+
+	}
 
 }
