@@ -1,8 +1,5 @@
 package gui;
 
-import java.util.Map;
-import java.util.HashMap;
-
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
