@@ -22,5 +22,4 @@ public abstract class Action extends Operator implements _Sequence {
 		return false;
 	}
 
-	public abstract boolean isDoable();
 }
