@@ -24,6 +24,8 @@ public class Robot extends Character {
 	 *            x coordinate on the map
 	 * @param y
 	 *            y coordinate on the map
+	 * @param entityMap
+	 *            The map on which the entity is located
 	 * @param direction
 	 *            Where the character is oriented
 	 * @param life
@@ -39,18 +41,14 @@ public class Robot extends Character {
 	 * @param recall
 	 *            Robot's recall's time
 	 */
-	public Robot(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
-			int recall) {
-		super(x, y, direction, life, vision, attack, range, movePoints, recall);
-		possibleActionsList.add(ClassicAck.class);
-		possibleActionsList.add(MoveDir.class);
-		possibleActionsList.add(Tunnel.class);
-		possibleActionsList.add(Recall.class);
-		possibleActionsList.add(SuicideBomber.class);
-	}
 
 	public static List<Class<? extends Action>> getPossibleActionsList() {
 		return possibleActionsList;
+	}
+
+	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
+			int movePoints, int recall, int player) {
+		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, player);
 	}
 
 	@Override
@@ -75,13 +73,16 @@ public class Robot extends Character {
 
 	}
 
-	public void suicideBomber(Entity e) {
-		int x = e.getX();
-		int y = e.getY();
-		List<Entity> testNorth = Map.getListEntity(x, y - 1);
-		List<Entity> testSouth = Map.getListEntity(x, y + 1);
-		List<Entity> testWest = Map.getListEntity(x - 1, y);
-		List<Entity> testEast = Map.getListEntity(x + 1, y);
+	/**
+	 * Suicide a robot and kill the robots around it
+	 */
+	public void suicideBomber() {
+		int x = this.getX();
+		int y = this.getY();
+		List<Entity> testNorth = this.entityMap.getListEntity(x, y - 1);
+		List<Entity> testSouth = this.entityMap.getListEntity(x, y + 1);
+		List<Entity> testWest = this.entityMap.getListEntity(x - 1, y);
+		List<Entity> testEast = this.entityMap.getListEntity(x + 1, y);
 
 		for (Iterator<Entity> i = testNorth.iterator(); i.hasNext();) {
 			Entity eCourant = i.next();

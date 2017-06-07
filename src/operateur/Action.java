@@ -1,8 +1,6 @@
 package operateur;
 
-import entite.Entity;
 import exceptions.GameException;
-import exceptions.NotDoableException;
 import personnages.Robot;
 import sequence._Sequence;
 

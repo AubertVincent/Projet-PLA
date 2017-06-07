@@ -3,7 +3,9 @@ package carte;
 import java.util.ArrayList;
 import java.util.List;
 
-import entite.Entity;
+import entite.*;
+import personnages.Character;
+import exceptions.*;
 
 public class Cell {
 	protected int x;
@@ -38,18 +40,40 @@ public class Cell {
 		listeEntites.add(ent);
 	}
 
-	public void FreeCell(){
-		isfree=true;
+	public void FreeCell() {
+		isfree = true;
 		listeEntites.clear();
 	}
-	
-	private int getX() {
-		return this.x;
+
+	public List<Entity> getListEntity() {
+		return listeEntites;
 	}
 
-	private int getY() {
-		return this.y;
+	public Character getOpponent(int player) throws NotDoableException {
+		int i = 0;
+		Entity e;
+		while (i < this.listeEntites.size() - 1) {
+			if (this.listeEntites.get(i).isCharacter()) {
+				e = this.listeEntites.get(i);
+				if (((Character) e).getPlayer() == player) {
+					return ((Character) e);
+				}
+			}
+		}
+		throw new NotDoableException("Il est vrai j'ai trop d'adversaire ... mais pas là");
 	}
-	
-	
+
+	public boolean opponentHere(int player) {
+		int i = 0;
+		Entity e;
+		while (i < this.listeEntites.size() - 1) {
+			if (this.listeEntites.get(i).isCharacter()) {
+				e = this.listeEntites.get(i);
+				if (((Character) e).getPlayer() == player) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

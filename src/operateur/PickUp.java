@@ -21,6 +21,7 @@ public class PickUp extends Action {
 																	// happen
 		} else {
 			r.pickUp(r);
+
 		}
 	}
 

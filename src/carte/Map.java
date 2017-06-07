@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import entite.Entity;
-import operateur.Operator;
+import exceptions.NotDoableException;
 import pickable.PickAble;
 
 public class Map {
@@ -14,7 +14,11 @@ public class Map {
 	private static final int width = 32;
 	private static final int height = 16;
 
-	public static final Cell[][] map = new Cell[height][width];
+	public final Cell[][] map = new Cell[height][width];
+
+	public Cell[][] getMap() {
+		return map;
+	}
 
 	public Map() {
 		for (int i = 0; i < height; i++) {
@@ -32,7 +36,7 @@ public class Map {
 			randomLine = ThreadLocalRandom.current().nextInt(0, height);
 			randomColumn = ThreadLocalRandom.current().nextInt(0, width);
 			if (map[randomLine][randomColumn].isFree()) {
-				map[randomLine][randomColumn].setEntity(Operator.randomOp());
+				//map[randomLine][randomColumn].setEntity(Operator.randomOp());
 				i++;
 			}
 		}
@@ -57,30 +61,59 @@ public class Map {
 		map[x][y].setEntity(ent);
 	}
 
-	public static Cell getCell(int x, int y) {
+	public Cell getCell(int x, int y) {
 		return map[x][y];
 	}
 
-	public static boolean isFree(int x, int y) {
+	public boolean isFree(int x, int y) {
 		return map[x][y].isFree();
 	}
 
-	//return the list of the entities present on the cell(x,y)
-	public static List<Entity> getListEntity(int x, int y) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * return the list of the entities present on the cell(x,y)
+	 * @param x x coordinate on the map
+	 * @param y y coordinate on the map
+	 * @return the list of the entities present on the cell
+	 */
+	public List<Entity> getListEntity(int x, int y) {
+		return map[x][y].getListEntity();
 	}
 
-	//return the class of an entity present on the cell
-	public static Class<PickAble> pickableEntity(int x, int y) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * return the class of an entity present on the cell
+	 * @param x x coordinate on the map
+	 * @param y y coordinate on the map
+	 * @return the class of the first pickAble object
+	 * @throws GameException
+	 */
+	@SuppressWarnings("unchecked")
+	public Class<PickAble> pickableEntity(int x, int y) throws NotDoableException {
+		List<Entity> l = map[x][y].getListEntity();
+		int i = 0;
+		while (i < l.size() - 1) {
+			if (l.get(i).isPickAble()) {
+				return ((Class<PickAble>) l.get(i).getClass());
+			}
+		}
+		throw new NotDoableException("Rien à ramasser ici");
 	}
 
-	//Take out the object of the cell
-	public static void freePick(Class<PickAble> ramasse, int x, int y) {
-		// TODO Auto-generated method stub
-		
+
+	/**
+	 * Take out the object of the cell
+	 * @param ramasse
+	 * @param x x coordinate on the map
+	 * @param y y coordinate on the map
+	 */
+	public void freePick(Class<PickAble> ramasse, int x, int y) {
+		List<Entity> l = map[x][y].getListEntity();
+		int i = 0;
+		while (i < l.size() - 1) {
+			if (l.get(i).getClass() == ramasse){
+				l.remove(i);
+			}
+		}
+
 	}
 
 }

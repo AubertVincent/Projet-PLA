@@ -11,10 +11,8 @@ public class GameException extends Exception {
 
 	{
 
-	  System.out.println(s);
-
-	
+		System.out.println(s);
 
 	}
-		
+
 }

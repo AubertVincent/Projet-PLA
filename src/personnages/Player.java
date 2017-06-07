@@ -25,6 +25,8 @@ public class Player extends Character {
 	 *            y coordinate on the map
 	 * @param direction
 	 *            Where the character is oriented
+	 * @param entityMap
+	 *            The map on which the entity is located
 	 * @param life
 	 *            Player's life
 	 * @param vision
@@ -38,26 +40,27 @@ public class Player extends Character {
 	 * @param recall
 	 *            Player's recall's time
 	 */
-	public Player(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
-			int recall) {
-		super(x, y, direction, life, vision, attack, range, movePoints, recall);
+
+	public static List<Class<? extends Action>> getPossibleActionsList() {
+		return possibleActionsList;
+	}
+
+	public Player(int x, int y, carte.Map entityMap, Direction direction, int life, int vision, int attack, int range,
+			int movePoints, int recall, int player) {
+		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, player);
 		possibleActionsList.add(ClassicAck.class);
 		possibleActionsList.add(MoveDir.class);
 		possibleActionsList.add(Tunnel.class);
 		possibleActionsList.add(Recall.class);
-		besace.put(PickClassicAck.class,0);
-		besace.put(PickSuicideBomber.class,0);
+		besace.put(PickClassicAck.class, 0);
+		besace.put(PickSuicideBomber.class, 0);
 		besace.put(PickTunnel.class, 0);
-		besace.put(PickMoveDir.class,0);
-		besace.put(PickRecall.class,0);
-		besace.put(PickPickUp.class,0);
-		besace.put(PickSuccession.class,0);
-		besace.put(PickRandomBar.class,0);
-		besace.put(PickPriority.class,0);
-	}
-
-	public static List<Class<? extends Action>> getPossibleActionsList() {
-		return possibleActionsList;
+		besace.put(PickMoveDir.class, 0);
+		besace.put(PickRecall.class, 0);
+		besace.put(PickPickUp.class, 0);
+		besace.put(PickSuccession.class, 0);
+		besace.put(PickRandomBar.class, 0);
+		besace.put(PickPriority.class, 0);
 	}
 
 	@Override
@@ -70,6 +73,12 @@ public class Player extends Character {
 		return false;
 	}
 
-	// TODO Keyboard reaction
+	public Map<Class<? extends PickAble>, Integer> getBesace() {
+		return besace;
+	}
+
+	public void setBesace(Map<Class<? extends PickAble>, Integer> besace) {
+		this.besace = besace;
+	}
 
 }

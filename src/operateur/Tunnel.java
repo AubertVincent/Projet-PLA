@@ -1,10 +1,6 @@
 package operateur;
 
-import carte.*;
-import entite.Entity;
-import exceptions.GameException;
 import exceptions.NotDoableException;
-import personnages.Character;
 import personnages.Robot;
 
 public class Tunnel extends Movement {
@@ -34,11 +30,11 @@ public class Tunnel extends Movement {
 	 * Check if there is no obstacle on the arrival
 	 */
 	@Override
-	//TODO
+	// TODO
 	protected boolean isDoable(Robot r) {
-//		Cell test = new Cell(x, y);
-//		return test.isFree();
-		return true ;
+		// Cell test = new Cell(x, y);
+		// return test.isFree();
+		return true;
 	}
 
 	@Override
@@ -46,7 +42,9 @@ public class Tunnel extends Movement {
 		if (!isDoable(r)) {
 			throw new NotDoableException("La case d'arrivée est occupée");
 		}
+
 		r.teleport(x, y);
+
 	}
 
 }

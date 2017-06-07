@@ -1,7 +1,10 @@
 package personnages;
 
+import carte.Cell;
+import carte.Map;
 import entite.Direction;
 import entite.Entity;
+import exceptions.NotDoableException;
 import pickable.*;
 
 public abstract class Character extends Entity {
@@ -14,6 +17,7 @@ public abstract class Character extends Entity {
 	protected int range;
 	protected int movePoints;
 	protected int recall;
+	protected int player;
 
 	/**
 	 * Set a new character
@@ -37,9 +41,9 @@ public abstract class Character extends Entity {
 	 * @param recall
 	 *            Character's recall's time
 	 */
-	public Character(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
-			int recall) {
-		super(x, y);
+	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
+			int movePoints, int recall, int player) {
+		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
 		this.vision = vision;
@@ -47,6 +51,7 @@ public abstract class Character extends Entity {
 		this.range = range;
 		this.movePoints = movePoints;
 		this.recall = recall;
+		this.player = player;
 	}
 
 	protected abstract boolean isPlayer();
@@ -55,6 +60,18 @@ public abstract class Character extends Entity {
 
 	public boolean isCharacter() {
 		return true;
+	}
+
+	public boolean isPickAble() {
+		return false;
+	}
+
+	public int getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(int player) {
+		this.player = player;
 	}
 
 	public Direction getDirection() {
@@ -142,24 +159,29 @@ public abstract class Character extends Entity {
 	}
 
 	/**
-	 * Make an interaction between two fighters
+	 * Make an Entity attack an entity on the cell targeted
 	 * 
-	 * @param attacker
-	 *            the initiator of the attack
-	 * @param opponent
-	 *            the target
+	 * @param target
+	 *            The cell targeted
+	 * @throws GameException
 	 */
-	public void classicAtk(Character attacker, Character opponent) {
-		int lifeA = attacker.getLife();
-		int lifeE = opponent.getLife();
-		int atkA = attacker.getAttack();
-		int atkE = opponent.getAttack();
+	public void classicAtk(Cell target) throws NotDoableException {
+		try {
+			Character opponent = target.getOpponent(this.player);
+			int lifeA = this.getLife();
+			int lifeE = opponent.getLife();
+			int atkA = this.getAttack();
+			int atkE = opponent.getAttack();
 
-		lifeA = java.lang.Math.max(lifeA - atkE, 0);
-		lifeE = java.lang.Math.max(lifeE - atkA, 0);
+			lifeA = java.lang.Math.max(lifeA - atkE, 0);
+			lifeE = java.lang.Math.max(lifeE - atkA, 0);
 
-		attacker.setLife(lifeA);
-		opponent.setLife(lifeE);
+			this.setLife(lifeA);
+			opponent.setLife(lifeE);
+
+		} catch (NotDoableException e) {
+			throw new NotDoableException("Personne à attaquer");
+		}
 	}
 
 	/**
@@ -172,19 +194,26 @@ public abstract class Character extends Entity {
 	 * @param y
 	 *            y coordinate on the map
 	 */
-	public void teleport(Entity e, int x, int y) {
-		e.setX(x);
-		e.setY(y);
+	public void teleport(int x, int y) {
+		this.setX(x);
+		this.setY(y);
 	}
 
 	/**
-	 * Pick up an entity
+	 * Pick an entity ('picked' here) on the cell
 	 * 
-	 * @param e
-	 *            The entity which is picking up
+	 * @throws GameException
 	 */
-	public void pickUp(Entity e) {
-		PickAble.pick(e);
+	public void pickUp() throws NotDoableException {
+		Map myMap = this.getEntityMap();
+		Class<PickAble> picked = myMap.pickableEntity(this.getX(), this.getY());
+		myMap.freePick(picked, this.getX(), this.getY());
+		if (this.isRobot()) {
+			int i = ((Robot) this).isToPlayer().besace.get(picked.getClass());
+			((Robot) this).isToPlayer().besace.put(picked, i++);
+		} else if (this.isPlayer()) {
+			int i = ((Player) this).besace.get(picked.getClass());
+			((Player) this).besace.put(picked, i++);
+		}
 	}
-
 }
