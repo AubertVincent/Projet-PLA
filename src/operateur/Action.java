@@ -1,16 +1,10 @@
 package operateur;
 import sequence._Sequence;
+import entite.*;
+import entite.GameException;
+import sequence._Sequence;
 
 public abstract class Action extends Operator implements _Sequence {
-
-	public Action(int x, int y) {
-		super();
-	}
-
-	@Override
-	public boolean isNil() {
-		return false;
-	}
 
 	@Override
 	public boolean isAction() {
@@ -19,6 +13,7 @@ public abstract class Action extends Operator implements _Sequence {
 
 	@Override
 	public boolean isTree() {
+
 		return false;
 	}
 

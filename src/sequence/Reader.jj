@@ -1,6 +1,3 @@
-/**
-* JavaCC
-*/
 options
 {
   static = true;
@@ -208,39 +205,22 @@ Sequence OP() :
   }
 }
 
-Sequence SEQUENCE() :
+_Sequence SEQUENCE() :
 {
-  Sequence seq, s1, s2;
+  Action act ;
+  Operator op ;
+  _Sequence left, right ;
 }
 {
-	seq = ACTION()
+  < LPAR > left = SEQUENCE() op = OP() right = SEQUENCE() < RPAR >
 	{
-	return seq ;
+	return Tree(op, left, right) ;
 	}
 
-| < LPAR > s1 = SEQUENCE()
-< OP >
-
-< RPAR >
-
-| < LPAR >
-	sexp = SEQUENCE()
+| act = ACTION()
 	{
-	  return sexp;
+	return act;
 	}
+}
   < RPAR >
-| < NIL >
-{
- return nil.NIL ; 
-}
-}
-{
-  < LPAR > s1 = SEQUENCE() op = OP() s2 = SEQUENCE() < RPAR >
-  {
-    return s1 + op + s2;
-  }
-| s1 = ACTION()
-  {
-    return quote(s1); // Executer une action a.execute
-  }
 }

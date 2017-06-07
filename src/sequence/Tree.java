@@ -1,15 +1,16 @@
 package sequence;
 
-import operateur.Behavior;
+import operateur.Operator;
 
 public class Tree implements _Sequence {
 
+	Operator op;
 	_Sequence left, right;
-	Behavior node;
 
-	@Override
-	public boolean isNil() {
-		return false;
+	public Tree(Operator op, _Sequence left, _Sequence right) {
+		this.op = op;
+		this.left = left;
+		this.right = right;
 	}
 
 	@Override

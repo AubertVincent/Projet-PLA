@@ -8,11 +8,6 @@ public class Nil implements _Sequence {
 	}
 
 	@Override
-	public boolean isNil() {
-		return true;
-	}
-
-	@Override
 	public boolean isAction() {
 		return false;
 	}
