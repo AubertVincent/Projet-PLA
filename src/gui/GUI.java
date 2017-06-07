@@ -24,7 +24,7 @@ public class GUI extends BasicGame {
 	protected static final int cellWidth = 32;
 
 	private GUIBehaviorInput inputTextField;
-	protected static boolean behaviorInputNeeded = false;
+	protected static boolean behaviorInputNeeded = true;
 
 	private GUICharacter perso1;
 
@@ -40,7 +40,7 @@ public class GUI extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 		this.container = container;
 		this.map = new TiledMap("res/map.tmx");
-		this.perso1 = new GUICharacter(5, 12, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
+		this.perso1 = new GUIPlayer(5, 12, entite.Direction.SOUTH);
 		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "{D3H | D}*");
 	}
 
@@ -61,6 +61,7 @@ public class GUI extends BasicGame {
 
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
+		moteur.
 		perso1.update(this, delta);
 		this.inputTextField.update(container);
 	}

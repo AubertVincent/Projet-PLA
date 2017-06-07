@@ -2,9 +2,9 @@ package operateur;
 
 import entite.*;
 
-public class suicideBomber extends Attack {
+public class SuicideBomber extends Attack {
 
-	public suicideBomber(int x, int y) {
+	public SuicideBomber(int x, int y) {
 		super(x, y);
 	}
 
