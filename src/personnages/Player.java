@@ -39,9 +39,14 @@ public class Player extends Character {
 	 * @param recall
 	 *            Player's recall's time
 	 */
+
+	public static List<Class<? extends Action>> getPossibleActionsList() {
+		return possibleActionsList;
+	}
+
 	public Player(int x, int y, carte.Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall);
+			int movePoints, int recall, int player) {
+		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, player);
 		possibleActionsList.add(ClassicAck.class);
 		possibleActionsList.add(MoveDir.class);
 		possibleActionsList.add(Tunnel.class);
@@ -57,10 +62,6 @@ public class Player extends Character {
 		besace.put(PickPriority.class, 0);
 	}
 
-	public static List<Class<? extends Action>> getPossibleActionsList() {
-		return possibleActionsList;
-	}
-
 	@Override
 	public boolean isPlayer() {
 		return true;
@@ -71,6 +72,12 @@ public class Player extends Character {
 		return false;
 	}
 
-	// TODO Keyboard reaction
+	public Map<Class<? extends PickAble>, Integer> getBesace() {
+		return besace;
+	}
+
+	public void setBesace(Map<Class<? extends PickAble>, Integer> besace) {
+		this.besace = besace;
+	}
 
 }

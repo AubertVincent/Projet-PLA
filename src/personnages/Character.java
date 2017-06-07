@@ -17,6 +17,7 @@ public abstract class Character extends Entity {
 	protected int range;
 	protected int movePoints;
 	protected int recall;
+	protected int player;
 
 	/**
 	 * Set a new character
@@ -40,8 +41,8 @@ public abstract class Character extends Entity {
 	 * @param recall
 	 *            Character's recall's time
 	 */
-	public Character(int x, int y,Map entityMap, Direction direction, int life, int vision, int attack, int range, int movePoints,
-			int recall) {
+	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
+			int movePoints, int recall, int player) {
 		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
@@ -50,6 +51,7 @@ public abstract class Character extends Entity {
 		this.range = range;
 		this.movePoints = movePoints;
 		this.recall = recall;
+		this.player = player;
 	}
 
 	protected abstract boolean isPlayer();
@@ -59,11 +61,19 @@ public abstract class Character extends Entity {
 	public boolean isCharacter() {
 		return true;
 	}
-	
-	public boolean isPickAble(){
+
+	public boolean isPickAble() {
 		return false;
 	}
 
+	public int getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(int player) {
+		this.player = player;
+	}
+	
 	public Direction getDirection() {
 		return this.direction;
 	}
@@ -150,10 +160,13 @@ public abstract class Character extends Entity {
 
 	/**
 	 * Make an Entity attack an entity on the cell targeted
-	 * @param target The cell targeted
+	 * 
+	 * @param target
+	 *            The cell targeted
+	 * @throws GameException 
 	 */
-	public void classicAtk(Cell target) {
-		Character opponent = target.getOpponent();
+	public void classicAtk(Cell target) throws GameException {
+		Character opponent = target.getOpponent(this.player);
 		int lifeA = this.getLife();
 		int lifeE = opponent.getLife();
 		int atkA = this.getAttack();
@@ -176,13 +189,14 @@ public abstract class Character extends Entity {
 	 * @param y
 	 *            y coordinate on the map
 	 */
-	public void teleport( int x, int y) {
+	public void teleport(int x, int y) {
 		this.setX(x);
 		this.setY(y);
 	}
 
 	/**
 	 * Pick an entity ('picked' here) on the cell
+	 * 
 	 * @throws GameException
 	 */
 	public void pickUp() throws GameException {

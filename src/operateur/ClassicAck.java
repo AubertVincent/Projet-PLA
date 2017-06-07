@@ -27,12 +27,13 @@ public class ClassicAck extends Attack {
 											// attackable
 		int x = e.getX();
 		int y = e.getY();
+		int player = ((Character) e).getPlayer();
 		Cell testEast = new Cell(x + 1, y);
 		Cell testSouth = new Cell(x, y - 1);
 		Cell testNorth = new Cell(x, y + 1);
 		Cell testWest = new Cell(x - 1, y);
-		// TODO not isFree but !isOpponentEntity
-		if (testEast.isFree() && testSouth.isFree() && testNorth.isFree() && testWest.isFree()) {
+	
+		if (!(testEast.opponentHere(player)) && !(testWest.opponentHere(player)) && !(testSouth.opponentHere(player)) && !(testNorth.opponentHere(player))){
 			return false;
 		} else {
 			return true;
@@ -51,6 +52,7 @@ public class ClassicAck extends Attack {
 
 			int x = e.getX();
 			int y = e.getY();
+			int player = ((Character) e).getPlayer();
 			Map myMap = e.getEntityMap();
 			Direction d;
 			Cell testEast = myMap.getCell(x + 1, y);
@@ -58,19 +60,19 @@ public class ClassicAck extends Attack {
 			Cell testNorth = myMap.getCell(x, y + 1);
 			Cell testWest = myMap.getCell(x - 1, y);
 			Cell target = null;
-			if (!(testEast.isFree())) {
+			if (testEast.opponentHere(player)) {
 				d = Direction.EAST;
 				((Character) e).setDirection(d);
 				target = testEast;
-			} else if (!(testNorth.isFree())) {
+			} else if (testNorth.opponentHere(player)) {
 				d = Direction.NORTH;
 				((Character) e).setDirection(d);
 				target = testNorth;
-			} else if (!(testWest.isFree())) {
+			} else if (testWest.opponentHere(player)) {
 				d = Direction.WEST;
 				((Character) e).setDirection(d);
 				target = testWest;
-			} else if (!(testSouth.isFree())) {
+			} else if (testSouth.opponentHere(player)) {
 				d = Direction.SOUTH;
 				((Character) e).setDirection(d);
 				target = testSouth;

@@ -70,12 +70,23 @@ public class Map {
 		return map[x][y].isFree();
 	}
 
-	// return the list of the entities present on the cell(x,y)
+	/**
+	 * return the list of the entities present on the cell(x,y)
+	 * @param x x coordinate on the map
+	 * @param y y coordinate on the map
+	 * @return the list of the entities present on the cell
+	 */
 	public List<Entity> getListEntity(int x, int y) {
 		return map[x][y].getListEntity();
 	}
 
-	// return the class of an entity present on the cell
+	/**
+	 * return the class of an entity present on the cell
+	 * @param x x coordinate on the map
+	 * @param y y coordinate on the map
+	 * @return the class of the first pickAble object
+	 * @throws GameException
+	 */
 	@SuppressWarnings("unchecked")
 	public Class<PickAble> pickableEntity(int x, int y) throws GameException {
 		List<Entity> l = map[x][y].getListEntity();
@@ -88,8 +99,21 @@ public class Map {
 		throw new GameException("Rien à ramasser ici");
 	}
 
-	// Take out the object of the cell
+
+	/**
+	 * Take out the object of the cell
+	 * @param ramasse
+	 * @param x x coordinate on the map
+	 * @param y y coordinate on the map
+	 */
 	public void freePick(Class<PickAble> ramasse, int x, int y) {
+		List<Entity> l = map[x][y].getListEntity();
+		int i = 0;
+		while (i < l.size() - 1) {
+			if (l.get(i).getClass() == ramasse){
+				l.remove(i);
+			}
+		}
 
 	}
 
