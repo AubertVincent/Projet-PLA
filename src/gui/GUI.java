@@ -131,58 +131,56 @@ public class GUI extends BasicGame {
 
 	@Override
 	public void keyPressed(int key, char c) {
-
 		switch (key) {
 		case Input.KEY_UP:
-			if (!perso1.isMoving()) {
-				engine.doMove(Direction.NORTH, perso1, engine.ma_map);
-				perso1.goToDirection(Direction.NORTH);
-			}
+			perso1.movePlayer(engine, Direction.NORTH);
 			break;
 		case Input.KEY_LEFT:
-			if (!perso1.isMoving()) {
-				engine.doMove(Direction.WEST, perso1, engine.ma_map);
-				perso1.goToDirection(Direction.WEST);
-			}
+			perso1.movePlayer(engine, Direction.WEST);
 			break;
 		case Input.KEY_DOWN:
-			if (!perso1.isMoving()) {
-
-				engine.doMove(Direction.SOUTH, perso1, engine.ma_map);
-				perso1.goToDirection(Direction.SOUTH);
-			}
+			perso1.movePlayer(engine, Direction.SOUTH);
 			break;
 		case Input.KEY_RIGHT:
-			if (!perso1.isMoving()) {
-				engine.doMove(Direction.EAST, perso1, engine.ma_map);
-				perso1.goToDirection(Direction.EAST);
-			}
+			perso1.movePlayer(engine, Direction.EAST);
 			break;
 		case Input.KEY_Z:
-			if (!perso2.isMoving()) {
-				engine.doMove(Direction.NORTH, perso2, engine.ma_map);
-				perso2.goToDirection(Direction.NORTH);
-			}
+			perso2.movePlayer(engine, Direction.NORTH);
 			break;
 		case Input.KEY_Q:
-			if (!perso2.isMoving()) {
-				engine.doMove(Direction.WEST, perso2, engine.ma_map);
-				perso2.goToDirection(Direction.WEST);
-			}
+			perso2.movePlayer(engine, Direction.WEST);
 			break;
 		case Input.KEY_S:
-			if (!perso2.isMoving()) {
-				engine.doMove(Direction.SOUTH, perso2, engine.ma_map);
-				perso2.goToDirection(Direction.SOUTH);
-			}
+			perso2.movePlayer(engine, Direction.SOUTH);
 			break;
 		case Input.KEY_D:
-			if (!perso2.isMoving()) {
-				engine.doMove(Direction.EAST, perso2, engine.ma_map);
-				perso2.goToDirection(Direction.EAST);
-			}
+			perso2.movePlayer(engine, Direction.EAST);
+			break;
+		case Input.KEY_O:
+			perso1.Attack(Direction.NORTH);
+			break;
+		case Input.KEY_K:
+			perso1.Attack(Direction.WEST);
+			break;
+		case Input.KEY_L:
+			perso1.Attack(Direction.SOUTH);
+			break;
+		case Input.KEY_M:
+			perso1.Attack(Direction.EAST);
+			break;
+		case Input.KEY_F:
+			perso2.Attack(Direction.NORTH);
+			break;
+		case Input.KEY_C:
+			perso2.Attack(Direction.WEST);
+			break;
+		case Input.KEY_V:
+			perso2.Attack(Direction.SOUTH);
+			break;
+		case Input.KEY_B:
+			perso2.Attack(Direction.EAST);
 			break;
 		}
-
 	}
+
 }

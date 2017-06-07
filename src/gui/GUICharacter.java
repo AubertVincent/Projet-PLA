@@ -7,6 +7,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 import entite.Direction;
+import moteurDuJeu.Engine;
 
 // Contenu a rajouter a personnages.Personnage 
 public class GUICharacter {
@@ -36,8 +37,14 @@ public class GUICharacter {
 	// Pour l'instant : animation[]
 	private final Animation[] animation_depl = new Animation[8];
 
+	private boolean AckRequest;
+	private boolean attacking;
+	private int beginAck;
+	private int AckDuration;
+
+	private final Animation[] animation_atk = new Animation[8];
 	private int team;
-	
+
 	private Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y, int animationDuration) {
 		Animation animation = new Animation();
 		for (int x = startX; x < endX; x++) {
@@ -58,6 +65,22 @@ public class GUICharacter {
 		this.animation_depl[5] = loadAnimation(spriteSheet, 1, 9, 1, animationDuration);
 		this.animation_depl[6] = loadAnimation(spriteSheet, 1, 9, 2, animationDuration);
 		this.animation_depl[7] = loadAnimation(spriteSheet, 1, 9, 3, animationDuration);
+	}
+
+	private void initAnimationAtk(String spriteSheetLocation, int spriteSheetWidth, int spriteSheetHeight,
+			int animationDuration) throws SlickException {
+		SpriteSheet spriteSheet = new SpriteSheet(
+				"/home/besnier-benjamin/git/Projet-PLA/src/res/SpriteSheetAnimAttack.png", spriteSheetWidth,
+				spriteSheetHeight);
+		this.animation_atk[0] = loadAnimation(spriteSheet, 0, 1, 0, animationDuration);
+		this.animation_atk[1] = loadAnimation(spriteSheet, 0, 1, 1, animationDuration);
+		this.animation_atk[2] = loadAnimation(spriteSheet, 0, 1, 2, animationDuration);
+		this.animation_atk[3] = loadAnimation(spriteSheet, 0, 1, 3, animationDuration);
+		this.animation_atk[4] = loadAnimation(spriteSheet, 1, 6, 0, animationDuration);
+		this.animation_atk[5] = loadAnimation(spriteSheet, 1, 6, 1, animationDuration);
+		this.animation_atk[6] = loadAnimation(spriteSheet, 1, 6, 2, animationDuration);
+		this.animation_atk[7] = loadAnimation(spriteSheet, 1, 6, 3, animationDuration);
+		AckDuration = animationDuration * 6;
 	}
 
 	/**
@@ -87,6 +110,7 @@ public class GUICharacter {
 		this.dir = dir;
 		this.setMoving(false);
 		this.initAnimation(spriteSheetAnimation, 64, 64, 100);
+		this.initAnimationAtk(spriteSheetAnimation, 64, 64, 100);
 		this.team = team;
 	}
 
@@ -100,7 +124,11 @@ public class GUICharacter {
 		g.setColor(new Color(0, 0, 0, .5f));
 		g.fillOval((int) xPx - 16, (int) yPx - 8, 32, 16);
 		// -32 et -60 to center in cell
-		g.drawAnimation(animation_depl[dir.toInt() + (isMoving() ? 4 : 0)], (int) xPx - 32, (int) yPx - 60);
+		if (isAttacking()) {
+			g.drawAnimation(animation_atk[dir.toInt() + (isAttacking() ? 4 : 0)], (int) xPx - 32, (int) yPx - 60);
+		} else {
+			g.drawAnimation(animation_depl[dir.toInt() + (isMoving() ? 4 : 0)], (int) xPx - 32, (int) yPx - 60);
+		}
 	}
 
 	/**
@@ -113,7 +141,21 @@ public class GUICharacter {
 	 *            The delay (in milliseconds) since the last call of this method
 	 */
 	public void update(GUI gui, int delta) {
+		if (isAttacking()) {
+			if (AckRequest) {
+				System.out.println("Ordonne l'attaque");
+				setAckRequest(false);
+				beginAck = (int) System.currentTimeMillis();
+			} else {
+				if ((beginAck + AckDuration) <= (int) System.currentTimeMillis()) {
+					setAttacking(false);
+				}
+			}
+		}
+
 		if (isMoving()) {
+
+			setAttacking(false);
 
 			float nextXPx = getCurrentXPx(), nextYPx = getCurrentYPx();
 
@@ -139,9 +181,20 @@ public class GUICharacter {
 		}
 	}
 
+	public int getTeam() {
+		return this.team;
+	}
+
+	protected void movePlayer(Engine engine, Direction direction) {
+		if (!isMoving() && !isAttacking()) {
+			engine.doMove(direction, this, engine.ma_map);
+			this.goToDirection(direction);
+		}
+	}
+
 	// returns true if GUIChararcter is in targetCell
 	private boolean isInPlace() {
-		// return false ;
+
 		float tolerance = 1f;
 
 		float maximumAcceptableHeight, maximumAcceptableWidth, minimumAcceptableHeight, minimumAcceptableWidth;
@@ -156,8 +209,6 @@ public class GUICharacter {
 		isInPlaceHeight = getCurrentYPx() <= maximumAcceptableHeight && getCurrentYPx() >= minimumAcceptableHeight;
 
 		return getCurrentX() == getTargetX() && getCurrentY() == getTargetY() && isInPlaceHeight && isInPlaceWidth;
-		// return getCurrentX() == getTargetX() && getCurrentY() ==
-		// getTargetY();
 	}
 
 	/**
@@ -276,8 +327,45 @@ public class GUICharacter {
 	private void setDirection(Direction dir) {
 		this.dir = dir;
 	}
-	
-	public int getTeam(){
-		return this.team;
+
+	public void Attack(Direction dir) {
+		if (!isMoving() && !isAttacking()) {
+			setDirection(dir);
+
+			switch (dir) {
+			case NORTH:
+				setAttackTarget(dir);
+				break;
+			case WEST:
+				setAttackTarget(dir);
+				break;
+			case SOUTH:
+				setAttackTarget(dir);
+				break;
+			case EAST:
+				setAttackTarget(dir);
+				break;
+			}
+
+			setAckRequest(true);
+			setAttacking(true);
+		}
+	}
+
+	private void setAckRequest(boolean ackRequest) {
+		this.AckRequest = ackRequest;
+	}
+
+	private boolean isAttacking() {
+		return attacking;
+	}
+
+	private void setAttacking(boolean attacking) {
+		this.attacking = attacking;
+	}
+
+	private void setAttackTarget(Direction dir) {
+		// TODO Attack the cell on the abscissa
+
 	}
 }
