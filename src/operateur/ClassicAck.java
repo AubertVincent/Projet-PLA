@@ -1,8 +1,10 @@
 package operateur;
 
-import carte.Cellule;
-import entite.*;
-import personnages.*;
+import carte.Cell;
+import entite.Direction;
+import entite.Entity;
+import entite.GameException;
+import personnages.Caracter;
 
 public class ClassicAck extends Attack {
 
@@ -38,10 +40,10 @@ public class ClassicAck extends Attack {
 		int x = e.getX();
 		int y = e.getY();
 		Direction d;
-		Cellule testEast = new Cellule(x + 1, y);
-		Cellule testSouth = new Cellule(x, y - 1);
-		Cellule testNorth = new Cellule(x, y + 1);
-		Cellule testWest = new Cellule(x - 1, y);
+		Cell testEast = new Cell(x + 1, y);
+		Cell testSouth = new Cell(x, y - 1);
+		Cell testNorth = new Cell(x, y + 1);
+		Cell testWest = new Cell(x - 1, y);
 		if (!e.isCaracter()) {
 			throw new GameException("Cette entité n'est pas un personnage");
 		} else {
@@ -63,6 +65,12 @@ public class ClassicAck extends Attack {
 			((Caracter) e).classicAtk();
 
 		}
+	}
+
+	@Override
+	public boolean isObstacle() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

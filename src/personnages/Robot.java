@@ -22,8 +22,11 @@ public class Robot extends Caracter {
 	public void suicideBomber() {
 		// TODO
 	}
-	
-	public void execute(){
-		//TODO exécution de tous les opérateurs de l'arbre
+
+
+	@Override
+	public boolean isObstacle() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

@@ -6,6 +6,8 @@ public abstract class Entity {
 
 	public abstract boolean isOperator();
 
+	public abstract boolean isObstacle();
+
 	private int x;
 	private int y;
 

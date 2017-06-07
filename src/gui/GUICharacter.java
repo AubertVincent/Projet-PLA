@@ -126,15 +126,15 @@ public class GUICharacter {
 			if (isInPlace()) {
 				setMoving(false);
 			} else {
-				if (gui.isObstacle(nextXPx, nextYPx)) {
-					System.out.println("Obstacle détecté :|");
-					setMoving(false);
-				} else {
+//				if (gui.isObstacle(nextXPx, nextYPx)) {
+//					System.out.println("Obstacle détecté :|");
+//					setMoving(false);
+//				} else {
 					this.xPx = nextXPx;
 					setCurrentX(GUI.pixelToCellX(nextXPx));
 					this.yPx = nextYPx;
 					setCurrentY(GUI.pixelToCellY(nextYPx));
-				}
+//				}
 			}
 		}
 	}
