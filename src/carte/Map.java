@@ -1,5 +1,6 @@
 package carte;
 
+import personnages.Robot;
 import java.util.List;
 
 import entite.Direction;
@@ -27,6 +28,8 @@ public class Map {
 	public void initMap(GUI guy) {
 		map[2][4].setEntity(new Player(2, 4, Direction.NORTH, 1, 1, 1, 1, 5, 1));
 		map[31][15].setEntity(new Player(31, 15, Direction.NORTH, 1, 1, 1, 1, 5, 1));
+		// Test Création de robot
+		map[10][10].setEntity(new Robot(10, 10, Direction.NORTH, 1, 1, 1, 1, 5, 1));
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				if (guy.isObstacle(GUI.cellToPixelX(i), GUI.cellToPixelY(j))) {

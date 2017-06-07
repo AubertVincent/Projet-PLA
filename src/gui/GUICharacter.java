@@ -36,6 +36,8 @@ public class GUICharacter {
 	// Pour l'instant : animation[]
 	private final Animation[] animation_depl = new Animation[8];
 
+	private int team;
+	
 	private Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y, int animationDuration) {
 		Animation animation = new Animation();
 		for (int x = startX; x < endX; x++) {
@@ -74,7 +76,7 @@ public class GUICharacter {
 	 * @throws SlickException
 	 *             Indicates a failure of the loading of a sprite sheet
 	 */
-	public GUICharacter(int x, int y, Direction dir, String spriteSheetAnimation) throws SlickException {
+	public GUICharacter(int x, int y, Direction dir, String spriteSheetAnimation, int team) throws SlickException {
 		super();
 		this.xCell = x;
 		this.yCell = y;
@@ -85,6 +87,7 @@ public class GUICharacter {
 		this.dir = dir;
 		this.setMoving(false);
 		this.initAnimation(spriteSheetAnimation, 64, 64, 100);
+		this.team = team;
 	}
 
 	/**
@@ -272,5 +275,9 @@ public class GUICharacter {
 
 	private void setDirection(Direction dir) {
 		this.dir = dir;
+	}
+	
+	public int getTeam(){
+		return this.team;
 	}
 }

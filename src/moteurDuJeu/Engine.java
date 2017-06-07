@@ -31,17 +31,17 @@ public class Engine {
 		ma_map.initMap(guy);
 	}
 
-	private void doMove(Direction dir, GUICharacter perso, int joueur, Map map) {
+	public void doMove(Direction dir, GUICharacter perso, Map map) {
 
 		// Mise a jour de la position du joueur 1
-		if (player1.getMovePoints() > 0 && joueur == 1) {
+		if (player1.getMovePoints() > 0 && perso.getTeam() == 1) {
 
 			switch (dir) {
 
 			case SOUTH:
-//				 System.out.println("case " + (player1.getX()+1) + ";" +
-//				 player1.getY() + " libre ? : " + map.isFree(player1.getX() +
-//				 1, player1.getY()));
+				// System.out.println("case " + (player1.getX()+1) + ";" +
+				// player1.getY() + " libre ? : " + map.isFree(player1.getX() +
+				// 1, player1.getY()));
 				if (map.isFree(player1.getX(), player1.getY() + 1)) {
 
 					player1.setY(player1.getY() + 1);
@@ -49,7 +49,7 @@ public class Engine {
 					// System.out.println(" J'ai libere la case : " +
 					// (player1.getX() - 1) + player1.getY());
 					map.Add(player1.getX(), player1.getY(), player1);
-					perso.goToDirection(Direction.SOUTH);
+					
 					player1.setMovePoints(player1.getMovePoints() - 1);
 				}
 				break;
@@ -60,7 +60,7 @@ public class Engine {
 					player1.setY(player1.getY() - 1);
 					map.Free(player1.getX(), player1.getY() + 1);
 					map.Add(player1.getX(), player1.getY(), player1);
-					perso.goToDirection(Direction.NORTH);
+					
 					player1.setMovePoints(player1.getMovePoints() - 1);
 				}
 				break;
@@ -71,7 +71,7 @@ public class Engine {
 					player1.setX(player1.getX() - 1);
 					map.Free(player1.getX() + 1, player1.getY());
 					map.Add(player1.getX(), player1.getY(), player1);
-					perso.goToDirection(Direction.WEST);
+
 					player1.setMovePoints(player1.getMovePoints() - 1);
 				}
 				break;
@@ -82,15 +82,15 @@ public class Engine {
 					player1.setX(player1.getX() + 1);
 					map.Free(player1.getX() - 1, player1.getY());
 					map.Add(player1.getX(), player1.getY(), player1);
-					perso.goToDirection(Direction.EAST);
+
 					player1.setMovePoints(player1.getMovePoints() - 1);
 				}
 
 				break;
 
 			}
-			System.out.println(" Joueur 1 : coordonnee de la case : " + player1.getX() +";" + player1.getY());
-		} else if (player2.getMovePoints() > 0 && joueur == 2) {
+			System.out.println(" Joueur 1 : coordonnee de la case : " + player1.getX() + ";" + player1.getY());
+		} else if (player2.getMovePoints() > 0 && perso.getTeam() == 2) {
 
 			switch (dir) {
 
@@ -100,7 +100,7 @@ public class Engine {
 					player2.setY(player2.getY() + 1);
 					map.Free(player2.getX(), player2.getY() - 1);
 					map.Add(player2.getX(), player2.getY(), player2);
-					perso.goToDirection(Direction.SOUTH);
+
 					player2.setMovePoints(player2.getMovePoints() - 1);
 				}
 				break;
@@ -112,7 +112,6 @@ public class Engine {
 					player2.setY(player2.getY() - 1);
 					map.Free(player2.getX(), player2.getY() + 1);
 					map.Add(player2.getX(), player2.getY(), player2);
-					perso.goToDirection(Direction.NORTH);
 					player2.setMovePoints(player2.getMovePoints() - 1);
 				}
 				break;
@@ -123,7 +122,7 @@ public class Engine {
 					player2.setX(player2.getX() - 1);
 					map.Free(player2.getX() + 1, player2.getY());
 					map.Add(player2.getX(), player2.getY(), player2);
-					perso.goToDirection(Direction.WEST);
+					
 					player2.setMovePoints(player2.getMovePoints() - 1);
 				}
 				break;
@@ -135,7 +134,7 @@ public class Engine {
 					player2.setX(player2.getX() + 1);
 					map.Free(player2.getX() - 1, player2.getY());
 					map.Add(player2.getX(), player2.getY(), player2);
-					perso.goToDirection(Direction.EAST);
+					
 					player2.setMovePoints(player2.getMovePoints() - 1);
 				}
 				break;
@@ -152,7 +151,7 @@ public class Engine {
 	public void update(Direction dir, GUICharacter perso, int joueur, Map map) {
 
 		// Allow to do the move for 5 MP
-		doMove(dir, perso, joueur, map);
+		doMove(dir, perso, map);
 
 		// Set to 5 the MP if all has been consume
 		if (this.EndGame == true) {
@@ -170,19 +169,6 @@ public class Engine {
 		// TODO Creation of robot
 	}
 
-	// private boolean RoundRobot(Player player1, Player player2) {
-	// for (Robot r : player2.getListRobot()) {
-	// r.execute();
-	// }
-	// for (Robot r : player1.getListRobot()) {
-	// r.execute();
-	// }
-	// if (player1.getLife() == 0 || player2.getLife() == 0) {
-	// return true;
-	// } else {
-	// return false;
-	// }
-	//
-	// }
+
 
 }
