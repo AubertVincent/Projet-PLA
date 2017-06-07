@@ -73,7 +73,7 @@ public abstract class Character extends Entity {
 	public void setPlayer(int player) {
 		this.player = player;
 	}
-	
+
 	public Direction getDirection() {
 		return this.direction;
 	}
@@ -163,7 +163,7 @@ public abstract class Character extends Entity {
 	 * 
 	 * @param target
 	 *            The cell targeted
-	 * @throws GameException 
+	 * @throws GameException
 	 */
 	public void classicAtk(Cell target) throws GameException {
 		Character opponent = target.getOpponent(this.player);
@@ -211,5 +211,4 @@ public abstract class Character extends Entity {
 			((Player) this).besace.put(picked, i++);
 		}
 	}
-
 }
