@@ -1,9 +1,6 @@
 package operateur;
 
-import entite.Entity;
-import exceptions.GameException;
 import exceptions.NotDoableException;
-import personnages.Character;
 import personnages.Robot;
 
 public class PickUp extends Action {
@@ -20,7 +17,7 @@ public class PickUp extends Action {
 																	// never
 																	// happen
 		} else {
-			r.pickUp(r);
+			r.pickUp();
 
 		}
 	}
