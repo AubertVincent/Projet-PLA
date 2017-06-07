@@ -61,7 +61,6 @@ public class GUI extends BasicGame {
 
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
-		moteur.
 		perso1.update(this, delta);
 		this.inputTextField.update(container);
 	}
