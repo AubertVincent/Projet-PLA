@@ -99,7 +99,7 @@ public class GUI extends BasicGame {
 	 *            y coordinate of the cell
 	 * @return
 	 */
-	public static boolean isObstacle(float x, float y) {
+	public static boolean isCollision(float x, float y) {
 		int tileW = map.getTileWidth();
 		int tileH = map.getTileHeight();
 		int logicLayer = map.getLayerIndex("obstacles");
@@ -109,6 +109,15 @@ public class GUI extends BasicGame {
 			Color color = tile.getColor((int) x % tileW, (int) y % tileH);
 			collision = color.getAlpha() > 0;
 		}
+		return collision;
+	}
+
+	public static boolean isObstacle(float x, float y) {
+		int tileW = map.getTileWidth();
+		int tileH = map.getTileHeight();
+		int logicLayer = map.getLayerIndex("obstacles");
+		Image tile = map.getTileImage((int) x / tileW, (int) y / tileH, logicLayer);
+		boolean collision = tile != null;
 		return collision;
 	}
 

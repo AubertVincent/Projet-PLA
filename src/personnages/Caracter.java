@@ -108,7 +108,6 @@ public abstract class Caracter extends Entity {
 			break;
 		case SOUTH:
 			setY(getY() - lg);
-			;
 			break;
 		case EAST:
 			setX(getX() + lg);
