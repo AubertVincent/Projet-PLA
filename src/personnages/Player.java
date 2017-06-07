@@ -109,4 +109,10 @@ public class Player extends Caracter {
 		
 	}
 
+	@Override
+	public boolean isObstacle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

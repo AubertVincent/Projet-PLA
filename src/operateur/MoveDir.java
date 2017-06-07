@@ -28,4 +28,10 @@ public class MoveDir extends Movement {
 
 	}
 
+	@Override
+	public boolean isObstacle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

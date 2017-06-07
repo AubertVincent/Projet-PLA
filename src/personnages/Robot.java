@@ -22,4 +22,10 @@ public class Robot extends Caracter {
 	public void suicideBomber() {
 		// TODO
 	}
+
+	@Override
+	public boolean isObstacle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

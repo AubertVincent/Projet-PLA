@@ -11,9 +11,9 @@ import personnages.Player;
 
 public class Engine {
 
-	private static Player player1 = new Player(2, 4, Direction.SOUTH, 1, 1, 1, 1, 5, 1);
-	private static Player player2 = new Player(30, 15, Direction.SOUTH, 1, 1, 1, 1, 5, 1);
-	private static Map map;
+	private static Player player1 = new Player(3, 5, Direction.SOUTH, 1, 1, 1, 1, 5, 1);
+	private static Player player2 = new Player(31, 16, Direction.SOUTH, 1, 1, 1, 1, 5, 1);
+	//private static Map map;
 	private static int nbrRound;
 	private static boolean EndGame;
 
@@ -23,9 +23,9 @@ public class Engine {
 	 * @throws SlickException
 	 */
 	public Engine() throws SlickException {
-		 player1 = new Player(5, 12, Direction.NORTH, 1, 1, 1, 1, 5, 1);
-		 player2 = new Player(100, 100, Direction.NORTH, 1, 1, 1, 1, 5, 1);
-		map = new Map();
+		player1 = new Player(5, 12, Direction.NORTH, 1, 1, 1, 1, 5, 1);
+		player2 = new Player(30, 15, Direction.NORTH, 1, 1, 1, 1, 5, 1);
+		//map = new Map();
 		// Map.initMap();
 		// perso1 = new GUICharacter(2, 4, entite.Direction.SOUTH,
 		// "res/SpriteSheetAnim.png");
@@ -44,7 +44,8 @@ public class Engine {
 
 			case SOUTH:
 				if (Map.isFree(player1.getX() + 1, player1.getY())) {
-					//System.out.println("case libre ? : " + Map.isFree(player1.getX() + 1, player1.getY()));
+					// System.out.println("case libre ? : " +
+					// Map.isFree(player1.getX() + 1, player1.getY()));
 					player1.setX(player1.getX() + 1);
 					Map.Free(player1.getX() - 1, player1.getY());
 					Map.Add(player1.getX(), player1.getY(), player1);
@@ -55,7 +56,8 @@ public class Engine {
 
 			case NORTH:
 				if (Map.isFree(player1.getX() - 1, player1.getY())) {
-					//System.out.println("case libre ? : " + Map.isFree(player1.getX() - 1, player1.getY()));
+					// System.out.println("case libre ? : " +
+					// Map.isFree(player1.getX() - 1, player1.getY()));
 					player1.setX(player1.getX() - 1);
 					Map.Free(player1.getX() + 1, player1.getY());
 					Map.Add(player1.getX(), player1.getY(), player1);
@@ -66,7 +68,8 @@ public class Engine {
 
 			case WEST:
 				if (Map.isFree(player1.getX(), player1.getY() - 1)) {
-					//System.out.println("case libre ? : " + Map.isFree(player1.getX(), player1.getY() - 1));
+					// System.out.println("case libre ? : " +
+					// Map.isFree(player1.getX(), player1.getY() - 1));
 					player1.setY(player1.getY() - 1);
 					Map.Free(player1.getX(), player1.getY() + 1);
 					Map.Add(player1.getX(), player1.getY(), player1);
@@ -77,7 +80,8 @@ public class Engine {
 
 			case EAST:
 				if (Map.isFree(player1.getX(), player1.getY() + 1)) {
-					//System.out.println("case libre ? : " + Map.isFree(player1.getX(), player1.getY() + 1));
+					// System.out.println("case libre ? : " +
+					// Map.isFree(player1.getX(), player1.getY() + 1));
 					player1.setY(player1.getY() + 1);
 					Map.Free(player1.getX(), player1.getY() - 1);
 					Map.Add(player1.getX(), player1.getY(), player1);
@@ -86,16 +90,17 @@ public class Engine {
 				}
 
 				break;
-				
+
 			}
-			System.out.println("coordonnee de la case : "+ player1.getX() + ";" + player2.getY());
+			System.out.println("coordonnee de la case : " + player1.getX() + ";" + player1.getY());
 		} else if (player2.getMovePoints() > 0 && joueur == 2) {
 
 			switch (dir) {
 
 			case SOUTH:
 				if (Map.isFree(player2.getX() + 1, player2.getY())) {
-					//System.out.println("case libre ? : " + Map.isFree(player2.getX() + 1, player2.getY()));
+					// System.out.println("case libre ? : " +
+					// Map.isFree(player2.getX() + 1, player2.getY()));
 					player2.setX(player2.getX() + 1);
 					Map.Free(player2.getX() - 1, player1.getY());
 					Map.Add(player2.getX(), player2.getY(), player2);
@@ -118,7 +123,8 @@ public class Engine {
 
 			case WEST:
 				if (Map.isFree(player2.getX(), player2.getY() - 1)) {
-					//System.out.println("case libre ? : " + Map.isFree(player2.getX(), player2.getY() - 1));
+					// System.out.println("case libre ? : " +
+					// Map.isFree(player2.getX(), player2.getY() - 1));
 					player2.setY(player2.getY() - 1);
 					Map.Free(player2.getX(), player2.getY() + 1);
 					Map.Add(player2.getX(), player2.getY(), player2);
@@ -130,7 +136,8 @@ public class Engine {
 			case EAST:
 
 				if (Map.isFree(player2.getX(), player2.getY() + 1)) {
-					//System.out.println("case libre ? : " + Map.isFree(player1.getX(), player1.getY() + 1));
+					// System.out.println("case libre ? : " +
+					// Map.isFree(player1.getX(), player1.getY() + 1));
 					player2.setY(player2.getY() + 1);
 					Map.Free(player2.getX(), player2.getY() - 1);
 					Map.Add(player2.getX(), player2.getY(), player2);
@@ -139,7 +146,7 @@ public class Engine {
 				}
 				break;
 			}
-			System.out.println("coordonnee de la case : "+ player2.getX() + ";" + player2.getY());
+			System.out.println("coordonnee de la case : " + player2.getX() + ";" + player2.getY());
 		} else {
 			System.out.println("Plus de point de déplacement \n");
 			return false;
@@ -152,7 +159,7 @@ public class Engine {
 
 		// Permit to do the move for 5 MP
 		boolean smth_append = doMove(dir, perso, joueur);
-		
+
 		// Set to 5 the MP if all has been consume
 		if (smth_append == false) {
 			nbrRound++;
@@ -165,13 +172,10 @@ public class Engine {
 				break;
 			}
 		}
-		
-		
+
 		// TODO Creation of robot
 		return smth_append;
 	}
-
-	
 
 	// private boolean RoundRobot(Player player1, Player player2) {
 	// for (Robot r : player2.getListRobot()) {

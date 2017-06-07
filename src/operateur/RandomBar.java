@@ -22,4 +22,10 @@ public class RandomBar extends Behavior {
 		//TODO	b.execute();
 		}
 	}
+
+	@Override
+	public boolean isObstacle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

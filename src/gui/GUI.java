@@ -17,7 +17,7 @@ import moteurDuJeu.Engine;
 public class GUI extends BasicGame {
 
 	private GameContainer container;
-	private TiledMap map;
+	private static TiledMap map;
 	private static final int WindowHeight = 576;
 	private static final int WindowWidth = 1088;
 	private static final int TextFieldHeight = 50;
@@ -32,9 +32,7 @@ public class GUI extends BasicGame {
 	private GUICharacter perso2;
 
 	public static void main(String[] args) throws SlickException {
-		new Map();
-		Map.initMap();
-		//new Engine();
+
 		new AppGameContainer(new GUI(), WindowWidth, WindowHeight, false).start();
 	}
 
@@ -49,6 +47,8 @@ public class GUI extends BasicGame {
 		this.perso1 = new GUICharacter(2, 4, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
 		this.perso2 = new GUICharacter(30, 15, entite.Direction.SOUTH, "res/SpriteSheetAnim.png");
 		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "{D3H | D}*");
+		new Map();
+		Map.initMap();
 	}
 
 	@Override
@@ -99,11 +99,11 @@ public class GUI extends BasicGame {
 	 *            y coordinate of the cell
 	 * @return
 	 */
-	protected boolean isObstacle(float x, float y) {
-		int tileW = this.map.getTileWidth();
-		int tileH = this.map.getTileHeight();
-		int logicLayer = this.map.getLayerIndex("obstacles");
-		Image tile = this.map.getTileImage((int) x / tileW, (int) y / tileH, logicLayer);
+	public static boolean isObstacle(float x, float y) {
+		int tileW = map.getTileWidth();
+		int tileH = map.getTileHeight();
+		int logicLayer = map.getLayerIndex("obstacles");
+		Image tile = map.getTileImage((int) x / tileW, (int) y / tileH, logicLayer);
 		boolean collision = tile != null;
 		if (collision) {
 			Color color = tile.getColor((int) x % tileW, (int) y % tileH);

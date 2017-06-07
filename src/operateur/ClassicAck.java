@@ -67,4 +67,10 @@ public class ClassicAck extends Attack {
 		}
 	}
 
+	@Override
+	public boolean isObstacle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

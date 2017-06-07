@@ -1,7 +1,8 @@
 package operateur;
 
-import entite.*;
-import personnages.*;
+import entite.Direction;
+import entite.Entity;
+import entite.GameException;
 
 public class suicideBomber extends Attack {
 
@@ -30,6 +31,12 @@ public class suicideBomber extends Attack {
 			// TODO
 		}
 
+	}
+
+	@Override
+	public boolean isObstacle() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
