@@ -43,7 +43,7 @@ public class ClassicAck extends Attack {
 	@Override
 	public void execute(Robot r) throws NotDoableException {
 		if (!isDoable(r)) {
-			throw new NotDoableException("Il n'y a personne à attacker");
+			throw new NotDoableException("Il n'y a personne à attaquer");
 		} else {
 
 			int x = r.getX();
