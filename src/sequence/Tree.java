@@ -30,4 +30,11 @@ public class Tree implements _Sequence {
 		op.execute(r, left, right);
 	}
 
+	@Override
+	public String toString() {
+		return op.toString() + "[" + left.toString() + " , " + right.toString() + "]";
+	}
+
+	
+	
 }
