@@ -9,9 +9,9 @@ public class SuicideBomber extends Attack {
 	@Override
 	protected boolean isDoable(Entity e) {
 		if (((Character) e).isRobot()) {
-			return false;
-		} else {
 			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -21,7 +21,7 @@ public class SuicideBomber extends Attack {
 			throw new GameException("Cette entité n'est pas un robot");
 
 		} else {
-			((Robot) e).suicideBomber(e);
+			((Robot) e).suicideBomber();
 		}
 	}
 

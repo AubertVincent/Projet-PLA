@@ -6,9 +6,6 @@ import personnages.Character;
 
 public class ClassicAck extends Attack {
 
-	protected Character opponent;
-	protected Character attacker;
-
 	/**
 	 * Set a new classicAck by leans of its attacker and its opponent
 	 * 
@@ -17,11 +14,6 @@ public class ClassicAck extends Attack {
 	 * @param opponent
 	 *            the target
 	 */
-	public ClassicAck(Character attacker, Character opponent) {
-		super();
-		this.opponent = opponent;
-		this.attacker = attacker;
-	}
 
 	public ClassicAck() {
 		super();
@@ -56,27 +48,34 @@ public class ClassicAck extends Attack {
 		if (!e.isCharacter()) {
 			throw new GameException("Cette entité n'est pas un personnage");
 		} else {
+
 			int x = e.getX();
 			int y = e.getY();
+			Map myMap = e.getEntityMap();
 			Direction d;
-			Cell testEast = Map.getCell(x + 1, y);
-			Cell testSouth = Map.getCell(x, y - 1);
-			Cell testNorth = Map.getCell(x, y + 1);
-			Cell testWest = Map.getCell(x - 1, y);
-			if (!(testEast.isEmpty())) {
+			Cell testEast = myMap.getCell(x + 1, y);
+			Cell testSouth = myMap.getCell(x, y - 1);
+			Cell testNorth = myMap.getCell(x, y + 1);
+			Cell testWest = myMap.getCell(x - 1, y);
+			Cell target = null;
+			if (!(testEast.isFree())) {
 				d = Direction.EAST;
 				((Character) e).setDirection(d);
-			} else if (!(testNorth.isEmpty())) {
+				target = testEast;
+			} else if (!(testNorth.isFree())) {
 				d = Direction.NORTH;
 				((Character) e).setDirection(d);
-			} else if (!(testWest.isEmpty())) {
+				target = testNorth;
+			} else if (!(testWest.isFree())) {
 				d = Direction.WEST;
 				((Character) e).setDirection(d);
-			} else if (!(testSouth.isEmpty())) {
+				target = testWest;
+			} else if (!(testSouth.isFree())) {
 				d = Direction.SOUTH;
 				((Character) e).setDirection(d);
+				target = testSouth;
 			}
-			((Character) e).classicAtk(attacker, opponent);
+			((Character) e).classicAtk(target);
 
 		}
 	}

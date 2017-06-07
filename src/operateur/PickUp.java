@@ -17,7 +17,7 @@ public class PickUp extends Action {
 			throw new GameException("Imoossible de ramasser"); //Should never happen
 		}
 		else{
-			((Character) e).pickUp(e);
+			((Character) e).pickUp();
 		}
 	}
 

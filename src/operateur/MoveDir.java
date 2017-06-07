@@ -34,26 +34,27 @@ public class MoveDir extends Movement {
 	protected boolean isDoable(Entity e) {
 		int x = e.getX();
 		int y = e.getY();
+		Map myMap = e.getEntityMap();
 
 		for (int i = 0; i < lg; i++) {
 			switch (dir) {
 			case NORTH:
-				if (!Map.isFree(x, y - i)) {
+				if (!myMap.isFree(x, y - i)) {
 					return false;
 				}
 				break;
 			case EAST:
-				if (!Map.isFree(x + i, y)) {
+				if (!myMap.isFree(x + i, y)) {
 					return false;
 				}
 				break;
 			case SOUTH:
-				if (!Map.isFree(x, y + i)) {
+				if (!myMap.isFree(x, y + i)) {
 					return false;
 				}
 				break;
 			case WEST:
-				if (!Map.isFree(x - i, y)) {
+				if (!myMap.isFree(x - i, y)) {
 					return false;
 				}
 				break;

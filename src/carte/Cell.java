@@ -3,7 +3,7 @@ package carte;
 import java.util.ArrayList;
 import java.util.List;
 
-import entite.Entity;
+import entite.*;
 
 public class Cell {
 	protected int x;
@@ -49,6 +49,15 @@ public class Cell {
 
 	private int getY() {
 		return this.y;
+	}
+
+	public List<Entity> getListEntity() {
+		return listeEntites;
+	}
+
+	public personnages.Character getOpponent() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

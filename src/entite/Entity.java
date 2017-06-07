@@ -1,21 +1,28 @@
 package entite;
 
+import carte.Map;
+
 public abstract class Entity {
 
-	private int x;
-	private int y;
+	protected int x;
+	protected int y;
+	protected final Map entityMap;
 
 	public abstract boolean isCharacter();
+	public abstract boolean isPickAble();
 
 	/**
+	 * 
 	 * Set a new Entity on the map by means of its coordinates
 	 * @param x x coordinate on the map
 	 * @param y y coordinate on the map
+	 * @param entityMap The map on which the entity is located
 	 */
-	public Entity(int x, int y) {
+	public Entity(int x, int y, Map entityMap) {
 		super();
 		this.x = x;
 		this.y = y;
+		this.entityMap = entityMap;
 	}
 
 	/**
@@ -26,6 +33,7 @@ public abstract class Entity {
 		this.x = x;
 	}
 
+	
 	/**
 	 * Set the y coordinate of an Entity
 	 * @param y y coordinate on the map
@@ -49,6 +57,10 @@ public abstract class Entity {
 	 */
 	public int getY() {
 		return this.y;
+	}
+	
+	public Map getEntityMap() {
+		return entityMap;
 	}
 
 }

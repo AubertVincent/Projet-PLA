@@ -42,7 +42,7 @@ public class Tunnel extends Movement {
 		if (!isDoable(e)) {
 			throw new GameException("La case d'arrivée est occupée");
 		}
-		((Character) e).teleport(e, x, y);
+		((Character) e).teleport(x, y);
 	}
 
 }

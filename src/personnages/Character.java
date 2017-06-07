@@ -1,7 +1,10 @@
 package personnages;
 
+import carte.Cell;
+import carte.Map;
 import entite.Direction;
 import entite.Entity;
+import entite.GameException;
 import pickable.*;
 
 public abstract class Character extends Entity {
@@ -37,9 +40,9 @@ public abstract class Character extends Entity {
 	 * @param recall
 	 *            Character's recall's time
 	 */
-	public Character(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
+	public Character(int x, int y,Map entityMap, Direction direction, int life, int vision, int attack, int range, int movePoints,
 			int recall) {
-		super(x, y);
+		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
 		this.vision = vision;
@@ -55,6 +58,10 @@ public abstract class Character extends Entity {
 
 	public boolean isCharacter() {
 		return true;
+	}
+	
+	public boolean isPickAble(){
+		return false;
 	}
 
 	public Direction getDirection() {
@@ -142,23 +149,20 @@ public abstract class Character extends Entity {
 	}
 
 	/**
-	 * Make an interaction between two fighters
-	 * 
-	 * @param attacker
-	 *            the initiator of the attack
-	 * @param opponent
-	 *            the target
+	 * Make an Entity attack an entity on the cell targeted
+	 * @param target The cell targeted
 	 */
-	public void classicAtk(Character attacker, Character opponent) {
-		int lifeA = attacker.getLife();
+	public void classicAtk(Cell target) {
+		Character opponent = target.getOpponent();
+		int lifeA = this.getLife();
 		int lifeE = opponent.getLife();
-		int atkA = attacker.getAttack();
+		int atkA = this.getAttack();
 		int atkE = opponent.getAttack();
 
 		lifeA = java.lang.Math.max(lifeA - atkE, 0);
 		lifeE = java.lang.Math.max(lifeE - atkA, 0);
 
-		attacker.setLife(lifeA);
+		this.setLife(lifeA);
 		opponent.setLife(lifeE);
 	}
 
@@ -172,20 +176,26 @@ public abstract class Character extends Entity {
 	 * @param y
 	 *            y coordinate on the map
 	 */
-	public void teleport(Entity e, int x, int y) {
-		e.setX(x);
-		e.setY(y);
+	public void teleport( int x, int y) {
+		this.setX(x);
+		this.setY(y);
 	}
 
 	/**
-	 * Pick up an entity
-	 * 
-	 * @param e
-	 *            The entity which is picking up
+	 * Pick an entity ('picked' here) on the cell
+	 * @throws GameException
 	 */
-	public void pickUp(Entity e) {
-		// TODO
-		PickAble.pick(e);
+	public void pickUp() throws GameException {
+		Map myMap = this.getEntityMap();
+		Class<PickAble> picked = myMap.pickableEntity(this.getX(), this.getY());
+		myMap.freePick(picked, this.getX(), this.getY());
+		if (this.isRobot()) {
+			int i = ((Robot) this).isToPlayer().besace.get(picked.getClass());
+			((Robot) this).isToPlayer().besace.put(picked, i++);
+		} else if (this.isPlayer()) {
+			int i = ((Player) this).besace.get(picked.getClass());
+			((Player) this).besace.put(picked, i++);
+		}
 	}
 
 }
