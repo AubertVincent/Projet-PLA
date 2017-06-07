@@ -99,7 +99,7 @@ public class Engine {
 				if (map.isFree(player2.getX(), player2.getY() + 1)) {
 					System.out.println("case libre ? : " + map.isFree(player2.getX() + 1, player2.getY()));
 					player2.setY(player2.getY() + 1);
-					map.Free(player2.getX(), player1.getY() - 1);
+					map.Free(player2.getX(), player2.getY() - 1);
 					map.Add(player2.getX(), player2.getY(), player2);
 					perso.goToDirection(Direction.SOUTH);
 					player2.setMovePoints(player2.getMovePoints() - 1);
