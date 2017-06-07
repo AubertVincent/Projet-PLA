@@ -27,7 +27,7 @@ public class Tree implements _Sequence {
 	}
 	
 	public void execute(Robot r) throws NotDoableException{
-		op.execute(left, right);
+		op.execute(r, left, right);
 	}
 
 }

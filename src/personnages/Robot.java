@@ -7,11 +7,15 @@ import java.util.List;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
+import exceptions.NotDoableException;
 import operateur.*;
+import sequence._Sequence;
 
 public class Robot extends Character {
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
+
+	_Sequence myAutomata;
 
 	/**
 	 * Set a new Robot
@@ -104,4 +108,9 @@ public class Robot extends Character {
 			}
 		}
 	}
+	
+	public void execute() throws NotDoableException{
+		myAutomata.execute(this);
+	}
+	
 }

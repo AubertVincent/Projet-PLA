@@ -1,8 +1,7 @@
 package operateur;
 
-import entite.*;
-import exceptions.GameException;
 import exceptions.NotDoableException;
+import personnages.Robot;
 import sequence._Sequence;
 
 public class Priority extends Behavior {
@@ -30,12 +29,12 @@ public class Priority extends Behavior {
 	
 	
 	@Override
-	public void execute(_Sequence left, _Sequence right) throws NotDoableException {
+	public void execute(Robot r,_Sequence left, _Sequence right) throws NotDoableException {
 		try {
-			left.execute();
+			left.execute(r);
 		} catch (NotDoableException e) {
 			try {
-				right.execute();
+				right.execute(r);
 			} catch (NotDoableException e2) {
 				throw new NotDoableException();
 			}

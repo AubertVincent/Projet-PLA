@@ -1,8 +1,7 @@
 package operateur;
 
-import entite.*;
-import exceptions.GameException;
 import exceptions.NotDoableException;
+import personnages.Robot;
 import sequence._Sequence;
 
 public class Succession extends Behavior {
@@ -17,6 +16,16 @@ public class Succession extends Behavior {
 	 */
 	public Succession() {
 		super();
+	}
+	
+	@Override
+	public void execute(Robot r,_Sequence left, _Sequence right) throws NotDoableException {
+		try {
+			left.execute(r);
+			right.execute(r);
+		} catch (NotDoableException e) {
+			throw new NotDoableException();
+		}
 	}
 
 	/**
@@ -35,13 +44,5 @@ public class Succession extends Behavior {
 //		B.execute(e);
 //	}
 
-	@Override
-	public void execute(_Sequence left, _Sequence right) throws NotDoableException {
-		try {
-			left.execute();
-			right.execute();
-		} catch (NotDoableException e) {
-			throw new NotDoableException();
-		}
-	}
+
 }

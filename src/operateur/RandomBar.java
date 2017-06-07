@@ -1,9 +1,9 @@
 package operateur;
 
 import java.util.Random;
-import entite.*;
-import exceptions.GameException;
+
 import exceptions.NotDoableException;
+import personnages.Robot;
 import sequence._Sequence;
 
 public class RandomBar extends Behavior {
@@ -42,14 +42,14 @@ public class RandomBar extends Behavior {
 //	}
 
 	@Override
-	public void execute(_Sequence left, _Sequence right) throws NotDoableException {
-		Random r = new Random();
-		int n = r.nextInt(2);
+	public void execute(Robot r,_Sequence left, _Sequence right) throws NotDoableException {
+		Random random = new Random();
+		int n = random.nextInt(2);
 		try {
 			if (n == 0) {
-				right.execute();
+				right.execute(r);
 			} else {
-				left.execute();
+				left.execute(r);
 			}
 		} catch (NotDoableException e) {
 			throw new NotDoableException();
