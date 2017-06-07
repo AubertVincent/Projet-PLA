@@ -124,8 +124,8 @@ TOKEN :
 | < N : "N" >
 | < W : "W" >
 | < E : "E" >
-|   < LETTER : [ "a"-"z", "A"-"Z" ] >
-| < DIGIT : [ "0"-"9" ] >
+| < LETTER : [ "a"-"z", "A"-"Z" ] >
+| < DIGIT : [ "0"-"9" ] > 
 | < LPAR : "(" >
 | < RPAR : ")" >
 | < BARRE : "|" >
@@ -136,7 +136,7 @@ TOKEN :
       < LETTER >
     | < DIGIT >
     )+ >
-| < OP :
+| < BEH :
     (
       < BARRE >
     | < SEMICOLON >
@@ -148,7 +148,7 @@ TOKEN :
 
 
 
-Operator OP() :
+Behavior BEH() :
 {
 }
 {
@@ -170,13 +170,13 @@ Operator OP() :
 _Sequence SEQUENCE() :
 {
   Action act ;
-  Operator op ;
+  Behavior beh ;
   _Sequence left, right ;
 }
 {
-  < LPAR > left = SEQUENCE() op = OP() right = SEQUENCE() < RPAR >
+  < LPAR > left = SEQUENCE() beh = BEH() right = SEQUENCE() < RPAR >
 	{
-	return Tree(op, left, right) ;
+	return new Tree(beh, left, right) ;
 	}
 
 | act = ACTION()
@@ -187,6 +187,7 @@ _Sequence SEQUENCE() :
 Action ACTION():
 {
 	Movement mov ;
+	Attack att ;
 }
 {
   < M > mov = MOVEMENT()
@@ -216,21 +217,26 @@ Attack ATT() :
 
 Movement MOVEMENT() :
 {
+  	Token tok1, tok2 ;
   	int len ;
 	int x, y;
 	Direction dir;
 }
 {
-	< C > len = < DIGIT > dir = DIRECTION()
+	< C > tok1 = < DIGIT > dir = DIRECTION()
 	{
+	  len = Integer.parseInt( tok1.image );
 	  return new MoveDir(dir, len);
 	}
-| < R > len = < DIGIT >
+| < R > tok1 = < DIGIT >
 	{
+	  len = Integer.parseInt( tok1.image );
 	  return new Recall(len);
 	}
-| < T > x = < DIGIT > y = < DIGIT >
+| < T > tok1 = < DIGIT > tok2 = < DIGIT >
 	{
+	  x = Integer.parseInt( tok1.image );
+	  y = Integer.parseInt( tok2.image );
 	  return new Tunnel(x, y);
 	}
 }
@@ -241,19 +247,19 @@ Direction DIRECTION() :
 {
 	< N >
 	{
-	  return new Direction(NORTH);
+	  return Direction.NORTH;
 	}
 	< W >
 	{
-	  return new Direction(WEST);
+	  return Direction.WEST;
 	}
 	< S >
 	{
-	  return new Direction(SOUTH);
+	  return Direction.SOUTH;
 	}
 	< E >
 	{
-	  return new Direction(EAST);
+	  return Direction.EAST;
 	}	  	
 }
 

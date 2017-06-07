@@ -2,8 +2,8 @@ package sequence;
 
 public class Test {
 
-	String giveString(){
-		return "{A|{B;C}}";
+	public static String giveString(){
+		return "(A|(B;C))";
 	}
 	
 }
