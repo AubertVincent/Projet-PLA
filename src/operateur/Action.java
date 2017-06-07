@@ -6,10 +6,6 @@ import sequence._Sequence;
 
 public abstract class Action extends Operator implements _Sequence {
 
-	public Action(int x, int y) {
-		super(x, y);
-	}
-
 	@Override
 	public boolean IsAction() {
 		return true;
@@ -20,7 +16,4 @@ public abstract class Action extends Operator implements _Sequence {
 		return false;
 	}
 
-	public abstract void execute(Entity e) throws GameException;
-
-	public abstract boolean isDoable();
 }

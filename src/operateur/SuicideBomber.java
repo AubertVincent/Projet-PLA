@@ -1,17 +1,18 @@
 package operateur;
 
 import entite.*;
+import personnages.Character;
 
 public class SuicideBomber extends Attack {
 
-	public SuicideBomber(int x, int y) {
-		super(x, y);
-	}
-
 	@Override
-	public boolean isDoable() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isDoable(Entity e) {
+		if (((Character) e).isRobot()) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	@Override

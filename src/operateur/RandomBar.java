@@ -5,23 +5,46 @@ import entite.*;
 
 public class RandomBar extends Behavior {
 
-	public RandomBar(int x, int y, Action A, Action B) {
-		super(x, y, A, B);
+	/**
+	 * Set a new behavior by means of its 2 actions
+	 * 
+	 * @param A
+	 *            First action
+	 * @param B
+	 *            Second action
+	 */
+	public RandomBar(Action A, Action B) {
+		super(A, B);
 	}
 
-	public boolean test() {
+	/**
+	 * check if one of the two actions is doable
+	 */
+	@Override
+	protected boolean isDoable(Entity e) {
+		return A.isDoable(e) || B.isDoable(e);
+	}
+
+	private Action randomAction(Action A, Action B) {
 		Random r = new Random();
 		int n = r.nextInt(2);
-		return (n == 0);
+		if (n == 0) {
+			return A;
+		} else {
+			return B;
+		}
 	}
 
-	public void random(Entity e) throws GameException {
-		// TODO Créer une nouvelle classe qui prend une séquence et qui gère
-		// l'execution des actions
-		if (test()) {
+	@Override
+	protected void execute(Entity e) throws GameException {
+		if (!(isDoable(e))) {
+			throw new GameException("Aucune des deux actions n'est possible");
+		} else if (!(A.isDoable(e))) {
+			B.execute(e);
+		} else if (!(B.isDoable(e))) {
 			A.execute(e);
 		} else {
-			B.execute(e);
+			randomAction(A, B).execute(e);
 		}
 	}
 
