@@ -4,8 +4,10 @@ import carte.Cell;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
+import entite.Team;
+import exceptions.GameException;
 import exceptions.NotDoableException;
-import pickable.*;
+import pickable.PickAble;
 
 public abstract class Character extends Entity {
 
@@ -17,7 +19,7 @@ public abstract class Character extends Entity {
 	protected int range;
 	protected int movePoints;
 	protected int recall;
-	protected int player;
+	protected Team team;
 
 	/**
 	 * Set a new character
@@ -42,7 +44,7 @@ public abstract class Character extends Entity {
 	 *            Character's recall's time
 	 */
 	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int player) {
+			int movePoints, int recall, Team team) {
 		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
@@ -51,7 +53,7 @@ public abstract class Character extends Entity {
 		this.range = range;
 		this.movePoints = movePoints;
 		this.recall = recall;
-		this.player = player;
+		this.team = team;
 	}
 
 	protected abstract boolean isPlayer();
@@ -66,12 +68,12 @@ public abstract class Character extends Entity {
 		return false;
 	}
 
-	public int getPlayer() {
-		return player;
+	public Team getTeam() {
+		return team;
 	}
 
-	public void setPlayer(int player) {
-		this.player = player;
+	public void setPlayer(Team team) {
+		this.team = team;
 	}
 
 	public Direction getDirection() {
@@ -167,7 +169,7 @@ public abstract class Character extends Entity {
 	 */
 	public void classicAtk(Cell target) throws NotDoableException {
 		try {
-			Character opponent = target.getOpponent(this.player);
+			Character opponent = target.getOpponent(this.team);
 			int lifeA = this.getLife();
 			int lifeE = opponent.getLife();
 			int atkA = this.getAttack();
