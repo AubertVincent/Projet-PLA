@@ -7,6 +7,9 @@ import personnages.Robot;
 
 public class RandomMove extends Movement {
 
+	private int lg; // Length of the movement
+	private Direction direction; // Direction of the movement
+
 	public RandomMove() {
 		super();
 	}
@@ -64,14 +67,28 @@ public class RandomMove extends Movement {
 			}
 			r.setDirection(dir);
 		} while (!isReachable(r, dir, lg));
+		this.direction = dir;
+		this.lg = lg;
 		r.goTo(dir, lg);
-
 	}
 
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
-		//TODO
-
+		switch (direction) {
+		case NORTH:
+			direction = Direction.SOUTH;
+			break;
+		case SOUTH:
+			direction = Direction.NORTH;
+			break;
+		case WEST:
+			direction = Direction.EAST;
+			break;
+		case EAST:
+			direction = Direction.WEST;
+			break;
+		}
+		r.goTo(direction, lg);
 	}
 
 	@Override

@@ -53,7 +53,6 @@ public class Tunnel extends Movement {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return super.toString() + "(" + x.toString() + "," + y.toString() + ")";
 	}
 
