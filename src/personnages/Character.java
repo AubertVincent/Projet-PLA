@@ -4,7 +4,7 @@ import java.util.List;
 
 import carte.Cell;
 import carte.Map;
-import carte.Team;
+import entite.Team;
 import entite.Direction;
 import entite.Entity;
 import exceptions.NotDoableException;
@@ -21,7 +21,7 @@ public abstract class Character extends Entity {
 	protected int range;
 	protected int movePoints;
 	protected int recall;
-	protected int player;
+	protected Team team;
 
 	/**
 	 * Set a new character
@@ -46,7 +46,7 @@ public abstract class Character extends Entity {
 	 *            Character's recall's time
 	 */
 	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall) {
+			int movePoints, int recall,Team team) {
 		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
@@ -55,7 +55,7 @@ public abstract class Character extends Entity {
 		this.range = range;
 		this.movePoints = movePoints;
 		this.recall = recall;
-//		this.player = player;
+		this.team = team;
 	}
 
 	protected abstract boolean isPlayer();
@@ -77,14 +77,24 @@ public abstract class Character extends Entity {
 //	public Player getPlayer() {
 //		return player;
 //	}
+//
+//	public void setPlayer(int player) {
+//		this.player = player;
+//	}
 
-	public void setPlayer(int player) {
-		this.player = player;
+	public Team getTeam() {
+		return team;
 	}
+
+	public void setTeam(Team team) {
+		this.team = team;
+	}
+	
 
 	public Direction getDirection() {
 		return this.direction;
 	}
+
 
 	public void setDirection(Direction direction) {
 		this.direction = direction;
@@ -175,7 +185,7 @@ public abstract class Character extends Entity {
 	 */
 	public void classicAtk(Cell target) throws NotDoableException {
 		try {
-			Character opponent = target.getOpponent(this.player);
+			Character opponent = target.getOpponent(this.team);
 			int lifeA = this.getLife();
 			int lifeE = opponent.getLife();
 			int atkA = this.getAttack();
@@ -194,7 +204,7 @@ public abstract class Character extends Entity {
 
 	public void cancelClassicAtk(Cell target) throws NotDoableException {
 		try {
-			Character opponent = target.getOpponent(this.player);
+			Character opponent = target.getOpponent(this.team);
 			int lifeA = this.getLife();
 			int lifeE = opponent.getLife();
 			int atkA = this.getAttack();
@@ -275,8 +285,8 @@ public abstract class Character extends Entity {
 		while (picked.size() > 0) {
 			Class<PickAble> classPicked = picked.get(0);
 			if (this.isRobot()) {
-				i = ((Robot) this).getTeam().besace.get(classPicked.getClass());
-				((Robot) this).getTeam().besace.put(classPicked, i--);
+				i = ((Robot) this).getPlayer().besace.get(classPicked.getClass());
+				((Robot) this).getPlayer().besace.put(classPicked, i--);
 			} else if (this.isPlayer()) {
 				i = ((Player) this).besace.get(classPicked.getClass());
 				((Player) this).besace.put(classPicked, i--);
@@ -288,7 +298,7 @@ public abstract class Character extends Entity {
 	}
 	
 	public int getXBase(){
-		if (this.player==1){
+		if (this.getTeam()==Team.ROUGE){
 			return 2;
 		} else {
 			return 31;
@@ -296,7 +306,7 @@ public abstract class Character extends Entity {
 	}
 	
 	public int getYBase(){
-		if (this.player==1){
+		if (this.getTeam()==Team.BLEU){
 			return 4;
 		} else {
 			return 15;

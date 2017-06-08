@@ -7,6 +7,7 @@ import java.util.List;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
+import entite.Team;
 import exceptions.NotDoableException;
 import operateur.*;
 import sequence._Sequence;
@@ -18,13 +19,9 @@ public class Robot extends Character {
 	_Sequence myAutomata;
 	Player player;
 
-	public Player getPlayer() {
-		return player;
-	}
-
 	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, _Sequence myAutomata, Player player) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall);
+			int movePoints, int recall, Team team, _Sequence myAutomata, Player player) {
+		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, team);
 		this.myAutomata = myAutomata;
 		this.player = player;
 	}
@@ -38,11 +35,16 @@ public class Robot extends Character {
 		return false;
 	}
 
+
 	@Override
 	public boolean isRobot() {
 		return true;
 	}
 
+
+	public Player getPlayer() {
+		return player;
+	}
 	/**
 	 * Suicide a Robot and kill the Robots next to it
 	 * 

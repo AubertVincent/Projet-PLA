@@ -5,8 +5,6 @@ import java.util.List;
 
 import entite.*;
 import personnages.Character;
-import personnages.Player;
-import personnages.Robot;
 import exceptions.*;
 
 public class Cell {

@@ -3,8 +3,8 @@ package operateur;
 import carte.Cell;
 import carte.Map;
 import entite.Direction;
+import entite.Team;
 import exceptions.NotDoableException;
-import personnages.Player;
 import personnages.Robot;
 
 public class ClassicAck extends Attack {

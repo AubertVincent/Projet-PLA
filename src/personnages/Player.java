@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import entite.Direction;
+import entite.Team;
 import operateur.*;
 import pickable.*;
 
@@ -45,23 +46,26 @@ public class Player extends Character {
 		return possibleActionsList;
 	}
 
+	
 	public Player(int x, int y, carte.Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall);
+			int movePoints, int recall, Team team, Map<Class<? extends PickAble>, Integer> besace) {
+		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, team);
+		this.besace = besace;
 		possibleActionsList.add(ClassicAck.class);
 		possibleActionsList.add(MoveDir.class);
 		possibleActionsList.add(Tunnel.class);
 		possibleActionsList.add(Recall.class);
-		besace.put(PickClassicAck.class, 0);
-		besace.put(PickSuicideBomber.class, 0);
-		besace.put(PickTunnel.class, 0);
-		besace.put(PickMoveDir.class, 0);
-		besace.put(PickRecall.class, 0);
-		besace.put(PickPickUp.class, 0);
-		besace.put(PickSuccession.class, 0);
-		besace.put(PickRandomBar.class, 0);
-		besace.put(PickPriority.class, 0);
+		this.besace.put(PickClassicAck.class, 0);
+		this.besace.put(PickSuicideBomber.class, 0);
+		this.besace.put(PickTunnel.class, 0);
+		this.besace.put(PickMoveDir.class, 0);
+		this.besace.put(PickRecall.class, 0);
+		this.besace.put(PickPickUp.class, 0);
+		this.besace.put(PickSuccession.class, 0);
+		this.besace.put(PickRandomBar.class, 0);
+		this.besace.put(PickPriority.class, 0);
 	}
+
 
 	@Override
 	public boolean isPlayer() {
