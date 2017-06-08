@@ -3,12 +3,10 @@ package carte;
 import java.util.ArrayList;
 import java.util.List;
 
-import entite.Direction;
 import entite.Entity;
 import entite.Team;
-import personnages.Player;
+import exceptions.NotDoableException;
 import personnages.Character;
-import exceptions.*;
 
 public class Cell {
 	protected int x;
@@ -57,14 +55,15 @@ public class Cell {
 	public List<Entity> getListEntity() {
 		return listeEntites;
 	}
-	
+
 	public Character getOpponent(Team team) throws NotDoableException {
 		int i = 0;
 		Entity e;
-		while (i < this.listeEntites.size() - 1) {
+		while (i < this.listeEntites.size()) {
 			if (this.listeEntites.get(i).isCharacter()) {
 				e = this.listeEntites.get(i);
-				if (((Character) e).getTeam() == team) {
+
+				if (((Character) e).getTeam() != team) {
 					return ((Character) e);
 				}
 			}
@@ -75,10 +74,10 @@ public class Cell {
 	public boolean opponentHere(Team team) {
 		int i = 0;
 		Entity e;
-		while (i < this.listeEntites.size() - 1) {
+		while (i < this.listeEntites.size()) {
 			if (this.listeEntites.get(i).isCharacter()) {
 				e = this.listeEntites.get(i);
-				if (((Character) e).getTeam() == team) {
+				if (((Character) e).getTeam() != team) {
 					return true;
 				}
 			}

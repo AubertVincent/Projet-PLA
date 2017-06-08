@@ -16,17 +16,19 @@ public class Robot extends Character {
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 
-	_Sequence myAutomata;
-	Player isToPlayer;
+	_Sequence myAutomaton;
+	Player player;
 
-	public Player getIsToPlayer() {
-		return isToPlayer;
+	public Player getPlayer() {
+		return player;
 	}
 
-	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range, int movePoints, int recall, int aP, Team team) {
+	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
+			int movePoints, int recall, int aP, Team team, _Sequence myAutomaton, Player player) {
 		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, aP, team);
-		this.myAutomata = myAutomata;
-		this.isToPlayer = isToPlayer;
+
+		this.myAutomaton = myAutomaton;
+		this.player = player;
 	}
 
 	public static List<Class<? extends Action>> getPossibleActionsList() {
@@ -48,7 +50,7 @@ public class Robot extends Character {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	/**
 	 * Suicide a Robot and kill the Robots next to it
 	 * 
@@ -100,13 +102,7 @@ public class Robot extends Character {
 	}
 
 	public void execute() throws NotDoableException {
-		myAutomata.execute(this);
-	}
-
-	@Override
-	public boolean isPickAble() {
-		// TODO Auto-generated method stub
-		return false;
+		myAutomaton.execute(this);
 	}
 
 }

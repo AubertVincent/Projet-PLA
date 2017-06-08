@@ -1,19 +1,22 @@
 package personnages;
 
+import java.util.List;
+
 import carte.Cell;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
 import entite.Team;
-
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import pickable.PickAble;
+import pickable.Picked;
 
 public abstract class Character extends Entity {
 
-	private Direction direction;
+	public List<Picked> myOwnBesace;
 
+	protected Direction direction;
 	protected int life;
 	protected int vision;
 	protected int attack;
@@ -22,7 +25,6 @@ public abstract class Character extends Entity {
 	protected int recall;
 	protected Team team;
 	protected int attackPoints;
-
 
 	/**
 	 * Set a new character
@@ -48,6 +50,7 @@ public abstract class Character extends Entity {
 	 */
 	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
 			int movePoints, int recall, int aP, Team team) {
+
 		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
@@ -73,6 +76,11 @@ public abstract class Character extends Entity {
 	}
 
 	public boolean isObstacle() {
+		return false;
+	}
+
+	@Override
+	public boolean isPickAble() {
 		return false;
 	}
 
@@ -234,15 +242,58 @@ public abstract class Character extends Entity {
 	 * @throws GameException
 	 */
 	public void pickUp() throws NotDoableException {
+		List<Class<PickAble>> listPicked = null;
+		Picked picked = new Picked(listPicked);
+		int i = 0;
 		Map myMap = this.getEntityMap();
-		Class<PickAble> picked = myMap.pickableEntity(this.getX(), this.getY());
-		myMap.freePick(picked, this.getX(), this.getY());
-		if (this.isRobot()) {
-			int i = ((Robot) this).getIsToPlayer().besace.get(picked.getClass());
-			((Robot) this).getIsToPlayer().besace.put(picked, i++);
-		} else if (this.isPlayer()) {
-			int i = ((Player) this).besace.get(picked.getClass());
-			((Player) this).besace.put(picked, i++);
+		try {
+			while (true) {
+				Class<PickAble> classPicked = myMap.pickableEntity(this.getX(), this.getY());
+				myMap.freePick(classPicked, this.getX(), this.getY());
+				if (this.isRobot()) {
+					i = ((Robot) this).getPlayer().besace.get(classPicked.getClass());
+					((Robot) this).getPlayer().besace.put(classPicked, i++);
+				} else if (this.isPlayer()) {
+					i = ((Player) this).besace.get(classPicked.getClass());
+					((Player) this).besace.put(classPicked, i++);
+				}
+				picked.add(classPicked);
+				myOwnBesace.add(picked);
+			}
+
+		} catch (NotDoableException e) {
+
+		}
+	}
+
+	public void placePickAble(int x, int y, Class<PickAble> picked, Map map) {
+		try {
+			map.getCell(x, y).setEntity(picked.newInstance());
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void cancelPickUp() throws NotDoableException {
+		int x = this.getX();
+		int y = this.getY();
+		int i = 0;
+		Picked picked = this.myOwnBesace.get(this.myOwnBesace.size() - 1);
+		Map myMap = this.getEntityMap();
+		while (picked.size() > 0) {
+			Class<PickAble> classPicked = picked.get(0);
+			if (this.isRobot()) {
+				i = ((Robot) this).getTeam().besace.get(classPicked.getClass());
+				((Robot) this).getTeam().besace.put(classPicked, i--);
+			} else if (this.isPlayer()) {
+				i = ((Player) this).besace.get(classPicked.getClass());
+				((Player) this).besace.put(classPicked, i--);
+				this.placePickAble(x, y, classPicked, myMap);
+				picked.remove(0);
+			}
+
 		}
 	}
 

@@ -8,6 +8,7 @@ import entite.Team;
 import exceptions.NotDoableException;
 import pickable.PickAble;
 import gui.GUI;
+import personnages.Player;
 import pickable.PickAble;
 
 public class Map {
@@ -115,7 +116,7 @@ public class Map {
 	public Class<PickAble> pickableEntity(int x, int y) throws NotDoableException {
 		List<Entity> l = map[x][y].getListEntity();
 		int i = 0;
-		while (i < l.size() - 1) {
+		while (i < l.size()) {
 			if (l.get(i).isPickAble()) {
 				return ((Class<PickAble>) l.get(i).getClass());
 			}
@@ -135,7 +136,7 @@ public class Map {
 	public void freePick(Class<PickAble> ramasse, int x, int y) {
 		List<Entity> l = map[x][y].getListEntity();
 		int i = 0;
-		while (i < l.size() - 1) {
+		while (i < l.size()) {
 			if (l.get(i).getClass() == ramasse) {
 				l.remove(i);
 			}
@@ -146,11 +147,12 @@ public class Map {
 	public boolean isReachable(int x, int y) {
 		List<Entity> l = map[x][y].getListEntity();
 		int i = 0;
-		while (i < l.size() - 1) {
+		while (i < l.size()) {
 			if (l.get(i).isCharacter() || l.get(i).isObstacle()) {
 				return false;
 			}
 		}
 		return true;
 	}
+
 }
