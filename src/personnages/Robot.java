@@ -19,8 +19,8 @@ public class Robot extends Character {
 
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
 
-	_Sequence myAutomaton;
-	Player player;
+	protected _Sequence myAutomaton;
+	protected Player player;
 
 	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
 			int movePoints, int recall, int aP, Team team, _Sequence myAutomaton, Player player) {
