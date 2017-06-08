@@ -11,6 +11,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
 import entite.Direction;
+import entite.Team;
 import moteurDuJeu.Engine;
 
 public class GUI extends BasicGame {
@@ -47,13 +48,13 @@ public class GUI extends BasicGame {
 		this.container = container;
 		map = new TiledMap("res/map.tmx");
 		try {
-			perso1 = new GUIPlayer(2, 4, entite.Direction.SOUTH, 100, 1);
+			perso1 = new GUIPlayer(2, 4, entite.Direction.SOUTH, 100, Team.ROUGE);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
-			perso2 = new GUIPlayer(31, 15, entite.Direction.SOUTH, 100, 2);
+			perso2 = new GUIPlayer(31, 15, entite.Direction.SOUTH, 100, Team.BLEU);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -145,7 +146,7 @@ public class GUI extends BasicGame {
 	}
 
 	@Override
-	public void keyPressed(int key, char c) {
+	public void keyPressed(int key, char c)  {
 		switch (key) {
 		case Input.KEY_UP:
 			perso1.movePlayer(engine, Direction.NORTH);

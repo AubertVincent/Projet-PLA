@@ -7,8 +7,9 @@ import java.util.List;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
+import entite.Team;
 import exceptions.NotDoableException;
-import operateur.*;
+import operateur.Action;
 import sequence._Sequence;
 
 public class Robot extends Character {
@@ -47,8 +48,8 @@ public class Robot extends Character {
 	}
 
 	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int player) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, player);
+			int movePoints, int recall, Team team) {
+		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, team);
 	}
 
 	@Override

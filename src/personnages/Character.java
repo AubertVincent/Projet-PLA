@@ -2,6 +2,10 @@ package personnages;
 
 import entite.Direction;
 import entite.Entity;
+import entite.Team;
+import exceptions.GameException;
+import exceptions.NotDoableException;
+import pickable.PickAble;
 
 public abstract class Character extends Entity {
 
@@ -13,11 +17,33 @@ public abstract class Character extends Entity {
 	protected int range;
 	protected int movePoints;
 	protected int recall;
-	protected int attackPoints;
+	protected Team team;
 
-	public Character(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
-			int recall, int aP) {
-		super(x, y);
+	/**
+	 * Set a new character
+	 * 
+	 * @param x
+	 *            x coordinate on the map
+	 * @param y
+	 *            y coordinate on the map
+	 * @param direction
+	 *            Where the character is oriented
+	 * @param life
+	 *            Character's life
+	 * @param vision
+	 *            Character's vision range
+	 * @param attack
+	 *            Character's attack
+	 * @param range
+	 *            Character's range
+	 * @param movePoints
+	 *            Character's move points
+	 * @param recall
+	 *            Character's recall's time
+	 */
+	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
+			int movePoints, int recall, Team team) {
+		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
 		this.vision = vision;
@@ -26,6 +52,7 @@ public abstract class Character extends Entity {
 		this.movePoints = movePoints;
 		this.recall = recall;
 		this.attackPoints = aP;
+		this.team = team;
 	}
 
 	public abstract boolean isPlayer();
@@ -38,6 +65,14 @@ public abstract class Character extends Entity {
 
 	public boolean isOperator() {
 		return false;
+	}
+
+	public Team getTeam() {
+		return team;
+	}
+
+	public void setPlayer(Team team) {
+		this.team = team;
 	}
 
 	public Direction getDirection() {
@@ -124,7 +159,62 @@ public abstract class Character extends Entity {
 		}
 	}
 
-	public void classicAtk() {
-		// TODO
+	/**
+	 * Make an Entity attack an entity on the cell targeted
+	 * 
+	 * @param target
+	 *            The cell targeted
+	 * @throws GameException
+	 */
+	public void classicAtk(Cell target) throws NotDoableException {
+		try {
+			Character opponent = target.getOpponent(this.team);
+			int lifeA = this.getLife();
+			int lifeE = opponent.getLife();
+			int atkA = this.getAttack();
+			int atkE = opponent.getAttack();
+
+			lifeA = java.lang.Math.max(lifeA - atkE, 0);
+			lifeE = java.lang.Math.max(lifeE - atkA, 0);
+
+			this.setLife(lifeA);
+			opponent.setLife(lifeE);
+
+		} catch (NotDoableException e) {
+			throw new NotDoableException("Personne à attaquer");
+		}
+	}
+
+	/**
+	 * Teleport an entity to the coordinates given
+	 * 
+	 * @param e
+	 *            the entity
+	 * @param x
+	 *            x coordinate on the map
+	 * @param y
+	 *            y coordinate on the map
+	 */
+	public void teleport(int x, int y) {
+		this.setX(x);
+		this.setY(y);
+	}
+
+	/**
+	 * Pick an entity ('picked' here) on the cell
+	 * 
+	 * @throws GameException
+	 */
+	public void pickUp() throws NotDoableException {
+		Map myMap = this.getEntityMap();
+		Class<PickAble> picked = myMap.pickableEntity(this.getX(), this.getY());
+		myMap.freePick(picked, this.getX(), this.getY());
+		if (this.isRobot()) {
+			int i = ((Robot) this).isToPlayer().besace.get(picked.getClass());
+			((Robot) this).isToPlayer().besace.put(picked, i++);
+		} else if (this.isPlayer()) {
+			int i = ((Player) this).besace.get(picked.getClass());
+			((Player) this).besace.put(picked, i++);
+		}
 	}
 }
