@@ -5,8 +5,8 @@ import personnages.Robot;
 
 public class Tunnel extends Movement {
 
-	protected int x;
-	protected int y;
+	protected Integer x;
+	protected Integer y;
 	private int lastX;
 	private int lastY;
 

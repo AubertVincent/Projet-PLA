@@ -19,26 +19,25 @@ public class SuicideBomber extends Attack {
 		// Cell testN = r.entityMap.getCell(x, y-1);
 		// testN.opponentHere(r.getPlayer());
 
-		int compteur;
 		int x = r.getX();
 		int y = r.getY();
 		Map m = r.getEntityMap();
 		Cell cellule = m.getCell(x + 1, y);
 		// We have to check if there is at least one opponent around this robot
 		// (North, South, Est, West)
-		if (cellule.getOpponent(r.getTeam()).getTeam()==r.getTeam()) {
+		if (cellule.opponentHere(r.getTeam())) {
 			return true;
 		}
 		cellule = m.getCell(x - 1, y);
-		if (cellule.getOpponent(r.getTeam())) {
+		if (cellule.opponentHere(r.getTeam())) {
 			return true;
 		}
 		cellule = m.getCell(x, y - 1);
-		if (cellule.getOpponent(r.getTeam())) {
+		if (cellule.opponentHere(r.getTeam())) {
 			return true;
 		}
 		cellule = m.getCell(x, y - 1);
-		if (cellule.getOpponent(r.getTeam())) {
+		if (cellule.opponentHere(r.getTeam())) {
 			return true;
 		}
 		return false;
