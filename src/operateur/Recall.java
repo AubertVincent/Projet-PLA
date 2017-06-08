@@ -41,11 +41,9 @@ public class Recall extends Movement {
 		// l'appelle.
 		// int time = r.getRecall();;
 		// if (r.getRecall() == 0) {
-		if (r.getPlayer() == 1) {
-			r.teleport(2, 4);
-		} else if (r.getPlayer() == 2) {
-			r.teleport(31, 15);
-		}
+		int xBase = r.getXBase();
+		int yBase = r.getYBase();
+		r.teleport(xBase, yBase);
 
 		// r.setRecall(time--);
 	}
