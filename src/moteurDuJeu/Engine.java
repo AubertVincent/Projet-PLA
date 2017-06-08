@@ -35,7 +35,7 @@ public class Engine {
 	public void doMove(Direction dir, GUICharacter perso, Map map) {
 
 		// Mise a jour de la position du joueur 1
-		if (player1.getMovePoints() > 0 && perso.getTeam() == 1) {
+		if (player1.getMovePoints() > 0 && perso.getTeam() == entite.Team.ROUGE) {
 
 			switch (dir) {
 
@@ -92,7 +92,7 @@ public class Engine {
 			}
 			// System.out.println("coordonnee de la case : " + player1.getX() +
 			// ";" + player1.getY());
-		} else if (player2.getMovePoints() > 0 && perso.getTeam() == 2) {
+		} else if (player2.getMovePoints() > 0 && perso.getTeam() == entite.Team.ROUGE) {
 
 			switch (dir) {
 

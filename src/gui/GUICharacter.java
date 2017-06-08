@@ -12,6 +12,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 import entite.Direction;
+import entite.Team;
 import moteurDuJeu.Engine;
 import operateur.Action;
 import personnages.Player;
@@ -33,6 +34,8 @@ public abstract class GUICharacter {
 	private int xCellTarget, yCellTarget;
 
 	private Direction dir;
+	
+	private Team team;
 
 	// TODO
 	// Tableau etat -> booleen
@@ -51,7 +54,7 @@ public abstract class GUICharacter {
 	private int beginAck;
 	private int AckDuration;
 
-	private int team;
+//	private int team;
 
 	protected Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y, int animationDuration) {
 		Animation animation = new Animation();
@@ -125,7 +128,7 @@ public abstract class GUICharacter {
 	 * @throws SlickException
 	 *             Indicates a failure of the loading of a sprite sheet
 	 */
-	public GUICharacter(int x, int y, Direction dir, int animationDuration, int team) throws SlickException, Exception {
+	public GUICharacter(int x, int y, Direction dir, int animationDuration, Team team) throws SlickException, Exception {
 		super();
 		this.xCell = x;
 		this.yCell = y;
@@ -213,7 +216,7 @@ public abstract class GUICharacter {
 		}
 	}
 
-	public int getTeam() {
+	public Team getTeam() {
 		return this.team;
 	}
 
