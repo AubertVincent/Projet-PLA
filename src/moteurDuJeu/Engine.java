@@ -7,6 +7,7 @@ import entite.Direction;
 import gui.GUI;
 import gui.GUICharacter;
 import personnages.Player;
+import moteurDuJeu.*;
 
 public class Engine {
 
@@ -16,7 +17,8 @@ public class Engine {
 
 	private int nbrRound;
 	private boolean EndGame;
-
+	private PlayPhase playPhase ;
+	
 	/**
 	 * Create an Engine Object, allow us to update all the entitys
 	 * 
@@ -142,7 +144,6 @@ public class Engine {
 				}
 				break;
 			}
-			System.out.println("coordonnee de la case : " + player2.getX() + ";" + player2.getY());
 		} else {
 			System.out.println("Plus de point de déplacement \n");
 			this.EndGame = false;
@@ -170,6 +171,21 @@ public class Engine {
 		}
 
 		// TODO Creation of robot
+	}
+
+	/**
+	 * Is called right when mouse is pressed
+	 * @param button The index of the button (Input.'index')
+	 * @param mouseXCell X coordinate of the clicked tile
+	 * @param mouseYCell Y coordinate of the clicked tile
+	 */
+	public void mousePressed(int button, int mouseXCell, int mouseYCell) {
+		// TODO A vous de jouer -> decider que faire lors d'un clic de souris
+		
+		// @Conseil : 
+		if(playPhase == PlayPhase.behaviorModification){
+			// Gestion clic
+		}
 	}
 
 	// private boolean RoundRobot(Player player1, Player player2) {

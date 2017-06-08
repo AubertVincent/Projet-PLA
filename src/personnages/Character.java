@@ -1,10 +1,14 @@
 package personnages;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import carte.Cell;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
 import exceptions.NotDoableException;
+import operateur.Action;
 import pickable.*;
 
 public abstract class Character extends Entity {
@@ -18,6 +22,8 @@ public abstract class Character extends Entity {
 	protected int movePoints;
 	protected int recall;
 	protected int player;
+	
+	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 
 	/**
 	 * Set a new character

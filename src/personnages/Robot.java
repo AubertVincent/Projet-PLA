@@ -13,7 +13,6 @@ import sequence._Sequence;
 
 public class Robot extends Character {
 
-	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 
 	_Sequence myAutomata;
 
@@ -42,6 +41,13 @@ public class Robot extends Character {
 	 *            Robot's recall's time
 	 */
 
+	static {
+		possibleActionsList.add(ClassicAck.class);
+		possibleActionsList.add(MoveDir.class);
+		// possibleActionsList.add(Tunnel.class);
+		// possibleActionsList.add(Recall.class);
+	}
+	
 	public static List<Class<? extends Action>> getPossibleActionsList() {
 		return possibleActionsList;
 	}

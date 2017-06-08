@@ -24,12 +24,12 @@ public class Map {
 		}
 	}
 
-	public void initMap(GUI guy) {
+	public void initMap(GUI userInterface) {
 		map[2][4].setEntity(new Player(2, 4, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1));
 		map[31][15].setEntity(new Player(31, 15, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 2));
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				if (guy.isObstacle(GUI.cellToPixelX(i), GUI.cellToPixelY(j))) {
+				if (userInterface.isObstacle(i,j)) {
 					map[i][j].setEntity(new Obstacle(i, j, this));
 				//	System.out.println("Cette case contient un obstacle : " + i + ";" + j);
 				}
