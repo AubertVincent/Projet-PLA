@@ -9,11 +9,6 @@ import java.util.Map;
 
 import entite.Direction;
 import operateur.ClassicAck;
-<<<<<<< HEAD
-import operateur.Operator;
-
-public class Player extends Character {
-=======
 import operateur.*;
 import pickable.*;
 
@@ -56,15 +51,9 @@ public class Player extends Character {
 	public static List<Class<? extends Action>> getPossibleActionsList() {
 		return possibleActionsList;
 	}
->>>>>>> GUI
 
 	public List<Robot> listRobot;
 
-<<<<<<< HEAD
-	public Player(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
-			int recall, int aP) {
-		super(x, y, direction, life, vision, attack, range, movePoints, recall, aP);
-=======
 	public Player(int x, int y, carte.Map entityMap, Direction direction, int life, int vision, int attack, int range,
 			int movePoints, int recall, int player) {
 		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, player);
@@ -77,7 +66,6 @@ public class Player extends Character {
 		besace.put(PickSuccession.class, 0);
 		besace.put(PickRandomBar.class, 0);
 		besace.put(PickPriority.class, 0);
->>>>>>> GUI
 		listRobot = new ArrayList<Robot>();
 	}
 
@@ -147,29 +135,6 @@ public class Player extends Character {
 	}
 
 
-<<<<<<< HEAD
-	// Tests main
-	public static void main(String[] args) {
-		Player joueur = new Player(5, 12, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1);
-		
-		System.out.println("is player ? " + joueur.isPlayer());
-		System.out.println("is Robot ? " + joueur.isRobot());
-		joueur.addRobot(new Robot(0, 0, Direction.EAST, 1, 0, 1, 1, 1, 1, 0));
-		joueur.addRobot(new Robot(1, 0, Direction.EAST, 1, 0, 1, 1, 1, 1, 0));
-		joueur.addRobot(new Robot(2, 0, Direction.EAST, 1, 0, 1, 1, 1, 1, 0));
-		joueur.addRobot(new Robot(3, 0, Direction.EAST, 1, 0, 1, 1, 1, 1, 0));
-		System.out.println(joueur.getListRobot().size());
-		System.out.println("Position avant : " + joueur.getX() + " " + joueur.getY());
-		joueur.setX(10);
-		joueur.setY(10);
-		System.out.println("Position avant : " + joueur.getX() + " " + joueur.getY());
-		ClassicAck test = new ClassicAck(4,5);
-		joueur.addOperator(test);
-		System.out.println("Is in the besace : ? " + joueur.isInBesace(test));
-		
-		
-	}
-=======
 //	// Tests main
 //	public static void main(String[] args) {
 //		Player joueur = new Player(5, 12, Direction.NORTH, 1, 1, 1, 1, 5, 1);
@@ -191,7 +156,6 @@ public class Player extends Character {
 //		
 //		
 //	}
->>>>>>> GUI
 
 	@Override
 	public boolean isObstacle() {
@@ -204,6 +168,12 @@ public class Player extends Character {
 
 	public void setBesace(Map<Class<? extends PickAble>, Integer> besace) {
 		this.besace = besace;
+	}
+
+	@Override
+	public boolean isPickAble() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

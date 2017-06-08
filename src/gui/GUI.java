@@ -46,10 +46,6 @@ public class GUI extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 		this.container = container;
 		map = new TiledMap("res/map.tmx");
-		this.perso1 = new GUICharacter(2, 4, entite.Direction.SOUTH, "res/SpriteSheetAnim.png", 1);
-		this.perso2 = new GUICharacter(31, 15, entite.Direction.SOUTH, "res/SpriteSheetAnim.png", 2);
-		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "{D3H | D}*");
-
 		try {
 			perso1 = new GUIPlayer(2, 4, entite.Direction.SOUTH, 100, 1);
 		} catch (Exception e1) {
@@ -63,7 +59,6 @@ public class GUI extends BasicGame {
 			e.printStackTrace();
 		}
 		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "(MC2E | (AC;(MC3W>MT8.3)))");
->>>>>>> GUI
 		engine = new Engine(this);
 	}
 
@@ -187,22 +182,6 @@ public class GUI extends BasicGame {
 			break;
 		case Input.KEY_M:
 			perso1.Attack(Direction.EAST);
-<<<<<<< HEAD
-			break;
-		case Input.KEY_F:
-			perso2.Attack(Direction.NORTH);
-			break;
-		case Input.KEY_C:
-			perso2.Attack(Direction.WEST);
-			break;
-		case Input.KEY_V:
-			perso2.Attack(Direction.SOUTH);
-			break;
-		case Input.KEY_B:
-			perso2.Attack(Direction.EAST);
-
-=======
->>>>>>> GUI
 			break;
 		case Input.KEY_F:
 			perso2.Attack(Direction.NORTH);

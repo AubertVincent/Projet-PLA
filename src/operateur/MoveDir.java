@@ -78,13 +78,7 @@ public class MoveDir extends Movement {
 			throw new NotDoableException("Un obstacle est sur votre chemin");
 		}
 
-<<<<<<< HEAD
-		((Character) e).goTo(dir, lg);
-
-	}
-=======
 		r.goTo(dir, lg);
->>>>>>> GUI
 
 	}
 }

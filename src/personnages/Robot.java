@@ -15,13 +15,6 @@ public class Robot extends Character {
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 
-<<<<<<< HEAD
-public class Robot extends Character {
-
-	public Robot(int x, int y, Direction direction, int life, int vision, int attack, int range, int movePoints,
-			int recall, int aP) {
-		super(x, y, direction, life, vision, attack, range, movePoints, recall, aP);
-=======
 	_Sequence myAutomata;
 
 	/**
@@ -56,7 +49,6 @@ public class Robot extends Character {
 	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
 			int movePoints, int recall, int player) {
 		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, player);
->>>>>>> GUI
 	}
 
 	@Override
@@ -69,14 +61,6 @@ public class Robot extends Character {
 		return true;
 	}
 
-<<<<<<< HEAD
-	public void suicideBomber() {
-		// TODO
-	}
-
-
-=======
->>>>>>> GUI
 	@Override
 	public boolean isObstacle() {
 		// TODO Auto-generated method stub

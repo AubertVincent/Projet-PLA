@@ -2,12 +2,11 @@ package moteurDuJeu;
 
 import org.newdawn.slick.SlickException;
 
-import carte.Cell;
 import carte.Map;
 import entite.Direction;
 import gui.GUI;
 import gui.GUICharacter;
-import personnages.Player;;
+import personnages.Player;
 
 public class Engine {
 
@@ -25,13 +24,8 @@ public class Engine {
 	 */
 	
 	public Engine(GUI guy) throws SlickException {
-<<<<<<< HEAD
-		player1 = new Player(2, 4, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1);
-		player2 = new Player(31, 15, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1);
-=======
 		player1 = new Player(2, 4, ma_map, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1);
 		player2 = new Player(31, 15, ma_map, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 2);
->>>>>>> GUI
 		nbrRound = 0;
 		EndGame = false;
 		ma_map = new Map();
@@ -56,7 +50,7 @@ public class Engine {
 					// System.out.println(" J'ai libere la case : " +
 					// (player1.getX() - 1) + player1.getY());
 					map.Add(player1.getX(), player1.getY(), player1);
-
+					perso.goToDirection(Direction.SOUTH);
 					player1.setMovePoints(player1.getMovePoints() - 1);
 				}
 				break;
@@ -67,7 +61,7 @@ public class Engine {
 					player1.setY(player1.getY() - 1);
 					map.Free(player1.getX(), player1.getY() + 1);
 					map.Add(player1.getX(), player1.getY(), player1);
-
+					perso.goToDirection(Direction.NORTH);
 					player1.setMovePoints(player1.getMovePoints() - 1);
 				}
 				break;
@@ -78,7 +72,7 @@ public class Engine {
 					player1.setX(player1.getX() - 1);
 					map.Free(player1.getX() + 1, player1.getY());
 					map.Add(player1.getX(), player1.getY(), player1);
-
+					perso.goToDirection(Direction.WEST);
 					player1.setMovePoints(player1.getMovePoints() - 1);
 				}
 				break;
@@ -89,19 +83,15 @@ public class Engine {
 					player1.setX(player1.getX() + 1);
 					map.Free(player1.getX() - 1, player1.getY());
 					map.Add(player1.getX(), player1.getY(), player1);
-
+					perso.goToDirection(Direction.EAST);
 					player1.setMovePoints(player1.getMovePoints() - 1);
 				}
 
 				break;
 
 			}
-<<<<<<< HEAD
-			System.out.println(" Joueur 1 : coordonnee de la case : " + player1.getX() + ";" + player1.getY());
-=======
 			// System.out.println("coordonnee de la case : " + player1.getX() +
 			// ";" + player1.getY());
->>>>>>> GUI
 		} else if (player2.getMovePoints() > 0 && perso.getTeam() == 2) {
 
 			switch (dir) {
@@ -112,7 +102,7 @@ public class Engine {
 					player2.setY(player2.getY() + 1);
 					map.Free(player2.getX(), player2.getY() - 1);
 					map.Add(player2.getX(), player2.getY(), player2);
-
+					perso.goToDirection(Direction.SOUTH);
 					player2.setMovePoints(player2.getMovePoints() - 1);
 				}
 				break;
@@ -124,6 +114,7 @@ public class Engine {
 					player2.setY(player2.getY() - 1);
 					map.Free(player2.getX(), player2.getY() + 1);
 					map.Add(player2.getX(), player2.getY(), player2);
+					perso.goToDirection(Direction.NORTH);
 					player2.setMovePoints(player2.getMovePoints() - 1);
 				}
 				break;
@@ -134,7 +125,7 @@ public class Engine {
 					player2.setX(player2.getX() - 1);
 					map.Free(player2.getX() + 1, player2.getY());
 					map.Add(player2.getX(), player2.getY(), player2);
-
+					perso.goToDirection(Direction.WEST);
 					player2.setMovePoints(player2.getMovePoints() - 1);
 				}
 				break;
@@ -146,12 +137,12 @@ public class Engine {
 					player2.setX(player2.getX() + 1);
 					map.Free(player2.getX() - 1, player2.getY());
 					map.Add(player2.getX(), player2.getY(), player2);
-
+					perso.goToDirection(Direction.EAST);
 					player2.setMovePoints(player2.getMovePoints() - 1);
 				}
 				break;
 			}
-			System.out.println("Joueur 2 : coordonnee de la case : " + player2.getX() + ";" + player2.getY());
+			System.out.println("coordonnee de la case : " + player2.getX() + ";" + player2.getY());
 		} else {
 			System.out.println("Plus de point de déplacement \n");
 			this.EndGame = false;
@@ -160,7 +151,7 @@ public class Engine {
 		this.EndGame = true;
 	}
 
-	public void update(Direction dir, GUICharacter perso, Map map) {
+	public void update(Direction dir, GUICharacter perso, int joueur, Map map, GUI guy) {
 
 		// Allow to do the move for 5 MP
 		doMove(dir, perso, map);
@@ -168,7 +159,7 @@ public class Engine {
 		// Set to 5 the MP if all has been consume
 		if (this.EndGame == true) {
 			nbrRound++;
-			switch (perso.getTeam()) {
+			switch (joueur) {
 			case 1:
 				player1.setMovePoints(5);
 				break;
@@ -177,76 +168,23 @@ public class Engine {
 				break;
 			}
 		}
+
+		// TODO Creation of robot
 	}
 
-	private void doAttack(Direction dir, GUICharacter perso, Map map) {
-		Cell target;
-		if (player1.getAttackPoints() > 0 && perso.getTeam() == 1) {
-
-			switch (dir) {
-
-			case SOUTH:
-				target = map.getCell(player1.getX(), player1.getY() + 1);
-				player1.classicAtk(target);
-				System.out.println(" Joueur 1 attaque la case : " + player1.getX() + ";" + (player1.getY() + 1));
-				break;
-
-			case NORTH:
-				target = map.getCell(player1.getX(), player1.getY() - 1);
-				player1.classicAtk(target);
-				System.out.println(" Joueur 1 attaque la case : " + player1.getX() + ";" + (player1.getY() - 1));
-				break;
-
-			case WEST:
-				target = map.getCell(player1.getX() - 1, player1.getY());
-				player1.classicAtk(target);
-				System.out.println(" Joueur 1 attaque la case : " + (player1.getX() - 1) + ";" + player1.getY());
-				break;
-
-			case EAST:
-				target = map.getCell(player1.getX() + 1, player1.getY());
-				player1.classicAtk(target);
-				System.out.println(" Joueur 1 attaque la case : " + (player1.getX() + 1) + ";" + player1.getY());
-				break;
-
-			}
-
-		} else if (player2.getAttackPoints() > 0 && perso.getTeam() == 2) {
-
-			switch (dir) {
-
-			case SOUTH:
-				target = map.getCell(player2.getX(), player2.getY() + 1);
-				player2.classicAtk(target);
-				System.out.println(" Joueur 2 attaque la case : " + player2.getX() + ";" + (player2.getY() + 1));
-				break;
-
-			case NORTH:
-				target = map.getCell(player2.getX(), player2.getY() - 1);
-				player2.classicAtk(target);
-				System.out.println(" Joueur 2 attaque la case : " + player2.getX() + ";" + (player2.getY() - 1));
-				break;
-
-			case WEST:
-				target = map.getCell(player2.getX() - 1, player2.getY());
-				player1.classicAtk(target);
-				System.out.println(" Joueur 2 attaque la case : " + (player2.getX() - 1) + ";" + player2.getY());
-				break;
-
-			case EAST:
-				target = map.getCell(player2.getX() + 1, player2.getY());
-				player1.classicAtk(target);
-				System.out.println(" Joueur 2 attaque la case : " + (player2.getX() + 1) + ";" + player2.getY());
-				break;
-
-			}
-
-		} else {
-			System.out.println("Plus de point d'attaque !\n");
-			this.EndGame = false;
-		}
-
-		this.EndGame = true;
-	}
+	// private boolean RoundRobot(Player player1, Player player2) {
+	// for (Robot r : player2.getListRobot()) {
+	// r.execute();
+	// }
+	// for (Robot r : player1.getListRobot()) {
+	// r.execute();
+	// }
+	// if (player1.getLife() == 0 || player2.getLife() == 0) {
+	// return true;
+	// } else {
+	// return false;
+	// }
+	//
+	// }
 
 }

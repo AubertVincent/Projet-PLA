@@ -2,26 +2,6 @@ package operateur;
 
 import carte.Cell;
 import entite.Direction;
-<<<<<<< HEAD
-import entite.Entity;
-import entite.GameException;
-import personnages.Character;
-
-public class ClassicAck extends Attack {
-
-	public ClassicAck(int x, int y) {
-		super(x, y);
-	}
-
-	public void execute(Character attacker, Character opponent) {
-		int lifeA = attacker.getLife();
-		int lifeE = opponent.getLife();
-		int atkA = attacker.getAttack();
-		int atkE = opponent.getAttack();
-
-		lifeA = java.lang.Math.max(lifeA - atkE, 0);
-		lifeE = java.lang.Math.max(lifeE - atkA, 0);
-=======
 import carte.Map;
 import exceptions.NotDoableException;
 import personnages.Robot;
@@ -36,7 +16,6 @@ public class ClassicAck extends Attack {
 	 * @param opponent
 	 *            the target
 	 */
->>>>>>> GUI
 
 	public ClassicAck() {
 		super();
@@ -81,22 +60,6 @@ public class ClassicAck extends Attack {
 			Cell target = null;
 			if (testEast.opponentHere(player)) {
 				d = Direction.EAST;
-<<<<<<< HEAD
-				((Character) e).setDirection(d);
-			} else if (!(testNorth.isEmpty())) {
-				d = Direction.NORTH;
-				((Character) e).setDirection(d);
-			} else if (!(testWest.isEmpty())) {
-				d = Direction.WEST;
-				((Character) e).setDirection(d);
-			} else if (!(testSouth.isEmpty())) {
-				d = Direction.SOUTH;
-				((Character) e).setDirection(d);
-			} else {
-				throw new GameException("Il n'y a personne à attaquer");
-			}
-			((Character) e).classicAtk();
-=======
 
 				r.setDirection(d);
 				target = testEast;
@@ -114,7 +77,6 @@ public class ClassicAck extends Attack {
 				target = testSouth;
 			}
 			r.classicAtk(target);
->>>>>>> GUI
 
 		}
 	}

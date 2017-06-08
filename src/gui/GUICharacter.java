@@ -1,14 +1,9 @@
 package gui;
 
-<<<<<<< HEAD
-import java.util.ArrayList;
-import java.util.List;
-=======
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
->>>>>>> GUI
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
@@ -18,12 +13,9 @@ import org.newdawn.slick.SpriteSheet;
 
 import entite.Direction;
 import moteurDuJeu.Engine;
-<<<<<<< HEAD
-=======
 import operateur.Action;
 import personnages.Player;
 import personnages.Robot;
->>>>>>> GUI
 
 // Contenu a rajouter a personnages.Personnage 
 public abstract class GUICharacter {
@@ -42,8 +34,6 @@ public abstract class GUICharacter {
 
 	private Direction dir;
 
-	private int team;
-
 	// TODO
 	// Tableau etat -> booleen
 	// Map<entite.Etat, Boolean> tableauEtat = new HashMap<entite.Etat,
@@ -61,19 +51,9 @@ public abstract class GUICharacter {
 	private int beginAck;
 	private int AckDuration;
 
-<<<<<<< HEAD
-	private final Animation[] animation_atk = new Animation[8];
-	
-
-	public final List<GUICharacter> listRobot;
-	
-	
-	private Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y, int animationDuration) {
-=======
 	private int team;
 
 	protected Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y, int animationDuration) {
->>>>>>> GUI
 		Animation animation = new Animation();
 		for (int x = startX; x < endX; x++) {
 			animation.addFrame(spriteSheet.getSprite(x, y), animationDuration);
@@ -130,22 +110,6 @@ public abstract class GUICharacter {
 
 	}
 
-	private void initAnimationAtk(String spriteSheetLocation, int spriteSheetWidth, int spriteSheetHeight,
-			int animationDuration) throws SlickException {
-		SpriteSheet spriteSheet = new SpriteSheet(
-				"/home/besnier-benjamin/git/Projet-PLA/src/res/SpriteSheetAnimAttack.png", spriteSheetWidth,
-				spriteSheetHeight);
-		this.animation_atk[0] = loadAnimation(spriteSheet, 0, 1, 0, animationDuration);
-		this.animation_atk[1] = loadAnimation(spriteSheet, 0, 1, 1, animationDuration);
-		this.animation_atk[2] = loadAnimation(spriteSheet, 0, 1, 2, animationDuration);
-		this.animation_atk[3] = loadAnimation(spriteSheet, 0, 1, 3, animationDuration);
-		this.animation_atk[4] = loadAnimation(spriteSheet, 1, 6, 0, animationDuration);
-		this.animation_atk[5] = loadAnimation(spriteSheet, 1, 6, 1, animationDuration);
-		this.animation_atk[6] = loadAnimation(spriteSheet, 1, 6, 2, animationDuration);
-		this.animation_atk[7] = loadAnimation(spriteSheet, 1, 6, 3, animationDuration);
-		AckDuration = animationDuration * 6;
-	}
-
 	/**
 	 * Creates the GUICharacter corresponding to a character, its graphical
 	 * representation.
@@ -161,11 +125,7 @@ public abstract class GUICharacter {
 	 * @throws SlickException
 	 *             Indicates a failure of the loading of a sprite sheet
 	 */
-<<<<<<< HEAD
-	public GUICharacter(int x, int y, Direction dir, String spriteSheetAnimation, int team) throws SlickException {
-=======
 	public GUICharacter(int x, int y, Direction dir, int animationDuration, int team) throws SlickException, Exception {
->>>>>>> GUI
 		super();
 		this.xCell = x;
 		this.yCell = y;
@@ -175,19 +135,12 @@ public abstract class GUICharacter {
 		this.yPx = GUI.cellToPixelY(getCurrentY());
 		this.dir = dir;
 		this.setMoving(false);
-<<<<<<< HEAD
-		this.initAnimation(spriteSheetAnimation, 64, 64, 100);
-		this.initAnimationAtk(spriteSheetAnimation, 64, 64, 100);
-		this.team = team;
-		listRobot = new ArrayList<GUICharacter>();
-=======
 		initAnimations(animationDuration);
 
 		// TODO If animation is longer than animationDuration, set it here
 		AckDuration = animationDuration * 6;
 
 		this.team = team;
->>>>>>> GUI
 
 	}
 
@@ -202,17 +155,11 @@ public abstract class GUICharacter {
 		g.fillOval((int) xPx - 16, (int) yPx - 8, 32, 16);
 		// -32 et -60 to center in cell
 		if (isAttacking()) {
-<<<<<<< HEAD
-			g.drawAnimation(animation_atk[dir.toInt() + (isAttacking() ? 4 : 0)], (int) xPx - 32, (int) yPx - 60);
-		} else {
-			g.drawAnimation(animation_depl[dir.toInt() + (isMoving() ? 4 : 0)], (int) xPx - 32, (int) yPx - 60);
-=======
 			g.drawAnimation(animationsList.get(operateur.ClassicAck.class)[dir.toInt() + (isAttacking() ? 4 : 0)],
 					(int) xPx - 32, (int) yPx - 60);
 		} else {
 			g.drawAnimation(animationsList.get(operateur.MoveDir.class)[dir.toInt() + (isMoving() ? 4 : 0)],
 					(int) xPx - 32, (int) yPx - 60);
->>>>>>> GUI
 		}
 	}
 
@@ -266,12 +213,6 @@ public abstract class GUICharacter {
 		}
 	}
 
-<<<<<<< HEAD
-	protected void movePlayer(Engine engine, Direction direction) {
-		if (!isMoving() && !isAttacking()) {
-			engine.doMove(direction, this, engine.ma_map);
-			this.goToDirection(direction);
-=======
 	public int getTeam() {
 		return this.team;
 	}
@@ -279,7 +220,6 @@ public abstract class GUICharacter {
 	protected void movePlayer(Engine engine, Direction direction) {
 		if (!isMoving() && !isAttacking()) {
 			engine.doMove(direction, this, engine.ma_map);
->>>>>>> GUI
 		}
 	}
 
@@ -393,10 +333,6 @@ public abstract class GUICharacter {
 		return yCellTarget;
 	}
 
-	public int getTeam() {
-		return team;
-	}
-
 	private void setCurrentX(int x) {
 		xCell = x;
 	}
@@ -424,29 +360,6 @@ public abstract class GUICharacter {
 	}
 
 	public void Attack(Direction dir) {
-<<<<<<< HEAD
-		if (!isMoving() && !isAttacking()) {
-			setDirection(dir);
-
-			switch (dir) {
-			case NORTH:
-				setAttackTarget(dir);
-				break;
-			case WEST:
-				setAttackTarget(dir);
-				break;
-			case SOUTH:
-				setAttackTarget(dir);
-				break;
-			case EAST:
-				setAttackTarget(dir);
-				break;
-			}
-
-			setAckRequest(true);
-			setAttacking(true);
-		}
-=======
 		setDirection(dir);
 		switch (dir) {
 		case NORTH:
@@ -464,7 +377,6 @@ public abstract class GUICharacter {
 		}
 		setAckRequest(true);
 		setAttacking(true);
->>>>>>> GUI
 	}
 
 	private void setAckRequest(boolean ackRequest) {
@@ -480,13 +392,6 @@ public abstract class GUICharacter {
 	}
 
 	private void setAttackTarget(Direction dir) {
-<<<<<<< HEAD
-		// TODO Attack the cell on the absciss
-	}
-	
-	public void createRobot(int x, int y, int team) throws SlickException {
-		listRobot.add(new GUICharacter(x, y, Direction.SOUTH, "res/spriteSheetAnimation", team));
-=======
 		// TODO Attack the cell on the abscissa
 
 	}
@@ -494,7 +399,5 @@ public abstract class GUICharacter {
 	public void createRobot(int x, int y) throws SlickException {
 		// listRobot.add(new GUIRobot(2, 4, Direction.SOUTH,
 		// "res/SpriteSheetAnimRobot.png", 1));
->>>>>>> GUI
 	}
 }
-
