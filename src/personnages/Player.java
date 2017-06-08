@@ -1,22 +1,26 @@
 package personnages;
 
-
-
+import java.util.ArrayList;
 import java.util.HashMap;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import entite.Direction;
-import operateur.Action;
 import operateur.ClassicAck;
-import operateur.MoveDir;
+import operateur.*;
 import pickable.*;
 
 public class Player extends Character {
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
-
+	static{
+		possibleActionsList.add(ClassicAck.class);
+		possibleActionsList.add(MoveDir.class);
+//		possibleActionsList.add(Tunnel.class);
+//		possibleActionsList.add(Recall.class);
+	}
 	public Map<Class<? extends PickAble>, Integer> besace = new HashMap<Class<? extends PickAble>, Integer>();
 
 	/**
@@ -43,18 +47,16 @@ public class Player extends Character {
 	 * @param recall
 	 *            Player's recall's time
 	 */
-
+	
 	public static List<Class<? extends Action>> getPossibleActionsList() {
 		return possibleActionsList;
 	}
 
+	public List<Robot> listRobot;
+
 	public Player(int x, int y, carte.Map entityMap, Direction direction, int life, int vision, int attack, int range,
 			int movePoints, int recall, int player) {
 		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, player);
-		possibleActionsList.add(ClassicAck.class);
-		possibleActionsList.add(MoveDir.class);
-		possibleActionsList.add(Tunnel.class);
-		possibleActionsList.add(Recall.class);
 		besace.put(PickClassicAck.class, 0);
 		besace.put(PickSuicideBomber.class, 0);
 		besace.put(PickTunnel.class, 0);
@@ -64,6 +66,46 @@ public class Player extends Character {
 		besace.put(PickSuccession.class, 0);
 		besace.put(PickRandomBar.class, 0);
 		besace.put(PickPriority.class, 0);
+		listRobot = new ArrayList<Robot>();
+	}
+
+	public void addRobot(Robot robot) {
+		listRobot.add(robot);
+	}
+
+//	public void addOperator(Operator op) {
+//		Integer nbr = besace.get(op);
+//		if (nbr == null) {
+//			besace.put(op, 1);
+//		} else {
+//			besace.put(op, nbr + 1);
+//		}
+//	}
+//
+//	public void removeOperator(Operator op) {
+//		Integer nbr = besace.get(op);
+//		if (nbr == 1) {
+//			besace.remove(op);
+//		} else {
+//			besace.put(op, nbr - 1);
+//		}
+//	}
+//
+//	public boolean isInBesace(Operator op) {
+//		return besace.get(op) != null;
+//	}
+//
+//	public int nbrInBesace(Operator op) {
+//		return besace.get(op);
+//	}
+
+	public List<Robot> getListRobot() {
+		return listRobot;
+	}
+
+	// TODO
+	public void CreateRobot() {
+		
 	}
 
 	@Override
@@ -75,7 +117,6 @@ public class Player extends Character {
 	public boolean isRobot() {
 		return false;
 	}
-
 
 	public void setX(int x) {
 		super.setX(x);
@@ -94,40 +135,45 @@ public class Player extends Character {
 	}
 
 
-	// Tests main
-	public static void main(String[] args) {
-		Player joueur = new Player(5, 12, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1);
-		
-		System.out.println("is player ? " + joueur.isPlayer());
-		System.out.println("is Robot ? " + joueur.isRobot());
-		joueur.addRobot(new Robot(0, 0, Direction.EAST, 1, 0, 1, 1, 1, 1, 0));
-		joueur.addRobot(new Robot(1, 0, Direction.EAST, 1, 0, 1, 1, 1, 1, 0));
-		joueur.addRobot(new Robot(2, 0, Direction.EAST, 1, 0, 1, 1, 1, 1, 0));
-		joueur.addRobot(new Robot(3, 0, Direction.EAST, 1, 0, 1, 1, 1, 1, 0));
-		System.out.println(joueur.getListRobot().size());
-		System.out.println("Position avant : " + joueur.getX() + " " + joueur.getY());
-		joueur.setX(10);
-		joueur.setY(10);
-		System.out.println("Position avant : " + joueur.getX() + " " + joueur.getY());
-		ClassicAck test = new ClassicAck(4,5);
-		joueur.addOperator(test);
-		System.out.println("Is in the besace : ? " + joueur.isInBesace(test));
-		
-		
-	}
+//	// Tests main
+//	public static void main(String[] args) {
+//		Player joueur = new Player(5, 12, Direction.NORTH, 1, 1, 1, 1, 5, 1);
+//		
+//		System.out.println("is player ? " + joueur.isPlayer());
+//		System.out.println("is Robot ? " + joueur.isRobot());
+//		joueur.addRobot(new Robot(0, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
+//		joueur.addRobot(new Robot(1, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
+//		joueur.addRobot(new Robot(2, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
+//		joueur.addRobot(new Robot(3, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
+//		System.out.println(joueur.getListRobot().size());
+//		System.out.println("Position avant : " + joueur.getX() + " " + joueur.getY());
+//		joueur.setX(10);
+//		joueur.setY(10);
+//		System.out.println("Position avant : " + joueur.getX() + " " + joueur.getY());
+//		ClassicAck test = new ClassicAck(4,5);
+////		joueur.addOperator(test);
+////		System.out.println("Is in the besace : ? " + joueur.isInBesace(test));
+//		
+//		
+//	}
 
 	@Override
 	public boolean isObstacle() {
 		// TODO Auto-generated method stub
 		return false;
-
+	}
 	public Map<Class<? extends PickAble>, Integer> getBesace() {
 		return besace;
 	}
 
 	public void setBesace(Map<Class<? extends PickAble>, Integer> besace) {
 		this.besace = besace;
+	}
 
+	@Override
+	public boolean isPickAble() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -17,7 +17,6 @@ public class Robot extends Character {
 
 	_Sequence myAutomata;
 
-
 	/**
 	 * Set a new Robot
 	 * 
@@ -62,6 +61,12 @@ public class Robot extends Character {
 		return true;
 	}
 
+	@Override
+	public boolean isObstacle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	/**
 	 * Suicide a Robot and kill the Robots next to it
 	 * 
@@ -110,9 +115,9 @@ public class Robot extends Character {
 			}
 		}
 	}
-	
-	public void execute() throws NotDoableException{
+
+	public void execute() throws NotDoableException {
 		myAutomata.execute(this);
 	}
-	
+
 }

@@ -2,12 +2,8 @@ package operateur;
 
 import carte.Cell;
 
-import entite.Entity;
-import entite.GameException;
-import personnages.Character;
-
-import carte.Map;
 import entite.Direction;
+import carte.Map;
 import exceptions.NotDoableException;
 import personnages.Robot;
 
@@ -83,12 +79,6 @@ public class ClassicAck extends Attack {
 			r.classicAtk(target);
 
 		}
-	}
-
-	@Override
-	public boolean isObstacle() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

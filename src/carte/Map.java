@@ -1,10 +1,10 @@
 package carte;
-
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
+import entite.Direction;
 import entite.Entity;
 import exceptions.NotDoableException;
+import pickable.PickAble;
 import gui.GUI;
 import pickable.PickAble;
 public class Map {
@@ -25,12 +25,12 @@ public class Map {
 	}
 
 	public void initMap(GUI guy) {
-		map[2][4].setEntity(new Player(2, 4, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1));
-		map[31][15].setEntity(new Player(31, 15, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1));
+		map[2][4].setEntity(new Player(2, 4, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1));
+		map[31][15].setEntity(new Player(31, 15, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 2));
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				if (guy.isObstacle(GUI.cellToPixelX(i), GUI.cellToPixelY(j))) {
-					map[i][j].setEntity(new Obstacle(i, j));
+					map[i][j].setEntity(new Obstacle(i, j, this));
 				//	System.out.println("Cette case contient un obstacle : " + i + ";" + j);
 				}
 			}
@@ -64,6 +64,10 @@ public class Map {
 		return map[x][y].isFree();
 	}
 
+	public List<Entity> getEntity(int x, int y) {
+		return map[x][y].getListEntity();
+	}
+
 //	private void printMap() {
 //		for (int i = 0; i < width; i++) {
 //			for (int j = 0; j < height; j++) {
@@ -78,7 +82,6 @@ public class Map {
 	// Map.printMap();
 	//
 	// }
-
 
 	/**
 	 * return the list of the entities present on the cell(x,y)
@@ -126,6 +129,4 @@ public class Map {
 		}
 
 	}
-
 }
-

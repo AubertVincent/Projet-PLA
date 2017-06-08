@@ -5,10 +5,9 @@ import org.newdawn.slick.SlickException;
 import carte.Cell;
 import carte.Map;
 import entite.Direction;
-import entite.Entity;
 import gui.GUI;
 import gui.GUICharacter;
-import personnages.Player;;
+import personnages.Player;
 
 public class Engine {
 
@@ -24,16 +23,17 @@ public class Engine {
 	 * 
 	 * @throws SlickException
 	 */
+
 	public Engine(GUI guy) throws SlickException {
-		player1 = new Player(2, 4, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1);
-		player2 = new Player(31, 15, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1);
+		player1 = new Player(2, 4, ma_map, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1);
+		player2 = new Player(31, 15, ma_map, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 2);
 		nbrRound = 0;
 		EndGame = false;
 		ma_map = new Map();
 		ma_map.initMap(guy);
 	}
 
-	private void doMove(Direction dir, GUICharacter perso, Map map) {
+	public void doMove(Direction dir, GUICharacter perso, Map map) {
 
 		// Mise a jour de la position du joueur 1
 		if (player1.getMovePoints() > 0 && perso.getTeam() == 1) {
@@ -91,14 +91,15 @@ public class Engine {
 				break;
 
 			}
-			System.out.println(" Joueur 1 : coordonnee de la case : " + player1.getX() + ";" + player1.getY());
+			// System.out.println("coordonnee de la case : " + player1.getX() +
+			// ";" + player1.getY());
 		} else if (player2.getMovePoints() > 0 && perso.getTeam() == 2) {
 
 			switch (dir) {
 
 			case SOUTH:
+				System.out.println("case libre ? : " + map.isFree(player2.getX() + 1, player2.getY()));
 				if (map.isFree(player2.getX(), player2.getY() + 1)) {
-					System.out.println("case libre ? : " + map.isFree(player2.getX() + 1, player2.getY()));
 					player2.setY(player2.getY() + 1);
 					map.Free(player2.getX(), player2.getY() - 1);
 					map.Add(player2.getX(), player2.getY(), player2);
@@ -142,7 +143,7 @@ public class Engine {
 				}
 				break;
 			}
-			System.out.println("Joueur 2 : coordonnee de la case : " + player2.getX() + ";" + player2.getY());
+			System.out.println("coordonnee de la case : " + player2.getX() + ";" + player2.getY());
 		} else {
 			System.out.println("Plus de point de déplacement \n");
 			this.EndGame = false;
@@ -151,7 +152,7 @@ public class Engine {
 		this.EndGame = true;
 	}
 
-	public void update(Direction dir, GUICharacter perso, Map map) {
+	public void update(Direction dir, GUICharacter perso, int joueur, Map map, GUI guy) {
 
 		// Allow to do the move for 5 MP
 		doMove(dir, perso, map);
@@ -159,7 +160,7 @@ public class Engine {
 		// Set to 5 the MP if all has been consume
 		if (this.EndGame == true) {
 			nbrRound++;
-			switch (perso.getTeam()) {
+			switch (joueur) {
 			case 1:
 				player1.setMovePoints(5);
 				break;
@@ -201,6 +202,7 @@ public class Engine {
 				break;
 
 			}
+			player1.setAttackPoints(player1.getAttackPoints() - 1);
 
 		} else if (player2.getAttackPoints() > 0 && perso.getTeam() == 2) {
 
@@ -231,7 +233,8 @@ public class Engine {
 				break;
 
 			}
-			
+			player2.setAttackPoints(player2.getAttackPoints() - 1);
+
 		} else {
 			System.out.println("Plus de point d'attaque !\n");
 			this.EndGame = false;

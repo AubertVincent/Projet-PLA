@@ -2,19 +2,15 @@ package entite;
 
 import carte.Map;
 
-
 public abstract class Entity {
-
 
 	protected int x;
 	protected int y;
 	protected final Map entityMap;
 
-
 	public abstract boolean isObstacle();
 
 	public abstract boolean isCharacter();
-
 
 	public abstract boolean isPickAble();
 
@@ -76,6 +72,7 @@ public abstract class Entity {
 
 	/**
 	 * The map on which the entity is located
+	 * 
 	 * @return the map
 	 */
 	public Map getEntityMap() {
