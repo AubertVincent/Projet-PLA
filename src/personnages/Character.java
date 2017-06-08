@@ -2,6 +2,7 @@ package personnages;
 
 import java.util.List;
 
+import carte.Base;
 import carte.Cell;
 import carte.Map;
 import entite.Direction;
@@ -25,11 +26,12 @@ public abstract class Character extends Entity {
 	protected int recall;
 	protected Team team;
 	protected int attackPoints;
+	protected Base base;
 
 	public Character(int x, int y, Map entityMap, List<Picked> myOwnBesace, Direction direction, int life, int vision,
-			int attack, int range, int movePoints, int recall, Team team, int attackPoints) {
+			int attack, int range, int movePoints, int recall, Team team, int attackPoints, Base base) {
+
 		super(x, y, entityMap);
-		this.myOwnBesace = myOwnBesace;
 		this.direction = direction;
 		this.life = life;
 		this.vision = vision;
@@ -39,6 +41,16 @@ public abstract class Character extends Entity {
 		this.recall = recall;
 		this.team = team;
 		this.attackPoints = attackPoints;
+		this.base = base;
+	}
+
+	public Base getBase() {
+		return base;
+	}
+	 
+
+	public void setBase(Base base) {
+		this.base = base;
 	}
 
 	public abstract boolean isPlayer();
@@ -271,7 +283,9 @@ public abstract class Character extends Entity {
 			picked.remove(0);
 		}
 
+
 	}
+
 }
 
 //

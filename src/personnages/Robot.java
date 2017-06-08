@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import carte.Base;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
@@ -18,20 +19,19 @@ public class Robot extends Character {
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 
-	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
-
 	protected _Sequence myAutomaton;
 	protected Player player;
+	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
 
 	public Robot(int x, int y, Map entityMap, List<Picked> myOwnBesace, Direction direction, int life, int vision,
-			int attack, int range, int movePoints, int recall, Team team, int attackPoints,
-			java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife, _Sequence myAutomaton,
-			Player player) {
+			int attack, int range, int movePoints, int recall, Team team, int attackPoints, Base base,
+			_Sequence myAutomaton, Player player,
+			java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife) {
 		super(x, y, entityMap, myOwnBesace, direction, life, vision, attack, range, movePoints, recall, team,
-				attackPoints);
-		this.targetsLife = targetsLife;
+				attackPoints, base);
 		this.myAutomaton = myAutomaton;
 		this.player = player;
+		this.targetsLife = targetsLife;
 	}
 
 	public static List<Class<? extends Action>> getPossibleActionsList() {

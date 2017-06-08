@@ -1,8 +1,11 @@
 package personnages;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import carte.Base;
+import carte.Map;
 import entite.Direction;
 import entite.Team;
 import operateur.Action;
@@ -29,13 +32,16 @@ public class Player extends Character {
 
 	public List<Robot> listRobot;
 
-	public Player(int x, int y, carte.Map entityMap, List<Picked> myOwnBesace, Direction direction, int life,
-			int vision, int attack, int range, int movePoints, int recall, Team team, int attackPoints,
+
+	public Player(int x, int y, Map entityMap, List<Picked> myOwnBesace, Direction direction, int life, int vision,
+			int attack, int range, int movePoints, int recall, Team team, int attackPoints, Base base, Besace besace,
 			List<Robot> listRobot) {
 		super(x, y, entityMap, myOwnBesace, direction, life, vision, attack, range, movePoints, recall, team,
-				attackPoints);
+				attackPoints, base);
 		this.besace = new Besace();
 		this.listRobot = listRobot;
+
+		listRobot = new ArrayList<Robot>();
 	}
 
 	public void addRobot(Robot robot) {
@@ -76,7 +82,6 @@ public class Player extends Character {
 	public void CreateRobot() {
 
 	}
-
 
 	@Override
 	public boolean isPlayer() {
