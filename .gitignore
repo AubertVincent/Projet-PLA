@@ -1,6 +1,6 @@
-.settings/
-doc/
+src/reader/
 .classpath
+.settings/
 doc/
 
 # Compiled class file
