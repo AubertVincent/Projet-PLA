@@ -1,7 +1,10 @@
 package personnages;
 
+import java.util.List;
+
 import carte.Cell;
 import carte.Map;
+import carte.Team;
 import entite.Direction;
 import entite.Entity;
 import exceptions.NotDoableException;
@@ -9,8 +12,9 @@ import pickable.*;
 
 public abstract class Character extends Entity {
 
-	protected Direction direction;
+	public List<Picked> myOwnBesace;
 
+	protected Direction direction;
 	protected int life;
 	protected int vision;
 	protected int attack;
@@ -42,7 +46,7 @@ public abstract class Character extends Entity {
 	 *            Character's recall's time
 	 */
 	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int player) {
+			int movePoints, int recall) {
 		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
@@ -51,7 +55,7 @@ public abstract class Character extends Entity {
 		this.range = range;
 		this.movePoints = movePoints;
 		this.recall = recall;
-		this.player = player;
+//		this.player = player;
 	}
 
 	protected abstract boolean isPlayer();
@@ -69,10 +73,10 @@ public abstract class Character extends Entity {
 	public boolean isObstacle() {
 		return false;
 	}
-	
-	public int getPlayer() {
-		return player;
-	}
+
+//	public Player getPlayer() {
+//		return player;
+//	}
 
 	public void setPlayer(int player) {
 		this.player = player;
@@ -187,7 +191,7 @@ public abstract class Character extends Entity {
 			throw new NotDoableException("Personne à attaquer");
 		}
 	}
-	
+
 	public void cancelClassicAtk(Cell target) throws NotDoableException {
 		try {
 			Character opponent = target.getOpponent(this.player);
@@ -228,15 +232,58 @@ public abstract class Character extends Entity {
 	 * @throws GameException
 	 */
 	public void pickUp() throws NotDoableException {
+		List<Class<PickAble>> listPicked = null;
+		Picked picked = new Picked(listPicked);
+		int i = 0;
 		Map myMap = this.getEntityMap();
-		Class<PickAble> picked = myMap.pickableEntity(this.getX(), this.getY());
-		myMap.freePick(picked, this.getX(), this.getY());
-		if (this.isRobot()) {
-			int i = ((Robot) this).getIsToPlayer().besace.get(picked.getClass());
-			((Robot) this).getIsToPlayer().besace.put(picked, i++);
-		} else if (this.isPlayer()) {
-			int i = ((Player) this).besace.get(picked.getClass());
-			((Player) this).besace.put(picked, i++);
+		try {
+			while (true) {
+				Class<PickAble> classPicked = myMap.pickableEntity(this.getX(), this.getY());
+				myMap.freePick(classPicked, this.getX(), this.getY());
+				if (this.isRobot()) {
+					i = ((Robot) this).getPlayer().besace.get(classPicked.getClass());
+					((Robot) this).getPlayer().besace.put(classPicked, i++);
+				} else if (this.isPlayer()) {
+					i = ((Player) this).besace.get(classPicked.getClass());
+					((Player) this).besace.put(classPicked, i++);
+				}
+				picked.add(classPicked);
+				myOwnBesace.add(picked);
+			}
+
+		} catch (NotDoableException e) {
+
+		}
+	}
+
+	public void placePickAble(int x, int y, Class<PickAble> picked, Map map) {
+		try {
+			map.getCell(x, y).setEntity(picked.newInstance());
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void cancelPickUp() throws NotDoableException {
+		int x = this.getX();
+		int y = this.getY();
+		int i = 0;
+		Picked picked = this.myOwnBesace.get(this.myOwnBesace.size() - 1);
+		Map myMap = this.getEntityMap();
+		while (picked.size() > 0) {
+			Class<PickAble> classPicked = picked.get(0);
+			if (this.isRobot()) {
+				i = ((Robot) this).getTeam().besace.get(classPicked.getClass());
+				((Robot) this).getTeam().besace.put(classPicked, i--);
+			} else if (this.isPlayer()) {
+				i = ((Player) this).besace.get(classPicked.getClass());
+				((Player) this).besace.put(classPicked, i--);
+				this.placePickAble(x, y, classPicked, myMap);
+				picked.remove(0);
+			}
+
 		}
 	}
 	

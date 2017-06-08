@@ -13,7 +13,7 @@ public class PickUp extends Action {
 	@Override
 	public void execute(Robot r) throws NotDoableException {
 		if (isDoable(r)) {
-			throw new NotDoableException("Imoossible de ramasser"); // Should
+			throw new NotDoableException("Impossible de ramasser"); // Should
 																	// never
 																	// happen
 		} else {
@@ -23,8 +23,12 @@ public class PickUp extends Action {
 
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
-		// TODO Auto-generated method stub
-		
+		if (isDoable(r)) {
+			throw new NotDoableException("Impossible de ramasser");
+		} else {
+			r.cancelPickUp();
+		}
+
 	}
-	
+
 }

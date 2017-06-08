@@ -46,8 +46,8 @@ public class Player extends Character {
 	}
 
 	public Player(int x, int y, carte.Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int player) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, player);
+			int movePoints, int recall) {
+		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall);
 		possibleActionsList.add(ClassicAck.class);
 		possibleActionsList.add(MoveDir.class);
 		possibleActionsList.add(Tunnel.class);

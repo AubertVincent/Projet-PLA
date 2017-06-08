@@ -5,6 +5,8 @@ import java.util.List;
 
 import entite.*;
 import personnages.Character;
+import personnages.Player;
+import personnages.Robot;
 import exceptions.*;
 
 public class Cell {
@@ -49,13 +51,13 @@ public class Cell {
 		return listeEntites;
 	}
 
-	public Character getOpponent(int player) throws NotDoableException {
+	public Character getOpponent(Team team) throws NotDoableException {
 		int i = 0;
 		Entity e;
-		while (i < this.listeEntites.size() - 1) {
+		while (i < this.listeEntites.size()) {
 			if (this.listeEntites.get(i).isCharacter()) {
 				e = this.listeEntites.get(i);
-				if (((Character) e).getPlayer() == player) {
+				if (((Character) e).getTeam() != team) {
 					return ((Character) e);
 				}
 			}
@@ -63,13 +65,13 @@ public class Cell {
 		throw new NotDoableException("Il est vrai j'ai trop d'adversaire ... mais pas là");
 	}
 
-	public boolean opponentHere(int player) {
+	public boolean opponentHere(Team team) {
 		int i = 0;
 		Entity e;
-		while (i < this.listeEntites.size() - 1) {
+		while (i < this.listeEntites.size()) {
 			if (this.listeEntites.get(i).isCharacter()) {
 				e = this.listeEntites.get(i);
-				if (((Character) e).getPlayer() == player) {
+				if (((Character) e).getTeam() != team) {
 					return true;
 				}
 			}
