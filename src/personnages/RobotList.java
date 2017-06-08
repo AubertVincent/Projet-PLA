@@ -21,5 +21,7 @@ public class RobotList<robotListInterger> {
 		}
 		fromClassToMap.get(objClass).put(obj, robot);
 	}
+	
+	
 
 }
