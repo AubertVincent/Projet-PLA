@@ -50,22 +50,23 @@ public class Engine {
 	public boolean doMove(Direction dir, GUICharacter perso, Map map) {
 
 		boolean moveSucces = false;
+		Player player;
 		// Case of Player1
 		if (perso.getTeam() == Team.ROUGE) {
-			Player player = getPlayer(Team.ROUGE);
+			player = getPlayer(Team.ROUGE);
 			switch (dir) {
 
 			case SOUTH:
 				if (map.isFree(player.getX(), player.getY() + 1)) {
 
 					player.setY(player.getY() + 1);
+					map.Free(player.getX(), player.getY()-1);
 					moveSucces = true;
 				}
 				break;
 
 			case NORTH:
 				if (map.isFree(player.getX(), player.getY() - 1)) {
-					System.out.println("je suis la");
 					player.setY(player.getY() - 1);
 					map.Free(player.getX(), player.getY() + 1);
 					moveSucces = true;
@@ -90,16 +91,12 @@ public class Engine {
 				break;
 
 			}
-			System.out.println("Move Succes : ? "+ moveSucces);
-			if (moveSucces) {
-				map.Add(player.getX(), player.getY(), player);
-				player.setMovePoints(player.getMovePoints() - 1);
-			}
-			return moveSucces;
+
+
 		}
 		// Case of Player2
 		else if (perso.getTeam() == Team.BLEU) {
-			Player player = getPlayer(Team.BLEU);
+			player = getPlayer(Team.BLEU);
 			switch (dir) {
 
 			case SOUTH:
@@ -135,12 +132,8 @@ public class Engine {
 				}
 				break;
 			}
-			System.out.println("Move Succes : ? "+ moveSucces);
-			if (moveSucces) {
-				map.Add(player.getX(), player.getY(), player);
-				player.setMovePoints(player.getMovePoints() - 1);
-			}
-			return moveSucces;
+
+
 		}
 
 		// If the player doesn't have MP
@@ -148,7 +141,11 @@ public class Engine {
 			return moveSucces;
 		}
 
-
+		if (moveSucces) {
+			map.Add(player.getX(), player.getY(), player);
+			player.setMovePoints(player.getMovePoints() - 1);
+		}
+		return moveSucces;
 	}
 
 	// private void doAttack(Direction dir, GUICharacter perso, Map map) {
