@@ -6,6 +6,11 @@ import sequence._Sequence;
 
 public abstract class Action implements _Sequence {
 
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
+
 	/**
 	 * Check is an entity is able to execute an action
 	 * 

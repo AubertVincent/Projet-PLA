@@ -1,43 +1,44 @@
 package carte;
 
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
+import entite.Direction;
 import entite.Entity;
+import entite.Team;
+import exceptions.GameException;
 import exceptions.NotDoableException;
+import gui.GUI;
+import personnages.Player;
 import pickable.PickAble;
 
 public class Map {
 
-	private static final int nbrOpInit = 128; // une chance sur 4 de trouver un
-												// opérateur sur une cellule
-	private static final int width = 32;
-	private static final int height = 16;
+	// private static final int nbrOpInit = 128; // une chance sur 4 de trouver
+	// un
+	// opérateur sur une cellule
+	private int width = 34;
+	private int height = 18;
 
-	public final Cell[][] map = new Cell[height][width];
-
-	public Cell[][] getMap() {
-		return map;
-	}
+	public final Cell[][] map = new Cell[width][height];
 
 	public Map() {
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
 				map[i][j] = new Cell(i, j);
 			}
 		}
 	}
 
-	public void initMap() {
-		int randomLine;
-		int randomColumn;
-		int i = 0;
-		while (i < nbrOpInit) {
-			randomLine = ThreadLocalRandom.current().nextInt(0, height);
-			randomColumn = ThreadLocalRandom.current().nextInt(0, width);
-			if (map[randomLine][randomColumn].isFree()) {
-				// map[randomLine][randomColumn].setEntity(Operator.randomOp());
-				i++;
+	public void initMap(GUI guy) {
+		map[2][4].setEntity(new Player(2, 4, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, Team.ROUGE));
+		map[31][15].setEntity(new Player(31, 15, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, Team.BLEU));
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				if (guy.isObstacle(GUI.cellToPixelX(i), GUI.cellToPixelY(j))) {
+					map[i][j].setEntity(new Obstacle(i, j, this));
+					// System.out.println("Cette case contient un obstacle : " +
+					// i + ";" + j);
+				}
 			}
 		}
 	}
@@ -68,6 +69,25 @@ public class Map {
 	public boolean isFree(int x, int y) {
 		return map[x][y].isFree();
 	}
+
+	public List<Entity> getEntity(int x, int y) {
+		return map[x][y].getListEntity();
+	}
+
+	// private void printMap() {
+	// for (int i = 0; i < width; i++) {
+	// for (int j = 0; j < height; j++) {
+	// System.out.println("case :" + i + ',' + j + " " + map[i][j].isFree());
+	// }
+	// }
+	// }
+
+	// public static void main(String[] args) {
+	// Map ma_map = new Map();
+	// Map.initMap();
+	// Map.printMap();
+	//
+	// }
 
 	/**
 	 * return the list of the entities present on the cell(x,y)

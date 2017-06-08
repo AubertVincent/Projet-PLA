@@ -1,9 +1,9 @@
 package gui;
 
-import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
@@ -12,9 +12,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 import entite.Direction;
+import entite.Team;
+import moteurDuJeu.Engine;
 import operateur.Action;
-
-import personnages.Character;
 import personnages.Player;
 import personnages.Robot;
 
@@ -23,7 +23,7 @@ public abstract class GUICharacter {
 
 	private static final int spriteSheetWidth = 64;
 	private static final int spriteSheetHeight = 64;
-	
+
 	// Coordinates in pixels
 	private float xPx, yPx;
 	// Coordinates to reach in pixels
@@ -42,11 +42,17 @@ public abstract class GUICharacter {
 	// Pour l'instant : booleen moving
 	private boolean moving;
 
-	// TODO
-	// Tableau action -> animation[] (plus tard)
-	Map<Class<? extends operateur.Action>, Animation[]> listeAnimations = new HashMap<Class<? extends operateur.Action>, Animation[]>();
+	// Tableau action -> animation[]
+	Map<Class<? extends operateur.Action>, Animation[]> animationsList = new HashMap<Class<? extends operateur.Action>, Animation[]>();
+
 	// Pour l'instant : animation[]
-	private final Animation[] animation_depl = new Animation[8];
+
+	private boolean AckRequest;
+	private boolean attacking;
+	private int beginAck;
+	private int AckDuration;
+
+	private Team team;
 
 	protected Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y, int animationDuration) {
 		Animation animation = new Animation();
@@ -56,75 +62,54 @@ public abstract class GUICharacter {
 		return animation;
 	}
 
-	// TODO : adapt to HashMap
 	protected void initAnimations(int animationDuration) throws SlickException, Exception {
 
-		Animation[] currentAnimation = new Animation[8];
-
 		// Get possibleActionList of the current Character
-		List<Class<? extends Action>> possibleActionList ;
-		if (this instanceof GUIPlayer){
+		List<Class<? extends Action>> possibleActionList;
+		if (this instanceof GUIPlayer) {
 			possibleActionList = Player.getPossibleActionsList();
-		}
-		else if (this instanceof GUIRobot){
-			possibleActionList = Robot.getPossibleActionsList();	
-		}
-		else {
+		} else if (this instanceof GUIRobot) {
+			possibleActionList = Robot.getPossibleActionsList();
+		} else {
 			throw new Exception("Unknown Character subclass");
 		}
 		// load the animation of each action element of the possibleActionList
 		for (Iterator<Class<? extends Action>> action = possibleActionList.iterator(); action.hasNext();) {
 			Class<? extends Action> currentAction = action.next();
-			SpriteSheet currentSpriteSheet ;
-			if (this instanceof GUIPlayer){
-				currentSpriteSheet = new SpriteSheet(GUIPlayer.actionSpritePath.get(currentAction), spriteSheetWidth, spriteSheetHeight);
-				currentNumberOfSprites = 
-			}
-			else if (this instanceof GUIRobot){
-				currentSpriteSheet = new SpriteSheet(GUIRobot.actionSpritePath.get(currentAction), spriteSheetWidth, spriteSheetHeight);					
-			}
-			else {
+			SpriteSheet currentSpriteSheet = null;
+			int currentNumberOfSprites = 0;
+			if (this instanceof GUIPlayer) {
+				currentSpriteSheet = new SpriteSheet(GUIPlayer.actionSpritePath.get(currentAction), spriteSheetWidth,
+						spriteSheetHeight);
+				currentNumberOfSprites = GUIPlayer.actionSpriteNumberOfSprites.get(currentAction);
+			} else if (this instanceof GUIRobot) {
+				currentSpriteSheet = new SpriteSheet(GUIRobot.actionSpritePath.get(currentAction), spriteSheetWidth,
+						spriteSheetHeight);
+				currentNumberOfSprites = GUIRobot.actionSpriteNumberOfSprites.get(currentAction);
+			} else {
 				throw new Exception("Unknown Charcter subclass");
 			}
-			
-			
+
+			Animation[] currentAnimation = new Animation[8];
+
 			currentAnimation[0] = loadAnimation(currentSpriteSheet, 0, 1, 0, animationDuration);
 			currentAnimation[1] = loadAnimation(currentSpriteSheet, 0, 1, 1, animationDuration);
 			currentAnimation[2] = loadAnimation(currentSpriteSheet, 0, 1, 2, animationDuration);
 			currentAnimation[3] = loadAnimation(currentSpriteSheet, 0, 1, 3, animationDuration);
-			currentAnimation[4] = loadAnimation(currentSpriteSheet, 1, numberOfSprites, 0, animationDuration);
-			currentAnimation[5] = loadAnimation(currentSpriteSheet, 1, numberOfSprites, 1, animationDuration);
-			currentAnimation[6] = loadAnimation(currentSpriteSheet, 1, numberOfSprites, 2, animationDuration);
-			currentAnimation[7] = loadAnimation(currentSpriteSheet, 1, numberOfSprites, 3, animationDuration);
-			
-			
-			
+			currentAnimation[4] = loadAnimation(currentSpriteSheet, 1, currentNumberOfSprites, 0, animationDuration);
+			currentAnimation[5] = loadAnimation(currentSpriteSheet, 1, currentNumberOfSprites, 1, animationDuration);
+			currentAnimation[6] = loadAnimation(currentSpriteSheet, 1, currentNumberOfSprites, 2, animationDuration);
+			currentAnimation[7] = loadAnimation(currentSpriteSheet, 1, currentNumberOfSprites, 3, animationDuration);
+
+			// System.out.println(this);
+			// System.out.println(currentAnimation.toString());
+			// System.out.println(currentAction.toString());
+
+			animationsList.put(currentAction, currentAnimation);
+
 		}
 
 	}
-	//	protected abstract void initAnimations(int animationDuration) throws SlickException;
-	// protected void initAnimations(Map<Action, String> spriteSheetLocation,
-	// int spriteSheetWidth, int spriteSheetHeight,
-	// int animationDuration) throws SlickException {
-	// SpriteSheet spriteSheet = new SpriteSheet(spriteSheetLocation,
-	// spriteSheetWidth, spriteSheetHeight);
-	// this.animation_depl[0] = loadAnimation(spriteSheet, 0, 1, 0,
-	// animationDuration);
-	// this.animation_depl[1] = loadAnimation(spriteSheet, 0, 1, 1,
-	// animationDuration);
-	// this.animation_depl[2] = loadAnimation(spriteSheet, 0, 1, 2,
-	// animationDuration);
-	// this.animation_depl[3] = loadAnimation(spriteSheet, 0, 1, 3,
-	// animationDuration);
-	// this.animation_depl[4] = loadAnimation(spriteSheet, 1, 9, 0,
-	// animationDuration);
-	// this.animation_depl[5] = loadAnimation(spriteSheet, 1, 9, 1,
-	// animationDuration);
-	// this.animation_depl[6] = loadAnimation(spriteSheet, 1, 9, 2,
-	// animationDuration);
-	// this.animation_depl[7] = loadAnimation(spriteSheet, 1, 9, 3,
-	// animationDuration);
-	// }
 
 	/**
 	 * Creates the GUICharacter corresponding to a character, its graphical
@@ -136,13 +121,14 @@ public abstract class GUICharacter {
 	 *            y coordinate in the map grid
 	 * @param dir
 	 *            Direction of the character
-	 * @param spriteSheetAnimation
-	 *            Path to the sprite sheet of the moving animation (TODO : adapt
-	 *            to any animation)
+	 * @param animationDuration
+	 *            Atomic duration of an animation (in milliseconds)
 	 * @throws SlickException
 	 *             Indicates a failure of the loading of a sprite sheet
 	 */
-	public GUICharacter(int x, int y, Direction dir) throws SlickException {
+
+	public GUICharacter(int x, int y, Direction dir, int animationDuration, Team team)
+			throws SlickException, Exception {
 		super();
 		this.xCell = x;
 		this.yCell = y;
@@ -152,7 +138,13 @@ public abstract class GUICharacter {
 		this.yPx = GUI.cellToPixelY(getCurrentY());
 		this.dir = dir;
 		this.setMoving(false);
-		this.initAnimations(100);
+		initAnimations(animationDuration);
+
+		// TODO If animation is longer than animationDuration, set it here
+		AckDuration = animationDuration * 6;
+
+		this.team = team;
+
 	}
 
 	/**
@@ -165,7 +157,13 @@ public abstract class GUICharacter {
 		g.setColor(new Color(0, 0, 0, .5f));
 		g.fillOval((int) xPx - 16, (int) yPx - 8, 32, 16);
 		// -32 et -60 to center in cell
-		g.drawAnimation(animation_depl[dir.toInt() + (isMoving() ? 4 : 0)], (int) xPx - 32, (int) yPx - 60);
+		if (isAttacking()) {
+			g.drawAnimation(animationsList.get(operateur.ClassicAck.class)[dir.toInt() + (isAttacking() ? 4 : 0)],
+					(int) xPx - 32, (int) yPx - 60);
+		} else {
+			g.drawAnimation(animationsList.get(operateur.MoveDir.class)[dir.toInt() + (isMoving() ? 4 : 0)],
+					(int) xPx - 32, (int) yPx - 60);
+		}
 	}
 
 	/**
@@ -178,7 +176,21 @@ public abstract class GUICharacter {
 	 *            The delay (in milliseconds) since the last call of this method
 	 */
 	public void update(GUI gui, int delta) {
+		if (isAttacking()) {
+			if (AckRequest) {
+				System.out.println("Ordonne l'attaque");
+				setAckRequest(false);
+				beginAck = (int) System.currentTimeMillis();
+			} else {
+				if ((beginAck + AckDuration) <= (int) System.currentTimeMillis()) {
+					setAttacking(false);
+				}
+			}
+		}
+
 		if (isMoving()) {
+
+			setAttacking(false);
 
 			float nextXPx = getCurrentXPx(), nextYPx = getCurrentYPx();
 
@@ -204,9 +216,20 @@ public abstract class GUICharacter {
 		}
 	}
 
+	public Team getTeam() {
+		return this.team;
+	}
+
+	protected void movePlayer(Engine engine, Direction direction) {
+		if (!isMoving() && !isAttacking()) {
+			engine.doMove(direction, this, engine.ma_map);
+			this.goToDirection(direction);
+		}
+	}
+
 	// returns true if GUIChararcter is in targetCell
 	private boolean isInPlace() {
-		// return false ;
+
 		float tolerance = 1f;
 
 		float maximumAcceptableHeight, maximumAcceptableWidth, minimumAcceptableHeight, minimumAcceptableWidth;
@@ -221,8 +244,6 @@ public abstract class GUICharacter {
 		isInPlaceHeight = getCurrentYPx() <= maximumAcceptableHeight && getCurrentYPx() >= minimumAcceptableHeight;
 
 		return getCurrentX() == getTargetX() && getCurrentY() == getTargetY() && isInPlaceHeight && isInPlaceWidth;
-		// return getCurrentX() == getTargetX() && getCurrentY() ==
-		// getTargetY();
 	}
 
 	/**
@@ -275,11 +296,11 @@ public abstract class GUICharacter {
 	}
 
 	// TODO : Temporary until adapt to 'boolean isState(State state)'
-	private boolean isMoving() {
+	protected boolean isMoving() {
 		return moving;
 	}
 
-	// TODO : Temporaire en attendant 'boolean setState(Etat state)'
+	// TODO : Temporary until 'void setState(Etat state, boolean bool)'
 	private void setMoving(boolean moving) {
 		this.moving = moving;
 	}
@@ -340,5 +361,50 @@ public abstract class GUICharacter {
 
 	private void setDirection(Direction dir) {
 		this.dir = dir;
+	}
+
+	public void Attack(Direction dir) {
+		if (!isMoving() && !isAttacking()) {
+			setDirection(dir);
+			setAttackTarget(dir);
+			switch (dir) {
+			case NORTH:
+
+				break;
+			case WEST:
+				setAttackTarget(dir);
+				break;
+			case SOUTH:
+				setAttackTarget(dir);
+				break;
+			case EAST:
+				setAttackTarget(dir);
+				break;
+			}
+			setAckRequest(true);
+			setAttacking(true);
+		}
+	}
+
+	private void setAckRequest(boolean ackRequest) {
+		this.AckRequest = ackRequest;
+	}
+
+	private boolean isAttacking() {
+		return attacking;
+	}
+
+	private void setAttacking(boolean attacking) {
+		this.attacking = attacking;
+	}
+
+	private void setAttackTarget(Direction dir) {
+		// TODO Attack the cell on the abscissa
+
+	}
+
+	public void createRobot(int x, int y) throws SlickException {
+		// listRobot.add(new GUIRobot(2, 4, Direction.SOUTH,
+		// "res/SpriteSheetAnimRobot.png", 1));
 	}
 }

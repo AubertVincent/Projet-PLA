@@ -4,11 +4,13 @@ import java.util.List;
 
 import carte.Cell;
 import carte.Map;
-import entite.Team;
 import entite.Direction;
 import entite.Entity;
+import entite.Team;
+import exceptions.GameException;
 import exceptions.NotDoableException;
-import pickable.*;
+import pickable.PickAble;
+import pickable.Picked;
 
 public abstract class Character extends Entity {
 
@@ -22,6 +24,7 @@ public abstract class Character extends Entity {
 	protected int movePoints;
 	protected int recall;
 	protected Team team;
+	protected int attackPoints;
 
 	/**
 	 * Set a new character
@@ -46,7 +49,7 @@ public abstract class Character extends Entity {
 	 *            Character's recall's time
 	 */
 	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, Team team) {
+			int movePoints, int recall, int aP, Team team) {
 		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
@@ -55,10 +58,11 @@ public abstract class Character extends Entity {
 		this.range = range;
 		this.movePoints = movePoints;
 		this.recall = recall;
+		this.attackPoints = aP;
 		this.team = team;
 	}
 
-	protected abstract boolean isPlayer();
+	public abstract boolean isPlayer();
 
 	public abstract boolean isRobot();
 
@@ -66,11 +70,16 @@ public abstract class Character extends Entity {
 		return true;
 	}
 
-	public boolean isPickAble() {
+	public boolean isOperator() {
 		return false;
 	}
 
 	public boolean isObstacle() {
+		return false;
+	}
+
+	@Override
+	public boolean isPickAble() {
 		return false;
 	}
 
@@ -138,24 +147,24 @@ public abstract class Character extends Entity {
 		this.recall = recall;
 	}
 
-	/**
-	 * Move a character in the direction given of the length given
-	 * 
-	 * @param dir
-	 *            Direction of the move
-	 * @param lg
-	 *            Length of the move
-	 */
-	public void goTo(Direction dir, int lg) { // lg?
+	public int getAttackPoints() {
+		return this.attackPoints;
+	}
+
+	public void setAttackPoints(int aP) {
+		this.attackPoints = aP;
+	}
+
+	public void goTo(Direction dir, int lg) {
 
 		direction = dir;
 
 		switch (direction) {
 		case NORTH:
-			setY(getY() - lg);
+			setY(getY() + lg);
 			break;
 		case SOUTH:
-			setY(getY() + lg);
+			setY(getY() - lg);
 			break;
 		case EAST:
 			setX(getX() + lg);
@@ -286,5 +295,22 @@ public abstract class Character extends Entity {
 
 		}
 	}
+
+	//
+	// public int getXBase() {
+	// if (this.getTeam() == Team.ROUGE) {
+	// return 2;
+	// } else {
+	// return 31;
+	// }
+	// }
+	//
+	// public int getYBase() {
+	// if (this.getTeam() == Team.ROUGE) {
+	// return 4;
+	// } else {
+	// return 15;
+	// }
+	// }
 
 }

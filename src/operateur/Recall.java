@@ -1,11 +1,14 @@
 package operateur;
 
+import entite.Team;
 import exceptions.NotDoableException;
 import personnages.Robot;
 
 public class Recall extends Movement {
 
-	protected int time;
+	protected Integer time;
+	private int lastX;
+	private int lastY;
 
 	/**
 	 * Set a new recall by means of its time
@@ -26,10 +29,10 @@ public class Recall extends Movement {
 	 */
 	@Override
 	protected boolean isDoable(Robot r) {
-		if (r.getPlayer() == 1 && r.getEntityMap().isReachable(2, 4)){
+		if (r.getTeam() == Team.ROUGE && r.getEntityMap().isReachable(2, 4)) {
 			return true;
 		}
-		if (r.getPlayer() == 2 && r.getEntityMap().isReachable(31, 15)){
+		if (r.getTeam() == Team.BLEU && r.getEntityMap().isReachable(31, 15)) {
 			return true;
 		}
 		return false;
@@ -43,15 +46,24 @@ public class Recall extends Movement {
 		// if (r.getRecall() == 0) {
 		int xBase = r.getXBase();
 		int yBase = r.getYBase();
-		r.teleport(xBase, yBase);
-
+		if (this.isDoable(r)) {
+			this.lastX = r.getX();
+			this.lastY = r.getY();
+			r.teleport(xBase, yBase);
+		}
 		// r.setRecall(time--);
 	}
 
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
-		// TODO Auto-generated method stub
-		
+		// teleport le robot à la position avant le recall
+		r.teleport(this.lastX, this.lastY);
+		// r.cancelRecall();
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "(" + time.toString() + ")";
 	}
 
 }

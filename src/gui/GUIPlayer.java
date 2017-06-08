@@ -1,68 +1,57 @@
 package gui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
 
 import entite.Direction;
+import entite.Team;
 import operateur.Action;
+import operateur.ClassicAck;
+import operateur.MoveDir;
 import personnages.Player;
 
 public class GUIPlayer extends GUICharacter {
 
-	private static Map<Class<? extends Action>, Integer> numberOfSprites = new HashMap<Class<? extends Action>, Integer>() ;
-	static{
-		numberOfSprites.put(operateur.MoveDir.class, 9);
-		numberOfSprites.put(operateur.ClassicAck.class, 9);
-	}
-	
-	// Given each possible action doable by the Player, gives the paths to its
-	// animation
-	protected static Map<Class<? extends Action>, String> actionSpritePath = new HashMap<Class<? extends Action>, String>();
-	protected static Map<Class<? extends Action>, Integer> actionSpriteNumberOfSprites;
+	public final List<GUIRobot> listRobot;
+
+	// The Map<ActionClass, Integer> of the yet added class->number of sprites
+	// of its animation
+	private static Map<Class<? extends Action>, Integer> numberOfSprites = new HashMap<Class<? extends Action>, Integer>();
 	static {
-		// Puts every possible action's sprite in actionSpritePath
+		numberOfSprites.put(operateur.MoveDir.class, 9);
+		numberOfSprites.put(operateur.ClassicAck.class, 6);
+	}
+
+	// Given EVERY POSSIBLE doable action (by the Player), gives the paths to
+	// its animation and its number of sprites
+	protected static Map<Class<? extends Action>, String> actionSpritePath = new HashMap<Class<? extends Action>, String>();
+	protected static Map<Class<? extends Action>, Integer> actionSpriteNumberOfSprites = new HashMap<Class<? extends Action>, Integer>();
+	static {
 		List<Class<? extends Action>> possibleActionList = Player.getPossibleActionsList();
 		for (Iterator<Class<? extends Action>> action = possibleActionList.iterator(); action.hasNext();) {
 			Class<? extends Action> currentAction = action.next();
-			actionSpritePath.put(currentAction, "res/SpriteSheet" + currentAction.toString());
+			actionSpritePath.put(currentAction, "res/SpriteSheet" + currentAction.getSimpleName() + ".png");
 			actionSpriteNumberOfSprites.put(currentAction, numberOfSprites.get(currentAction));
+			System.out
+					.println("For " + currentAction.getSimpleName() + " will load " + numberOfSprites.get(currentAction)
+							+ " sprites from " + "res/SpriteSheet" + currentAction.getSimpleName() + ".png");
 		}
 	}
-	private int spriteSheetWidth, spriteSheetHeight;
 
-	public GUIPlayer(int x, int y, Direction dir) throws SlickException {
-		super(x, y, dir);
-		// TODO Auto-generated constructor stub
+	// TODO : bound to be dynamic when something is picked
+	List<Class<? extends operateur.Action>> animationsList = new LinkedList<Class<? extends operateur.Action>>();
+
+	public GUIPlayer(int x, int y, Direction dir, int animationDuration, Team team) throws SlickException, Exception {
+		super(x, y, dir, animationDuration, team);
+		listRobot = new ArrayList<GUIRobot>();
+		animationsList.add(ClassicAck.class);
+		animationsList.add(MoveDir.class);
 	}
-
-//	@Override
-//	protected void initAnimations(int animationDuration) throws SlickException {
-//
-//		Animation[] currentAnimation = new Animation[8];
-//
-//		List<Class<? extends Action>> possibleActionList = Player.getPossibleActionsList();
-//		for (Iterator<Class<? extends Action>> action = possibleActionList.iterator(); action.hasNext();) {
-//			Class<? extends Action> currentAction = action.next();
-//
-//			SpriteSheet currentSpriteSheet = new SpriteSheet(actionSpritePath.get(currentAction), spriteSheetWidth,
-//					spriteSheetHeight);
-//
-//			currentAnimation[0] = loadAnimation(currentSpriteSheet, 0, 1, 0, animationDuration);
-//			currentAnimation[1] = loadAnimation(currentSpriteSheet, 0, 1, 1, animationDuration);
-//			currentAnimation[2] = loadAnimation(currentSpriteSheet, 0, 1, 2, animationDuration);
-//			currentAnimation[3] = loadAnimation(currentSpriteSheet, 0, 1, 3, animationDuration);
-//			currentAnimation[4] = loadAnimation(currentSpriteSheet, 1, 9, 0, animationDuration);
-//			currentAnimation[5] = loadAnimation(currentSpriteSheet, 1, 9, 1, animationDuration);
-//			currentAnimation[6] = loadAnimation(currentSpriteSheet, 1, 9, 2, animationDuration);
-//			currentAnimation[7] = loadAnimation(currentSpriteSheet, 1, 9, 3, animationDuration);
-//		}
-//
-//	}
 
 }

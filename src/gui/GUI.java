@@ -11,14 +11,16 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
 import entite.Direction;
+import entite.Team;
+import moteurDuJeu.Engine;
 
 public class GUI extends BasicGame {
 
 	private GameContainer container;
-	private TiledMap map;
-	private static final int WindowHeight = 576;
-	private static final int WindowWidth = 1088;
-	private static final int TextFieldHeight = 50;
+	private static TiledMap map;
+	private final static int WindowHeight = 576;
+	private final static int WindowWidth = 1088;
+	private final int TextFieldHeight = 50;
 
 	protected static final int cellHeight = 32;
 	protected static final int cellWidth = 32;
@@ -26,9 +28,14 @@ public class GUI extends BasicGame {
 	private GUIBehaviorInput inputTextField;
 	protected static boolean behaviorInputNeeded = true;
 
-	private GUICharacter perso1;
+	private GUIPlayer perso1;
+	private GUIPlayer perso2;
+
+	// private Map ma_map;
+	private Engine engine;
 
 	public static void main(String[] args) throws SlickException {
+
 		new AppGameContainer(new GUI(), WindowWidth, WindowHeight, false).start();
 	}
 
@@ -39,20 +46,38 @@ public class GUI extends BasicGame {
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		this.container = container;
-		this.map = new TiledMap("res/map.tmx");
-		this.perso1 = new GUIPlayer(5, 12, entite.Direction.SOUTH);
-		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "{D3H | D}*");
+		map = new TiledMap("res/map.tmx");
+		try {
+			perso1 = new GUIPlayer(2, 4, entite.Direction.SOUTH, 100, Team.ROUGE);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			perso2 = new GUIPlayer(31, 15, entite.Direction.SOUTH, 100, Team.BLEU);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "(MC2E | (AC;(MC3W>MT8.3)))");
+		engine = new Engine(this);
 	}
 
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
-		this.map.render(0, 0, 3);
-		this.map.render(0, 0, 0);
-		this.map.render(0, 0, 1);
-		this.map.render(0, 0, 2);
-		this.perso1.render(g);
-		this.map.render(0, 0, 4);
-		this.map.render(0, 0, 5);
+		map.render(0, 0, 3);
+		map.render(0, 0, 0);
+		map.render(0, 0, 1);
+		map.render(0, 0, 2);
+		perso1.render(g);
+		perso2.render(g);
+
+		for (GUIRobot s : perso1.listRobot) {
+			s.render(g);
+		}
+
+		map.render(0, 0, 4);
+		map.render(0, 0, 5);
 
 		if (behaviorInputNeeded) {
 			this.inputTextField.render(container, g);
@@ -62,6 +87,7 @@ public class GUI extends BasicGame {
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
 		perso1.update(this, delta);
+		perso2.update(this, delta);
 		this.inputTextField.update(container);
 	}
 
@@ -90,16 +116,25 @@ public class GUI extends BasicGame {
 	 *            y coordinate of the cell
 	 * @return
 	 */
-	protected boolean isObstacle(float x, float y) {
-		int tileW = this.map.getTileWidth();
-		int tileH = this.map.getTileHeight();
-		int logicLayer = this.map.getLayerIndex("obstacles");
-		Image tile = this.map.getTileImage((int) x / tileW, (int) y / tileH, logicLayer);
+	public boolean isCollision(float x, float y) {
+		int tileW = map.getTileWidth();
+		int tileH = map.getTileHeight();
+		int logicLayer = map.getLayerIndex("obstacles");
+		Image tile = map.getTileImage((int) x / tileW, (int) y / tileH, logicLayer);
 		boolean collision = tile != null;
 		if (collision) {
 			Color color = tile.getColor((int) x % tileW, (int) y % tileH);
 			collision = color.getAlpha() > 0;
 		}
+		return collision;
+	}
+
+	public boolean isObstacle(float x, float y) {
+		int tileW = map.getTileWidth();
+		int tileH = map.getTileHeight();
+		int logicLayer = map.getLayerIndex("obstacles");
+		Image tile = map.getTileImage((int) x / tileW, (int) y / tileH, logicLayer);
+		boolean collision = tile != null;
 		return collision;
 	}
 
@@ -111,20 +146,62 @@ public class GUI extends BasicGame {
 	}
 
 	@Override
-	public void keyPressed(int key, char c) {
+	public void keyPressed(int key, char c)  {
 		switch (key) {
 		case Input.KEY_UP:
-			perso1.goToDirection(Direction.NORTH);
+			perso1.movePlayer(engine, Direction.NORTH);
 			break;
 		case Input.KEY_LEFT:
-			perso1.goToDirection(Direction.WEST);
+			perso1.movePlayer(engine, Direction.WEST);
 			break;
 		case Input.KEY_DOWN:
-			perso1.goToDirection(Direction.SOUTH);
+			perso1.movePlayer(engine, Direction.SOUTH);
 			break;
 		case Input.KEY_RIGHT:
-			perso1.goToDirection(Direction.EAST);
+			perso1.movePlayer(engine, Direction.EAST);
 			break;
+		case Input.KEY_Z:
+			perso2.movePlayer(engine, Direction.NORTH);
+			break;
+		case Input.KEY_Q:
+			perso2.movePlayer(engine, Direction.WEST);
+			break;
+		case Input.KEY_S:
+			perso2.movePlayer(engine, Direction.SOUTH);
+			break;
+		case Input.KEY_D:
+			perso2.movePlayer(engine, Direction.EAST);
+			break;
+		case Input.KEY_O:
+			perso1.Attack(Direction.NORTH);
+			break;
+		case Input.KEY_K:
+			perso1.Attack(Direction.WEST);
+			break;
+		case Input.KEY_L:
+			perso1.Attack(Direction.SOUTH);
+			break;
+		case Input.KEY_M:
+			perso1.Attack(Direction.EAST);
+			break;
+		case Input.KEY_F:
+			perso2.Attack(Direction.NORTH);
+			break;
+		case Input.KEY_C:
+			perso2.Attack(Direction.WEST);
+			break;
+		case Input.KEY_V:
+			perso2.Attack(Direction.SOUTH);
+			break;
+		case Input.KEY_B:
+			perso2.Attack(Direction.EAST);
+			break;
+		case Input.KEY_SPACE:
+			try {
+				perso1.createRobot(3, 4);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

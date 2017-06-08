@@ -30,7 +30,7 @@ public class ClassicAck extends Attack {
 
 		int x = r.getX();
 		int y = r.getY();
-		Team team= r.getTeam();
+		Team team = r.getTeam();
 
 		Cell testEast = new Cell(x + 1, y);
 		Cell testSouth = new Cell(x, y - 1);
@@ -42,6 +42,7 @@ public class ClassicAck extends Attack {
 	}
 
 	@Override
+
 	public void execute(Robot r) throws NotDoableException {
 		if (!isDoable(r)) {
 			throw new NotDoableException("Il n'y a personne à attaquer");

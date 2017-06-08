@@ -9,20 +9,21 @@ import entite.Direction;
 import entite.Entity;
 import entite.Team;
 import exceptions.NotDoableException;
-import operateur.*;
+import operateur.Action;
 import sequence._Sequence;
 
 public class Robot extends Character {
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 
-	_Sequence myAutomata;
+	_Sequence myAutomaton;
 	Player player;
 
 	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, Team team, _Sequence myAutomata, Player player) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, team);
-		this.myAutomata = myAutomata;
+			int movePoints, int recall, int aP, Team team, _Sequence myAutomaton, Player player) {
+		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, aP, team);
+
+		this.myAutomaton = myAutomaton;
 		this.player = player;
 	}
 
@@ -35,16 +36,20 @@ public class Robot extends Character {
 		return false;
 	}
 
-
 	@Override
 	public boolean isRobot() {
 		return true;
 	}
 
+	@Override
+	public boolean isObstacle() {
+		return false;
+	}
 
 	public Player getPlayer() {
 		return player;
 	}
+
 	/**
 	 * Suicide a Robot and kill the Robots next to it
 	 * 
@@ -62,6 +67,8 @@ public class Robot extends Character {
 		List<Entity> testSouth = this.entityMap.getListEntity(x, y + 1);
 		List<Entity> testWest = this.entityMap.getListEntity(x - 1, y);
 		List<Entity> testEast = this.entityMap.getListEntity(x + 1, y);
+
+		// Cell testN = this.entityMap.getCell(x, y-1);
 
 		for (Iterator<Entity> i = testNorth.iterator(); i.hasNext();) {
 			Entity eCourant = i.next();
@@ -89,8 +96,12 @@ public class Robot extends Character {
 		}
 	}
 
+	public void cancelSuicideBomber() {
+
+	}
+
 	public void execute() throws NotDoableException {
-		myAutomata.execute(this);
+		myAutomaton.execute(this);
 	}
 
 }
