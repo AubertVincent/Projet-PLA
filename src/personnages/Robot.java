@@ -16,17 +16,17 @@ public class Robot extends Character {
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 
 	_Sequence myAutomata;
-	Player isToPlayer;
+	Player player;
 
-	public Player getIsToPlayer() {
-		return isToPlayer;
+	public Player getPlayer() {
+		return player;
 	}
 
 	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int player, _Sequence myAutomata, Player isToPlayer) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, player);
+			int movePoints, int recall, _Sequence myAutomata, Player player) {
+		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall);
 		this.myAutomata = myAutomata;
-		this.isToPlayer = isToPlayer;
+		this.player = player;
 	}
 
 	public static List<Class<? extends Action>> getPossibleActionsList() {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import carte.Cell;
 import carte.Map;
+import carte.Team;
 import entite.Direction;
 import entite.Entity;
 import exceptions.NotDoableException;
@@ -45,7 +46,7 @@ public abstract class Character extends Entity {
 	 *            Character's recall's time
 	 */
 	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int player) {
+			int movePoints, int recall) {
 		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
@@ -54,7 +55,7 @@ public abstract class Character extends Entity {
 		this.range = range;
 		this.movePoints = movePoints;
 		this.recall = recall;
-		this.player = player;
+//		this.player = player;
 	}
 
 	protected abstract boolean isPlayer();
@@ -73,9 +74,9 @@ public abstract class Character extends Entity {
 		return false;
 	}
 
-	public int getPlayer() {
-		return player;
-	}
+//	public Player getPlayer() {
+//		return player;
+//	}
 
 	public void setPlayer(int player) {
 		this.player = player;
@@ -240,8 +241,8 @@ public abstract class Character extends Entity {
 				Class<PickAble> classPicked = myMap.pickableEntity(this.getX(), this.getY());
 				myMap.freePick(classPicked, this.getX(), this.getY());
 				if (this.isRobot()) {
-					i = ((Robot) this).getIsToPlayer().besace.get(classPicked.getClass());
-					((Robot) this).getIsToPlayer().besace.put(classPicked, i++);
+					i = ((Robot) this).getPlayer().besace.get(classPicked.getClass());
+					((Robot) this).getPlayer().besace.put(classPicked, i++);
 				} else if (this.isPlayer()) {
 					i = ((Player) this).besace.get(classPicked.getClass());
 					((Player) this).besace.put(classPicked, i++);
@@ -274,8 +275,8 @@ public abstract class Character extends Entity {
 		while (picked.size() > 0) {
 			Class<PickAble> classPicked = picked.get(0);
 			if (this.isRobot()) {
-				i = ((Robot) this).getIsToPlayer().besace.get(classPicked.getClass());
-				((Robot) this).getIsToPlayer().besace.put(classPicked, i--);
+				i = ((Robot) this).getTeam().besace.get(classPicked.getClass());
+				((Robot) this).getTeam().besace.put(classPicked, i--);
 			} else if (this.isPlayer()) {
 				i = ((Player) this).besace.get(classPicked.getClass());
 				((Player) this).besace.put(classPicked, i--);
