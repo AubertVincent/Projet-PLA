@@ -55,5 +55,4 @@ public class RandomBar extends Behavior {
 			throw new NotDoableException("Action impossible");
 		}
 	}
-
 }

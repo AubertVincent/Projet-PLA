@@ -54,12 +54,16 @@ public class Recall extends Movement {
 		// r.setRecall(time--);
 	}
 
-	
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
-		//teleport le robot à la position avant le recall
+		// teleport le robot à la position avant le recall
 		r.teleport(this.lastX, this.lastY);
-		//r.cancelRecall();
+		// r.cancelRecall();
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "(" + time.toString() + ")";
 	}
 
 }

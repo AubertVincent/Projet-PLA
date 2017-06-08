@@ -1,8 +1,8 @@
 package operateur;
 
 import carte.Cell;
-import carte.Map;
 import entite.Direction;
+import carte.Map;
 import exceptions.NotDoableException;
 import personnages.Robot;
 
@@ -41,6 +41,7 @@ public class ClassicAck extends Attack {
 	}
 
 	@Override
+
 	public void execute(Robot r) throws NotDoableException {
 		if (!isDoable(r)) {
 			throw new NotDoableException("Il n'y a personne à attaquer");

@@ -8,7 +8,12 @@ import personnages.Robot;
 public class MoveDir extends Movement {
 
 	protected Direction dir;
-	protected int lg;
+	protected Integer lg;
+
+	@Override
+	public String toString() {
+		return (super.toString() + "(" + dir.toString() + ", " + lg.toString() + ")");
+	}
 
 	/**
 	 * Set a new move by means of its direction and its length
@@ -76,7 +81,7 @@ public class MoveDir extends Movement {
 	}
 
 	@Override
-	public void cancel(Robot r) throws NotDoableException{
+	public void cancel(Robot r) throws NotDoableException {
 		if (!isDoable(r)) {
 			throw new NotDoableException("Un obstacle est sur votre chemin");
 		}

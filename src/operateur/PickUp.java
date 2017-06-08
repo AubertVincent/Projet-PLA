@@ -18,13 +18,14 @@ public class PickUp extends Action {
 																	// happen
 		} else {
 			r.pickUp();
+
 		}
 	}
 
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }

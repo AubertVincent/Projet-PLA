@@ -51,4 +51,10 @@ public class Tunnel extends Movement {
 		r.teleport(lastX, lastY);
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString() + "(" + x.toString() + "," + y.toString() + ")";
+	}
+
 }
