@@ -1,6 +1,6 @@
 options
 {
-  static = true;
+  static = false;
   DEBUG_PARSER = false;
   DEBUG_TOKEN_MANAGER = false;
 }
@@ -9,18 +9,12 @@ PARSER_BEGIN(Reader)
 package reader;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import carte.*;
 import entite.*;
-import gui.*;
-import moteurDuJeu.*;
 import operateur.*;
-import personnages.*;
-import pickable.*;
 import sequence.*;
 
 public class Reader
 {
-
 
   public static _Sequence parse(String stringToParse)
   {
@@ -28,20 +22,22 @@ public class Reader
 	_Sequence resultingSequence = null ;
     try
     {
-      resultingSequence = Reader.SEQUENCE();
+      resultingSequence = parser.SEQUENCE();
       System.out.println(resultingSequence.toString());
+      parser.ReInit(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
       return resultingSequence ;
     }
     catch (Exception e)
     {
       System.out.println("NOK");
       System.out.println(e.getMessage());
-      Reader.ReInit(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
+      parser.ReInit(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
     }
     catch (Error e)
     {
       System.out.println("Oops");
       System.out.println(e.getMessage());
+      parser.ReInit(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
     }
     return resultingSequence ;
   }
