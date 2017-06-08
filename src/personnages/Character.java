@@ -46,7 +46,7 @@ public abstract class Character extends Entity {
 	 *            Character's recall's time
 	 */
 	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall,Team team) {
+			int movePoints, int recall, Team team) {
 		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
@@ -74,14 +74,6 @@ public abstract class Character extends Entity {
 		return false;
 	}
 
-//	public Player getPlayer() {
-//		return player;
-//	}
-//
-//	public void setPlayer(int player) {
-//		this.player = player;
-//	}
-
 	public Team getTeam() {
 		return team;
 	}
@@ -89,12 +81,10 @@ public abstract class Character extends Entity {
 	public void setTeam(Team team) {
 		this.team = team;
 	}
-	
 
 	public Direction getDirection() {
 		return this.direction;
 	}
-
 
 	public void setDirection(Direction direction) {
 		this.direction = direction;
@@ -296,20 +286,5 @@ public abstract class Character extends Entity {
 
 		}
 	}
-	
-	public int getXBase(){
-		if (this.getTeam()==Team.ROUGE){
-			return 2;
-		} else {
-			return 31;
-		}
-	}
-	
-	public int getYBase(){
-		if (this.getTeam()==Team.BLEU){
-			return 4;
-		} else {
-			return 15;
-		}
-	}
+
 }
