@@ -25,10 +25,10 @@ public class GUI extends BasicGame {
 	protected static final int cellWidth = 32;
 
 	private GUIBehaviorInput inputTextField;
-	protected static boolean behaviorInputNeeded = false;
+	protected static boolean behaviorInputNeeded = true;
 
-	private GUICharacter perso1;
-	private GUICharacter perso2;
+	private GUIPlayer perso1;
+	private GUIPlayer perso2;
 
 	// private Map ma_map;
 	private Engine engine;
@@ -49,6 +49,21 @@ public class GUI extends BasicGame {
 		this.perso1 = new GUICharacter(2, 4, entite.Direction.SOUTH, "res/SpriteSheetAnim.png", 1);
 		this.perso2 = new GUICharacter(31, 15, entite.Direction.SOUTH, "res/SpriteSheetAnim.png", 2);
 		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "{D3H | D}*");
+
+		try {
+			perso1 = new GUIPlayer(2, 4, entite.Direction.SOUTH, 100, 1);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			perso2 = new GUIPlayer(31, 15, entite.Direction.SOUTH, 100, 2);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "(MC2E | (AC;(MC3W>MT8.3)))");
+>>>>>>> GUI
 		engine = new Engine(this);
 	}
 
@@ -60,6 +75,11 @@ public class GUI extends BasicGame {
 		map.render(0, 0, 2);
 		perso1.render(g);
 		perso2.render(g);
+
+		for (GUIRobot s : perso1.listRobot) {
+			s.render(g);
+		}
+
 		map.render(0, 0, 4);
 		map.render(0, 0, 5);
 
@@ -167,6 +187,7 @@ public class GUI extends BasicGame {
 			break;
 		case Input.KEY_M:
 			perso1.Attack(Direction.EAST);
+<<<<<<< HEAD
 			break;
 		case Input.KEY_F:
 			perso2.Attack(Direction.NORTH);
@@ -180,7 +201,27 @@ public class GUI extends BasicGame {
 		case Input.KEY_B:
 			perso2.Attack(Direction.EAST);
 
+=======
+>>>>>>> GUI
 			break;
+		case Input.KEY_F:
+			perso2.Attack(Direction.NORTH);
+			break;
+		case Input.KEY_C:
+			perso2.Attack(Direction.WEST);
+			break;
+		case Input.KEY_V:
+			perso2.Attack(Direction.SOUTH);
+			break;
+		case Input.KEY_B:
+			perso2.Attack(Direction.EAST);
+			break;
+		case Input.KEY_SPACE:
+			try {
+				perso1.createRobot(3, 4);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

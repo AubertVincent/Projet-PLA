@@ -1,0 +1,264 @@
+options
+{
+  static = true;
+  DEBUG_PARSER = false;
+  DEBUG_TOKEN_MANAGER = false;
+}
+
+PARSER_BEGIN(Reader)
+package reader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import carte.*;
+import entite.*;
+import gui.*;
+import moteurDuJeu.*;
+import operateur.*;
+import personnages.*;
+import pickable.*;
+import sequence.*;
+
+public class Reader
+{
+
+
+  public static _Sequence parse(String stringToParse)
+  {
+    Reader parser = new Reader(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
+	_Sequence resultingSequence = null ;
+    try
+    {
+      resultingSequence = Reader.SEQUENCE();
+      System.out.println(resultingSequence.toString());
+      return resultingSequence ;
+    }
+    catch (Exception e)
+    {
+      System.out.println("NOK");
+      System.out.println(e.getMessage());
+      Reader.ReInit(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
+    }
+    catch (Error e)
+    {
+      System.out.println("Oops");
+      System.out.println(e.getMessage());
+    }
+    return resultingSequence ;
+  }
+}
+
+PARSER_END(Reader)
+
+// les caractères ignorés
+SKIP :
+{
+  ""
+| " "
+| "\t"
+| "\r"
+| "\n"
+| "\u0001"
+| "\u0002"
+| "\u0003"
+| "\u0004"
+| "\u0005"
+| "\u0006"
+| "\u0007"
+| "\u0008"
+| "\u000b"
+| "\u000c"
+| "\u000e"
+| "\u000f"
+| "\u0010"
+| "\u0011"
+| "\u0012"
+| "\u0013"
+| "\u0014"
+| "\u0015"
+| "\u0016"
+| "\u0017"
+| "\u0018"
+| "\u0019"
+| "\u001a"
+| "\u001b"
+| "\u001c"
+| "\u001d"
+| "\u001e"
+| "\u001f"
+| "\u007f"
+}
+
+MORE :
+{
+  "//" : IN_SL_COMMENT
+| "/*" : IN_ML_COMMENT
+}
+
+< IN_SL_COMMENT >
+SPECIAL_TOKEN :
+{
+  < SL_COMMENT :
+    "\n"
+  | "\r"
+  | "\r\n" > : DEFAULT
+}
+
+< IN_ML_COMMENT >
+SPECIAL_TOKEN :
+{
+  < ML_COMMENT : "*/" > : DEFAULT
+}
+
+< IN_SL_COMMENT, IN_ML_COMMENT >
+SKIP :
+{
+  < ~[ ] >
+} // les lexèmes du langage
+
+TOKEN :
+{
+  < A : "A" >
+| < M : "M" >
+| < C : "C" >
+| < S : "S" >
+| < R : "R" >
+| < T : "T" >
+| < N : "N" >
+| < W : "W" >
+| < E : "E" >
+  //| < LETTER : [ "a"-"z", "A"-"Z" ] >
+| < DIGIT : [ "0"-"9" ] >
+| < LPAR : "(" >
+| < RPAR : ")" >
+| < BARRE : "|" >
+| < SEMICOLON : ";" >
+| < CHEVRON : ">" >
+| < PT : "." >
+| < ID : 
+    (
+    < DIGIT >
+    //    | < LETTER >
+    )+ >
+| < BEH :
+    (
+      < BARRE >
+    | < SEMICOLON >
+    | < CHEVRON >
+    ) 
+  >
+}
+
+Behavior BEH() :
+{
+}
+{
+  < BARRE >
+  {
+    return new RandomBar();
+  }
+| < SEMICOLON >
+  {
+    return new Succession();
+  }
+| < CHEVRON >
+  {
+    return new Priority();
+  }
+  // TODO : Add other behaviors 
+}
+
+_Sequence SEQUENCE() :
+{
+  Action act;
+  Behavior beh;
+  _Sequence left, right;
+}
+{
+  < LPAR > left = SEQUENCE() beh = BEH() right = SEQUENCE() < RPAR >
+  {
+    return new Tree(beh, left, right);
+  }
+| act = ACTION()
+  {
+    return act;
+  }
+}
+
+Action ACTION() :
+{
+  Movement mov;
+  Attack att;
+}
+{
+  < M > mov = MOVEMENT()
+  {
+    return mov;
+  }
+| < A > att = ATT()
+  {
+    return att;
+  }
+  // Add rest of grammar  
+}
+
+Attack ATT() :
+{
+}
+{
+  < C >
+  {
+    return new ClassicAck();
+  }
+| 	< S >
+  {
+    return new SuicideBomber();
+  }
+}
+
+Movement MOVEMENT() :
+{
+  Token tok1, tok2;
+  int len;
+  int x, y;
+  Direction dir;
+}
+{
+  < C > tok1 = < DIGIT > dir = DIRECTION()
+  {
+    len = Integer.parseInt(tok1.image);
+    return new MoveDir(dir, len);
+  }
+| < R > tok1 = < DIGIT >
+  {
+    len = Integer.parseInt(tok1.image);
+    return new Recall(len);
+  }
+| < T > tok1 = < DIGIT > < PT > tok2 = < DIGIT >
+  {
+    x = Integer.parseInt(tok1.image);
+    y = Integer.parseInt(tok2.image);
+    return new Tunnel(x, y);
+  }
+}
+
+Direction DIRECTION() :
+{
+}
+{
+  < N >
+  {
+    return Direction.NORTH;
+  }
+| 	< W >
+  {
+    return Direction.WEST;
+  }
+| 	< S >
+  {
+    return Direction.SOUTH;
+  }
+| < E >
+  {
+    return Direction.EAST;
+  }		
+}

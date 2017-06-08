@@ -1,37 +1,90 @@
 package operateur;
 
+import carte.*;
 import entite.*;
-import personnages.*;
+import exceptions.NotDoableException;
+import personnages.Robot;
 
 public class MoveDir extends Movement {
 
-	public MoveDir(int x, int y) {
-		super(x, y);
+	protected Direction dir;
+	protected Integer lg;
+
+	
+	
+	@Override
+	public String toString() {
+		return (super.toString() + "(" + dir.toString() + ", " + lg.toString() + ")");
 	}
 
-	Direction dir;
-	int lg;
+	/**
+	 * Set a new move by means of its direction and its length
+	 * 
+	 * @param dir
+	 *            Direction of the move
+	 * @param lg
+	 *            Length of the move
+	 */
+	public MoveDir(Direction dir, int lg) {
+		super();
+		this.dir = dir;
+		this.lg = lg;
+	}
 
+	public MoveDir() {
+		super();
+	}
+
+	/**
+	 * A move can be done if there is no obstacle
+	 */
 	@Override
-	public boolean isDoable() {
-		// TODO
+
+	protected boolean isDoable(Robot r) {
+		int x = r.getX();
+		int y = r.getY();
+		Map myMap = r.getEntityMap();
+
+		for (int i = 0; i < lg; i++) {
+			switch (dir) {
+			case NORTH:
+				if (!myMap.isFree(x, y - i)) {
+					return false;
+				}
+				break;
+			case EAST:
+				if (!myMap.isFree(x + i, y)) {
+					return false;
+				}
+				break;
+			case SOUTH:
+				if (!myMap.isFree(x, y + i)) {
+					return false;
+				}
+				break;
+			case WEST:
+				if (!myMap.isFree(x - i, y)) {
+					return false;
+				}
+				break;
+			}
+		}
 		return true;
 	}
 
-	public void execute(Entity e) throws GameException {
+	public void execute(Robot r) throws NotDoableException {
 
-		if (!isDoable()) {
-			throw new GameException("Cette action n'est pas réalisable");
+		if (!isDoable(r)) {
+			throw new NotDoableException("Un obstacle est sur votre chemin");
 		}
 
+<<<<<<< HEAD
 		((Character) e).goTo(dir, lg);
 
 	}
+=======
+		r.goTo(dir, lg);
+>>>>>>> GUI
 
-	@Override
-	public boolean isObstacle() {
-		// TODO Auto-generated method stub
-		return false;
 	}
-
 }

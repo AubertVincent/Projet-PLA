@@ -1,9 +1,18 @@
 package operateur;
 
-public abstract class Behavior extends Operator {
+import sequence._Sequence;
+import exceptions.*;
+import personnages.Robot;
 
-	public Behavior(int x, int y) {
-		super(x, y);
+public abstract class Behavior {
+
+	public abstract void execute(Robot r,_Sequence left, _Sequence right) throws NotDoableException;
+
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
 	}
 
+	
+	
 }

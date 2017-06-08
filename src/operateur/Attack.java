@@ -1,8 +1,7 @@
 package operateur;
 
-import personnages.*;
-
 public abstract class Attack extends Action {
+<<<<<<< HEAD
 	
 	public Attack(int x, int y) {
 		super(x, y);
@@ -10,4 +9,7 @@ public abstract class Attack extends Action {
 	Character opponent;
 	Character attacker;
 	
+=======
+
+>>>>>>> GUI
 }

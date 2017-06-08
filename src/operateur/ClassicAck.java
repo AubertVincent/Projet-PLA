@@ -2,6 +2,7 @@ package operateur;
 
 import carte.Cell;
 import entite.Direction;
+<<<<<<< HEAD
 import entite.Entity;
 import entite.GameException;
 import personnages.Character;
@@ -20,35 +21,67 @@ public class ClassicAck extends Attack {
 
 		lifeA = java.lang.Math.max(lifeA - atkE, 0);
 		lifeE = java.lang.Math.max(lifeE - atkA, 0);
+=======
+import carte.Map;
+import exceptions.NotDoableException;
+import personnages.Robot;
 
-		attacker.setLife(lifeA);
-		opponent.setLife(lifeE);
+public class ClassicAck extends Attack {
+
+	/**
+	 * Set a new classicAck by leans of its attacker and its opponent
+	 * 
+	 * @param attacker
+	 *            the initiator of the attack
+	 * @param opponent
+	 *            the target
+	 */
+>>>>>>> GUI
+
+	public ClassicAck() {
+		super();
 	}
 
+	/**
+	 * A classicAck is doable if there is an opponent entity
+	 */
 	@Override
-	public boolean isDoable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	protected boolean isDoable(Robot r) {
 
-	@Override
-	public void execute(Entity e) throws GameException {
+		int x = r.getX();
+		int y = r.getY();
+		int player = r.getPlayer();
 
-		if (!isDoable()) {
-			throw new GameException("Cette action n'est pas réalisable");
-		}
-		int x = e.getX();
-		int y = e.getY();
-		Direction d;
 		Cell testEast = new Cell(x + 1, y);
 		Cell testSouth = new Cell(x, y - 1);
 		Cell testNorth = new Cell(x, y + 1);
 		Cell testWest = new Cell(x - 1, y);
-		if (!e.isCaracter()) {
-			throw new GameException("Cette entité n'est pas un personnage");
+
+		return !(testEast.opponentHere(player)) && !(testWest.opponentHere(player)) && !(testSouth.opponentHere(player))
+				&& !(testNorth.opponentHere(player));
+	}
+
+	@Override
+
+	public void execute(Robot r) throws NotDoableException {
+		if (!isDoable(r)) {
+			throw new NotDoableException("Il n'y a personne à attacker");
 		} else {
-			if (!(testEast.isEmpty())) {
+
+			int x = r.getX();
+			int y = r.getY();
+			int player = r.getPlayer();
+			Map myMap = r.getEntityMap();
+
+			Direction d;
+			Cell testEast = myMap.getCell(x + 1, y);
+			Cell testSouth = myMap.getCell(x, y - 1);
+			Cell testNorth = myMap.getCell(x, y + 1);
+			Cell testWest = myMap.getCell(x - 1, y);
+			Cell target = null;
+			if (testEast.opponentHere(player)) {
 				d = Direction.EAST;
+<<<<<<< HEAD
 				((Character) e).setDirection(d);
 			} else if (!(testNorth.isEmpty())) {
 				d = Direction.NORTH;
@@ -63,14 +96,27 @@ public class ClassicAck extends Attack {
 				throw new GameException("Il n'y a personne à attaquer");
 			}
 			((Character) e).classicAtk();
+=======
+
+				r.setDirection(d);
+				target = testEast;
+			} else if (testNorth.opponentHere(player)) {
+				d = Direction.NORTH;
+				r.setDirection(d);
+				target = testNorth;
+			} else if (testWest.opponentHere(player)) {
+				d = Direction.WEST;
+				r.setDirection(d);
+				target = testWest;
+			} else if (testSouth.opponentHere(player)) {
+				d = Direction.SOUTH;
+				r.setDirection(d);
+				target = testSouth;
+			}
+			r.classicAtk(target);
+>>>>>>> GUI
 
 		}
-	}
-
-	@Override
-	public boolean isObstacle() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

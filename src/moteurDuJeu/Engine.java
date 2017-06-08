@@ -23,9 +23,15 @@ public class Engine {
 	 * 
 	 * @throws SlickException
 	 */
+	
 	public Engine(GUI guy) throws SlickException {
+<<<<<<< HEAD
 		player1 = new Player(2, 4, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1);
 		player2 = new Player(31, 15, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1);
+=======
+		player1 = new Player(2, 4, ma_map, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1);
+		player2 = new Player(31, 15, ma_map, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 2);
+>>>>>>> GUI
 		nbrRound = 0;
 		EndGame = false;
 		ma_map = new Map();
@@ -90,14 +96,19 @@ public class Engine {
 				break;
 
 			}
+<<<<<<< HEAD
 			System.out.println(" Joueur 1 : coordonnee de la case : " + player1.getX() + ";" + player1.getY());
+=======
+			// System.out.println("coordonnee de la case : " + player1.getX() +
+			// ";" + player1.getY());
+>>>>>>> GUI
 		} else if (player2.getMovePoints() > 0 && perso.getTeam() == 2) {
 
 			switch (dir) {
 
 			case SOUTH:
-				if (map.isFree(player2.getX(), player2.getY() + 1)) {
 					System.out.println("case libre ? : " + map.isFree(player2.getX() + 1, player2.getY()));
+					if (map.isFree(player2.getX(), player2.getY() + 1)) {
 					player2.setY(player2.getY() + 1);
 					map.Free(player2.getX(), player2.getY() - 1);
 					map.Add(player2.getX(), player2.getY(), player2);
