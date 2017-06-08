@@ -48,8 +48,8 @@ public class Robot extends Character {
 	}
 
 	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, Team team) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, team);
+			int movePoints, int recall, int aP, Team team) {
+		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, aP, team);
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class Robot extends Character {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	/**
 	 * Suicide a Robot and kill the Robots next to it
 	 * 
@@ -116,9 +116,16 @@ public class Robot extends Character {
 			}
 		}
 	}
+	
 
 	public void execute() throws NotDoableException {
 		myAutomata.execute(this);
+	}
+
+	@Override
+	public boolean isPickAble() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -5,9 +5,10 @@ import java.util.List;
 import entite.Direction;
 import entite.Entity;
 import entite.Team;
+import exceptions.GameException;
 import exceptions.NotDoableException;
-import pickable.PickAble;
 import gui.GUI;
+import personnages.Player;
 import pickable.PickAble;
 
 public class Map {
@@ -29,8 +30,8 @@ public class Map {
 	}
 
 	public void initMap(GUI guy) {
-		map[2][4].setEntity(new Player(2, 4, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, Team.ROUGE));
-		map[31][15].setEntity(new Player(31, 15, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, Team.BLEU));
+		map[2][4].setEntity(new Player(2, 4, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1, Team.ROUGE));
+		map[31][15].setEntity(new Player(31, 15, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1, Team.BLEU));
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				if (guy.isObstacle(GUI.cellToPixelX(i), GUI.cellToPixelY(j))) {

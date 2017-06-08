@@ -1,5 +1,9 @@
 package personnages;
 
+import java.util.ArrayList;
+
+import carte.Cell;
+import carte.Map;
 import entite.Direction;
 import entite.Entity;
 import entite.Team;
@@ -16,6 +20,7 @@ public abstract class Character extends Entity {
 	protected int attack;
 	protected int range;
 	protected int movePoints;
+	protected int attackPoints;
 	protected int recall;
 	protected Team team;
 
@@ -42,7 +47,7 @@ public abstract class Character extends Entity {
 	 *            Character's recall's time
 	 */
 	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, Team team) {
+			int movePoints, int recall, int aP, Team team) {
 		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
@@ -130,15 +135,15 @@ public abstract class Character extends Entity {
 	public void setRecall(int recall) {
 		this.recall = recall;
 	}
-	
-	public int getAttackPoints(){
+
+	public int getAttackPoints() {
 		return this.attackPoints;
 	}
-	
-	public void setAttackPoints(int aP){
+
+	public void setAttackPoints(int aP) {
 		this.attackPoints = aP;
 	}
-	
+
 	public void goTo(Direction dir, int lg) {
 
 		direction = dir;
@@ -183,6 +188,19 @@ public abstract class Character extends Entity {
 		} catch (NotDoableException e) {
 			throw new NotDoableException("Personne à attaquer");
 		}
+	}
+
+	public void kill(Robot rob) {
+		int x = rob.getX();
+		int y = rob.getY();
+		ArrayList<PickAble> listePickable;
+		for (Action r : rob.getPossibleActionsList()){
+			
+		}
+	}
+
+	public void kill(Player joueur) {
+
 	}
 
 	/**
