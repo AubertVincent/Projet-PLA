@@ -100,9 +100,9 @@ public abstract class GUICharacter {
 			currentAnimation[6] = loadAnimation(currentSpriteSheet, 1, currentNumberOfSprites, 2, animationDuration);
 			currentAnimation[7] = loadAnimation(currentSpriteSheet, 1, currentNumberOfSprites, 3, animationDuration);
 
-			System.out.println(this);
-			System.out.println(currentAnimation.toString());
-			System.out.println(currentAction.toString());
+//			System.out.println(this);
+//			System.out.println(currentAnimation.toString());
+//			System.out.println(currentAction.toString());
 
 			animationsList.put(currentAction, currentAnimation);
 
