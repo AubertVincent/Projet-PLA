@@ -2,6 +2,7 @@ package personnages;
 
 import java.util.List;
 
+import carte.Base;
 import carte.Cell;
 import carte.Map;
 import entite.Direction;
@@ -25,6 +26,7 @@ public abstract class Character extends Entity {
 	protected int recall;
 	protected Team team;
 	protected int attackPoints;
+	protected Base base;
 
 	/**
 	 * Set a new character
@@ -49,7 +51,7 @@ public abstract class Character extends Entity {
 	 *            Character's recall's time
 	 */
 	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int aP, Team team) {
+			int movePoints, int recall, int aP, Team team, Base base) {
 		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
@@ -60,6 +62,16 @@ public abstract class Character extends Entity {
 		this.recall = recall;
 		this.attackPoints = aP;
 		this.team = team;
+		this.base = base;
+	}
+
+	public Base getBase() {
+		return base;
+	}
+	 
+
+	public void setBase(Base base) {
+		this.base = base;
 	}
 
 	public abstract boolean isPlayer();

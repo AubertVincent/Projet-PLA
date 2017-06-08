@@ -45,7 +45,7 @@ public class Recall extends Movement {
 		// l'appelle.
 		// int time = r.getRecall();;
 		// if (r.getRecall() == 0) {
-		Base base=r.base;
+		Base base=r.getBase();
 		int xBase = base.getX();
 		int yBase = base.getY();
 		if (this.isDoable(r)) {

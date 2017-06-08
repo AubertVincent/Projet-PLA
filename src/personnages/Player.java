@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import carte.Base;
 import entite.Direction;
 import entite.Team;
 import operateur.Action;
@@ -43,8 +44,11 @@ public class Player extends Character {
 	public List<Robot> listRobot;
 
 	public Player(int x, int y, carte.Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int aP, Team team) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, aP, team);
+			int movePoints, int recall, int aP, Team team, Base base, Map<Class<? extends PickAble>, Integer> besace,
+			List<Robot> listRobot) {
+		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, aP, team, base);
+		this.besace = besace;
+		this.listRobot = listRobot;
 		possibleActionsList.add(ClassicAck.class);
 		possibleActionsList.add(MoveDir.class);
 		possibleActionsList.add(Tunnel.class);
@@ -100,7 +104,6 @@ public class Player extends Character {
 	public void CreateRobot() {
 
 	}
-
 
 	@Override
 	public boolean isPlayer() {

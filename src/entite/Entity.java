@@ -6,7 +6,7 @@ public abstract class Entity {
 
 	protected int x;
 	protected int y;
-	protected final Map entityMap;
+	public final Map entityMap;
 
 	public abstract boolean isObstacle();
 
