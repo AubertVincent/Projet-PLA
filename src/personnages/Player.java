@@ -2,15 +2,25 @@ package personnages;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import entite.Direction;
+import entite.Team;
+import operateur.Action;
 import operateur.ClassicAck;
-import operateur.*;
-import pickable.*;
+import operateur.MoveDir;
+import pickable.PickAble;
+import pickable.PickClassicAck;
+import pickable.PickMoveDir;
+import pickable.PickPickUp;
+import pickable.PickPriority;
+import pickable.PickRandomBar;
+import pickable.PickRecall;
+import pickable.PickSuccession;
+import pickable.PickSuicideBomber;
+import pickable.PickTunnel;
 
 public class Player extends Character {
 
@@ -55,8 +65,8 @@ public class Player extends Character {
 	public List<Robot> listRobot;
 
 	public Player(int x, int y, carte.Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int player) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, player);
+			int movePoints, int recall,int aP, Team team) {
+		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall,aP, team);
 		besace.put(PickClassicAck.class, 0);
 		besace.put(PickSuicideBomber.class, 0);
 		besace.put(PickTunnel.class, 0);

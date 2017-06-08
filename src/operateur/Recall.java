@@ -6,7 +6,7 @@ import personnages.Robot;
 
 public class Recall extends Movement {
 
-	protected int time;
+	protected Integer time;
 	private int lastX;
 	private int lastY;
 

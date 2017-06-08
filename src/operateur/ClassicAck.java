@@ -1,6 +1,7 @@
 package operateur;
 
 import carte.Cell;
+
 import entite.Direction;
 import carte.Map;
 import exceptions.NotDoableException;

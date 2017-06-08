@@ -5,12 +5,14 @@ import carte.Map;
 import entite.Direction;
 import entite.Entity;
 import entite.Team;
+
+import exceptions.GameException;
 import exceptions.NotDoableException;
-import pickable.*;
+import pickable.PickAble;
 
 public abstract class Character extends Entity {
 
-	protected Direction direction;
+	private Direction direction;
 
 	protected int life;
 	protected int vision;
@@ -18,7 +20,9 @@ public abstract class Character extends Entity {
 	protected int range;
 	protected int movePoints;
 	protected int recall;
-	protected int player;
+	protected Team team;
+	protected int attackPoints;
+
 
 	/**
 	 * Set a new character
@@ -43,7 +47,7 @@ public abstract class Character extends Entity {
 	 *            Character's recall's time
 	 */
 	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int player) {
+			int movePoints, int recall, int aP, Team team) {
 		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
@@ -52,10 +56,11 @@ public abstract class Character extends Entity {
 		this.range = range;
 		this.movePoints = movePoints;
 		this.recall = recall;
-		this.player = player;
+		this.attackPoints = aP;
+		this.team = team;
 	}
 
-	protected abstract boolean isPlayer();
+	public abstract boolean isPlayer();
 
 	public abstract boolean isRobot();
 
@@ -63,20 +68,20 @@ public abstract class Character extends Entity {
 		return true;
 	}
 
-	public boolean isPickAble() {
+	public boolean isOperator() {
 		return false;
 	}
 
 	public boolean isObstacle() {
 		return false;
 	}
-	
-	public int getPlayer() {
-		return player;
+
+	public Team getTeam() {
+		return team;
 	}
 
-	public void setPlayer(int player) {
-		this.player = player;
+	public void setPlayer(Team team) {
+		this.team = team;
 	}
 
 	public Direction getDirection() {
@@ -135,24 +140,24 @@ public abstract class Character extends Entity {
 		this.recall = recall;
 	}
 
-	/**
-	 * Move a character in the direction given of the length given
-	 * 
-	 * @param dir
-	 *            Direction of the move
-	 * @param lg
-	 *            Length of the move
-	 */
-	public void goTo(Direction dir, int lg) { // lg?
+	public int getAttackPoints() {
+		return this.attackPoints;
+	}
+
+	public void setAttackPoints(int aP) {
+		this.attackPoints = aP;
+	}
+
+	public void goTo(Direction dir, int lg) {
 
 		direction = dir;
 
 		switch (direction) {
 		case NORTH:
-			setY(getY() - lg);
+			setY(getY() + lg);
 			break;
 		case SOUTH:
-			setY(getY() + lg);
+			setY(getY() - lg);
 			break;
 		case EAST:
 			setX(getX() + lg);
@@ -172,7 +177,7 @@ public abstract class Character extends Entity {
 	 */
 	public void classicAtk(Cell target) throws NotDoableException {
 		try {
-			Character opponent = target.getOpponent(this.player);
+			Character opponent = target.getOpponent(this.team);
 			int lifeA = this.getLife();
 			int lifeE = opponent.getLife();
 			int atkA = this.getAttack();
@@ -188,10 +193,10 @@ public abstract class Character extends Entity {
 			throw new NotDoableException("Personne à attaquer");
 		}
 	}
-	
+
 	public void cancelClassicAtk(Cell target) throws NotDoableException {
 		try {
-			Character opponent = target.getOpponent(this.player);
+			Character opponent = target.getOpponent(this.team);
 			int lifeA = this.getLife();
 			int lifeE = opponent.getLife();
 			int atkA = this.getAttack();
@@ -240,24 +245,24 @@ public abstract class Character extends Entity {
 			((Player) this).besace.put(picked, i++);
 		}
 	}
-	
-	public int getXBase(){
-		if (this.getTeam()==Team.ROUGE){
+
+	public int getXBase() {
+		if (this.getTeam() == Team.ROUGE) {
 			return 2;
 		} else {
 			return 31;
 		}
 	}
-	
-	public int getYBase(){
-		if (this.getTeam()==Team.ROUGE){
+
+	public int getYBase() {
+		if (this.getTeam() == Team.ROUGE) {
 			return 4;
 		} else {
 			return 15;
 		}
 	}
-	
-	public void cancelRecall (){
-		
+
+	public void cancelRecall() {
+
 	}
 }

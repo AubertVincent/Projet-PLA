@@ -75,7 +75,6 @@ public class MoveDir extends Movement {
 		if (!isDoable(r)) {
 			throw new NotDoableException("Un obstacle est sur votre chemin");
 		}
-
 		r.goTo(dir, lg);
 
 	}

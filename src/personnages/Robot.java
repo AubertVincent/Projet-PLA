@@ -7,8 +7,9 @@ import java.util.List;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
+import entite.Team;
 import exceptions.NotDoableException;
-import operateur.*;
+import operateur.Action;
 import sequence._Sequence;
 
 public class Robot extends Character {
@@ -22,9 +23,8 @@ public class Robot extends Character {
 		return isToPlayer;
 	}
 
-	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int player, _Sequence myAutomata, Player isToPlayer) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, player);
+	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range, int movePoints, int recall, int aP, Team team) {
+		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, aP, team);
 		this.myAutomata = myAutomata;
 		this.isToPlayer = isToPlayer;
 	}
@@ -48,7 +48,7 @@ public class Robot extends Character {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	/**
 	 * Suicide a Robot and kill the Robots next to it
 	 * 
@@ -101,6 +101,12 @@ public class Robot extends Character {
 
 	public void execute() throws NotDoableException {
 		myAutomata.execute(this);
+	}
+
+	@Override
+	public boolean isPickAble() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
