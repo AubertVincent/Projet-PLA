@@ -17,5 +17,10 @@ public abstract class PickAble extends Entity {
 	public boolean isPickAble() {
 		return true;
 	}
+	
+	@Override
+	public boolean isObstacle() {
+		return false;
+	}
 
 }

@@ -66,6 +66,10 @@ public abstract class Character extends Entity {
 		return false;
 	}
 
+	public boolean isObstacle() {
+		return false;
+	}
+	
 	public int getPlayer() {
 		return player;
 	}
@@ -173,8 +177,27 @@ public abstract class Character extends Entity {
 			int atkA = this.getAttack();
 			int atkE = opponent.getAttack();
 
-			lifeA = java.lang.Math.max(lifeA - atkE, 0);
-			lifeE = java.lang.Math.max(lifeE - atkA, 0);
+			lifeA = lifeA - atkE;
+			lifeE = lifeE - atkA;
+
+			this.setLife(lifeA);
+			opponent.setLife(lifeE);
+
+		} catch (NotDoableException e) {
+			throw new NotDoableException("Personne à attaquer");
+		}
+	}
+	
+	public void cancelClassicAtk(Cell target) throws NotDoableException {
+		try {
+			Character opponent = target.getOpponent(this.player);
+			int lifeA = this.getLife();
+			int lifeE = opponent.getLife();
+			int atkA = this.getAttack();
+			int atkE = opponent.getAttack();
+
+			lifeA = lifeA + atkE;
+			lifeE = lifeE + atkA;
 
 			this.setLife(lifeA);
 			opponent.setLife(lifeE);
@@ -209,8 +232,8 @@ public abstract class Character extends Entity {
 		Class<PickAble> picked = myMap.pickableEntity(this.getX(), this.getY());
 		myMap.freePick(picked, this.getX(), this.getY());
 		if (this.isRobot()) {
-			int i = ((Robot) this).isToPlayer().besace.get(picked.getClass());
-			((Robot) this).isToPlayer().besace.put(picked, i++);
+			int i = ((Robot) this).getIsToPlayer().besace.get(picked.getClass());
+			((Robot) this).getIsToPlayer().besace.put(picked, i++);
 		} else if (this.isPlayer()) {
 			int i = ((Player) this).besace.get(picked.getClass());
 			((Player) this).besace.put(picked, i++);

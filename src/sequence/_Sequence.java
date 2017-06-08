@@ -11,5 +11,7 @@ public interface _Sequence {
 
 	public void execute(Robot r) throws NotDoableException;
 	
+	public void cancel(Robot r) throws NotDoableException;
+	
 
 }

@@ -26,7 +26,13 @@ public class Recall extends Movement {
 	 */
 	@Override
 	protected boolean isDoable(Robot r) {
-		return true;
+		if (r.getPlayer() == 1 && r.getEntityMap().isReachable(2, 4)){
+			return true;
+		}
+		if (r.getPlayer() == 2 && r.getEntityMap().isReachable(31, 15)){
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -40,6 +46,12 @@ public class Recall extends Movement {
 		r.teleport(xBase, yBase);
 
 		// r.setRecall(time--);
+	}
+
+	@Override
+	public void cancel(Robot r) throws NotDoableException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
