@@ -20,7 +20,7 @@ public class PickUp extends Action {
 																	// never
 																	// happen
 		} else {
-			r.pickUp(r);
+			r.pickUp();
 
 		}
 	}

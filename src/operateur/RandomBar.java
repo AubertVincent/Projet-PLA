@@ -52,7 +52,7 @@ public class RandomBar extends Behavior {
 				left.execute(r);
 			}
 		} catch (NotDoableException e) {
-			throw new NotDoableException();
+			throw new NotDoableException("Action impossible");
 		}
 	}
 }
