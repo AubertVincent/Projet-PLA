@@ -52,7 +52,7 @@ public class Cell {
 	public Character getOpponent(int player) throws NotDoableException {
 		int i = 0;
 		Entity e;
-		while (i < this.listeEntites.size() - 1) {
+		while (i < this.listeEntites.size()) {
 			if (this.listeEntites.get(i).isCharacter()) {
 				e = this.listeEntites.get(i);
 				if (((Character) e).getPlayer() == player) {
@@ -66,7 +66,7 @@ public class Cell {
 	public boolean opponentHere(int player) {
 		int i = 0;
 		Entity e;
-		while (i < this.listeEntites.size() - 1) {
+		while (i < this.listeEntites.size()) {
 			if (this.listeEntites.get(i).isCharacter()) {
 				e = this.listeEntites.get(i);
 				if (((Character) e).getPlayer() == player) {

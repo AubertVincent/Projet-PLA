@@ -113,7 +113,7 @@ public class ClassicAck extends Attack {
 				r.setDirection(d);
 				target = testSouth;
 			}
-			r.classicAtk(target);
+			r.cancelClassicAtk(target);
 
 		}
 
