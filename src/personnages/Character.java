@@ -14,7 +14,7 @@ import pickable.Picked;
 
 public abstract class Character extends Entity {
 
-	public List<Picked> myOwnBesace;
+	protected List<Picked> myOwnBesace;
 
 	protected Direction direction;
 	protected int life;
@@ -26,31 +26,10 @@ public abstract class Character extends Entity {
 	protected Team team;
 	protected int attackPoints;
 
-	/**
-	 * Set a new character
-	 * 
-	 * @param x
-	 *            x coordinate on the map
-	 * @param y
-	 *            y coordinate on the map
-	 * @param direction
-	 *            Where the character is oriented
-	 * @param life
-	 *            Character's life
-	 * @param vision
-	 *            Character's vision range
-	 * @param attack
-	 *            Character's attack
-	 * @param range
-	 *            Character's range
-	 * @param movePoints
-	 *            Character's move points
-	 * @param recall
-	 *            Character's recall's time
-	 */
-	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int aP, Team team) {
+	public Character(int x, int y, Map entityMap, List<Picked> myOwnBesace, Direction direction, int life, int vision,
+			int attack, int range, int movePoints, int recall, Team team, int attackPoints) {
 		super(x, y, entityMap);
+		this.myOwnBesace = myOwnBesace;
 		this.direction = direction;
 		this.life = life;
 		this.vision = vision;
@@ -58,8 +37,8 @@ public abstract class Character extends Entity {
 		this.range = range;
 		this.movePoints = movePoints;
 		this.recall = recall;
-		this.attackPoints = aP;
 		this.team = team;
+		this.attackPoints = attackPoints;
 	}
 
 	public abstract boolean isPlayer();
@@ -155,6 +134,10 @@ public abstract class Character extends Entity {
 		this.attackPoints = aP;
 	}
 
+	public void resetMyOwnBesace() {
+		this.myOwnBesace.clear();
+	}
+
 	public void goTo(Direction dir, int lg) {
 
 		direction = dir;
@@ -243,18 +226,15 @@ public abstract class Character extends Entity {
 	public void pickUp() throws NotDoableException {
 		List<Class<PickAble>> listPicked = null;
 		Picked picked = new Picked(listPicked);
-		int i = 0;
 		Map myMap = this.getEntityMap();
 		try {
 			while (true) {
 				Class<PickAble> classPicked = myMap.pickableEntity(this.getX(), this.getY());
 				myMap.freePick(classPicked, this.getX(), this.getY());
 				if (this.isRobot()) {
-					i = ((Robot) this).getPlayer().besace.get(classPicked.getClass());
-					((Robot) this).getPlayer().besace.put(classPicked, i++);
+					((Robot) this).getPlayer().getBesace().addBesace(classPicked);
 				} else if (this.isPlayer()) {
-					i = ((Player) this).besace.get(classPicked.getClass());
-					((Player) this).besace.put(classPicked, i++);
+					((Player) this).getBesace().addBesace(classPicked);
 				}
 				picked.add(classPicked);
 				myOwnBesace.add(picked);
@@ -278,39 +258,35 @@ public abstract class Character extends Entity {
 	public void cancelPickUp() throws NotDoableException {
 		int x = this.getX();
 		int y = this.getY();
-		int i = 0;
 		Picked picked = this.myOwnBesace.get(this.myOwnBesace.size() - 1);
 		Map myMap = this.getEntityMap();
 		while (picked.size() > 0) {
 			Class<PickAble> classPicked = picked.get(0);
 			if (this.isRobot()) {
-				i = ((Robot) this).getPlayer().besace.get(classPicked.getClass());
-				((Robot) this).getPlayer().besace.put(classPicked, i--);
+				((Robot) this).getPlayer().getBesace().subBesace(classPicked);
 			} else if (this.isPlayer()) {
-				i = ((Player) this).besace.get(classPicked.getClass());
-				((Player) this).besace.put(classPicked, i--);
-				this.placePickAble(x, y, classPicked, myMap);
-				picked.remove(0);
+				((Player) this).getBesace().subBesace(classPicked);
 			}
-
+			this.placePickAble(x, y, classPicked, myMap);
+			picked.remove(0);
 		}
+
 	}
-
-	//
-	// public int getXBase() {
-	// if (this.getTeam() == Team.ROUGE) {
-	// return 2;
-	// } else {
-	// return 31;
-	// }
-	// }
-	//
-	// public int getYBase() {
-	// if (this.getTeam() == Team.ROUGE) {
-	// return 4;
-	// } else {
-	// return 15;
-	// }
-	// }
-
 }
+
+//
+// public int getXBase() {
+// if (this.getTeam() == Team.ROUGE) {
+// return 2;
+// } else {
+// return 31;
+// }
+// }
+//
+// public int getYBase() {
+// if (this.getTeam() == Team.ROUGE) {
+// return 4;
+// } else {
+// return 15;
+// }
+// }

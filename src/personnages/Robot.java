@@ -10,6 +10,7 @@ import entite.Entity;
 import entite.Team;
 import exceptions.NotDoableException;
 import operateur.Action;
+import pickable.Picked;
 import sequence._Sequence;
 import util.Pair;
 
@@ -22,10 +23,13 @@ public class Robot extends Character {
 	protected _Sequence myAutomaton;
 	protected Player player;
 
-	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int aP, Team team, _Sequence myAutomaton, Player player) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, aP, team);
-
+	public Robot(int x, int y, Map entityMap, List<Picked> myOwnBesace, Direction direction, int life, int vision,
+			int attack, int range, int movePoints, int recall, Team team, int attackPoints,
+			java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife, _Sequence myAutomaton,
+			Player player) {
+		super(x, y, entityMap, myOwnBesace, direction, life, vision, attack, range, movePoints, recall, team,
+				attackPoints);
+		this.targetsLife = targetsLife;
 		this.myAutomaton = myAutomaton;
 		this.player = player;
 	}
@@ -77,37 +81,41 @@ public class Robot extends Character {
 		for (Iterator<Entity> entityIterator = northEntityList.iterator(); entityIterator.hasNext();) {
 			Entity eCourant = entityIterator.next();
 			if (eCourant instanceof Robot) {
-				this.targetsLife.put(new Pair<Direction,Integer>(Direction.NORTH, i), new Pair<Robot,Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
+				this.targetsLife.put(new Pair<Direction, Integer>(Direction.NORTH, i),
+						new Pair<Robot, Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
 				((Robot) eCourant).setLife(0);
 				i++;
 			}
 		}
-		
-		i=0;
+
+		i = 0;
 		for (Iterator<Entity> entityIterator = southEntityList.iterator(); entityIterator.hasNext();) {
 			Entity eCourant = entityIterator.next();
 			if (eCourant instanceof Robot) {
-				this.targetsLife.put(new Pair<Direction,Integer>(Direction.SOUTH, i), new Pair<Robot,Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
+				this.targetsLife.put(new Pair<Direction, Integer>(Direction.SOUTH, i),
+						new Pair<Robot, Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
 				((Robot) eCourant).setLife(0);
 				i++;
 			}
 		}
-		
-		i=0;
+
+		i = 0;
 		for (Iterator<Entity> entityIterator = westEntityList.iterator(); entityIterator.hasNext();) {
 			Entity eCourant = entityIterator.next();
 			if (eCourant instanceof Robot) {
-				this.targetsLife.put(new Pair<Direction,Integer>(Direction.WEST, i), new Pair<Robot,Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
+				this.targetsLife.put(new Pair<Direction, Integer>(Direction.WEST, i),
+						new Pair<Robot, Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
 				((Robot) eCourant).setLife(0);
 				i++;
 			}
 		}
-		
-		i=0;
+
+		i = 0;
 		for (Iterator<Entity> entityIterator = eastEntityList.iterator(); entityIterator.hasNext();) {
 			Entity eCourant = entityIterator.next();
 			if (eCourant instanceof Robot) {
-				this.targetsLife.put(new Pair<Direction,Integer>(Direction.EAST, i), new Pair<Robot,Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
+				this.targetsLife.put(new Pair<Direction, Integer>(Direction.EAST, i),
+						new Pair<Robot, Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
 				((Robot) eCourant).setLife(0);
 				i++;
 			}
@@ -121,24 +129,24 @@ public class Robot extends Character {
 		List<Entity> southEntityList = this.entityMap.getListEntity(x, y + 1);
 		List<Entity> westEntityList = this.entityMap.getListEntity(x - 1, y);
 		List<Entity> eastEntityList = this.entityMap.getListEntity(x + 1, y);
-		
+
 		int i = 0;
 		for (Iterator<Entity> entityIterator = northEntityList.iterator(); entityIterator.hasNext();) {
 			Entity eCourant = entityIterator.next();
 			if (eCourant instanceof Robot) {
-				Pair<Direction,Integer> key = new Pair<Direction,Integer>(Direction.NORTH, i);
-				Pair<Robot,Integer> robotLife = this.targetsLife.get(key);
+				Pair<Direction, Integer> key = new Pair<Direction, Integer>(Direction.NORTH, i);
+				Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
 				((Robot) eCourant).setLife(robotLife.getSecond());
 				i++;
 			}
 		}
-		
+
 		i = 0;
 		for (Iterator<Entity> entityIterator = southEntityList.iterator(); entityIterator.hasNext();) {
 			Entity eCourant = entityIterator.next();
 			if (eCourant instanceof Robot) {
-				Pair<Direction,Integer> key = new Pair<Direction,Integer>(Direction.SOUTH, i);
-				Pair<Robot,Integer> robotLife = this.targetsLife.get(key);
+				Pair<Direction, Integer> key = new Pair<Direction, Integer>(Direction.SOUTH, i);
+				Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
 				((Robot) eCourant).setLife(robotLife.getSecond());
 				i++;
 			}
@@ -148,19 +156,19 @@ public class Robot extends Character {
 		for (Iterator<Entity> entityIterator = westEntityList.iterator(); entityIterator.hasNext();) {
 			Entity eCourant = entityIterator.next();
 			if (eCourant instanceof Robot) {
-				Pair<Direction,Integer> key = new Pair<Direction,Integer>(Direction.WEST, i);
-				Pair<Robot,Integer> robotLife = this.targetsLife.get(key);
+				Pair<Direction, Integer> key = new Pair<Direction, Integer>(Direction.WEST, i);
+				Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
 				((Robot) eCourant).setLife(robotLife.getSecond());
 				i++;
 			}
 		}
-		
+
 		i = 0;
 		for (Iterator<Entity> entityIterator = eastEntityList.iterator(); entityIterator.hasNext();) {
 			Entity eCourant = entityIterator.next();
 			if (eCourant instanceof Robot) {
-				Pair<Direction,Integer> key = new Pair<Direction,Integer>(Direction.EAST, i);
-				Pair<Robot,Integer> robotLife = this.targetsLife.get(key);
+				Pair<Direction, Integer> key = new Pair<Direction, Integer>(Direction.EAST, i);
+				Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
 				((Robot) eCourant).setLife(robotLife.getSecond());
 				i++;
 			}
