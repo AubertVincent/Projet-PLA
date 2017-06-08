@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import carte.Base;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
@@ -16,15 +17,17 @@ public class Robot extends Character {
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 
-	_Sequence myAutomaton;
-	Player player;
+	public _Sequence myAutomaton;
+	public Player player;
+	public Base base;
 
 	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int aP, Team team, _Sequence myAutomaton, Player player) {
+			int movePoints, int recall, int aP, Team team, _Sequence myAutomaton, Player player, Base base) {
 		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, aP, team);
 
 		this.myAutomaton = myAutomaton;
 		this.player = player;
+		this.base = base;
 	}
 
 	public static List<Class<? extends Action>> getPossibleActionsList() {

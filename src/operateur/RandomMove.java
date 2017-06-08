@@ -5,7 +5,7 @@ import entite.Direction;
 import exceptions.NotDoableException;
 import personnages.Robot;
 
-public class RandomMove extends Movement {
+public class RandomMove extends Action implements _Random{
 
 	public RandomMove() {
 		super();

@@ -4,7 +4,7 @@ import exceptions.GameException;
 import personnages.Robot;
 import sequence._Sequence;
 
-public abstract class Action implements _Sequence {
+public abstract class Action implements _Sequence{
 
 	@Override
 	public String toString() {

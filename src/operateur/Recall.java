@@ -1,5 +1,6 @@
 package operateur;
 
+import carte.Base;
 import entite.Team;
 import exceptions.NotDoableException;
 import personnages.Robot;
@@ -44,8 +45,9 @@ public class Recall extends Movement {
 		// l'appelle.
 		// int time = r.getRecall();;
 		// if (r.getRecall() == 0) {
-		int xBase = r.getXBase();
-		int yBase = r.getYBase();
+		Base base=r.base;
+		int xBase = base.getX();
+		int yBase = base.getY();
 		if (this.isDoable(r)) {
 			this.lastX = r.getX();
 			this.lastY = r.getY();
