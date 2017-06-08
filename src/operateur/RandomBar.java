@@ -2,30 +2,57 @@ package operateur;
 
 import java.util.Random;
 
+import exceptions.NotDoableException;
+import personnages.Robot;
+import sequence._Sequence;
+
 public class RandomBar extends Behavior {
 
-	public RandomBar(int x, int y) {
-		super(x, y);
+	/**
+	 * Set a new behavior by means of its 2 actions
+	 * 
+	 * @param A
+	 *            First action
+	 * @param B
+	 *            Second action
+	 */
+	public RandomBar() {
+
 	}
 
-	public boolean test() {
-		Random r = new Random();
-		int n = r.nextInt(2);
-		return (n == 0);
-	}
-	
-	public void aleatoire(Action a, Action b){
-		//TODO Créer une nouvelle classe qui prend une séquence et qui gère l'execution des actions
-		if (test()){
-		//TODO	a.execute();
-		}else{
-		//TODO	b.execute();
-		}
-	}
+//	/**
+//	 * check if one of the two actions is doable
+//	 */
+//	@Override
+//	protected boolean isDoable(Entity e) {
+//		return A.isDoable(e) || B.isDoable(e);
+//	}
+
+//	@Override
+//	protected void execute(Entity e) throws GameException {
+//		if (!(isDoable(e))) {
+//			throw new GameException("Aucune des deux actions n'est possible");
+//		} else if (!(A.isDoable(e))) {
+//			B.execute(e);
+//		} else if (!(B.isDoable(e))) {
+//			A.execute(e);
+//		} else {
+//			randomAction(A, B).execute(e);
+//		}
+//	}
 
 	@Override
-	public boolean isObstacle() {
-		// TODO Auto-generated method stub
-		return false;
+	public void execute(Robot r,_Sequence left, _Sequence right) throws NotDoableException {
+		Random random = new Random();
+		int n = random.nextInt(2);
+		try {
+			if (n == 0) {
+				right.execute(r);
+			} else {
+				left.execute(r);
+			}
+		} catch (NotDoableException e) {
+			throw new NotDoableException();
+		}
 	}
 }

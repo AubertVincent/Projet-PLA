@@ -1,12 +1,12 @@
 package carte;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
-import entite.Direction;
 import entite.Entity;
+import exceptions.NotDoableException;
 import gui.GUI;
-import personnages.Player;
-
+import pickable.PickAble;
 public class Map {
 
 	//private static final int nbrOpInit = 128; // une chance sur 4 de trouver un
@@ -64,10 +64,6 @@ public class Map {
 		return map[x][y].isFree();
 	}
 
-	public List<Entity> getEntity(int x, int y) {
-		return map[x][y].getListEntity();
-	}
-
 //	private void printMap() {
 //		for (int i = 0; i < width; i++) {
 //			for (int j = 0; j < height; j++) {
@@ -83,4 +79,53 @@ public class Map {
 	//
 	// }
 
+
+	/**
+	 * return the list of the entities present on the cell(x,y)
+	 * @param x x coordinate on the map
+	 * @param y y coordinate on the map
+	 * @return the list of the entities present on the cell
+	 */
+	public List<Entity> getListEntity(int x, int y) {
+		return map[x][y].getListEntity();
+	}
+
+	/**
+	 * return the class of an entity present on the cell
+	 * @param x x coordinate on the map
+	 * @param y y coordinate on the map
+	 * @return the class of the first pickAble object
+	 * @throws GameException
+	 */
+	@SuppressWarnings("unchecked")
+	public Class<PickAble> pickableEntity(int x, int y) throws NotDoableException {
+		List<Entity> l = map[x][y].getListEntity();
+		int i = 0;
+		while (i < l.size() - 1) {
+			if (l.get(i).isPickAble()) {
+				return ((Class<PickAble>) l.get(i).getClass());
+			}
+		}
+		throw new NotDoableException("Rien à ramasser ici");
+	}
+
+
+	/**
+	 * Take out the object of the cell
+	 * @param ramasse
+	 * @param x x coordinate on the map
+	 * @param y y coordinate on the map
+	 */
+	public void freePick(Class<PickAble> ramasse, int x, int y) {
+		List<Entity> l = map[x][y].getListEntity();
+		int i = 0;
+		while (i < l.size() - 1) {
+			if (l.get(i).getClass() == ramasse){
+				l.remove(i);
+			}
+		}
+
+	}
+
 }
+

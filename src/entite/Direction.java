@@ -13,5 +13,4 @@ public enum Direction {
 	public int toInt() {
 		return value;
 	}
-
 }
