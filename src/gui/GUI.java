@@ -33,6 +33,10 @@ public class GUI extends BasicGame {
 	// private Map ma_map;
 	private Engine engine;
 
+	private GUIBesace rectBesace;
+	private int WidthRect = 600;
+	private int HeightRect = 300;
+
 	public static void main(String[] args) throws SlickException {
 
 		new AppGameContainer(new GUI(), WindowWidth, WindowHeight, false).start();
@@ -58,7 +62,11 @@ public class GUI extends BasicGame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "(MC2E | (AC;(MC3W>MT8.3)))");
+		this.rectBesace = new GUIBesace(container, WindowWidth, WindowHeight, WidthRect, HeightRect, cellWidth,
+				TextFieldHeight, "LA DARONNE À VINCAUB");
+
+		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight,
+				"(MC2E | (AC;(MC3W>MT8.3)))");
 		engine = new Engine(this);
 	}
 
@@ -79,6 +87,7 @@ public class GUI extends BasicGame {
 		map.render(0, 0, 5);
 
 		if (behaviorInputNeeded) {
+			this.rectBesace.render(container, g);
 			this.inputTextField.render(container, g);
 		}
 	}

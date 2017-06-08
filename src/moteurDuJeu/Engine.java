@@ -92,7 +92,7 @@ public class Engine {
 			}
 			// System.out.println("coordonnee de la case : " + player1.getX() +
 			// ";" + player1.getY());
-		} else if (player2.getMovePoints() > 0 && perso.getTeam() == entite.Team.ROUGE) {
+		} else if (player2.getMovePoints() > 0 && perso.getTeam() == entite.Team.BLEU) {
 
 			switch (dir) {
 
