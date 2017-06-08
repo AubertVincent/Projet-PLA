@@ -13,9 +13,6 @@ import pickable.PickAble;
 
 public class Map {
 
-	// private static final int nbrOpInit = 128; // une chance sur 4 de trouver
-	// un
-	// opérateur sur une cellule
 	private int width = 34;
 	private int height = 18;
 

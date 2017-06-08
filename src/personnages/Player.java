@@ -1,6 +1,5 @@
 package personnages;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,7 +61,7 @@ public class Player extends Character {
 		return possibleActionsList;
 	}
 
-	public List<Robot> listRobot;
+	public RobotList robotList;
 
 	public Player(int x, int y, carte.Map entityMap, Direction direction, int life, int vision, int attack, int range,
 			int movePoints, int recall, int aP, Team team) {
@@ -76,11 +75,11 @@ public class Player extends Character {
 		besace.put(PickSuccession.class, 0);
 		besace.put(PickRandomBar.class, 0);
 		besace.put(PickPriority.class, 0);
-		listRobot = new ArrayList<Robot>();
+		robotList = new RobotList();
 	}
 
-	public void addRobot(Robot robot) {
-		listRobot.add(robot);
+	public void addRobot(Object obj, Robot robot) {
+		robotList.add(obj, robot);
 	}
 
 	// public void addOperator(Operator op) {
@@ -109,14 +108,12 @@ public class Player extends Character {
 	// return besace.get(op);
 	// }
 
-
-
-	public List<Robot> getListRobot() {
-		return listRobot;
+	public RobotList getListRobot() {
+		return robotList;
 	}
 
 	// TODO
-	public void CreateRobot() {
+	public void createRobot() {
 
 	}
 

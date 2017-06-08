@@ -47,116 +47,103 @@ public class Engine {
 		return null;
 	}
 
-	public void doMove(Direction dir, GUICharacter perso, Map map) {
+	public boolean doMove(Direction dir, GUICharacter perso, Map map) {
 
-		// Mise a jour de la position du joueur 1
+		boolean moveSucces = false;
+		Player player;
+		// Case of Player1
 		if (perso.getTeam() == Team.ROUGE) {
-			Player player = getPlayer(Team.ROUGE);
+			player = getPlayer(Team.ROUGE);
 			switch (dir) {
 
 			case SOUTH:
-				// System.out.println("case " + (player1.getX()+1) + ";" +
-				// player1.getY() + " libre ? : " + map.isFree(player1.getX() +
-				// 1, player1.getY()));
 				if (map.isFree(player.getX(), player.getY() + 1)) {
 
 					player.setY(player.getY() + 1);
 					map.Free(player.getX(), player.getY() - 1);
-					// System.out.println(" J'ai libere la case : " +
-					// (player1.getX() - 1) + player1.getY());
-					map.Add(player.getX(), player.getY(), player);
-					player.setMovePoints(player.getMovePoints() - 1);
+					moveSucces = true;
 				}
 				break;
 
 			case NORTH:
 				if (map.isFree(player.getX(), player.getY() - 1)) {
-					System.out.println("case libre ? : " + map.isFree(player.getX() - 1, player.getY()));
 					player.setY(player.getY() - 1);
 					map.Free(player.getX(), player.getY() + 1);
-					map.Add(player.getX(), player.getY(), player);
-					perso.goToDirection(Direction.NORTH);
-					player.setMovePoints(player.getMovePoints() - 1);
+					moveSucces = true;
 				}
 				break;
 
 			case WEST:
 				if (map.isFree(player.getX() - 1, player.getY())) {
-					System.out.println("case libre ? : " + map.isFree(player.getX(), player.getY() - 1));
 					player.setX(player.getX() - 1);
 					map.Free(player.getX() + 1, player.getY());
-					map.Add(player.getX(), player.getY(), player);
-					player.setMovePoints(player.getMovePoints() - 1);
+					moveSucces = true;
 				}
 				break;
 
 			case EAST:
 				if (map.isFree(player.getX() + 1, player.getY())) {
-					System.out.println("case libre ? : " + map.isFree(player.getX(), player.getY() + 1));
 					player.setX(player.getX() + 1);
 					map.Free(player.getX() - 1, player.getY());
-					map.Add(player.getX(), player.getY(), player);
-					player.setMovePoints(player.getMovePoints() - 1);
+					moveSucces = true;
 				}
 
 				break;
 
 			}
-			// System.out.println("coordonnee de la case : " + player1.getX() +
-			// ";" + player1.getY());
-		} else if (perso.getTeam() == Team.BLEU) {
-			Player player = getPlayer(Team.BLEU);
+
+		}
+		// Case of Player2
+		else if (perso.getTeam() == Team.BLEU) {
+			player = getPlayer(Team.BLEU);
 			switch (dir) {
 
 			case SOUTH:
-				System.out.println("case libre ? : " + map.isFree(player.getX() + 1, player.getY()));
 				if (map.isFree(player.getX(), player.getY() + 1)) {
 					player.setY(player.getY() + 1);
 					map.Free(player.getX(), player.getY() - 1);
-					map.Add(player.getX(), player.getY(), player);
-					player.setMovePoints(player.getMovePoints() - 1);
+					moveSucces = true;
 				}
 				break;
 
 			case NORTH:
-
 				if (map.isFree(player.getX(), player.getY() - 1)) {
-					System.out.println("case libre ? : " + map.isFree(player.getX() - 1, player.getY()));
 					player.setY(player.getY() - 1);
 					map.Free(player.getX(), player.getY() + 1);
-					map.Add(player.getX(), player.getY(), player);
-					player.setMovePoints(player.getMovePoints() - 1);
+					moveSucces = true;
 				}
 				break;
 
 			case WEST:
 				if (map.isFree(player.getX() - 1, player.getY())) {
-					System.out.println("case libre ? : " + map.isFree(player.getX(), player.getY() - 1));
 					player.setX(player.getX() - 1);
 					map.Free(player.getX() + 1, player.getY());
-					map.Add(player.getX(), player.getY(), player);
-					player.setMovePoints(player.getMovePoints() - 1);
+					moveSucces = true;
 				}
 				break;
 
 			case EAST:
 
 				if (map.isFree(player.getX() + 1, player.getY())) {
-					System.out.println("case libre ? : " + map.isFree(player.getX(), player.getY() + 1));
 					player.setX(player.getX() + 1);
 					map.Free(player.getX() - 1, player.getY());
-					map.Add(player.getX(), player.getY(), player);
-					player.setMovePoints(player.getMovePoints() - 1);
+					moveSucces = true;
 				}
 				break;
 			}
-			System.out.println("coordonnee de la case : " + player.getX() + ";" + player.getY());
-		} else {
-			System.out.println("Plus de point de déplacement \n");
-			this.EndGame = true;
+
 		}
 
-		this.EndGame = false;
+		// If the player doesn't have MP
+		else {
+			return moveSucces;
+		}
+
+		if (moveSucces) {
+			map.Add(player.getX(), player.getY(), player);
+			player.setMovePoints(player.getMovePoints() - 1);
+		}
+		return moveSucces;
 	}
 
 	// private void doAttack(Direction dir, GUICharacter perso, Map map) {
@@ -260,8 +247,6 @@ public class Engine {
 	//
 	// // TODO Creation of robot
 	// }
-
-	// TODO Creation of robot
 
 	// private boolean RoundRobot(Player player1, Player player2) {
 	// for (Robot r : player2.getListRobot()) {

@@ -222,8 +222,9 @@ public abstract class GUICharacter {
 
 	protected void movePlayer(Engine engine, Direction direction) {
 		if (!isMoving() && !isAttacking()) {
-			engine.doMove(direction, this, engine.ma_map);
-			this.goToDirection(direction);
+			if (engine.doMove(direction, this, engine.ma_map)) {
+				this.goToDirection(direction);
+			}
 		}
 	}
 
