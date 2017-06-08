@@ -286,4 +286,20 @@ public abstract class Character extends Entity {
 
 		}
 	}
+	
+	public int getXBase(){
+		if (this.player==1){
+			return 2;
+		} else {
+			return 31;
+		}
+	}
+	
+	public int getYBase(){
+		if (this.player==1){
+			return 4;
+		} else {
+			return 15;
+		}
+	}
 }
