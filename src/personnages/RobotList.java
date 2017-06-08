@@ -58,7 +58,7 @@ public class RobotList {
 
 	// TODO : get fonction
 
-	public Object getRobotKey(Class <?> classRobot, Robot robot){
+	public Object getRobotInfoFromClass(Class <?> classRobot, Robot robot){
 		Map<Object, Robot> currentClassMap;
 		for(Class<?> currentClass : fromClassToMap.keySet()){
 			
@@ -67,6 +67,22 @@ public class RobotList {
 				for(Object currentClassMapCell : currentClassMap.keySet()){
 					if(currentClassMap.get(currentClassMapCell).equals(robot)){
 						return currentClassMapCell;
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	
+	public Robot getRobotFromInfo(Object obj){
+		Map<Object, Robot> currentClassMap;
+		for(Class<?> currentClass : fromClassToMap.keySet()){
+			if(currentClass.equals(obj.getClass())){
+				currentClassMap = fromClassToMap.get(currentClass);
+				for(Object currentClassMapObject : currentClassMap.keySet()){
+					if(currentClassMapObject.equals(obj)){
+						return currentClassMap.get(currentClassMapObject);
 					}
 				}
 			}
@@ -84,16 +100,23 @@ public class RobotList {
 		Robot robot2 = new Robot(3, 4, my_map, Direction.NORTH, 1, 1, 1, 1, 5, 1, Team.ROUGE);
 		Robot robot3 = new Robot(8, 10, my_map, Direction.NORTH, 1, 1, 1, 1, 5, 1, Team.ROUGE);
 		myRobotList.add(new Coordinates(1, 1), robot);
-		myRobotList.add(new String("Mon robot"), robot);
+		String my_name =new String("Mon robot");
+		myRobotList.add(my_name, robot);
 		myRobotList.add(1, robot);
 		myRobotList.add(new Coordinates(1, 1), robot2);
+		myRobotList.add(Direction.EAST, robot3);
 		myRobotList.printList();
 
 		// Get test
-		Coordinates myCoord = (Coordinates) myRobotList.getRobotKey(Coordinates.class, robot);
+		Coordinates myCoord = (Coordinates) myRobotList.getRobotInfoFromClass(Coordinates.class, robot);
 		System.out.print("coordonné du robot1 : " + myCoord.getX() + " ; " + myCoord.getY()+ "\n");
-		System.out.print("Nom du robot1 : " + myRobotList.getRobotKey(String.class, robot));
+		System.out.print("Nom du robot1 : " + myRobotList.getRobotInfoFromClass(String.class, robot) + "\n");
+		System.out.print("Direction robot 3 : " + myRobotList.getRobotInfoFromClass(Direction.class, robot3) + "\n");
 		
+		// Reverse Get test
+		
+		System.out.println("Coordonnée du robot 1 : " + myRobotList.getRobotFromInfo(myCoord).getX() + " ; " +myRobotList.getRobotFromInfo(myCoord).getY());
+		System.out.println("Coordonnée du portant le nom " + my_name + " : " + myRobotList.getRobotFromInfo(my_name).getX() + " ; " +myRobotList.getRobotFromInfo(my_name).getY());
 		// Remove test
 		myRobotList.remove(robot);
 		System.out.println("\n \n Remove test \n \n");
