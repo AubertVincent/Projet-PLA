@@ -7,6 +7,8 @@ public class Tunnel extends Movement {
 
 	protected int x;
 	protected int y;
+	private int lastX;
+	private int lastY;
 
 	/**
 	 * set a new Tunnel by means of its arrival coordinates
@@ -39,13 +41,14 @@ public class Tunnel extends Movement {
 		if (!isDoable(r)) {
 			throw new NotDoableException("La case d'arrivée est occupée");
 		}
+		this.lastX = x;
+		this.lastY = y;
 		r.teleport(x, y);
 	}
 
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
-		// TODO Auto-generated method stub
-
+		r.teleport(lastX, lastY);
 	}
 
 }

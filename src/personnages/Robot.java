@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import carte.Cell;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
@@ -60,7 +61,10 @@ public class Robot extends Character {
 		List<Entity> testSouth = this.entityMap.getListEntity(x, y + 1);
 		List<Entity> testWest = this.entityMap.getListEntity(x - 1, y);
 		List<Entity> testEast = this.entityMap.getListEntity(x + 1, y);
-
+		
+		//Cell testN = this.entityMap.getCell(x, y-1);
+		
+		
 		for (Iterator<Entity> i = testNorth.iterator(); i.hasNext();) {
 			Entity eCourant = i.next();
 			if (eCourant instanceof Robot) {
@@ -85,6 +89,10 @@ public class Robot extends Character {
 				((Robot) eCourant).setLife(0);
 			}
 		}
+	}
+	
+	public void cancelSuicideBomber(){
+		
 	}
 
 	public void execute() throws NotDoableException {

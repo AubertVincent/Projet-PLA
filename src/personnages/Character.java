@@ -4,6 +4,7 @@ import carte.Cell;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
+import entite.Team;
 import exceptions.NotDoableException;
 import pickable.*;
 
@@ -241,7 +242,7 @@ public abstract class Character extends Entity {
 	}
 	
 	public int getXBase(){
-		if (this.player==1){
+		if (this.getTeam()==Team.ROUGE){
 			return 2;
 		} else {
 			return 31;
@@ -249,10 +250,14 @@ public abstract class Character extends Entity {
 	}
 	
 	public int getYBase(){
-		if (this.player==1){
+		if (this.getTeam()==Team.ROUGE){
 			return 4;
 		} else {
 			return 15;
 		}
+	}
+	
+	public void cancelRecall (){
+		
 	}
 }
