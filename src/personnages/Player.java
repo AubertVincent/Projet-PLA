@@ -4,13 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import carte.Base;
-import carte.Map;
 import entite.Direction;
 import entite.Team;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
-import pickable.Picked;
 
 public class Player extends Character {
 
@@ -53,15 +51,6 @@ public class Player extends Character {
 
 	public static List<Class<? extends Action>> getPossibleActionsList() {
 		return possibleActionsList;
-	}
-
-	public Player(int x, int y, Map entityMap, List<Picked> myOwnBesace, Direction direction, int life, int vision,
-			int attack, int range, int movePoints, int recall, Team team, int attackPoints, Base base, Besace besace,
-			RobotList robotList) {
-		super(x, y, entityMap, myOwnBesace, direction, life, vision, attack, range, movePoints, recall, team,
-				attackPoints, base);
-		this.besace = new Besace();
-		this.robotList = robotList;
 	}
 
 	public Player(int x, int y, carte.Map entityMap, Besace besace, Direction direction, int life, int vision,
