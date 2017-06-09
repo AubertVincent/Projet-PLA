@@ -28,9 +28,10 @@ public class Map {
 	}
 
 	public void init(GUI userInterface) {
-		map[2][4].setEntity(
-				new Player(2, 4, this, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 5, 1, 1, Team.ROUGE, new Base(2, 4, Team.ROUGE)));
-		map[31][15].setEntity(new Player(31, 15, this, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 5, 1, 1, Team.BLEU,new Base(31, 15, Team.BLEU)));
+		map[2][4].setEntity(new Player(2, 4, this, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 10, 1, 1, Team.ROUGE,
+				new Base(2, 4, Team.ROUGE)));
+		map[31][15].setEntity(new Player(31, 15, this, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 10, 1, 1, Team.BLEU,
+				new Base(31, 15, Team.BLEU)));
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				if (userInterface.isObstacle(i, j)) {

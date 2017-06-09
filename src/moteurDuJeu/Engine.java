@@ -34,9 +34,9 @@ public class Engine {
 		ma_map = new Map();
 		ma_map.init(userInterface);
 		listPlayer = new ArrayList<Player>();
-		listPlayer.add(new Player(2, 4, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.ROUGE,
+		listPlayer.add(new Player(2, 4, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 10, 1, 1, Team.ROUGE,
 				new Base(2, 4, Team.ROUGE)));
-		listPlayer.add(new Player(31, 15, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.BLEU,
+		listPlayer.add(new Player(31, 15, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 10, 1, 1, Team.BLEU,
 				new Base(31, 15, Team.BLEU)));
 
 	}
@@ -66,6 +66,7 @@ public class Engine {
 	 *            The map with all the entity referenced
 	 * @return True is the mouvement is possible, false else
 	 */
+	// TODO : Handle no more movePoint
 	public boolean doMove(Direction dir, GUICharacter perso, Map map) {
 
 		boolean moveSucces = false;
@@ -73,84 +74,87 @@ public class Engine {
 		// Case of Player1
 		if (perso.getTeam().equals(Team.ROUGE)) {
 			player = getPlayer(Team.ROUGE);
-			switch (dir) {
+			if (player.getMovePoints() > 0) {
+				switch (dir) {
 
-			case SOUTH:
-				if (map.isFree(player.getX(), player.getY() + 1)) {
+				case SOUTH:
+					if (map.isFree(player.getX(), player.getY() + 1)) {
 
-					player.setY(player.getY() + 1);
-					map.Free(player.getX(), player.getY() - 1);
-					moveSucces = true;
+						player.setY(player.getY() + 1);
+						map.Free(player.getX(), player.getY() - 1);
+						moveSucces = true;
+					}
+					break;
+
+				case NORTH:
+					if (map.isFree(player.getX(), player.getY() - 1)) {
+						player.setY(player.getY() - 1);
+						map.Free(player.getX(), player.getY() + 1);
+						moveSucces = true;
+					}
+					break;
+
+				case WEST:
+					if (map.isFree(player.getX() - 1, player.getY())) {
+						player.setX(player.getX() - 1);
+						map.Free(player.getX() + 1, player.getY());
+						moveSucces = true;
+					}
+					break;
+
+				case EAST:
+					if (map.isFree(player.getX() + 1, player.getY())) {
+						player.setX(player.getX() + 1);
+						map.Free(player.getX() - 1, player.getY());
+						moveSucces = true;
+					}
+
+					break;
+
 				}
-				break;
-
-			case NORTH:
-				if (map.isFree(player.getX(), player.getY() - 1)) {
-					player.setY(player.getY() - 1);
-					map.Free(player.getX(), player.getY() + 1);
-					moveSucces = true;
-				}
-				break;
-
-			case WEST:
-				if (map.isFree(player.getX() - 1, player.getY())) {
-					player.setX(player.getX() - 1);
-					map.Free(player.getX() + 1, player.getY());
-					moveSucces = true;
-				}
-				break;
-
-			case EAST:
-				if (map.isFree(player.getX() + 1, player.getY())) {
-					player.setX(player.getX() + 1);
-					map.Free(player.getX() - 1, player.getY());
-					moveSucces = true;
-				}
-
-				break;
-
 			}
 
 		}
 		// Case of Player2
 		else if (perso.getTeam().equals(Team.BLEU)) {
 			player = getPlayer(Team.BLEU);
-			switch (dir) {
+			if (player.getMovePoints() > 0) {
+				switch (dir) {
 
-			case SOUTH:
-				if (map.isFree(player.getX(), player.getY() + 1)) {
-					player.setY(player.getY() + 1);
-					map.Free(player.getX(), player.getY() - 1);
-					moveSucces = true;
+				case SOUTH:
+					if (map.isFree(player.getX(), player.getY() + 1)) {
+						player.setY(player.getY() + 1);
+						map.Free(player.getX(), player.getY() - 1);
+						moveSucces = true;
+					}
+					break;
+
+				case NORTH:
+					if (map.isFree(player.getX(), player.getY() - 1)) {
+						player.setY(player.getY() - 1);
+						map.Free(player.getX(), player.getY() + 1);
+						moveSucces = true;
+					}
+					break;
+
+				case WEST:
+					if (map.isFree(player.getX() - 1, player.getY())) {
+						player.setX(player.getX() - 1);
+						map.Free(player.getX() + 1, player.getY());
+						moveSucces = true;
+					}
+					break;
+
+				case EAST:
+
+					if (map.isFree(player.getX() + 1, player.getY())) {
+						player.setX(player.getX() + 1);
+						map.Free(player.getX() - 1, player.getY());
+						moveSucces = true;
+					}
+					break;
 				}
-				break;
-
-			case NORTH:
-				if (map.isFree(player.getX(), player.getY() - 1)) {
-					player.setY(player.getY() - 1);
-					map.Free(player.getX(), player.getY() + 1);
-					moveSucces = true;
-				}
-				break;
-
-			case WEST:
-				if (map.isFree(player.getX() - 1, player.getY())) {
-					player.setX(player.getX() - 1);
-					map.Free(player.getX() + 1, player.getY());
-					moveSucces = true;
-				}
-				break;
-
-			case EAST:
-
-				if (map.isFree(player.getX() + 1, player.getY())) {
-					player.setX(player.getX() + 1);
-					map.Free(player.getX() - 1, player.getY());
-					moveSucces = true;
-				}
-				break;
 			}
-
 		}
 
 		// If the player doesn't have MP
@@ -165,6 +169,7 @@ public class Engine {
 		return moveSucces;
 	}
 
+	// TODO : Handle attackpoints and death is lifepoint is 0
 	public void doAttack(Direction dir, GUICharacter perso, Map map) throws NotDoableException {
 		Cell target;
 		Player player;
