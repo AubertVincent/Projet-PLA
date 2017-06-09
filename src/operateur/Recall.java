@@ -30,10 +30,10 @@ public class Recall extends Movement {
 	 */
 	@Override
 	protected boolean isDoable(Robot r) {
-		if (r.getTeam() == Team.ROUGE && r.getEntityMap().isReachable(2, 4)) {
-			return true;
-		}
-		if (r.getTeam() == Team.BLEU && r.getEntityMap().isReachable(31, 15)) {
+		Base b = r.getBase();
+		int x = b.getX();
+		int y = b.getY();
+		if (r.getEntityMap().isReachable(x, y)){
 			return true;
 		}
 		return false;
@@ -58,7 +58,7 @@ public class Recall extends Movement {
 
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
-		// teleport le robot à la position avant le recall
+		// Call back this robot at his previous position
 		r.teleport(this.lastX, this.lastY);
 		// r.cancelRecall();
 	}

@@ -22,6 +22,7 @@ public class Reader
     try
     {
       resultingSequence = parser.SEQUENCE();
+
       System.out.println(resultingSequence.toString());
       parser.ReInit(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
       return resultingSequence;

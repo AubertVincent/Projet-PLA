@@ -9,7 +9,9 @@ import entite.Direction;
 import entite.Entity;
 import entite.Team;
 import exceptions.NotDoableException;
-import operateur.*;
+import operateur.Action;
+import operateur.ClassicAck;
+import operateur.MoveDir;
 import sequence._Sequence;
 import util.Pair;
 
