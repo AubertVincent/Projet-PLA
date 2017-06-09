@@ -2,6 +2,7 @@ package personnages;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import carte.Base;
 import carte.Cell;
 import carte.Map;
@@ -11,8 +12,6 @@ import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import operateur.Action;
-
-import pickable.*;
 import pickable.PickAble;
 
 public abstract class Character extends Entity {
@@ -171,10 +170,10 @@ public abstract class Character extends Entity {
 		this.attackPoints = aP;
 	}
 
-	public void resetBesace() {
-		// FIXME adapt besace : implement clear for this class
-		this.besace.clear();
-	}
+	// public void resetBesace() {
+	// // FIXME adapt besace : implement clear for this class
+	// this.besace.clear();
+	// }
 
 	public void goTo(Direction dir, int lg) {
 
@@ -270,33 +269,34 @@ public abstract class Character extends Entity {
 		this.setY(y);
 	}
 
-	/**
-	 * Pick an entity ('picked' here) on the cell
-	 * 
-	 * @throws GameException
-	 */
-	public void pickUp() throws NotDoableException {
-		List<Class<PickAble>> listPicked = null;
-		Picked picked = new Picked(listPicked);
-		Map myMap = this.getEntityMap();
-		try {
-			while (true) {
-				Class<PickAble> classPicked = myMap.pickableEntity(this.getX(), this.getY());
-				myMap.freePick(classPicked, this.getX(), this.getY());
-				if (this.isRobot()) {
-					((Robot) this).getPlayer().getBesace().add(classPicked);
-				} else if (this.isPlayer()) {
-					((Player) this).getBesace().add(classPicked);
-				}
-				picked.add(classPicked);
-				// FIXME
-				besace.add(picked);
-			}
-
-		} catch (NotDoableException e) {
-
-		}
-	}
+	// /**
+	// * Pick an entity ('picked' here) on the cell
+	// *
+	// * @throws GameException
+	// */
+	// public void pickUp() throws NotDoableException {
+	// List<Class<PickAble>> listPicked = null;
+	// Picked picked = new Picked(listPicked);
+	// Map myMap = this.getEntityMap();
+	// try {
+	// while (true) {
+	// Class<PickAble> classPicked = myMap.pickableEntity(this.getX(),
+	// this.getY());
+	// myMap.freePick(classPicked, this.getX(), this.getY());
+	// if (this.isRobot()) {
+	// ((Robot) this).getPlayer().getBesace().add(classPicked);
+	// } else if (this.isPlayer()) {
+	// ((Player) this).getBesace().add(classPicked);
+	// }
+	// picked.add(classPicked);
+	// // FIXME
+	// besace.add(picked);
+	// }
+	//
+	// } catch (NotDoableException e) {
+	//
+	// }
+	// }
 
 	public void placePickAble(int x, int y, Class<PickAble> picked, Map map) {
 		try {
@@ -308,24 +308,24 @@ public abstract class Character extends Entity {
 		}
 	}
 
-	public void cancelPickUp() throws NotDoableException {
-		int x = this.getX();
-		int y = this.getY();
-		// TODO : implement size for the class Besace
-		Picked picked = besace.get(besace.size() - 1);
-		Map myMap = this.getEntityMap();
-		while (picked.size() > 0) {
-			Class<PickAble> classPicked = picked.get(0);
-			if (this.isRobot()) {
-				((Robot) this).getPlayer().getBesace().remove(classPicked);
-			} else if (this.isPlayer()) {
-				((Player) this).getBesace().remove(classPicked);
-			}
-			this.placePickAble(x, y, classPicked, myMap);
-			picked.remove(0);
-		}
-
-	}
+	// public void cancelPickUp() throws NotDoableException {
+	// int x = this.getX();
+	// int y = this.getY();
+	// // TODO : implement size for the class Besace
+	// Picked picked = besace.get(besace.size() - 1);
+	// Map myMap = this.getEntityMap();
+	// while (picked.size() > 0) {
+	// Class<PickAble> classPicked = picked.get(0);
+	// if (this.isRobot()) {
+	// ((Robot) this).getPlayer().getBesace().remove(classPicked);
+	// } else if (this.isPlayer()) {
+	// ((Player) this).getBesace().remove(classPicked);
+	// }
+	// this.placePickAble(x, y, classPicked, myMap);
+	// picked.remove(0);
+	// }
+	//
+	// }
 
 }
 

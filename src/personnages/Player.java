@@ -1,18 +1,14 @@
 package personnages;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import carte.Base;
-import carte.Map;
 import entite.Direction;
 import entite.Team;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
-import pickable.*;
 
 public class Player extends Character {
 
@@ -57,14 +53,6 @@ public class Player extends Character {
 		return possibleActionsList;
 	}
 
-	public Player(int x, int y, Map entityMap, List<Picked> myOwnBesace, Direction direction, int life, int vision,
-			int attack, int range, int movePoints, int recall, Team team, int attackPoints, Base base, Besace besace,
-			RobotList robotList) {
-		super(x, y, entityMap, myOwnBesace, direction, life, vision, attack, range, movePoints, recall, team,
-				attackPoints, base);
-		this.besace = new Besace();
-		this.robotList = robotList;
-	}
 
 	public Player(int x, int y, carte.Map entityMap, Besace besace, Direction direction, int life, int vision,
 			int attack, int range, int movePoints, int recall, int attackPoints, Team team, Base base) {
@@ -103,25 +91,15 @@ public class Player extends Character {
 	// return besace.get(op);
 	// }
 
-	<<<<<<<HEAD
-
-	public List<Robot> getListRobot() {
-		return listRobot;
-	}
 
 	// TODO
 	public void CreateRobot() {
-=======
+	}
 
 	public RobotList getListRobot() {
 		return robotList;
 	}
 
-	// TODO
-	public void createRobot() {
->>>>>>> moteur
-
-	}
 
 	@Override
 	public boolean isPlayer() {
@@ -179,13 +157,9 @@ public class Player extends Character {
 		return false;
 	}
 
-	<<<<<<<HEAD
 
 	public Besace getBesace() {
-=======
 
-	public Map<Class<? extends PickAble>, Integer> getBesace() {
->>>>>>> moteur
 		return besace;
 	}
 

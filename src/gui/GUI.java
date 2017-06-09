@@ -55,13 +55,13 @@ public class GUI extends BasicGame {
 		this.container = container;
 		map = new TiledMap("res/map.tmx");
 		try {
-			perso1 = new GUIPlayer(this, 2, 4, entite.Direction.SOUTH, 100, Team.BLEU);
+			perso1 = new GUIPlayer(this, 2, 4, entite.Direction.SOUTH, 100, Team.ROUGE);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
-			perso2 = new GUIPlayer(this, 31, 15, entite.Direction.SOUTH, 100, Team.ROUGE);
+			perso2 = new GUIPlayer(this, 31, 15, entite.Direction.SOUTH, 100, Team.BLEU);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
