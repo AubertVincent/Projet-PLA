@@ -35,7 +35,6 @@ public class Tree implements _Sequence {
 		return op.toString() + "[" + left.toString() + " , " + right.toString() + "]";
 	}
 
-	@Override
 	public void cancel(Robot r) throws NotDoableException {
 		// TODO Auto-generated method stub
 		

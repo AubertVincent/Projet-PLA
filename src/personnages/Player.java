@@ -157,7 +157,6 @@ public class Player extends Character {
 
 	@Override
 	public boolean isObstacle() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -171,7 +170,6 @@ public class Player extends Character {
 
 	@Override
 	public boolean isPickAble() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

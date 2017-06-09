@@ -45,7 +45,7 @@ public class Recall extends Movement {
 		// l'appelle.
 		// int time = r.getRecall();;
 		// if (r.getRecall() == 0) {
-		Base base=r.getBase();
+		Base base = r.getBase();
 		int xBase = base.getX();
 		int yBase = base.getY();
 		if (this.isDoable(r)) {
@@ -58,7 +58,7 @@ public class Recall extends Movement {
 
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
-		// teleport le robot à la position avant le recall
+		// Call back this robot at his previous position
 		r.teleport(this.lastX, this.lastY);
 		// r.cancelRecall();
 	}
