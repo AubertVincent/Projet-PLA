@@ -9,6 +9,7 @@ import entite.Entity;
 import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
+import operateur.Action;
 import pickable.PickAble;
 
 public abstract class Character extends Entity {
@@ -190,14 +191,15 @@ public abstract class Character extends Entity {
 		}
 	}
 
-	public void kill(Robot rob) {
-		int x = rob.getX();
-		int y = rob.getY();
-		ArrayList<PickAble> listePickable;
-		for (Action r : rob.getPossibleActionsList()){
-			
-		}
-	}
+//	TODO pas Terminer (=> a laisser dans le code)
+//	public void kill(Robot rob) {
+//		int x = rob.getX();
+//		int y = rob.getY();
+//		ArrayList<PickAble> listePickable;
+//		for (Class<? extends Action> r : rob.getPossibleActionsList()){
+//			listePickable.add(actionToPickAble(r));
+//		}
+//	}
 
 	public void kill(Player joueur) {
 
