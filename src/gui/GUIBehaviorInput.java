@@ -1,7 +1,5 @@
 package gui;
 
-import java.awt.MouseInfo;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
@@ -13,17 +11,18 @@ import reader.Reader;
 
 public class GUIBehaviorInput {
 
+	GUI userInterface;
 	TextField textField;
 	String receivedString;
 	String sentString;
-	boolean inputUpToDate;
+	private boolean inputUpToDate;
 
 	/**
 	 * 
 	 * @param container
 	 *            the context in which GUI components are created and rendered
 	 * @param WindowWidth
-	 *            width of the windows container
+	 *            width the windows container
 	 * @param WindowHeight
 	 *            height of the windows container
 	 * @param TextFieldHeight
@@ -32,12 +31,13 @@ public class GUIBehaviorInput {
 	 * @param instructions
 	 *            String with the example of instruction for the robots
 	 */
-	protected GUIBehaviorInput(GameContainer container, int WindowWidth, int WindowHeight, int TextFieldHeight,
-			String instructions) {
+	protected GUIBehaviorInput(GameContainer container, GUI userInterface, int WindowWidth, int WindowHeight,
+			int TextFieldHeight, String instructions) {
 		Font defaultfont = container.getDefaultFont();
-		this.textField = new TextField(container, defaultfont, 0, WindowHeight - TextFieldHeight, WindowWidth,
+		textField = new TextField(container, defaultfont, 0, WindowHeight - TextFieldHeight, WindowWidth,
 				TextFieldHeight);
-		this.textField.setText(instructions);
+		textField.setText(instructions);
+		this.userInterface = userInterface;
 	}
 
 	/**
@@ -53,20 +53,12 @@ public class GUIBehaviorInput {
 				if (container.getInput().isKeyDown(Input.KEY_ENTER)) {
 					receivedString = textField.getText();
 					inputUpToDate = true;
-					GUI.behaviorInputNeeded = false;
+					userInterface.behaviorInputNeeded = false;
 					this.textField.setFocus(false);
 					System.out.println("> " + receivedString);
 					Reader.parse(receivedString);
 				}
 			}
-		}
-
-		// Get (and print in console to test) mouse position in case of a click
-		if (container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			double mouseX = MouseInfo.getPointerInfo().getLocation().getX();
-			double mouseY = MouseInfo.getPointerInfo().getLocation().getY();
-			System.out.println("X:" + mouseX);
-			System.out.println("Y:" + mouseY);
 		}
 	}
 
@@ -84,7 +76,7 @@ public class GUIBehaviorInput {
 		this.textField.setBorderColor(backgroundField);
 		this.textField.render(container, g);
 		inputUpToDate = false;
-//		this.textField.setFocus(true);
+		// this.textField.setFocus(true);
 	}
 
 }

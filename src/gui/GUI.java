@@ -12,27 +12,31 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
-import entite.*;
+import entite.Direction;
+import entite.Team;
 import moteurDuJeu.Engine;
 
 public class GUI extends BasicGame {
 
 	private GameContainer container;
-	private static TiledMap map;
-	private final static int WindowHeight = 576;
-	private final static int WindowWidth = 1088;
+	private TiledMap map;
+
 	private final int TextFieldHeight = 50;
 
-	protected static final int cellHeight = 32;
-	protected static final int cellWidth = 32;
+	private final int WindowHeight;
+	private final int WindowWidth;
+
+	private final int cellHeight;
+	private final int cellWidth;
 
 	private GUIBehaviorInput inputTextField;
-	protected static boolean behaviorInputNeeded = true;
 
+	protected boolean behaviorInputNeeded = true;
+
+	// TODO Bound to be some kind of list ?
 	private GUIPlayer perso1;
 	private GUIPlayer perso2;
 
-	// private Map ma_map;
 	private Engine engine;
 
 	private GUIBesace rectBesace;
@@ -41,12 +45,16 @@ public class GUI extends BasicGame {
 	private List<String> listContents;
 
 	public static void main(String[] args) throws SlickException {
-
-		new AppGameContainer(new GUI(), WindowWidth, WindowHeight, false).start();
+		GUI mainUI = new GUI();
+		new AppGameContainer(new GUI(), mainUI.WindowWidth, mainUI.WindowHeight, false).start();
 	}
 
-	public GUI() {
+	public GUI() throws SlickException {
 		super("STAR Wars");
+		WindowHeight = 576;
+		WindowWidth = 1088;
+		cellHeight = 32;
+		cellWidth = 32;
 	}
 
 	@Override
@@ -54,21 +62,22 @@ public class GUI extends BasicGame {
 		this.container = container;
 		map = new TiledMap("res/map.tmx");
 		try {
-			perso1 = new GUIPlayer(2, 4, Direction.SOUTH, 100, Team.ROUGE);
+			perso1 = new GUIPlayer(this, 2, 4, entite.Direction.SOUTH, 100, Team.ROUGE);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
-			perso2 = new GUIPlayer(31, 15, Direction.SOUTH, 100, Team.BLEU);
+			perso2 = new GUIPlayer(this, 31, 15, entite.Direction.SOUTH, 100, Team.BLEU);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		this.rectBesace = new GUIBesace(container, WindowWidth, WindowHeight, WidthRect, HeightRect, cellWidth,
 				TextFieldHeight);
 
-		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight,
+		this.inputTextField = new GUIBehaviorInput(container, this, WindowWidth, WindowHeight, TextFieldHeight,
 				"(MC2E | (AC;(MC3W>MT8.3)))");
 		engine = new Engine(this);
 	}
@@ -90,41 +99,16 @@ public class GUI extends BasicGame {
 		map.render(0, 0, 5);
 
 		if (behaviorInputNeeded) {
-			this.rectBesace.render(container, g, listContents);
+			// this.rectBesace.render(container, g, listContents);
 			this.inputTextField.render(container, g);
 		}
 	}
 
-	@Override
-	public void update(GameContainer container, int delta) throws SlickException {
-		perso1.update(this, delta);
-		perso2.update(this, delta);
-		this.inputTextField.update(container);
-	}
-
-	public static int pixelToCellX(float x) {
-		return (int) (x - (x % cellWidth)) / cellWidth;
-	}
-
-	public static int pixelToCellY(float y) {
-		return (int) (y - (y % cellHeight)) / cellHeight;
-	}
-
-	public static float cellToPixelX(int x) {
-		return (x + 0.5f) * cellWidth;
-	}
-
-	public static float cellToPixelY(int y) {
-		return (y + 0.5f) * cellHeight;
-	}
-
 	/**
-	 * return true if there is an obstacle on the given cell of the GUI
+	 * Equivalent to isObstacle if the obstacle is another Character
 	 * 
 	 * @param x
-	 *            x coordinate of the cell
 	 * @param y
-	 *            y coordinate of the cell
 	 * @return
 	 */
 	public boolean isCollision(float x, float y) {
@@ -140,13 +124,38 @@ public class GUI extends BasicGame {
 		return collision;
 	}
 
-	public boolean isObstacle(float x, float y) {
-		int tileW = map.getTileWidth();
-		int tileH = map.getTileHeight();
+	/**
+	 * Returns true if there is an obstacle on the given cell of the GUI
+	 * 
+	 * @param x
+	 *            x coordinate of the cell
+	 * @param y
+	 *            y coordinate of the cell
+	 * @return
+	 */
+	public boolean isObstacle(int x, int y) {
+		// int tileW = map.getTileWidth();
+		// int tileH = map.getTileHeight();
 		int logicLayer = map.getLayerIndex("obstacles");
-		Image tile = map.getTileImage((int) x / tileW, (int) y / tileH, logicLayer);
+		Image tile = map.getTileImage(x, y, logicLayer);
 		boolean collision = tile != null;
 		return collision;
+	}
+
+	@Override
+	public void update(GameContainer container, int delta) throws SlickException {
+		perso1.update(this, delta);
+		perso2.update(this, delta);
+		this.inputTextField.update(container);
+
+	}
+
+	@Override
+	public void mousePressed(int button, int x, int y) {
+		int mouseXCell = pixelToCellX(x);
+		int mouseYCell = pixelToCellY(y);
+		System.out.println("LeftClick on (" + mouseXCell + ", " + mouseYCell + ")");
+		engine.mousePressed(button, mouseXCell, mouseYCell);
 	}
 
 	@Override
@@ -207,12 +216,71 @@ public class GUI extends BasicGame {
 		case Input.KEY_B:
 			perso2.Attack(Direction.EAST);
 			break;
-		case Input.KEY_SPACE:
+		case Input.KEY_ADD:
 			try {
 				perso1.createRobot(3, 4);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
+			break;
+		case Input.KEY_SPACE:
+			behaviorInputNeeded = true;
+			break;
 		}
 	}
+
+	@Override
+	public boolean closeRequested() {
+		System.exit(0);
+		return false;
+	}
+
+	// ↓ Getters and setters ↓
+
+	/**
+	 * Returns a cell x coordinate given a pixel x coordinate
+	 * 
+	 * @param x
+	 *            The x coordinate to translate (in pixels)
+	 * @return The x coordinate translated in cell coordinate
+	 */
+	public int pixelToCellX(float x) {
+		return (int) (x - (x % cellWidth)) / cellWidth;
+	}
+
+	/**
+	 * Returns a cell y coordinate given a pixel y coordinate
+	 * 
+	 * @param y
+	 *            The y coordinate to translate (in pixels)
+	 * @return The y coordinate translated in cell coordinate
+	 */
+	public int pixelToCellY(float y) {
+		return (int) (y - (y % cellHeight)) / cellHeight;
+	}
+
+	/**
+	 * Returns a pixel x coordinate corresponding to a given cell x coordinate's
+	 * center
+	 * 
+	 * @param x
+	 *            The x coordinate to translate (in cell)
+	 * @return The x cell coordinate translated into pixels
+	 */
+	public float cellToPixelX(int x) {
+		return (x + 0.5f) * cellWidth;
+	}
+
+	/**
+	 * Returns a pixel y coordinate corresponding to a given cell y coordinate's
+	 * center
+	 * 
+	 * @param y
+	 *            The y coordinate to translate (in cell)
+	 * @return The y coordinate translated into pixels
+	 */
+	public float cellToPixelY(int y) {
+		return (y + 0.5f) * cellHeight;
+	}
+
 }

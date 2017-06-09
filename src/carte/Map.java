@@ -1,16 +1,19 @@
 package carte;
+
 import java.util.List;
+
 import entite.Direction;
 import entite.Entity;
+import entite.Team;
+import exceptions.GameException;
 import exceptions.NotDoableException;
-import pickable.PickAble;
 import gui.GUI;
+import personnages.Besace;
 import personnages.Player;
+import pickable.PickAble;
 
 public class Map {
 
-	//private static final int nbrOpInit = 128; // une chance sur 4 de trouver un
-												// opérateur sur une cellule
 	private int width = 34;
 	private int height = 18;
 
@@ -24,14 +27,15 @@ public class Map {
 		}
 	}
 
-	public void initMap(GUI guy) {
-		map[2][4].setEntity(new Player(2, 4, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1));
-		map[31][15].setEntity(new Player(31, 15, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 2));
+	public void init(GUI userInterface) {
+		map[2][4].setEntity(new Player(2, 4, this, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 5, 1, 1, Team.ROUGE,
+				new Base(2, 4, Team.ROUGE)));
+		map[31][15].setEntity(new Player(31, 15, this, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 5, 1, 1, Team.BLEU,
+				new Base(31, 15, Team.BLEU)));
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				if (guy.isObstacle(GUI.cellToPixelX(i), GUI.cellToPixelY(j))) {
+				if (userInterface.isObstacle(i, j)) {
 					map[i][j].setEntity(new Obstacle(i, j, this));
-				//	System.out.println("Cette case contient un obstacle : " + i + ";" + j);
 				}
 			}
 		}
@@ -52,7 +56,7 @@ public class Map {
 		map[x][y].FreeCell();
 	}
 
-	public void Add(int x, int y, Entity ent) {
+	public void setEntity(int x, int y, Entity ent) {
 		map[x][y].setEntity(ent);
 	}
 
@@ -68,13 +72,13 @@ public class Map {
 		return map[x][y].getListEntity();
 	}
 
-//	private void printMap() {
-//		for (int i = 0; i < width; i++) {
-//			for (int j = 0; j < height; j++) {
-//				System.out.println("case :" + i + ',' + j + " " + map[i][j].isFree());
-//			}
-//		}
-//	}
+	// private void printMap() {
+	// for (int i = 0; i < width; i++) {
+	// for (int j = 0; j < height; j++) {
+	// System.out.println("case :" + i + ',' + j + " " + map[i][j].isFree());
+	// }
+	// }
+	// }
 
 	// public static void main(String[] args) {
 	// Map ma_map = new Map();
@@ -85,8 +89,11 @@ public class Map {
 
 	/**
 	 * return the list of the entities present on the cell(x,y)
-	 * @param x x coordinate on the map
-	 * @param y y coordinate on the map
+	 * 
+	 * @param x
+	 *            x coordinate on the map
+	 * @param y
+	 *            y coordinate on the map
 	 * @return the list of the entities present on the cell
 	 */
 	public List<Entity> getListEntity(int x, int y) {
@@ -95,8 +102,11 @@ public class Map {
 
 	/**
 	 * return the class of an entity present on the cell
-	 * @param x x coordinate on the map
-	 * @param y y coordinate on the map
+	 * 
+	 * @param x
+	 *            x coordinate on the map
+	 * @param y
+	 *            y coordinate on the map
 	 * @return the class of the first pickAble object
 	 * @throws GameException
 	 */
@@ -104,7 +114,7 @@ public class Map {
 	public Class<PickAble> pickableEntity(int x, int y) throws NotDoableException {
 		List<Entity> l = map[x][y].getListEntity();
 		int i = 0;
-		while (i < l.size() - 1) {
+		while (i < l.size()) {
 			if (l.get(i).isPickAble()) {
 				return ((Class<PickAble>) l.get(i).getClass());
 			}
@@ -112,22 +122,35 @@ public class Map {
 		throw new NotDoableException("Rien à ramasser ici");
 	}
 
-
 	/**
 	 * Take out the object of the cell
+	 * 
 	 * @param ramasse
-	 * @param x x coordinate on the map
-	 * @param y y coordinate on the map
+	 * @param x
+	 *            x coordinate on the map
+	 * @param y
+	 *            y coordinate on the map
 	 */
 	public void freePick(Class<PickAble> ramasse, int x, int y) {
 		List<Entity> l = map[x][y].getListEntity();
 		int i = 0;
-		while (i < l.size() - 1) {
-			if (l.get(i).getClass() == ramasse){
+		while (i < l.size()) {
+			if (l.get(i).getClass() == ramasse) {
 				l.remove(i);
 			}
 		}
 
+	}
+
+	public boolean isReachable(int x, int y) {
+		List<Entity> l = map[x][y].getListEntity();
+		int i = 0;
+		while (i < l.size()) {
+			if (l.get(i).isCharacter() || l.get(i).isObstacle()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

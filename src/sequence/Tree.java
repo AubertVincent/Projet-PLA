@@ -1,6 +1,5 @@
 package sequence;
 
-import exceptions.GameException;
 import exceptions.NotDoableException;
 import operateur.Behavior;
 import personnages.Robot;
@@ -25,8 +24,8 @@ public class Tree implements _Sequence {
 	public boolean isTree() {
 		return true;
 	}
-	
-	public void execute(Robot r) throws NotDoableException{
+
+	public void execute(Robot r) throws NotDoableException {
 		op.execute(r, left, right);
 	}
 
@@ -35,6 +34,4 @@ public class Tree implements _Sequence {
 		return op.toString() + "[" + left.toString() + " , " + right.toString() + "]";
 	}
 
-	
-	
 }

@@ -8,5 +8,4 @@ public class PickSuccession extends PickAble {
 		super(x, y, entityMap);
 	}
 
-
 }

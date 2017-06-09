@@ -8,5 +8,4 @@ public class PickPriority extends PickAble {
 		super(x, y, entityMap);
 	}
 
-
 }

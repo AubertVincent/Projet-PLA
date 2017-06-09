@@ -1,23 +1,37 @@
 package personnages;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import carte.Base;
 import carte.Cell;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
+import entite.Team;
+import exceptions.GameException;
 import exceptions.NotDoableException;
-import pickable.*;
+import operateur.Action;
+import pickable.PickAble;
+import pickable.Picked;
 
 public abstract class Character extends Entity {
 
-	protected Direction direction;
+	protected Besace besace;
 
+	protected Direction direction;
 	protected int life;
 	protected int vision;
 	protected int attack;
 	protected int range;
 	protected int movePoints;
+	protected int attackPoints;
 	protected int recall;
 	protected int player;
+
+	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
+	protected Team team;
+	protected Base base;
 
 	/**
 	 * Set a new character
@@ -41,8 +55,8 @@ public abstract class Character extends Entity {
 	 * @param recall
 	 *            Character's recall's time
 	 */
-	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int player) {
+	public Character(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
+			int range, int movePoints, int recall, Team team, int attackPoints, Base base) {
 		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
@@ -51,10 +65,20 @@ public abstract class Character extends Entity {
 		this.range = range;
 		this.movePoints = movePoints;
 		this.recall = recall;
-		this.player = player;
+		this.team = team;
+		this.attackPoints = attackPoints;
+		this.base = base;
 	}
 
-	protected abstract boolean isPlayer();
+	public Base getBase() {
+		return base;
+	}
+
+	public void setBase(Base base) {
+		this.base = base;
+	}
+
+	public abstract boolean isPlayer();
 
 	public abstract boolean isRobot();
 
@@ -62,16 +86,25 @@ public abstract class Character extends Entity {
 		return true;
 	}
 
+	public boolean isOperator() {
+		return false;
+	}
+
+	public boolean isObstacle() {
+		return false;
+	}
+
+	@Override
 	public boolean isPickAble() {
 		return false;
 	}
 
-	public int getPlayer() {
-		return player;
+	public Team getTeam() {
+		return team;
 	}
 
-	public void setPlayer(int player) {
-		this.player = player;
+	public void setTeam(Team team) {
+		this.team = team;
 	}
 
 	public Direction getDirection() {
@@ -130,24 +163,29 @@ public abstract class Character extends Entity {
 		this.recall = recall;
 	}
 
-	/**
-	 * Move a character in the direction given of the length given
-	 * 
-	 * @param dir
-	 *            Direction of the move
-	 * @param lg
-	 *            Length of the move
-	 */
-	public void goTo(Direction dir, int lg) { // lg?
+	public int getAttackPoints() {
+		return this.attackPoints;
+	}
+
+	public void setAttackPoints(int aP) {
+		this.attackPoints = aP;
+	}
+
+	public void resetBesace() {
+		// FIXME adapt besace : implement clear for this class
+		this.besace.clear();
+	}
+
+	public void goTo(Direction dir, int lg) {
 
 		direction = dir;
 
 		switch (direction) {
 		case NORTH:
-			setY(getY() - lg);
+			setY(getY() + lg);
 			break;
 		case SOUTH:
-			setY(getY() + lg);
+			setY(getY() - lg);
 			break;
 		case EAST:
 			setX(getX() + lg);
@@ -167,14 +205,14 @@ public abstract class Character extends Entity {
 	 */
 	public void classicAtk(Cell target) throws NotDoableException {
 		try {
-			Character opponent = target.getOpponent(this.player);
+			Character opponent = target.getOpponent(this.team);
 			int lifeA = this.getLife();
 			int lifeE = opponent.getLife();
 			int atkA = this.getAttack();
 			int atkE = opponent.getAttack();
 
-			lifeA = java.lang.Math.max(lifeA - atkE, 0);
-			lifeE = java.lang.Math.max(lifeE - atkA, 0);
+			lifeA = lifeA - atkE;
+			lifeE = lifeE - atkA;
 
 			this.setLife(lifeA);
 			opponent.setLife(lifeE);
@@ -182,6 +220,39 @@ public abstract class Character extends Entity {
 		} catch (NotDoableException e) {
 			throw new NotDoableException("Personne à attaquer");
 		}
+	}
+
+	public void cancelClassicAtk(Cell target) throws NotDoableException {
+		try {
+			Character opponent = target.getOpponent(this.team);
+			int lifeA = this.getLife();
+			int lifeE = opponent.getLife();
+			int atkA = this.getAttack();
+			int atkE = opponent.getAttack();
+
+			lifeA = lifeA + atkE;
+			lifeE = lifeE + atkA;
+
+			this.setLife(lifeA);
+			opponent.setLife(lifeE);
+
+		} catch (NotDoableException e) {
+			throw new NotDoableException("Personne à attaquer");
+		}
+	}
+
+	// TODO pas Terminer (=> a laisser dans le code)
+	// public void kill(Robot rob) {
+	// int x = rob.getX();
+	// int y = rob.getY();
+	// ArrayList<PickAble> listePickable;
+	// for (Class<? extends Action> r : rob.getPossibleActionsList()){
+	// listePickable.add(actionToPickAble(r));
+	// }
+	// }
+
+	public void kill(Player joueur) {
+
 	}
 
 	/**
@@ -205,15 +276,72 @@ public abstract class Character extends Entity {
 	 * @throws GameException
 	 */
 	public void pickUp() throws NotDoableException {
+		List<Class<PickAble>> listPicked = null;
+		Picked picked = new Picked(listPicked);
 		Map myMap = this.getEntityMap();
-		Class<PickAble> picked = myMap.pickableEntity(this.getX(), this.getY());
-		myMap.freePick(picked, this.getX(), this.getY());
-		if (this.isRobot()) {
-			int i = ((Robot) this).isToPlayer().besace.get(picked.getClass());
-			((Robot) this).isToPlayer().besace.put(picked, i++);
-		} else if (this.isPlayer()) {
-			int i = ((Player) this).besace.get(picked.getClass());
-			((Player) this).besace.put(picked, i++);
+		try {
+			while (true) {
+				Class<PickAble> classPicked = myMap.pickableEntity(this.getX(), this.getY());
+				myMap.freePick(classPicked, this.getX(), this.getY());
+				if (this.isRobot()) {
+					((Robot) this).getPlayer().getBesace().add(classPicked);
+				} else if (this.isPlayer()) {
+					((Player) this).getBesace().add(classPicked);
+				}
+				picked.add(classPicked);
+				// FIXME
+				besace.add(picked);
+			}
+
+		} catch (NotDoableException e) {
+
 		}
 	}
+
+	public void placePickAble(int x, int y, Class<PickAble> picked, Map map) {
+		try {
+			map.getCell(x, y).setEntity(picked.newInstance());
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void cancelPickUp() throws NotDoableException {
+		int x = this.getX();
+		int y = this.getY();
+		// TODO : implement size for the class Besace
+		Picked picked = besace.get(besace.size() - 1);
+		Map myMap = this.getEntityMap();
+		while (picked.size() > 0) {
+			Class<PickAble> classPicked = picked.get(0);
+			if (this.isRobot()) {
+				((Robot) this).getPlayer().getBesace().remove(classPicked);
+			} else if (this.isPlayer()) {
+				((Player) this).getBesace().remove(classPicked);
+			}
+			this.placePickAble(x, y, classPicked, myMap);
+			picked.remove(0);
+		}
+
+	}
+
 }
+
+//
+// public int getXBase() {
+// if (this.getTeam() == Team.ROUGE) {
+// return 2;
+// } else {
+// return 31;
+// }
+// }
+//
+// public int getYBase() {
+// if (this.getTeam() == Team.ROUGE) {
+// return 4;
+// } else {
+// return 15;
+// }
+// }

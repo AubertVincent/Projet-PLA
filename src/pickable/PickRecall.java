@@ -8,5 +8,4 @@ public class PickRecall extends PickAble {
 		super(x, y, entityMap);
 	}
 
-
 }

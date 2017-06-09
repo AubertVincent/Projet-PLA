@@ -10,8 +10,6 @@ public class MoveDir extends Movement {
 	protected Direction dir;
 	protected Integer lg;
 
-	
-	
 	@Override
 	public String toString() {
 		return (super.toString() + "(" + dir.toString() + ", " + lg.toString() + ")");
@@ -48,22 +46,22 @@ public class MoveDir extends Movement {
 		for (int i = 0; i < lg; i++) {
 			switch (dir) {
 			case NORTH:
-				if (!myMap.isFree(x, y - i)) {
+				if (!myMap.isReachable(x, y - i)) {
 					return false;
 				}
 				break;
 			case EAST:
-				if (!myMap.isFree(x + i, y)) {
+				if (!myMap.isReachable(x + i, y)) {
 					return false;
 				}
 				break;
 			case SOUTH:
-				if (!myMap.isFree(x, y + i)) {
+				if (!myMap.isReachable(x, y + i)) {
 					return false;
 				}
 				break;
 			case WEST:
-				if (!myMap.isFree(x - i, y)) {
+				if (!myMap.isReachable(x - i, y)) {
 					return false;
 				}
 				break;
@@ -77,8 +75,30 @@ public class MoveDir extends Movement {
 		if (!isDoable(r)) {
 			throw new NotDoableException("Un obstacle est sur votre chemin");
 		}
-
 		r.goTo(dir, lg);
 
 	}
+
+	@Override
+	public void cancel(Robot r) throws NotDoableException {
+		if (!isDoable(r)) {
+			throw new NotDoableException("Un obstacle est sur votre chemin");
+		}
+		switch (dir) {
+		case NORTH:
+			dir = Direction.SOUTH;
+			break;
+		case SOUTH:
+			dir = Direction.NORTH;
+			break;
+		case EAST:
+			dir = Direction.WEST;
+			break;
+		case WEST:
+			dir = Direction.EAST;
+			break;
+		}
+		r.goTo(dir, lg);
+	}
+
 }
