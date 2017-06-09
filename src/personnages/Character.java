@@ -2,6 +2,7 @@ package personnages;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import carte.Base;
 import carte.Cell;
 import carte.Map;
@@ -11,9 +12,8 @@ import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import operateur.Action;
-
-import pickable.*;
 import pickable.PickAble;
+import pickable.Picked;
 
 public abstract class Character extends Entity {
 
@@ -289,7 +289,8 @@ public abstract class Character extends Entity {
 					((Player) this).getBesace().add(classPicked);
 				}
 				picked.add(classPicked);
-				// FIXME
+				// FIXME : this fonction take public void add(Class<PickAble>
+				// classPicked)
 				besace.add(picked);
 			}
 

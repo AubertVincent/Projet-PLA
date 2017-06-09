@@ -78,12 +78,16 @@ public class Besace {
 		for (Iterator<Class<? extends PickAble>> mapIter = besace.keySet().iterator(); mapIter.hasNext();) {
 			Class<? extends PickAble> currentClass;
 			currentClass = mapIter.next();
-			if (myClass == currentClass) {
+			if (myClass.equals(currentClass)) {
 				i = besace.get(currentClass);
 				besace.remove(currentClass);
 				besace.put(currentClass, i--);
 			}
 		}
+	}
+
+	public void clear() {
+		this.clear();
 	}
 
 }
