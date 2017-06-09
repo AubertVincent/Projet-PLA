@@ -13,6 +13,7 @@ import org.newdawn.slick.SpriteSheet;
 
 import entite.Direction;
 import entite.Team;
+import exceptions.NotDoableException;
 import moteurDuJeu.Engine;
 import operateur.Action;
 import personnages.Player;
@@ -371,26 +372,19 @@ public abstract class GUICharacter {
 		this.dir = dir;
 	}
 
-	public void Attack(Direction dir) {
-		if (!isMoving() && !isAttacking()) {
-			setDirection(dir);
-			setAttackTarget(dir);
-			switch (dir) {
-			case NORTH:
+	public void Attack(Engine engine, Direction dir) throws NotDoableException {
+		try {
+			if (!isMoving() && !isAttacking()) {
+				setDirection(dir);
+				setAttackTarget(dir);
+				engine.doAttack(dir, this, engine.ma_map);
+				setAttackTarget(dir);
 
-				break;
-			case WEST:
-				setAttackTarget(dir);
-				break;
-			case SOUTH:
-				setAttackTarget(dir);
-				break;
-			case EAST:
-				setAttackTarget(dir);
-				break;
+				setAckRequest(true);
+				setAttacking(true);
 			}
-			setAckRequest(true);
-			setAttacking(true);
+		} catch (NotDoableException e) {
+			throw new NotDoableException("Personne à attaquer");
 		}
 	}
 
