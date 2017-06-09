@@ -23,8 +23,6 @@ import pickable.PickTunnel;
 
 public class Player extends Character {
 
-	
-	
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 	static {
 		possibleActionsList.add(ClassicAck.class);
@@ -35,6 +33,7 @@ public class Player extends Character {
 	public Map<Class<? extends PickAble>, Integer> besace = new HashMap<Class<? extends PickAble>, Integer>();
 
 	private RobotList robotList;
+
 	/**
 	 * Set a new Player
 	 * 
@@ -63,8 +62,6 @@ public class Player extends Character {
 	public static List<Class<? extends Action>> getPossibleActionsList() {
 		return possibleActionsList;
 	}
-
-
 
 	public Player(int x, int y, carte.Map entityMap, Direction direction, int life, int vision, int attack, int range,
 			int movePoints, int recall, int aP, Team team) {

@@ -140,7 +140,7 @@ public class Engine {
 		}
 
 		if (moveSucces) {
-			map.Add(player.getX(), player.getY(), player);
+			map.setEntity(player.getX(), player.getY(), player);
 			player.setMovePoints(player.getMovePoints() - 1);
 		}
 		return moveSucces;

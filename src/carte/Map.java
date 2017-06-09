@@ -33,8 +33,6 @@ public class Map {
 			for (int j = 0; j < height; j++) {
 				if (guy.isObstacle(GUI.cellToPixelX(i), GUI.cellToPixelY(j))) {
 					map[i][j].setEntity(new Obstacle(i, j, this));
-					// System.out.println("Cette case contient un obstacle : " +
-					// i + ";" + j);
 				}
 			}
 		}
@@ -55,7 +53,7 @@ public class Map {
 		map[x][y].FreeCell();
 	}
 
-	public void Add(int x, int y, Entity ent) {
+	public void setEntity(int x, int y, Entity ent) {
 		map[x][y].setEntity(ent);
 	}
 

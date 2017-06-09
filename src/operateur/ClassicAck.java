@@ -1,9 +1,9 @@
 package operateur;
 
 import carte.Cell;
-
-import entite.Direction;
 import carte.Map;
+import entite.Direction;
+import entite.Team;
 import exceptions.NotDoableException;
 import personnages.Robot;
 
@@ -30,7 +30,7 @@ public class ClassicAck extends Attack {
 
 		int x = r.getX();
 		int y = r.getY();
-		int player = r.getPlayer();
+		Team player = r.getTeam();
 
 		Cell testEast = new Cell(x + 1, y);
 		Cell testSouth = new Cell(x, y - 1);
@@ -50,7 +50,7 @@ public class ClassicAck extends Attack {
 
 			int x = r.getX();
 			int y = r.getY();
-			int player = r.getPlayer();
+			Team player = r.getTeam();
 			Map myMap = r.getEntityMap();
 
 			Direction d;

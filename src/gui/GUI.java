@@ -59,7 +59,8 @@ public class GUI extends BasicGame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight, "(MC2E | (AC;(MC3W>MT8.3)))");
+		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight,
+				"(MC2E | (AC;(MC3W>MT8.3)))");
 		engine = new Engine(this);
 	}
 
@@ -146,7 +147,7 @@ public class GUI extends BasicGame {
 	}
 
 	@Override
-	public void keyPressed(int key, char c)  {
+	public void keyPressed(int key, char c) {
 		switch (key) {
 		case Input.KEY_UP:
 			perso1.movePlayer(engine, Direction.NORTH);

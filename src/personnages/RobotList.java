@@ -96,9 +96,9 @@ public class RobotList {
 	public static void main(String[] args) {
 		RobotList myRobotList = new RobotList();
 		carte.Map my_map = new carte.Map();
-		Robot robot = new Robot(2, 4, my_map, Direction.NORTH, 1, 1, 1, 1, 5, 1, Team.ROUGE);
-		Robot robot2 = new Robot(3, 4, my_map, Direction.NORTH, 1, 1, 1, 1, 5, 1, Team.ROUGE);
-		Robot robot3 = new Robot(8, 10, my_map, Direction.NORTH, 1, 1, 1, 1, 5, 1, Team.ROUGE);
+		Robot robot = new Robot(2, 4, my_map, Direction.NORTH, 1, 1, 1, 1, 5, 1, 0, Team.ROUGE);
+		Robot robot2 = new Robot(3, 4, my_map, Direction.NORTH, 1, 1, 1, 1, 5, 1, 0, Team.ROUGE);
+		Robot robot3 = new Robot(8, 10, my_map, Direction.NORTH, 1, 1, 1, 1, 5, 1, 0, Team.ROUGE);
 		myRobotList.add(new Coordinates(1, 1), robot);
 		String my_name =new String("Mon robot");
 		myRobotList.add(my_name, robot);
