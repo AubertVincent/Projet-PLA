@@ -19,7 +19,7 @@ public class Reader
   public static _Sequence parse(String stringToParse)
   {
     Reader parser = new Reader(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
-	_Sequence resultingSequence = null ;
+    _Sequence resultingSequence = null;
     try
     {
       resultingSequence = parser.SEQUENCE();
@@ -39,7 +39,7 @@ public class Reader
       System.out.println(e.getMessage());
       parser.ReInit(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
     }
-    return resultingSequence ;
+    return resultingSequence;
   }
 }
 
@@ -48,8 +48,7 @@ PARSER_END(Reader)
 // les caractères ignorés
 SKIP :
 {
-  ""
-| " "
+" "
 | "\t"
 | "\r"
 | "\n"
@@ -184,6 +183,7 @@ Action ACTION() :
 {
   Movement mov;
   Attack att;
+  Action rand;
 }
 {
   < M > mov = MOVEMENT()
@@ -193,6 +193,10 @@ Action ACTION() :
 | < A > att = ATT()
   {
     return att;
+  }
+| < R > rand = RANDOM()
+  {
+    return rand;
   }
   // Add rest of grammar  
 }
@@ -234,6 +238,16 @@ Movement MOVEMENT() :
     x = Integer.parseInt(tok1.image);
     y = Integer.parseInt(tok2.image);
     return new Tunnel(x, y);
+  }
+}
+
+Action RANDOM() :
+{
+}
+{
+  < M >
+  {
+    return new RandomMove();
   }
 }
 

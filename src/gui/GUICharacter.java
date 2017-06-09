@@ -12,6 +12,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 import entite.Direction;
+import entite.Team;
 import moteurDuJeu.Engine;
 import operateur.Action;
 import personnages.Player;
@@ -53,7 +54,7 @@ public abstract class GUICharacter {
 	private int beginAck;
 	private int AckDuration;
 
-	private int team;
+	private Team team;
 
 	protected Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y, int animationDuration) {
 		Animation animation = new Animation();
@@ -102,9 +103,9 @@ public abstract class GUICharacter {
 			currentAnimation[6] = loadAnimation(currentSpriteSheet, 1, currentNumberOfSprites, 2, animationDuration);
 			currentAnimation[7] = loadAnimation(currentSpriteSheet, 1, currentNumberOfSprites, 3, animationDuration);
 
-//			System.out.println(this);
-//			System.out.println(currentAnimation.toString());
-//			System.out.println(currentAction.toString());
+			// System.out.println(this);
+			// System.out.println(currentAnimation.toString());
+			// System.out.println(currentAction.toString());
 
 			animationsList.put(currentAction, currentAnimation);
 
@@ -127,7 +128,8 @@ public abstract class GUICharacter {
 	 * @throws SlickException
 	 *             Indicates a failure of the loading of a sprite sheet
 	 */
-	public GUICharacter(GUI userInterface, int x, int y, Direction dir, int animationDuration, int team) throws SlickException, Exception {
+	public GUICharacter(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team) throws SlickException, Exception {
+
 		super();
 		this.mainUserInterface = userInterface ;
 		this.xCell = x;
@@ -218,13 +220,14 @@ public abstract class GUICharacter {
 		}
 	}
 
-	public int getTeam() {
+	public Team getTeam() {
 		return this.team;
 	}
 
 	protected void movePlayer(Engine engine, Direction direction) {
 		if (!isMoving() && !isAttacking()) {
 			engine.doMove(direction, this, engine.ma_map);
+			this.goToDirection(direction);
 		}
 	}
 
@@ -365,23 +368,26 @@ public abstract class GUICharacter {
 	}
 
 	public void Attack(Direction dir) {
-		setDirection(dir);
-		switch (dir) {
-		case NORTH:
+		if (!isMoving() && !isAttacking()) {
+			setDirection(dir);
 			setAttackTarget(dir);
-			break;
-		case WEST:
-			setAttackTarget(dir);
-			break;
-		case SOUTH:
-			setAttackTarget(dir);
-			break;
-		case EAST:
-			setAttackTarget(dir);
-			break;
+			switch (dir) {
+			case NORTH:
+
+				break;
+			case WEST:
+				setAttackTarget(dir);
+				break;
+			case SOUTH:
+				setAttackTarget(dir);
+				break;
+			case EAST:
+				setAttackTarget(dir);
+				break;
+			}
+			setAckRequest(true);
+			setAttacking(true);
 		}
-		setAckRequest(true);
-		setAttacking(true);
 	}
 
 	private void setAckRequest(boolean ackRequest) {

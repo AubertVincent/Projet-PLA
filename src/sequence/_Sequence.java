@@ -10,6 +10,5 @@ public interface _Sequence {
 	public boolean isTree();
 
 	public void execute(Robot r) throws NotDoableException;
-	
 
 }

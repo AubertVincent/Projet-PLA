@@ -36,7 +36,7 @@ public class Priority extends Behavior {
 			try {
 				right.execute(r);
 			} catch (NotDoableException e2) {
-				throw new NotDoableException();
+				throw new NotDoableException("Action impossible");
 			}
 		}
 		

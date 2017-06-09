@@ -10,7 +10,10 @@ import java.util.Map;
 import org.newdawn.slick.SlickException;
 
 import entite.Direction;
-import operateur.*;
+import entite.Team;
+import operateur.Action;
+import operateur.ClassicAck;
+import operateur.MoveDir;
 import personnages.Player;
 
 public class GUIPlayer extends GUICharacter {
@@ -44,8 +47,9 @@ public class GUIPlayer extends GUICharacter {
 	// TODO : bound to be dynamic when something is picked
 	List<Class<? extends operateur.Action>> animationsList = new LinkedList<Class<? extends operateur.Action>>();
 
-	public GUIPlayer(GUI userInterface, int x, int y, Direction dir, int animationDuration, int team) throws SlickException, Exception {
+	public GUIPlayer(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team) throws SlickException, Exception {
 		super(userInterface, x, y, dir, animationDuration, team);
+
 		listRobot = new ArrayList<GUIRobot>();
 		animationsList.add(ClassicAck.class);
 		animationsList.add(MoveDir.class);

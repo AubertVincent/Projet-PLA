@@ -1,6 +1,5 @@
 package sequence;
 
-import exceptions.GameException;
 import exceptions.NotDoableException;
 import operateur.Behavior;
 import personnages.Robot;
@@ -34,7 +33,6 @@ public class Tree implements _Sequence {
 	public String toString() {
 		return op.toString() + "[" + left.toString() + " , " + right.toString() + "]";
 	}
-
 	
 	
 }
