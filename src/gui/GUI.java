@@ -1,5 +1,7 @@
 package gui;
 
+import java.util.List;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
@@ -36,6 +38,7 @@ public class GUI extends BasicGame {
 	private GUIBesace rectBesace;
 	private int WidthRect = 600;
 	private int HeightRect = 300;
+	private List<String> listContents;
 
 	public static void main(String[] args) throws SlickException {
 
@@ -63,7 +66,7 @@ public class GUI extends BasicGame {
 			e.printStackTrace();
 		}
 		this.rectBesace = new GUIBesace(container, WindowWidth, WindowHeight, WidthRect, HeightRect, cellWidth,
-				TextFieldHeight, "LA DARONNE À VINCAUB");
+				TextFieldHeight);
 
 		this.inputTextField = new GUIBehaviorInput(container, WindowWidth, WindowHeight, TextFieldHeight,
 				"(MC2E | (AC;(MC3W>MT8.3)))");
@@ -87,7 +90,7 @@ public class GUI extends BasicGame {
 		map.render(0, 0, 5);
 
 		if (behaviorInputNeeded) {
-			this.rectBesace.render(container, g);
+			this.rectBesace.render(container, g, listContents);
 			this.inputTextField.render(container, g);
 		}
 	}
