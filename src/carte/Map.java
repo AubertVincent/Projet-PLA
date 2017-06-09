@@ -13,9 +13,6 @@ import pickable.PickAble;
 
 public class Map {
 
-	// private static final int nbrOpInit = 128; // une chance sur 4 de trouver
-	// un
-	// opérateur sur une cellule
 	private int width = 34;
 	private int height = 18;
 
@@ -30,16 +27,12 @@ public class Map {
 	}
 
 	public void initMap(GUI userInterface) {
-		
-		// FIXME 
-		map[2][4].setEntity(new Player(2, 4, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1));
-		map[31][15].setEntity(new Player(31, 15, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 2));
+		map[2][4].setEntity(new Player(2, 4, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1, Team.ROUGE));
+		map[31][15].setEntity(new Player(31, 15, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1, Team.BLEU));
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				if (userInterface.isObstacle(i,j)) {
 					map[i][j].setEntity(new Obstacle(i, j, this));
-					// System.out.println("Cette case contient un obstacle : " +
-					// i + ";" + j);
 				}
 			}
 		}
@@ -60,7 +53,7 @@ public class Map {
 		map[x][y].FreeCell();
 	}
 
-	public void Add(int x, int y, Entity ent) {
+	public void setEntity(int x, int y, Entity ent) {
 		map[x][y].setEntity(ent);
 	}
 

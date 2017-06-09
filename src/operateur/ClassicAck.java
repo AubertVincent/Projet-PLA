@@ -32,6 +32,7 @@ public class ClassicAck extends Attack {
 		int y = r.getY();
 		Team team = r.getTeam();
 
+
 		Cell testEast = new Cell(x + 1, y);
 		Cell testSouth = new Cell(x, y - 1);
 		Cell testNorth = new Cell(x, y + 1);

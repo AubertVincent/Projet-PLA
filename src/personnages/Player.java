@@ -1,6 +1,8 @@
 package personnages;
 
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,7 +13,7 @@ import entite.Team;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
-import pickable.Picked;
+import pickable.*;
 
 public class Player extends Character {
 
@@ -24,6 +26,8 @@ public class Player extends Character {
 		// possibleActionsList.add(Tunnel.class);
 		// possibleActionsList.add(Recall.class);
 	}
+
+	private RobotList robotList;
 
 	/**
 	 * Set a new Player
@@ -54,21 +58,23 @@ public class Player extends Character {
 		return possibleActionsList;
 	}
 
-	public List<Robot> listRobot;
 
 	public Player(int x, int y, Map entityMap, List<Picked> myOwnBesace, Direction direction, int life, int vision,
 			int attack, int range, int movePoints, int recall, Team team, int attackPoints, Base base, Besace besace,
-			List<Robot> listRobot) {
-		super(x, y, entityMap, myOwnBesace, direction, life, vision, attack, range, movePoints, recall, team,
-				attackPoints, base);
+			RobotList robotList) {
+		super(x, y, entityMap, myOwnBesace, direction, life, vision, attack, range, movePoints, recall, team,attackPoints, base);
 		this.besace = new Besace();
-		this.listRobot = listRobot;
-
-		listRobot = new ArrayList<Robot>();
+		this.robotList = robotList;
 	}
 
-	public void addRobot(Robot robot) {
-		listRobot.add(robot);
+	public Player(int x, int y, carte.Map entityMap, Besace besace, Direction direction, int life, int vision, int attack, int range,
+			int movePoints, int recall, int attackPoints, Team team, Base base) {
+		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team,attackPoints, base);
+		robotList = new RobotList();
+	}
+
+	public void addRobot(Object obj, Robot robot) {
+		robotList.add(obj, robot);
 	}
 
 	// public void addOperator(Operator op) {
@@ -97,12 +103,21 @@ public class Player extends Character {
 	// return besace.get(op);
 	// }
 
+<<<<<<< HEAD
 	public List<Robot> getListRobot() {
 		return listRobot;
 	}
 
 	// TODO
 	public void CreateRobot() {
+=======
+	public RobotList getListRobot() {
+		return robotList;
+	}
+
+	// TODO
+	public void createRobot() {
+>>>>>>> moteur
 
 	}
 
@@ -162,7 +177,11 @@ public class Player extends Character {
 		return false;
 	}
 
+<<<<<<< HEAD
 	public Besace getBesace() {
+=======
+	public Map<Class<? extends PickAble>, Integer> getBesace() {
+>>>>>>> moteur
 		return besace;
 	}
 

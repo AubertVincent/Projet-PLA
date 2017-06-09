@@ -52,15 +52,15 @@ public class Besace {
 		this.initBesace();
 	}
 
-	public Map<Class<? extends PickAble>, Integer> getBesace() {
+	public Map<Class<? extends PickAble>, Integer> get() {
 		return besace;
 	}
 
-	public void setBesace(Map<Class<? extends PickAble>, Integer> besace) {
+	public void set(Map<Class<? extends PickAble>, Integer> besace) {
 		this.besace = besace;
 	}
 
-	public void addBesace(Class<? extends PickAble> myClass) {
+	public void add(Class<? extends PickAble> myClass) {
 		int i;
 		for (Iterator<Class<? extends PickAble>> mapIter = besace.keySet().iterator(); mapIter.hasNext();) {
 			Class<? extends PickAble> currentClass;
@@ -73,7 +73,7 @@ public class Besace {
 		}
 	}
 	
-	public void subBesace(Class<? extends PickAble> myClass) {
+	public void remove(Class<? extends PickAble> myClass) {
 		int i;
 		for (Iterator<Class<? extends PickAble>> mapIter = besace.keySet().iterator(); mapIter.hasNext();) {
 			Class<? extends PickAble> currentClass;
