@@ -259,22 +259,24 @@ public abstract class GUICharacter {
 	 *            The direction in which the GUICharacter will move
 	 */
 	public void goToDirection(Direction dir) {
-		setDirection(dir);
-		switch (dir) {
-		case NORTH:
-			setTargetY(getCurrentY() - 1);
-			break;
-		case WEST:
-			setTargetX(getCurrentX() - 1);
-			break;
-		case SOUTH:
-			setTargetY(getCurrentY() + 1);
-			break;
-		case EAST:
-			setTargetX(getCurrentX() + 1);
-			break;
+		if (!isMoving() && !isAttacking()) {
+			setDirection(dir);
+			switch (dir) {
+			case NORTH:
+				setTargetY(getCurrentY() - 1);
+				break;
+			case WEST:
+				setTargetX(getCurrentX() - 1);
+				break;
+			case SOUTH:
+				setTargetY(getCurrentY() + 1);
+				break;
+			case EAST:
+				setTargetX(getCurrentX() + 1);
+				break;
+			}
+			setMoving(true);
 		}
-		setMoving(true);
 	}
 
 	private float getNextXPx(int delta) {

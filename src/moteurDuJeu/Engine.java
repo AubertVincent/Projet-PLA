@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.newdawn.slick.SlickException;
 
+import carte.Base;
 import carte.Map;
 import entite.Direction;
 import entite.Team;
 import gui.GUI;
 import gui.GUICharacter;
+import personnages.Besace;
 import personnages.Player;
 
 public class Engine {
@@ -19,8 +21,6 @@ public class Engine {
 	// private Player player2;
 	public Map ma_map;
 
-	private int nbrRound;
-	private boolean EndGame;
 	private PlayPhase playPhase;
 
 	/**
@@ -30,13 +30,14 @@ public class Engine {
 	 */
 
 	public Engine(GUI userInterface) throws SlickException {
-		listPlayer = new ArrayList<Player>();
-		listPlayer.add(new Player(2, 4, ma_map, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.ROUGE));
-		listPlayer.add(new Player(31, 15, ma_map, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.BLEU));
-		nbrRound = 0;
-		EndGame = false;
 		ma_map = new Map();
-		ma_map.initMap(userInterface);
+		ma_map.init(userInterface);
+		listPlayer = new ArrayList<Player>();
+		listPlayer.add(new Player(2, 4, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.ROUGE,
+				new Base(2, 4, Team.ROUGE)));
+		listPlayer.add(new Player(31, 15, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.BLEU,
+				new Base(31, 15, Team.BLEU)));
+
 	}
 
 	private Player getPlayer(Team team) {
