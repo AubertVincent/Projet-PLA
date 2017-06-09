@@ -26,7 +26,7 @@ public class Reader
     _Sequence resultingSequence = null;
     try
     {
-      resultingSequence = Reader.SEQUENCE();
+      resultingSequence = Reader.S();
       System.out.println(resultingSequence.toString());
       return resultingSequence;
     }
