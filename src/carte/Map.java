@@ -31,7 +31,7 @@ public class Map {
 		map[31][15].setEntity(new Player(31, 15, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1, Team.BLEU));
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				if (userInterface.isObstacle(i,j)) {
+				if (userInterface.isObstacle(i, j)) {
 					map[i][j].setEntity(new Obstacle(i, j, this));
 				}
 			}

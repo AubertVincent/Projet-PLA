@@ -22,7 +22,7 @@ public class GUIBehaviorInput {
 	 * @param container
 	 *            the context in which GUI components are created and rendered
 	 * @param WindowWidth
-	 *            width 	 the windows container
+	 *            width the windows container
 	 * @param WindowHeight
 	 *            height of the windows container
 	 * @param TextFieldHeight

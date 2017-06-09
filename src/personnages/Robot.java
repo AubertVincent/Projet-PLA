@@ -15,17 +15,15 @@ import util.Pair;
 
 public class Robot extends Character {
 
-
 	protected _Sequence myAutomaton;
 	protected Player player;
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
 
-	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision,
-			int attack, int range, int movePoints, int recall, Team team, int attackPoints, Base base,
-			_Sequence myAutomaton, Player player,
-			java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife) {
-		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team,
-				attackPoints, base);
+	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
+			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton,
+			Player player, java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife) {
+		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
+				base);
 		this.myAutomaton = myAutomaton;
 		this.player = player;
 		this.targetsLife = targetsLife;
@@ -37,7 +35,7 @@ public class Robot extends Character {
 		// possibleActionsList.add(Tunnel.class);
 		// possibleActionsList.add(Recall.class);
 	}
-	
+
 	public static List<Class<? extends Action>> getPossibleActionsList() {
 		return possibleActionsList;
 	}

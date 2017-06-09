@@ -8,5 +8,4 @@ public class PickSuicideBomber extends PickAble {
 		super(x, y, entityMap);
 	}
 
-
 }

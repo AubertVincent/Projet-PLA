@@ -5,7 +5,7 @@ import exceptions.NotDoableException;
 import personnages.Robot;
 import sequence._Sequence;
 
-public abstract class Action implements _Sequence{
+public abstract class Action implements _Sequence {
 
 	@Override
 	public String toString() {
@@ -40,7 +40,7 @@ public abstract class Action implements _Sequence{
 
 		return false;
 	}
-	
+
 	public abstract void cancel(Robot r) throws NotDoableException;
 
 }

@@ -72,7 +72,7 @@ public class Besace {
 			}
 		}
 	}
-	
+
 	public void remove(Class<? extends PickAble> myClass) {
 		int i;
 		for (Iterator<Class<? extends PickAble>> mapIter = besace.keySet().iterator(); mapIter.hasNext();) {
@@ -85,5 +85,5 @@ public class Besace {
 			}
 		}
 	}
-	
+
 }

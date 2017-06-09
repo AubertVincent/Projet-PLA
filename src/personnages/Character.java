@@ -28,12 +28,11 @@ public abstract class Character extends Entity {
 	protected int attackPoints;
 	protected int recall;
 	protected int player;
-	
+
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 	protected Team team;
 	protected Base base;
 
-	
 	/**
 	 * Set a new character
 	 * 
@@ -56,8 +55,8 @@ public abstract class Character extends Entity {
 	 * @param recall
 	 *            Character's recall's time
 	 */
-	public Character(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision,
-			int attack, int range, int movePoints, int recall, Team team, int attackPoints, Base base) {
+	public Character(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
+			int range, int movePoints, int recall, Team team, int attackPoints, Base base) {
 		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
@@ -74,7 +73,6 @@ public abstract class Character extends Entity {
 	public Base getBase() {
 		return base;
 	}
-	 
 
 	public void setBase(Base base) {
 		this.base = base;
@@ -291,7 +289,7 @@ public abstract class Character extends Entity {
 					((Player) this).getBesace().add(classPicked);
 				}
 				picked.add(classPicked);
-				// FIXME 
+				// FIXME
 				besace.add(picked);
 			}
 
@@ -326,7 +324,6 @@ public abstract class Character extends Entity {
 			this.placePickAble(x, y, classPicked, myMap);
 			picked.remove(0);
 		}
-
 
 	}
 

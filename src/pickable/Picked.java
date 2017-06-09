@@ -25,7 +25,7 @@ public class Picked {
 
 	public void remove(int i) {
 		picked.remove(i);
-		
+
 	}
 
 }

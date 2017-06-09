@@ -17,9 +17,9 @@ public class Succession extends Behavior {
 	public Succession() {
 		super();
 	}
-	
+
 	@Override
-	public void execute(Robot r,_Sequence left, _Sequence right) throws NotDoableException {
+	public void execute(Robot r, _Sequence left, _Sequence right) throws NotDoableException {
 		try {
 			left.execute(r);
 			right.execute(r);
@@ -31,18 +31,17 @@ public class Succession extends Behavior {
 	/**
 	 * check if the two actions is doable
 	 */
-//	@Override
-//	protected boolean isDoable(Entity e) {
-//		return A.isDoable(e) && B.isDoable(e);
-//	}
-//
-//	protected void execute(Entity e) throws GameException {
-//		if (!(isDoable(e))) {
-//			throw new GameException("Une des deux actions n'est pas réalisable");
-//		}
-//		A.execute(e);
-//		B.execute(e);
-//	}
-
+	// @Override
+	// protected boolean isDoable(Entity e) {
+	// return A.isDoable(e) && B.isDoable(e);
+	// }
+	//
+	// protected void execute(Entity e) throws GameException {
+	// if (!(isDoable(e))) {
+	// throw new GameException("Une des deux actions n'est pas réalisable");
+	// }
+	// A.execute(e);
+	// B.execute(e);
+	// }
 
 }

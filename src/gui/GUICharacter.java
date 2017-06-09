@@ -23,8 +23,8 @@ public abstract class GUICharacter {
 
 	private static final int spriteSheetWidth = 64;
 	private static final int spriteSheetHeight = 64;
-	
-	GUI mainUserInterface ;
+
+	GUI mainUserInterface;
 
 	// Coordinates in pixels
 	private float xPx, yPx;
@@ -128,10 +128,11 @@ public abstract class GUICharacter {
 	 * @throws SlickException
 	 *             Indicates a failure of the loading of a sprite sheet
 	 */
-	public GUICharacter(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team) throws SlickException, Exception {
+	public GUICharacter(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team)
+			throws SlickException, Exception {
 
 		super();
-		this.mainUserInterface = userInterface ;
+		this.mainUserInterface = userInterface;
 		this.xCell = x;
 		this.yCell = y;
 		setTargetX(getCurrentX());
@@ -205,8 +206,8 @@ public abstract class GUICharacter {
 			if (isInPlace()) {
 				setMoving(false);
 			} else {
-				int nextCellX = mainUserInterface.pixelToCellX(nextXPx) ;
-				int nextCellY = mainUserInterface.pixelToCellY(nextYPx) ;
+				int nextCellX = mainUserInterface.pixelToCellX(nextXPx);
+				int nextCellY = mainUserInterface.pixelToCellY(nextYPx);
 				if (gui.isObstacle(nextCellX, nextCellY)) {
 					System.out.println("Obstacle détecté :|");
 					setMoving(false);

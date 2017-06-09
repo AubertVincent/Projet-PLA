@@ -24,8 +24,8 @@ public class Tree implements _Sequence {
 	public boolean isTree() {
 		return true;
 	}
-	
-	public void execute(Robot r) throws NotDoableException{
+
+	public void execute(Robot r) throws NotDoableException {
 		op.execute(r, left, right);
 	}
 
@@ -33,6 +33,5 @@ public class Tree implements _Sequence {
 	public String toString() {
 		return op.toString() + "[" + left.toString() + " , " + right.toString() + "]";
 	}
-	
-	
+
 }

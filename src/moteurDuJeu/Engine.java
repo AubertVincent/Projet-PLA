@@ -21,8 +21,8 @@ public class Engine {
 
 	private int nbrRound;
 	private boolean EndGame;
-	private PlayPhase playPhase ;
-	
+	private PlayPhase playPhase;
+
 	/**
 	 * Create an Engine Object, allow us to update all the entitys
 	 * 
@@ -132,7 +132,6 @@ public class Engine {
 				}
 				break;
 			}
-
 
 		}
 
@@ -252,15 +251,19 @@ public class Engine {
 
 	/**
 	 * Is called right when mouse is pressed
-	 * @param button The index of the button (Input.'index')
-	 * @param mouseXCell X coordinate of the clicked tile
-	 * @param mouseYCell Y coordinate of the clicked tile
+	 * 
+	 * @param button
+	 *            The index of the button (Input.'index')
+	 * @param mouseXCell
+	 *            X coordinate of the clicked tile
+	 * @param mouseYCell
+	 *            Y coordinate of the clicked tile
 	 */
 	public void mousePressed(int button, int mouseXCell, int mouseYCell) {
 		// TODO A vous de jouer -> decider que faire lors d'un clic de souris
-		
-		// @Conseil : 
-		if(playPhase == PlayPhase.behaviorModification){
+
+		// @Conseil :
+		if (playPhase == PlayPhase.behaviorModification) {
 			// Gestion clic
 		}
 	}

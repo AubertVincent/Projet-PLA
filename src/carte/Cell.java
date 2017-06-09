@@ -8,7 +8,6 @@ import entite.Team;
 import exceptions.NotDoableException;
 import personnages.Character;
 
-
 public class Cell {
 	protected int x;
 	protected int y;

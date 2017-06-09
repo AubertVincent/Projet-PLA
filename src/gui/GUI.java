@@ -67,7 +67,8 @@ public class GUI extends BasicGame {
 			e.printStackTrace();
 		}
 
-		this.inputTextField = new GUIBehaviorInput(container, this, WindowWidth, WindowHeight, TextFieldHeight,"(MC2E | (AC;(MC3W>MT8.3)))");
+		this.inputTextField = new GUIBehaviorInput(container, this, WindowWidth, WindowHeight, TextFieldHeight,
+				"(MC2E | (AC;(MC3W>MT8.3)))");
 		engine = new Engine(this);
 	}
 
@@ -217,13 +218,12 @@ public class GUI extends BasicGame {
 		}
 	}
 
-    @Override
-    public boolean closeRequested()
-    {
-      System.exit(0);
-      return false;
-    }
-	
+	@Override
+	public boolean closeRequested() {
+		System.exit(0);
+		return false;
+	}
+
 	// ↓ Getters and setters ↓
 
 	/**

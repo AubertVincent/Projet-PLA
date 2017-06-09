@@ -5,7 +5,7 @@ import entite.Direction;
 import exceptions.NotDoableException;
 import personnages.Robot;
 
-public class RandomMove extends Action implements _Random{
+public class RandomMove extends Action implements _Random {
 
 	private int lg; // Length of the movement
 	private Direction direction; // Direction of the movement
