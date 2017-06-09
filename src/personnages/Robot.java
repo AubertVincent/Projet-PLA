@@ -11,6 +11,7 @@ import entite.Entity;
 import entite.Team;
 import exceptions.NotDoableException;
 import operateur.Action;
+import pickable.Picked;
 import sequence._Sequence;
 import util.Pair;
 
@@ -22,10 +23,12 @@ public class Robot extends Character {
 	protected Player player;
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
 
-	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int aP, Team team, Base base, _Sequence myAutomaton, Player player,
+	public Robot(int x, int y, Map entityMap, List<Picked> myOwnBesace, Direction direction, int life, int vision,
+			int attack, int range, int movePoints, int recall, Team team, int attackPoints, Base base,
+			_Sequence myAutomaton, Player player,
 			java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, aP, team, base);
+		super(x, y, entityMap, myOwnBesace, direction, life, vision, attack, range, movePoints, recall, team,
+				attackPoints, base);
 		this.myAutomaton = myAutomaton;
 		this.player = player;
 		this.targetsLife = targetsLife;
