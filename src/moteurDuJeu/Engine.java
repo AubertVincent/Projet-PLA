@@ -34,9 +34,9 @@ public class Engine {
 		ma_map = new Map();
 
 		listPlayer = new ArrayList<Player>();
-		listPlayer.add(new Player(2, 4, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 10, 1, 1, Team.ROUGE,
+		listPlayer.add(new Player(2, 4, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.ROUGE,
 				new Base(2, 4, Team.ROUGE), userInterface.getGUICharacterFromTeam(Team.ROUGE)));
-		listPlayer.add(new Player(31, 15, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 10, 1, 1, Team.BLEU,
+		listPlayer.add(new Player(31, 15, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.BLEU,
 				new Base(31, 15, Team.BLEU), userInterface.getGUICharacterFromTeam(Team.BLEU)));
 		userInterface.getGUICharacterFromTeam(Team.ROUGE).setPlayer(this.getPlayer(Team.ROUGE));
 		userInterface.getGUICharacterFromTeam(Team.BLEU).setPlayer(this.getPlayer(Team.BLEU));

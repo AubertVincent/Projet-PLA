@@ -104,6 +104,8 @@ public class GUI extends BasicGame {
 		map.render(0, 0, 5);
 
 		if (behaviorInputNeeded) {
+			// System.out.println("Besace Player RED : " +
+			// engine.getPlayer(Team.ROUGE).getBesace());
 			this.rectBesace.render(container, g, engine.getPlayer(Team.ROUGE).getBesace());
 			this.inputTextField.render(container, g);
 		}

@@ -18,8 +18,6 @@ import personnages.Player;
 
 public class GUIPlayer extends GUICharacter {
 
-	Player player;
-
 	public final List<GUIRobot> listRobot;
 
 	// The Map<ActionClass, Integer> of the yet added class->number of sprites
@@ -56,7 +54,6 @@ public class GUIPlayer extends GUICharacter {
 		listRobot = new ArrayList<GUIRobot>();
 		animationsList.add(ClassicAck.class);
 		animationsList.add(MoveDir.class);
-		this.player = player;
 	}
 
 }

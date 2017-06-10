@@ -10,10 +10,14 @@ import gui.GUICharacter;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
+import pickable.PickMoveDir;
+import pickable.PickRecall;
+import pickable.PickSuicideBomber;
+import pickable.PickTunnel;
 
 public class Player extends Character {
 
-	private Besace besace;
+	public Besace besace;
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 	static {
@@ -54,12 +58,31 @@ public class Player extends Character {
 		return possibleActionsList;
 	}
 
+	PickMoveDir move;
+
 	public Player(int x, int y, carte.Map entityMap, Besace besace, Direction direction, int life, int vision,
 			int attack, int range, int movePoints, int recall, int attackPoints, Team team, Base base,
 			GUICharacter GUIPlayer) {
 		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
 				base, GUIPlayer);
 		robotList = new RobotList();
+
+		besace.initBesace();
+
+		besace.add(PickMoveDir.class);
+		besace.add(PickRecall.class);
+		besace.add(PickSuicideBomber.class);
+		besace.add(PickTunnel.class);
+
+		// for (Iterator<Entry<Class<? extends PickAble>, Integer>> iterator =
+		// besace.get().entrySet().iterator(); iterator
+		// .hasNext();) {
+		// Map.Entry<Class<? extends PickAble>, Integer> mapentry =
+		// (Map.Entry<Class<? extends PickAble>, Integer>) iterator
+		// .next();
+		// System.out.println("clé: " + mapentry.getKey() + " | valeur: " +
+		// mapentry.getValue());
+		// }
 	}
 
 	public void addRobot(Object obj, Robot robot) {

@@ -33,7 +33,7 @@ public class GUIBesace {
 		g.setColor(backgroundField);
 		g.fill(this.frame);
 
-		displayBesace(g, besace);
+		displayBesace(besace);
 
 		// for (Iterator<Class<? extends PickAble>> mapIter =
 		// besace.getIterator(); mapIter.hasNext();) {
@@ -45,16 +45,25 @@ public class GUIBesace {
 		// }
 	}
 
-	private void displayBesace(Graphics g, Besace besace) {
-
-		Iterator<Entry<Class<? extends PickAble>, Integer>> iterator = besace.get().entrySet().iterator();
-		while (iterator.hasNext()) {
+	private void displayBesace(Besace besace) {
+		for (Iterator<Entry<Class<? extends PickAble>, Integer>> iterator = besace.get().entrySet().iterator(); iterator
+				.hasNext();) {
 			Map.Entry<Class<? extends PickAble>, Integer> mapentry = (Map.Entry<Class<? extends PickAble>, Integer>) iterator
 					.next();
-
 			System.out.println("clé: " + mapentry.getKey() + " | valeur: " + mapentry.getValue());
-			// String pick = mapentry.toString();
-			// g.drawString(pick, this.x, this.y);
 		}
+
+		// for (Iterator<Entry<Class<? extends PickAble>, Integer>> iterator =
+		// besace.get().entrySet().iterator(); iterator
+		// .hasNext();) {
+		// Map.Entry<Class<? extends PickAble>, Integer> mapentry =
+		// (Map.Entry<Class<? extends PickAble>, Integer>) iterator
+		// .next();
+		//
+		// System.out.println("clé: " + mapentry.getKey() + " | valeur: " +
+		// mapentry.getValue());
+		// // String pick = mapentry.toString();
+		// // g.drawString(pick, this.x, this.y);
+		// }
 	}
 }

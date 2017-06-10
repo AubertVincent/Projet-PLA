@@ -37,9 +37,9 @@ public class Besace {
 		possiblePickAbleList.add(PickRandomMove.class);
 	}
 
-	private void initBesace() {
+	protected void initBesace() {
 		besace = new HashMap<Class<? extends PickAble>, Integer>();
-		for (Iterator<Class<? extends PickAble>> mapIter = besace.keySet().iterator(); mapIter.hasNext();) {
+		for (Iterator<Class<? extends PickAble>> mapIter = possiblePickAbleList.iterator(); mapIter.hasNext();) {
 			Class<? extends PickAble> currentClass;
 			currentClass = mapIter.next();
 			besace.put(currentClass, 0);
@@ -61,32 +61,36 @@ public class Besace {
 	}
 
 	public void add(Class<? extends PickAble> myClass) {
-		int i;
-		for (Iterator<Class<? extends PickAble>> mapIter = besace.keySet().iterator(); mapIter.hasNext();) {
-			Class<? extends PickAble> currentClass;
-			currentClass = mapIter.next();
-			if (myClass == currentClass) {
-				i = besace.get(currentClass);
-				besace.remove(currentClass);
-				besace.put(currentClass, i++);
-			}
-		}
+
+		besace.put(myClass, besace.get(myClass) + 1);
+
+		// int i;
+		// for (Iterator<Class<? extends PickAble>> mapIter =
+		// besace.keySet().iterator(); mapIter.hasNext();) {
+		// Class<? extends PickAble> currentClass;
+		// currentClass = mapIter.next();
+		// if (myClass == currentClass) {
+		// i = besace.get(currentClass);
+		// besace.remove(currentClass);
+		// besace.put(currentClass, i++);
+		// }
+		// }
 	}
 
 	public void remove(Class<? extends PickAble> myClass) {
-		int i;
-		for (Iterator<Class<? extends PickAble>> mapIter = besace.keySet().iterator(); mapIter.hasNext();) {
-			Class<? extends PickAble> currentClass;
-			currentClass = mapIter.next();
-			if (myClass == currentClass) {
-				i = besace.get(currentClass);
-				besace.remove(currentClass);
-				besace.put(currentClass, i--);
-			}
-		}
-	}
 
-	public Iterator<Class<? extends PickAble>> getIterator() {
-		return besace.keySet().iterator();
+		besace.put(myClass, Math.max(0, besace.get(myClass) - 1));
+
+		// int i;
+		// for (Iterator<Class<? extends PickAble>> mapIter =
+		// besace.keySet().iterator(); mapIter.hasNext();) {
+		// Class<? extends PickAble> currentClass;
+		// currentClass = mapIter.next();
+		// if (myClass == currentClass) {
+		// i = besace.get(currentClass);
+		// besace.remove(currentClass);
+		// besace.put(currentClass, i--);
+		// }
+		// }
 	}
 }
