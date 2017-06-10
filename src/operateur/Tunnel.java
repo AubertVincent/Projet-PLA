@@ -7,6 +7,8 @@ public class Tunnel extends Movement {
 
 	protected Integer x;
 	protected Integer y;
+	private int lastX;
+	private int lastY;
 
 	/**
 	 * set a new Tunnel by means of its arrival coordinates
@@ -30,11 +32,8 @@ public class Tunnel extends Movement {
 	 * Check if there is no obstacle on the arrival
 	 */
 	@Override
-	// TODO
 	protected boolean isDoable(Robot r) {
-		// Cell test = new Cell(x, y);
-		// return test.isFree();
-		return true;
+		return (r.getEntityMap().isReachable(x, y));
 	}
 
 	@Override
@@ -42,17 +41,19 @@ public class Tunnel extends Movement {
 		if (!isDoable(r)) {
 			throw new NotDoableException("La case d'arrivée est occupée");
 		}
-
+		this.lastX = x;
+		this.lastY = y;
 		r.teleport(x, y);
+	}
 
+	@Override
+	public void cancel(Robot r) throws NotDoableException {
+		r.teleport(lastX, lastY);
 	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return super.toString() + "(" + x.toString() + "," + y.toString() + ")";
 	}
 
-	
-	
 }

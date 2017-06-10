@@ -18,18 +18,16 @@ public class Priority extends Behavior {
 		super();
 	}
 
-//	/**
-//	 * check if one of the two actions is doable
-//	 */
-//	@Override
-//	protected boolean isDoable(Entity e) {
-//		return A.isDoable(e) || B.isDoable(e);
-//	}
+	// /**
+	// * check if one of the two actions is doable
+	// */
+	// @Override
+	// protected boolean isDoable(Entity e) {
+	// return A.isDoable(e) || B.isDoable(e);
+	// }
 
-	
-	
 	@Override
-	public void execute(Robot r,_Sequence left, _Sequence right) throws NotDoableException {
+	public void execute(Robot r, _Sequence left, _Sequence right) throws NotDoableException {
 		try {
 			left.execute(r);
 		} catch (NotDoableException e) {
@@ -39,18 +37,18 @@ public class Priority extends Behavior {
 				throw new NotDoableException("Action impossible");
 			}
 		}
-		
+
 	}
 
-//	@Override
-//	protected void execute(Entity e) throws GameException {
-//		if (isDoable(e)) {
-//			throw new GameException("Aucune des deux actions n'est possible");
-//		}
-//		if (A.isDoable(e)) {
-//			A.execute(e);
-//		} else {
-//			B.execute(e);
-//		}
-//	}
+	// @Override
+	// protected void execute(Entity e) throws GameException {
+	// if (isDoable(e)) {
+	// throw new GameException("Aucune des deux actions n'est possible");
+	// }
+	// if (A.isDoable(e)) {
+	// A.execute(e);
+	// } else {
+	// B.execute(e);
+	// }
+	// }
 }

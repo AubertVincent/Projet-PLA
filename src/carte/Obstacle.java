@@ -3,7 +3,7 @@ package carte;
 import entite.Entity;
 
 public class Obstacle extends Entity {
-	
+
 	public Obstacle(int x, int y, Map map) {
 		super(x, y, map);
 	}
@@ -24,6 +24,5 @@ public class Obstacle extends Entity {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 
 }

@@ -1,30 +1,19 @@
 package personnages;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
+import carte.Base;
 import entite.Direction;
 import entite.Team;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
-import pickable.PickAble;
-import pickable.PickClassicAck;
-import pickable.PickMoveDir;
-import pickable.PickPickUp;
-import pickable.PickPriority;
-import pickable.PickRandomBar;
-import pickable.PickRecall;
-import pickable.PickSuccession;
-import pickable.PickSuicideBomber;
-import pickable.PickTunnel;
 
 public class Player extends Character {
 
-	
-	
+	private Besace besace;
+
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 	static {
 		possibleActionsList.add(ClassicAck.class);
@@ -32,9 +21,9 @@ public class Player extends Character {
 		// possibleActionsList.add(Tunnel.class);
 		// possibleActionsList.add(Recall.class);
 	}
-	public Map<Class<? extends PickAble>, Integer> besace = new HashMap<Class<? extends PickAble>, Integer>();
 
 	private RobotList robotList;
+
 	/**
 	 * Set a new Player
 	 * 
@@ -65,19 +54,10 @@ public class Player extends Character {
 	}
 
 
-
-	public Player(int x, int y, carte.Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int aP, Team team) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, aP, team);
-		besace.put(PickClassicAck.class, 0);
-		besace.put(PickSuicideBomber.class, 0);
-		besace.put(PickTunnel.class, 0);
-		besace.put(PickMoveDir.class, 0);
-		besace.put(PickRecall.class, 0);
-		besace.put(PickPickUp.class, 0);
-		besace.put(PickSuccession.class, 0);
-		besace.put(PickRandomBar.class, 0);
-		besace.put(PickPriority.class, 0);
+	public Player(int x, int y, carte.Map entityMap, Besace besace, Direction direction, int life, int vision,
+			int attack, int range, int movePoints, int recall, int attackPoints, Team team, Base base) {
+		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
+				base);
 		robotList = new RobotList();
 	}
 
@@ -111,14 +91,15 @@ public class Player extends Character {
 	// return besace.get(op);
 	// }
 
+
+	// TODO
+	public void CreateRobot() {
+	}
+
 	public RobotList getListRobot() {
 		return robotList;
 	}
 
-	// TODO
-	public void createRobot() {
-
-	}
 
 	@Override
 	public boolean isPlayer() {
@@ -176,11 +157,13 @@ public class Player extends Character {
 		return false;
 	}
 
-	public Map<Class<? extends PickAble>, Integer> getBesace() {
+
+	public Besace getBesace() {
+
 		return besace;
 	}
 
-	public void setBesace(Map<Class<? extends PickAble>, Integer> besace) {
+	public void setBesace(Besace besace) {
 		this.besace = besace;
 	}
 

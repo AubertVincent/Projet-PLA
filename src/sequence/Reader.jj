@@ -1,6 +1,6 @@
 options
 {
-  static = true;
+  static = false;
   DEBUG_PARSER = false;
   DEBUG_TOKEN_MANAGER = false;
 }
@@ -9,41 +9,36 @@ PARSER_BEGIN(Reader)
 package reader;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import carte.*;
 import entite.*;
-import gui.*;
-import moteurDuJeu.*;
 import operateur.*;
-import personnages.*;
-import pickable.*;
 import sequence.*;
 
 public class Reader
 {
-
-
   public static _Sequence parse(String stringToParse)
   {
     Reader parser = new Reader(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
-	_Sequence resultingSequence = null ;
+    _Sequence resultingSequence = null;
     try
     {
-      resultingSequence = Reader.SEQUENCE();
+      resultingSequence = parser.SEQUENCE();
       System.out.println(resultingSequence.toString());
-      return resultingSequence ;
+      parser.ReInit(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
+      return resultingSequence;
     }
     catch (Exception e)
     {
       System.out.println("NOK");
       System.out.println(e.getMessage());
-      Reader.ReInit(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
+      parser.ReInit(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
     }
     catch (Error e)
     {
       System.out.println("Oops");
       System.out.println(e.getMessage());
+      parser.ReInit(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
     }
-    return resultingSequence ;
+    return resultingSequence;
   }
 }
 
@@ -52,8 +47,7 @@ PARSER_END(Reader)
 // les caractères ignorés
 SKIP :
 {
-  ""
-| " "
+  " "
 | "\t"
 | "\r"
 | "\n"
@@ -127,7 +121,7 @@ TOKEN :
 | < W : "W" >
 | < E : "E" >
   //| < LETTER : [ "a"-"z", "A"-"Z" ] >
-| < DIGIT : [ "0"-"9" ] >
+| < DIGIT : ([ "0"-"9" ])+ >
 | < LPAR : "(" >
 | < RPAR : ")" >
 | < BARRE : "|" >
@@ -188,6 +182,7 @@ Action ACTION() :
 {
   Movement mov;
   Attack att;
+  Action rand;
 }
 {
   < M > mov = MOVEMENT()
@@ -197,6 +192,10 @@ Action ACTION() :
 | < A > att = ATT()
   {
     return att;
+  }
+| < R > rand = RANDOM()
+  {
+    return rand;
   }
   // Add rest of grammar  
 }
@@ -238,6 +237,16 @@ Movement MOVEMENT() :
     x = Integer.parseInt(tok1.image);
     y = Integer.parseInt(tok2.image);
     return new Tunnel(x, y);
+  }
+}
+
+Action RANDOM() :
+{
+}
+{
+  < M >
+  {
+    return new RandomMove();
   }
 }
 

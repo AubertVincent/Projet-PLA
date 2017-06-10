@@ -43,8 +43,9 @@ public class GUIRobot extends GUICharacter {
 	// TODO : bound to be dynamic when something is picked
 	List<Class<? extends operateur.Action>> animationsList = new LinkedList<Class<? extends operateur.Action>>();
 
-	public GUIRobot(int x, int y, Direction dir, int animationDuration, Team team) throws SlickException, Exception {
-		super(x, y, dir, animationDuration, team);
+	public GUIRobot(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team)
+			throws SlickException, Exception {
+		super(userInterface, x, y, dir, animationDuration, team);
 		animationsList.add(ClassicAck.class);
 		animationsList.add(MoveDir.class);
 	}

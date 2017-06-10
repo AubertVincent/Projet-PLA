@@ -24,6 +24,8 @@ public abstract class GUICharacter {
 	private static final int spriteSheetWidth = 64;
 	private static final int spriteSheetHeight = 64;
 
+	GUI mainUserInterface;
+
 	// Coordinates in pixels
 	private float xPx, yPx;
 	// Coordinates to reach in pixels
@@ -126,16 +128,17 @@ public abstract class GUICharacter {
 	 * @throws SlickException
 	 *             Indicates a failure of the loading of a sprite sheet
 	 */
-
-	public GUICharacter(int x, int y, Direction dir, int animationDuration, Team team)
+	public GUICharacter(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team)
 			throws SlickException, Exception {
+
 		super();
+		this.mainUserInterface = userInterface;
 		this.xCell = x;
 		this.yCell = y;
 		setTargetX(getCurrentX());
 		setTargetY(getCurrentY());
-		this.xPx = GUI.cellToPixelX(getCurrentX());
-		this.yPx = GUI.cellToPixelY(getCurrentY());
+		this.xPx = mainUserInterface.cellToPixelX(getCurrentX());
+		this.yPx = mainUserInterface.cellToPixelY(getCurrentY());
 		this.dir = dir;
 		this.setMoving(false);
 		initAnimations(animationDuration);
@@ -203,14 +206,16 @@ public abstract class GUICharacter {
 			if (isInPlace()) {
 				setMoving(false);
 			} else {
-				if (gui.isObstacle(nextXPx, nextYPx)) {
+				int nextCellX = mainUserInterface.pixelToCellX(nextXPx);
+				int nextCellY = mainUserInterface.pixelToCellY(nextYPx);
+				if (gui.isObstacle(nextCellX, nextCellY)) {
 					System.out.println("Obstacle détecté :|");
 					setMoving(false);
 				} else {
 					this.xPx = nextXPx;
-					setCurrentX(GUI.pixelToCellX(nextXPx));
+					setCurrentX(nextCellX);
 					this.yPx = nextYPx;
-					setCurrentY(GUI.pixelToCellY(nextYPx));
+					setCurrentY(nextCellY);
 				}
 			}
 		}
@@ -254,22 +259,24 @@ public abstract class GUICharacter {
 	 *            The direction in which the GUICharacter will move
 	 */
 	public void goToDirection(Direction dir) {
-		setDirection(dir);
-		switch (dir) {
-		case NORTH:
-			setTargetY(getCurrentY() - 1);
-			break;
-		case WEST:
-			setTargetX(getCurrentX() - 1);
-			break;
-		case SOUTH:
-			setTargetY(getCurrentY() + 1);
-			break;
-		case EAST:
-			setTargetX(getCurrentX() + 1);
-			break;
+		if (!isMoving() && !isAttacking()) {
+			setDirection(dir);
+			switch (dir) {
+			case NORTH:
+				setTargetY(getCurrentY() - 1);
+				break;
+			case WEST:
+				setTargetX(getCurrentX() - 1);
+				break;
+			case SOUTH:
+				setTargetY(getCurrentY() + 1);
+				break;
+			case EAST:
+				setTargetX(getCurrentX() + 1);
+				break;
+			}
+			setMoving(true);
 		}
-		setMoving(true);
 	}
 
 	private float getNextXPx(int delta) {
@@ -348,12 +355,12 @@ public abstract class GUICharacter {
 
 	private void setTargetX(int x) {
 		xCellTarget = x;
-		xPxTarget = GUI.cellToPixelX(xCellTarget);
+		xPxTarget = mainUserInterface.cellToPixelX(xCellTarget);
 	}
 
 	private void setTargetY(int y) {
 		yCellTarget = y;
-		yPxTarget = GUI.cellToPixelY(yCellTarget);
+		yPxTarget = mainUserInterface.cellToPixelY(yCellTarget);
 	}
 
 	private Direction getDirection() {

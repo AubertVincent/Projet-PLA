@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.newdawn.slick.SlickException;
 
+import carte.Base;
 import carte.Map;
 import entite.Direction;
 import entite.Team;
 import gui.GUI;
 import gui.GUICharacter;
+import personnages.Besace;
 import personnages.Player;
 
 public class Engine {
@@ -19,8 +21,7 @@ public class Engine {
 	// private Player player2;
 	public Map ma_map;
 
-	private int nbrRound;
-	private boolean EndGame;
+	private PlayPhase playPhase;
 
 	/**
 	 * Create an Engine Object, allow us to update all the entitys
@@ -28,14 +29,15 @@ public class Engine {
 	 * @throws SlickException
 	 */
 
-	public Engine(GUI guy) throws SlickException {
-		listPlayer = new ArrayList<Player>();
-		listPlayer.add(new Player(2, 4, ma_map, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.ROUGE));
-		listPlayer.add(new Player(31, 15, ma_map, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.BLEU));
-		nbrRound = 0;
-		EndGame = false;
+	public Engine(GUI userInterface) throws SlickException {
 		ma_map = new Map();
-		ma_map.initMap(guy);
+		ma_map.init(userInterface);
+		listPlayer = new ArrayList<Player>();
+		listPlayer.add(new Player(2, 4, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.ROUGE,
+				new Base(2, 4, Team.ROUGE)));
+		listPlayer.add(new Player(31, 15, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.BLEU,
+				new Base(31, 15, Team.BLEU)));
+
 	}
 
 	private Player getPlayer(Team team) {
@@ -140,7 +142,7 @@ public class Engine {
 		}
 
 		if (moveSucces) {
-			map.Add(player.getX(), player.getY(), player);
+			map.setEntity(player.getX(), player.getY(), player);
 			player.setMovePoints(player.getMovePoints() - 1);
 		}
 		return moveSucces;
@@ -247,6 +249,25 @@ public class Engine {
 	//
 	// // TODO Creation of robot
 	// }
+
+	/**
+	 * Is called right when mouse is pressed
+	 * 
+	 * @param button
+	 *            The index of the button (Input.'index')
+	 * @param mouseXCell
+	 *            X coordinate of the clicked tile
+	 * @param mouseYCell
+	 *            Y coordinate of the clicked tile
+	 */
+	public void mousePressed(int button, int mouseXCell, int mouseYCell) {
+		// TODO A vous de jouer -> decider que faire lors d'un clic de souris
+
+		// @Conseil :
+		if (playPhase == PlayPhase.behaviorModification) {
+			// Gestion clic
+		}
+	}
 
 	// private boolean RoundRobot(Player player1, Player player2) {
 	// for (Robot r : player2.getListRobot()) {

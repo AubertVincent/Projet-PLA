@@ -8,6 +8,4 @@ public class PickPickUp extends PickAble {
 		super(x, y, entityMap);
 	}
 
-
-
 }
