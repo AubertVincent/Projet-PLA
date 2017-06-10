@@ -22,7 +22,7 @@ public class Besace {
 
 	private Map<Class<? extends PickAble>, Integer> besace;
 
-	protected static List<Class<? extends PickAble>> possiblePickAbleList = new LinkedList<Class<? extends PickAble>>();
+	public static List<Class<? extends PickAble>> possiblePickAbleList = new LinkedList<Class<? extends PickAble>>();
 	static {
 
 		possiblePickAbleList.add(PickClassicAck.class);
@@ -37,8 +37,7 @@ public class Besace {
 		possiblePickAbleList.add(PickRandomMove.class);
 	}
 
-	protected void initBesace() {
-		besace = new HashMap<Class<? extends PickAble>, Integer>();
+	public void initBesace() {
 		for (Iterator<Class<? extends PickAble>> mapIter = possiblePickAbleList.iterator(); mapIter.hasNext();) {
 			Class<? extends PickAble> currentClass;
 			currentClass = mapIter.next();
@@ -49,6 +48,7 @@ public class Besace {
 
 	public Besace() {
 		super();
+		besace = new HashMap<Class<? extends PickAble>, Integer>();
 		this.initBesace();
 	}
 

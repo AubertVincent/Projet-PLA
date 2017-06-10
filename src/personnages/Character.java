@@ -14,7 +14,6 @@ import exceptions.NotDoableException;
 import gui.GUICharacter;
 import operateur.Action;
 import pickable.PickAble;
-import pickable.Picked;
 
 public abstract class Character extends Entity {
 
@@ -33,7 +32,7 @@ public abstract class Character extends Entity {
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 	protected Team team;
 	protected Base base;
-	private GUICharacter GUIPlayer;
+	private GUICharacter GUICharactere;
 
 	/**
 	 * Set a new character
@@ -57,8 +56,8 @@ public abstract class Character extends Entity {
 	 * @param recall
 	 *            Character's recall's time
 	 */
-	public Character(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
-			int range, int movePoints, int recall, Team team, int attackPoints, Base base, GUICharacter GUIPlayer) {
+	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
+			int movePoints, int recall, Team team, int attackPoints, Base base, GUICharacter GUICharacter) {
 		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
@@ -70,7 +69,7 @@ public abstract class Character extends Entity {
 		this.team = team;
 		this.attackPoints = attackPoints;
 		this.base = base;
-		this.GUIPlayer = GUIPlayer;
+		this.GUICharactere = GUICharacter;
 	}
 
 	public Base getBase() {
