@@ -309,6 +309,8 @@ public abstract class Character extends Entity {
 		}
 	}
 
+	// FIXME : This fonction is obsolete beacause it didn't use a list anymore.
+	// We are not sure we need it
 	public void cancelPickUp() throws NotDoableException {
 		int x = this.getX();
 		int y = this.getY();
@@ -329,20 +331,3 @@ public abstract class Character extends Entity {
 	}
 
 }
-
-//
-// public int getXBase() {
-// if (this.getTeam() == Team.ROUGE) {
-// return 2;
-// } else {
-// return 31;
-// }
-// }
-//
-// public int getYBase() {
-// if (this.getTeam() == Team.ROUGE) {
-// return 4;
-// } else {
-// return 15;
-// }
-// }

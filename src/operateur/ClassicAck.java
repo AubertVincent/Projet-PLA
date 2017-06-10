@@ -18,7 +18,7 @@ public class ClassicAck extends Attack {
 	 *            the target
 	 */
 
-	public ClassicAck(Direction direction) {
+	public ClassicAck() {
 		super();
 	}
 

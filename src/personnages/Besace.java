@@ -52,6 +52,9 @@ public class Besace {
 		this.initBesace();
 	}
 
+	/*
+	 * Return the entire besace
+	 */
 	public Map<Class<? extends PickAble>, Integer> get() {
 		return besace;
 	}
@@ -88,6 +91,15 @@ public class Besace {
 
 	public void clear() {
 		this.clear();
+	}
+
+	/*
+	 * Return the size of this besace
+	 */
+	public int size() {
+		int i = 0;
+
+		return i;
 	}
 
 }
