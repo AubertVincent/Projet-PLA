@@ -116,7 +116,6 @@ public class Robot extends Character {
 			}
 		}
 	}
-	
 
 	public void execute() throws NotDoableException {
 		myAutomata.execute(this);

@@ -191,15 +191,14 @@ public abstract class Character extends Entity {
 		}
 	}
 
-//	TODO pas Terminer (=> a laisser dans le code)
-//	public void kill(Robot rob) {
-//		int x = rob.getX();
-//		int y = rob.getY();
-//		ArrayList<PickAble> listePickable;
-//		for (Class<? extends Action> r : rob.getPossibleActionsList()){
-//			listePickable.add(actionToPickAble(r));
-//		}
-//	}
+	public void kill(Robot rob) {
+		int x = rob.getX();
+		int y = rob.getY();
+		ArrayList<PickAble> listePickable;
+		for (Class<? extends Action> act : rob.getPossibleActionsList()) {
+			listePickable.add(actionToPickable(act));
+		}
+	}
 
 	public void kill(Player joueur) {
 
