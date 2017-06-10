@@ -36,7 +36,7 @@ public abstract class GUICharacter {
 	private int xCellTarget, yCellTarget;
 
 	private Direction dir;
-	
+
 	private Team team;
 
 	// TODO

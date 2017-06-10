@@ -86,4 +86,7 @@ public class Besace {
 		}
 	}
 
+	public Iterator<Class<? extends PickAble>> getIterator() {
+		return besace.keySet().iterator();
+	}
 }

@@ -8,4 +8,8 @@ public class PickRecall extends PickAble {
 		super(x, y, entityMap);
 	}
 
+	@Override
+	public String toString() {
+		return "MT : Tunnel";
+	}
 }

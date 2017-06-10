@@ -55,15 +55,6 @@ public class Player extends Character {
 		return possibleActionsList;
 	}
 
-	public Player(int x, int y, Map entityMap, List<Picked> myOwnBesace, Direction direction, int life, int vision,
-			int attack, int range, int movePoints, int recall, Team team, int attackPoints, Base base, Besace besace,
-			RobotList robotList) {
-		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
-				base);
-		this.besace = new Besace();
-		this.robotList = robotList;
-	}
-
 	public Player(int x, int y, carte.Map entityMap, Besace besace, Direction direction, int life, int vision,
 			int attack, int range, int movePoints, int recall, int attackPoints, Team team, Base base) {
 		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,

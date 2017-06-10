@@ -22,5 +22,4 @@ public abstract class PickAble extends Entity {
 	public boolean isObstacle() {
 		return false;
 	}
-
 }

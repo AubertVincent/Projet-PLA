@@ -41,7 +41,7 @@ public class Engine {
 				new Base(31, 15, Team.BLEU)));
 	}
 
-	private Player getPlayer(Team team) {
+	public Player getPlayer(Team team) {
 		for (Player p : listPlayer) {
 			if (p.getTeam() == team) {
 				return p;

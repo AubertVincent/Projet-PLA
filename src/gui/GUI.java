@@ -1,7 +1,5 @@
 package gui;
 
-import java.util.List;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
@@ -42,7 +40,6 @@ public class GUI extends BasicGame {
 	private GUIBesace rectBesace;
 	private int WidthRect = 600;
 	private int HeightRect = 300;
-	private List<String> listContents;
 
 	public static void main(String[] args) throws SlickException {
 		GUI mainUI = new GUI();
@@ -59,16 +56,20 @@ public class GUI extends BasicGame {
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
+
 		this.container = container;
 		map = new TiledMap("res/map.tmx");
+
+		engine = new Engine(this);
+
 		try {
-			perso1 = new GUIPlayer(this, 2, 4, entite.Direction.SOUTH, 100, Team.ROUGE);
+			perso1 = new GUIPlayer(this, engine.getPlayer(Team.ROUGE), 2, 4, entite.Direction.SOUTH, 100, Team.ROUGE);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
-			perso2 = new GUIPlayer(this, 31, 15, entite.Direction.SOUTH, 100, Team.BLEU);
+			perso2 = new GUIPlayer(this, engine.getPlayer(Team.BLEU), 31, 15, entite.Direction.SOUTH, 100, Team.BLEU);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -79,7 +80,6 @@ public class GUI extends BasicGame {
 
 		this.inputTextField = new GUIBehaviorInput(container, this, WindowWidth, WindowHeight, TextFieldHeight,
 				"(MC2E | (AC;(MC3W>MT8.3)))");
-		engine = new Engine(this);
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class GUI extends BasicGame {
 		map.render(0, 0, 5);
 
 		if (behaviorInputNeeded) {
-			// this.rectBesace.render(container, g, listContents);
+			this.rectBesace.render(container, g, engine.getPlayer(Team.ROUGE).getBesace());
 			this.inputTextField.render(container, g);
 		}
 	}
