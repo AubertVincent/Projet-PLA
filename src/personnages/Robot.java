@@ -33,6 +33,15 @@ public class Robot extends Character {
 		this.targetsLife = targetsLife;
 	}
 
+	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
+			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton,
+			Player player, GUICharacter GUIPlayer) {
+		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
+				base, GUIPlayer);
+		this.myAutomaton = myAutomaton;
+		this.player = player;
+	}
+
 	static {
 		possibleActionsList.add(ClassicAck.class);
 		possibleActionsList.add(MoveDir.class);

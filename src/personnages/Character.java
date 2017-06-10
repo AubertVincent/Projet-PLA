@@ -32,7 +32,7 @@ public abstract class Character extends Entity {
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 	protected Team team;
 	protected Base base;
-	private GUICharacter GUIPlayer;
+	private GUICharacter GUICharactere;
 
 	/**
 	 * Set a new character
@@ -57,7 +57,7 @@ public abstract class Character extends Entity {
 	 *            Character's recall's time
 	 */
 	public Character(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
-			int range, int movePoints, int recall, Team team, int attackPoints, Base base, GUICharacter GUIPlayer) {
+			int range, int movePoints, int recall, Team team, int attackPoints, Base base, GUICharacter GUICharacter) {
 		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;
@@ -69,7 +69,7 @@ public abstract class Character extends Entity {
 		this.team = team;
 		this.attackPoints = attackPoints;
 		this.base = base;
-		this.GUIPlayer = GUIPlayer;
+		this.GUICharactere = GUICharacter;
 	}
 
 	public Base getBase() {

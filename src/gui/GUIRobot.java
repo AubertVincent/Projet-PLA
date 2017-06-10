@@ -22,14 +22,14 @@ public class GUIRobot extends GUICharacter {
 	private static Map<Class<? extends Action>, Integer> numberOfSprites = new HashMap<Class<? extends Action>, Integer>();
 	static {
 		numberOfSprites.put(operateur.MoveDir.class, 9);
-		numberOfSprites.put(operateur.ClassicAck.class, 9);
+		numberOfSprites.put(operateur.ClassicAck.class, 6);
 	}
 
 	// Given EVERY POSSIBLE doable action (by the Robot), gives the paths to
 	// its
 	// animation and its number of sprites
 	protected static Map<Class<? extends Action>, String> actionSpritePath = new HashMap<Class<? extends Action>, String>();
-	protected static Map<Class<? extends Action>, Integer> actionSpriteNumberOfSprites;
+	protected static Map<Class<? extends Action>, Integer> actionSpriteNumberOfSprites = new HashMap<Class<? extends Action>, Integer>();
 	static {
 		// Puts every possible action's sprite in actionSpritePath
 		List<Class<? extends Action>> possibleActionList = Robot.getPossibleActionsList();
