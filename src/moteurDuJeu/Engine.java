@@ -16,10 +16,12 @@ import exceptions.NotDoableException;
 import gui.GUI;
 import gui.GUICharacter;
 import gui.GUIPlayer;
+import gui.GUIRobot;
 import personnages.Besace;
 import personnages.Player;
 import personnages.Robot;
 import reader.Reader;
+import sequence._Sequence;
 
 public class Engine {
 
@@ -83,6 +85,10 @@ public class Engine {
 
 	public PlayPhase getPlayPhase() {
 		return this.playPhase;
+	}
+
+	public Map getMap() {
+		return this.ma_map;
 	}
 
 	/**
@@ -283,47 +289,50 @@ public class Engine {
 
 	}
 
-	public void createRobot(GUIPlayer perso, GUI userInterface) {
+	public void createRobot(GUIPlayer GUIPlayer, GUI userInterface, Map map) {
 		System.out.println("\n \n Je suis la _\n \n");
 		// TODO : création d'un robot
 		int Xbase;
 		int Ybase;
 		Player player;
 
-		player = getPlayer(perso.getTeam());
+		player = GUIPlayer.getPlayer();
 		Xbase = player.getBase().getX();
 		Ybase = player.getBase().getY();
 		try {
-			Robot robot = new Robot(Xbase, Ybase, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 1, 1,
-					player.getTeam(), 1, player.getBase(), Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player, perso);
-			player.addRobot(new Coordinates(Xbase, Ybase), robot);
+			if (map.isFree(Xbase, Ybase)) {
+				Robot robot = new Robot(Xbase, Ybase, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 1, 1,
+						player.getTeam(), 1, player.getBase(), Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player,
+						GUIPlayer);
+				player.addRobot(new Coordinates(Xbase, Ybase), robot);
+				map.setEntity(Xbase, Ybase, robot);
+				GUIPlayer.createRobot(robot, userInterface);
+			} else {
+				// TODO find the player's base nearest free cell
 
-			perso.createRobot(robot, userInterface);
+			}
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public void behaviorModif(GUICharacter robot) {
-
+	public void behaviorModif(GUIRobot GUIRobot, GUI userInterface, Map map) {
+		Player player = getPlayer(GUIRobot.getTeam());
+		Robot robot = GUIRobot.getRobot();
+		// TODO : gestion du parseur
+		// pour reccuperer la nouveau sequence
+		_Sequence newAutomaton = Reader.parse("  ");
+		robot.setAutomaton(newAutomaton);
 	}
 
-	private void setPlayPhase(int key) {
-		if (getPlayer(Team.ROUGE).getMovePoints() == 0 && getPlayer(Team.BLEU).getMovePoints() == 0) {
+	public void setPlayPhase(int key) {
+		if (getPlayer(Team.ROUGE).getMovePoints() == 0 && getPlayer(Team.BLEU).getMovePoints() == 0
+				&& this.playPhase == PlayPhase.playerMovement) {
 			this.playPhase = PlayPhase.behaviorModification;
-		} else if (key == Input.KEY_ENTER) {
+		} else if (key == Input.KEY_SPACE) {
 			this.playPhase = PlayPhase.automatonExecution;
 		}
-	}
-
-	private Player getPlayerFromXY(int x, int y) {
-		for (Player p : listPlayer) {
-			if (p.getX() == x && p.getY() == y) {
-				return p;
-			}
-		}
-		return null;
 	}
 
 	/**

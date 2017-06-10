@@ -72,6 +72,14 @@ public class Robot extends Character {
 		return player;
 	}
 
+	public _Sequence getAutomaton() {
+		return this.myAutomaton;
+	}
+
+	public void setAutomaton(_Sequence automaton) {
+		this.myAutomaton = automaton;
+	}
+
 	/**
 	 * Suicide a Robot and kill the Robots next to it
 	 * 
