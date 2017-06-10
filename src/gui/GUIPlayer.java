@@ -49,7 +49,7 @@ public class GUIPlayer extends GUICharacter {
 	// TODO : bound to be dynamic when something is picked
 	List<Class<? extends operateur.Action>> animationsList = new LinkedList<Class<? extends operateur.Action>>();
 
-	public GUIPlayer(GUI userInterface, Player player, int x, int y, Direction dir, int animationDuration, Team team)
+	public GUIPlayer(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team)
 			throws SlickException, Exception {
 		super(userInterface, x, y, dir, animationDuration, team);
 

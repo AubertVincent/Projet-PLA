@@ -12,6 +12,7 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import entite.Direction;
 import entite.Team;
+import exceptions.NotDoableException;
 import moteurDuJeu.Engine;
 
 public class GUI extends BasicGame {
@@ -60,16 +61,18 @@ public class GUI extends BasicGame {
 		this.container = container;
 		map = new TiledMap("res/map.tmx");
 
-		engine = new Engine(this);
-
 		try {
-			perso1 = new GUIPlayer(this, engine.getPlayer(Team.ROUGE), 2, 4, entite.Direction.SOUTH, 100, Team.ROUGE);
+			// perso1 = new GUIPlayer(this, engine.getPlayer(Team.ROUGE), 2, 4,
+			// entite.Direction.SOUTH, 100, Team.ROUGE);
+			perso1 = new GUIPlayer(this, 2, 4, entite.Direction.SOUTH, 100, Team.ROUGE);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
-			perso2 = new GUIPlayer(this, engine.getPlayer(Team.BLEU), 31, 15, entite.Direction.SOUTH, 100, Team.BLEU);
+			// perso2 = new GUIPlayer(this, engine.getPlayer(Team.BLEU), 31, 15,
+			// entite.Direction.SOUTH, 100, Team.BLEU);
+			perso2 = new GUIPlayer(this, 31, 15, entite.Direction.SOUTH, 100, Team.BLEU);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,6 +83,8 @@ public class GUI extends BasicGame {
 
 		this.inputTextField = new GUIBehaviorInput(container, this, WindowWidth, WindowHeight, TextFieldHeight,
 				"(MC2E | (AC;(MC3W>MT8.3)))");
+
+		engine = new Engine(this);
 	}
 
 	@Override
@@ -167,65 +172,69 @@ public class GUI extends BasicGame {
 
 	@Override
 	public void keyPressed(int key, char c) {
-		switch (key) {
-		case Input.KEY_UP:
-			perso1.movePlayer(engine, Direction.NORTH);
-			break;
-		case Input.KEY_LEFT:
-			perso1.movePlayer(engine, Direction.WEST);
-			break;
-		case Input.KEY_DOWN:
-			perso1.movePlayer(engine, Direction.SOUTH);
-			break;
-		case Input.KEY_RIGHT:
-			perso1.movePlayer(engine, Direction.EAST);
-			break;
-		case Input.KEY_Z:
-			perso2.movePlayer(engine, Direction.NORTH);
-			break;
-		case Input.KEY_Q:
-			perso2.movePlayer(engine, Direction.WEST);
-			break;
-		case Input.KEY_S:
-			perso2.movePlayer(engine, Direction.SOUTH);
-			break;
-		case Input.KEY_D:
-			perso2.movePlayer(engine, Direction.EAST);
-			break;
-		case Input.KEY_O:
-			perso1.Attack(Direction.NORTH);
-			break;
-		case Input.KEY_K:
-			perso1.Attack(Direction.WEST);
-			break;
-		case Input.KEY_L:
-			perso1.Attack(Direction.SOUTH);
-			break;
-		case Input.KEY_M:
-			perso1.Attack(Direction.EAST);
-			break;
-		case Input.KEY_F:
-			perso2.Attack(Direction.NORTH);
-			break;
-		case Input.KEY_C:
-			perso2.Attack(Direction.WEST);
-			break;
-		case Input.KEY_V:
-			perso2.Attack(Direction.SOUTH);
-			break;
-		case Input.KEY_B:
-			perso2.Attack(Direction.EAST);
-			break;
-		case Input.KEY_ADD:
-			try {
-				perso1.createRobot(3, 4);
-			} catch (SlickException e) {
-				e.printStackTrace();
+		try {
+			switch (key) {
+			case Input.KEY_UP:
+				perso1.movePlayer(engine, Direction.NORTH);
+				break;
+			case Input.KEY_LEFT:
+				perso1.movePlayer(engine, Direction.WEST);
+				break;
+			case Input.KEY_DOWN:
+				perso1.movePlayer(engine, Direction.SOUTH);
+				break;
+			case Input.KEY_RIGHT:
+				perso1.movePlayer(engine, Direction.EAST);
+				break;
+			case Input.KEY_Z:
+				perso2.movePlayer(engine, Direction.NORTH);
+				break;
+			case Input.KEY_Q:
+				perso2.movePlayer(engine, Direction.WEST);
+				break;
+			case Input.KEY_S:
+				perso2.movePlayer(engine, Direction.SOUTH);
+				break;
+			case Input.KEY_D:
+				perso2.movePlayer(engine, Direction.EAST);
+				break;
+			case Input.KEY_O:
+				perso1.Attack(engine, Direction.NORTH);
+				break;
+			case Input.KEY_K:
+				perso1.Attack(engine, Direction.WEST);
+				break;
+			case Input.KEY_L:
+				perso1.Attack(engine, Direction.SOUTH);
+				break;
+			case Input.KEY_M:
+				perso1.Attack(engine, Direction.EAST);
+				break;
+			case Input.KEY_F:
+				perso2.Attack(engine, Direction.NORTH);
+				break;
+			case Input.KEY_C:
+				perso2.Attack(engine, Direction.WEST);
+				break;
+			case Input.KEY_V:
+				perso2.Attack(engine, Direction.SOUTH);
+				break;
+			case Input.KEY_B:
+				perso2.Attack(engine, Direction.EAST);
+				break;
+			case Input.KEY_ADD:
+				try {
+					perso1.createRobot(3, 4);
+				} catch (SlickException e) {
+					e.printStackTrace();
+				}
+				break;
+			case Input.KEY_SPACE:
+				behaviorInputNeeded = true;
+				break;
 			}
-			break;
-		case Input.KEY_SPACE:
-			behaviorInputNeeded = true;
-			break;
+		} catch (NotDoableException e) {
+
 		}
 	}
 
@@ -281,6 +290,14 @@ public class GUI extends BasicGame {
 	 */
 	public float cellToPixelY(int y) {
 		return (y + 0.5f) * cellHeight;
+	}
+
+	public GUICharacter getGUICharacterFromTeam(Team team) {
+		if (team.equals(Team.ROUGE)) {
+			return perso1;
+		} else {
+			return perso2;
+		}
 	}
 
 }
