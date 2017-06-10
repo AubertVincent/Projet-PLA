@@ -5,11 +5,15 @@ import java.util.List;
 
 import org.newdawn.slick.SlickException;
 
+import carte.Base;
+import carte.Cell;
 import carte.Map;
 import entite.Direction;
 import entite.Team;
+import exceptions.NotDoableException;
 import gui.GUI;
 import gui.GUICharacter;
+import personnages.Besace;
 import personnages.Player;
 
 public class Engine {
@@ -19,27 +23,33 @@ public class Engine {
 	// private Player player2;
 	public Map ma_map;
 
-	private int nbrRound;
-	private boolean EndGame;
 	private PlayPhase playPhase;
 
 	/**
-	 * Create an Engine Object, allow us to update all the entitys
+	 * Create an Engine Object An Engine has a map and a list of its players
 	 * 
 	 * @throws SlickException
 	 */
-
 	public Engine(GUI userInterface) throws SlickException {
-		listPlayer = new ArrayList<Player>();
-		listPlayer.add(new Player(2, 4, ma_map, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.ROUGE));
-		listPlayer.add(new Player(31, 15, ma_map, Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.BLEU));
-		nbrRound = 0;
-		EndGame = false;
 		ma_map = new Map();
-		ma_map.initMap(userInterface);
+
+		listPlayer = new ArrayList<Player>();
+		listPlayer.add(new Player(2, 4, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 10, 1, 1, Team.ROUGE,
+				new Base(2, 4, Team.ROUGE), userInterface.getGUICharacterFromTeam(Team.ROUGE)));
+		listPlayer.add(new Player(31, 15, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 10, 1, 1, Team.BLEU,
+				new Base(31, 15, Team.BLEU), userInterface.getGUICharacterFromTeam(Team.BLEU)));
+		userInterface.getGUICharacterFromTeam(Team.ROUGE).setPlayer(this.getPlayer(Team.ROUGE));
+		userInterface.getGUICharacterFromTeam(Team.BLEU).setPlayer(this.getPlayer(Team.BLEU));
+		ma_map.init(userInterface, this);
 	}
 
-	private Player getPlayer(Team team) {
+	/**
+	 * 
+	 * @param team
+	 *            The team to search
+	 * @return the player who match the team
+	 */
+	public Player getPlayer(Team team) {
 		for (Player p : listPlayer) {
 			if (p.getTeam() == team) {
 				return p;
@@ -48,91 +58,109 @@ public class Engine {
 		return null;
 	}
 
+	public List<Player> getPlayerList() {
+		return listPlayer;
+	}
+
+	/**
+	 * 
+	 * @param dir
+	 *            The direction of the mouvement
+	 * @param perso
+	 *            The GUICharacter whos gonna do the mouvement
+	 * @param map
+	 *            The map with all the entity referenced
+	 * @return True is the mouvement is possible, false else
+	 */
+	// TODO : Handle no more movePoint
 	public boolean doMove(Direction dir, GUICharacter perso, Map map) {
 
 		boolean moveSucces = false;
 		Player player;
 		// Case of Player1
-		if (perso.getTeam() == Team.ROUGE) {
+		if (perso.getTeam().equals(Team.ROUGE)) {
 			player = getPlayer(Team.ROUGE);
-			switch (dir) {
+			if (player.getMovePoints() > 0) {
+				switch (dir) {
 
-			case SOUTH:
-				if (map.isFree(player.getX(), player.getY() + 1)) {
+				case SOUTH:
+					if (map.isFree(player.getX(), player.getY() + 1)) {
 
-					player.setY(player.getY() + 1);
-					map.Free(player.getX(), player.getY() - 1);
-					moveSucces = true;
+						player.setY(player.getY() + 1);
+						map.Free(player.getX(), player.getY() - 1);
+						moveSucces = true;
+					}
+					break;
+
+				case NORTH:
+					if (map.isFree(player.getX(), player.getY() - 1)) {
+						player.setY(player.getY() - 1);
+						map.Free(player.getX(), player.getY() + 1);
+						moveSucces = true;
+					}
+					break;
+
+				case WEST:
+					if (map.isFree(player.getX() - 1, player.getY())) {
+						player.setX(player.getX() - 1);
+						map.Free(player.getX() + 1, player.getY());
+						moveSucces = true;
+					}
+					break;
+
+				case EAST:
+					if (map.isFree(player.getX() + 1, player.getY())) {
+						player.setX(player.getX() + 1);
+						map.Free(player.getX() - 1, player.getY());
+						moveSucces = true;
+					}
+
+					break;
+
 				}
-				break;
-
-			case NORTH:
-				if (map.isFree(player.getX(), player.getY() - 1)) {
-					player.setY(player.getY() - 1);
-					map.Free(player.getX(), player.getY() + 1);
-					moveSucces = true;
-				}
-				break;
-
-			case WEST:
-				if (map.isFree(player.getX() - 1, player.getY())) {
-					player.setX(player.getX() - 1);
-					map.Free(player.getX() + 1, player.getY());
-					moveSucces = true;
-				}
-				break;
-
-			case EAST:
-				if (map.isFree(player.getX() + 1, player.getY())) {
-					player.setX(player.getX() + 1);
-					map.Free(player.getX() - 1, player.getY());
-					moveSucces = true;
-				}
-
-				break;
-
 			}
 
 		}
 		// Case of Player2
-		else if (perso.getTeam() == Team.BLEU) {
+		else if (perso.getTeam().equals(Team.BLEU)) {
 			player = getPlayer(Team.BLEU);
-			switch (dir) {
+			if (player.getMovePoints() > 0) {
+				switch (dir) {
 
-			case SOUTH:
-				if (map.isFree(player.getX(), player.getY() + 1)) {
-					player.setY(player.getY() + 1);
-					map.Free(player.getX(), player.getY() - 1);
-					moveSucces = true;
+				case SOUTH:
+					if (map.isFree(player.getX(), player.getY() + 1)) {
+						player.setY(player.getY() + 1);
+						map.Free(player.getX(), player.getY() - 1);
+						moveSucces = true;
+					}
+					break;
+
+				case NORTH:
+					if (map.isFree(player.getX(), player.getY() - 1)) {
+						player.setY(player.getY() - 1);
+						map.Free(player.getX(), player.getY() + 1);
+						moveSucces = true;
+					}
+					break;
+
+				case WEST:
+					if (map.isFree(player.getX() - 1, player.getY())) {
+						player.setX(player.getX() - 1);
+						map.Free(player.getX() + 1, player.getY());
+						moveSucces = true;
+					}
+					break;
+
+				case EAST:
+
+					if (map.isFree(player.getX() + 1, player.getY())) {
+						player.setX(player.getX() + 1);
+						map.Free(player.getX() - 1, player.getY());
+						moveSucces = true;
+					}
+					break;
 				}
-				break;
-
-			case NORTH:
-				if (map.isFree(player.getX(), player.getY() - 1)) {
-					player.setY(player.getY() - 1);
-					map.Free(player.getX(), player.getY() + 1);
-					moveSucces = true;
-				}
-				break;
-
-			case WEST:
-				if (map.isFree(player.getX() - 1, player.getY())) {
-					player.setX(player.getX() - 1);
-					map.Free(player.getX() + 1, player.getY());
-					moveSucces = true;
-				}
-				break;
-
-			case EAST:
-
-				if (map.isFree(player.getX() + 1, player.getY())) {
-					player.setX(player.getX() + 1);
-					map.Free(player.getX() - 1, player.getY());
-					moveSucces = true;
-				}
-				break;
 			}
-
 		}
 
 		// If the player doesn't have MP
@@ -147,85 +175,83 @@ public class Engine {
 		return moveSucces;
 	}
 
-	// private void doAttack(Direction dir, GUICharacter perso, Map map) {
-	// Cell target;
-	// if (player1.getAttackPoints() > 0 && perso.getTeam() == 1) {
-	//
-	// switch (dir) {
-	//
-	// case SOUTH:
-	// target = map.getCell(player1.getX(), player1.getY() + 1);
-	// player1.classicAtk(target);
-	// System.out.println(" Joueur 1 attaque la case : " + player1.getX() + ";"
-	// + (player1.getY() + 1));
-	// break;
-	//
-	// case NORTH:
-	// target = map.getCell(player1.getX(), player1.getY() - 1);
-	// player1.classicAtk(target);
-	// System.out.println(" Joueur 1 attaque la case : " + player1.getX() + ";"
-	// + (player1.getY() - 1));
-	// break;
-	//
-	// case WEST:
-	// target = map.getCell(player1.getX() - 1, player1.getY());
-	// player1.classicAtk(target);
-	// System.out.println(" Joueur 1 attaque la case : " + (player1.getX() - 1)
-	// + ";" + player1.getY());
-	// break;
-	//
-	// case EAST:
-	// target = map.getCell(player1.getX() + 1, player1.getY());
-	// player1.classicAtk(target);
-	// System.out.println(" Joueur 1 attaque la case : " + (player1.getX() + 1)
-	// + ";" + player1.getY());
-	// break;
-	//
-	// }
-	// player1.setAttackPoints(player1.getAttackPoints() - 1);
-	//
-	// } else if (player2.getAttackPoints() > 0 && perso.getTeam() == 2) {
-	//
-	// switch (dir) {
-	//
-	// case SOUTH:
-	// target = map.getCell(player2.getX(), player2.getY() + 1);
-	// player2.classicAtk(target);
-	// System.out.println(" Joueur 2 attaque la case : " + player2.getX() + ";"
-	// + (player2.getY() + 1));
-	// break;
-	//
-	// case NORTH:
-	// target = map.getCell(player2.getX(), player2.getY() - 1);
-	// player2.classicAtk(target);
-	// System.out.println(" Joueur 2 attaque la case : " + player2.getX() + ";"
-	// + (player2.getY() - 1));
-	// break;
-	//
-	// case WEST:
-	// target = map.getCell(player2.getX() - 1, player2.getY());
-	// player1.classicAtk(target);
-	// System.out.println(" Joueur 2 attaque la case : " + (player2.getX() - 1)
-	// + ";" + player2.getY());
-	// break;
-	//
-	// case EAST:
-	// target = map.getCell(player2.getX() + 1, player2.getY());
-	// player1.classicAtk(target);
-	// System.out.println(" Joueur 2 attaque la case : " + (player2.getX() + 1)
-	// + ";" + player2.getY());
-	// break;
-	//
-	// }
-	// player2.setAttackPoints(player2.getAttackPoints() - 1);
-	//
-	// } else {
-	// System.out.println("Plus de point d'attaque !\n");
-	// this.EndGame = false;
-	// }
-	//
-	// this.EndGame = true;
-	// }
+	// TODO : Handle attackpoints and death is lifepoint is 0
+	public void doAttack(Direction dir, GUICharacter perso, Map map) throws NotDoableException {
+		Cell target;
+		Player player;
+		try {
+			if (perso.getTeam().equals(Team.ROUGE)) {
+				player = getPlayer(Team.ROUGE);
+				switch (dir) {
+
+				case SOUTH:
+					target = map.getCell(player.getX(), player.getY() + 1);
+					player.classicAtk(target);
+					System.out.println(" Joueur 1 attaque la case : " + player.getX() + ";" + (player.getY() + 1));
+					break;
+
+				case NORTH:
+					target = map.getCell(player.getX(), player.getY() - 1);
+					player.classicAtk(target);
+					System.out.println(" Joueur 1 attaque la case : " + player.getX() + ";" + (player.getY() - 1));
+					break;
+
+				case WEST:
+					target = map.getCell(player.getX() - 1, player.getY());
+					player.classicAtk(target);
+					System.out.println(" Joueur 1 attaque la case : " + (player.getX() - 1) + ";" + player.getY());
+					break;
+
+				case EAST:
+					target = map.getCell(player.getX() + 1, player.getY());
+					player.classicAtk(target);
+					System.out.println(" Joueur 1 attaque la case : " + (player.getX() + 1) + ";" + player.getY());
+					break;
+
+				}
+				player.setAttackPoints(player.getAttackPoints() - 1);
+
+			} else if (perso.getTeam().equals(Team.BLEU)) {
+				player = getPlayer(Team.BLEU);
+				switch (dir) {
+
+				case SOUTH:
+					target = map.getCell(player.getX(), player.getY() + 1);
+					player.classicAtk(target);
+					System.out.println(" Joueur 2 attaque la case : " + player.getX() + ";" + (player.getY() + 1));
+					break;
+
+				case NORTH:
+					target = map.getCell(player.getX(), player.getY() - 1);
+					player.classicAtk(target);
+					System.out.println(" Joueur 2 attaque la case : " + player.getX() + ";" + (player.getY() - 1));
+					break;
+
+				case WEST:
+					target = map.getCell(player.getX() - 1, player.getY());
+					player.classicAtk(target);
+					System.out.println(" Joueur 2 attaque la case : " + (player.getX() - 1) + ";" + player.getY());
+					break;
+
+				case EAST:
+					target = map.getCell(player.getX() + 1, player.getY());
+					player.classicAtk(target);
+					System.out.println(" Joueur 2 attaque la case : " + (player.getX() + 1) + ";" + player.getY());
+					break;
+
+				}
+				player.setAttackPoints(player.getAttackPoints() - 1);
+
+			} else {
+				System.out.println("Plus de point d'attaque !\n");
+			}
+
+			System.out.println("Point de vie du joueur 2 apres attaque : " + getPlayer(Team.BLEU).getLife());
+
+		} catch (NotDoableException e) {
+			throw new NotDoableException("Echec de l'attaque");
+		}
+	}
 
 	// public void update(Direction dir, GUICharacter perso, int joueur, Map
 	// map, GUI guy) {
