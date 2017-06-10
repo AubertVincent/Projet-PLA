@@ -6,6 +6,7 @@ import java.util.List;
 import carte.Base;
 import entite.Direction;
 import entite.Team;
+import gui.GUICharacter;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
@@ -53,11 +54,11 @@ public class Player extends Character {
 		return possibleActionsList;
 	}
 
-
 	public Player(int x, int y, carte.Map entityMap, Besace besace, Direction direction, int life, int vision,
-			int attack, int range, int movePoints, int recall, int attackPoints, Team team, Base base) {
+			int attack, int range, int movePoints, int recall, int attackPoints, Team team, Base base,
+			GUICharacter GUIPlayer) {
 		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
-				base);
+				base, GUIPlayer);
 		robotList = new RobotList();
 	}
 
@@ -91,7 +92,6 @@ public class Player extends Character {
 	// return besace.get(op);
 	// }
 
-
 	// TODO
 	public void CreateRobot() {
 	}
@@ -99,7 +99,6 @@ public class Player extends Character {
 	public RobotList getListRobot() {
 		return robotList;
 	}
-
 
 	@Override
 	public boolean isPlayer() {
@@ -156,7 +155,6 @@ public class Player extends Character {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 
 	public Besace getBesace() {
 

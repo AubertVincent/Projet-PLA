@@ -277,4 +277,12 @@ public class GUI extends BasicGame {
 		return (y + 0.5f) * cellHeight;
 	}
 
+	public GUICharacter getGUICharacterFromTeam(Team team) {
+		if (team.equals(Team.ROUGE)) {
+			return perso1;
+		} else {
+			return perso2;
+		}
+	}
+
 }
