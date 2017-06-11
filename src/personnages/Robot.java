@@ -22,6 +22,16 @@ public class Robot extends Character {
 	protected Player player;
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
 
+	// For test, delete when test is over
+	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
+			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton) {
+		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
+				base);
+
+		this.myAutomaton = myAutomaton;
+		this.player = player;
+	}
+
 	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
 			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton,
 			Player player, java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife,

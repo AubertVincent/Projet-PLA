@@ -8,6 +8,7 @@ import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUI;
 import moteurDuJeu.Engine;
+import moteurDuJeu.Test;
 import pickable.PickAble;
 
 public class Map {
@@ -23,6 +24,13 @@ public class Map {
 				map[i][j] = new Cell(i, j);
 			}
 		}
+	}
+
+	// Used for test delete when it's over
+	public void init(Test test) {
+		map[5][10].setEntity(test.getRobot(Team.ROUGE));
+		map[5][11].setEntity(test.getRobot(Team.BLEU));
+		map[5][12].setEntity(new Obstacle(5, 5, this));
 	}
 
 	public void init(GUI userInterface, Engine engine) {
@@ -138,11 +146,13 @@ public class Map {
 
 	}
 
+	// FIXME i is never incremented
 	public boolean isReachable(int x, int y) {
 		List<Entity> l = map[x][y].getListEntity();
-		int i = 0;
+		int i = 1;
 		while (i < l.size()) {
-			if (l.get(i).isCharacter() || l.get(i).isObstacle()) {
+			boolean b = l.get(i).isCharacter() || l.get(i).isObstacle();
+			if (b) {
 				return false;
 			}
 		}

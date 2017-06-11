@@ -1,7 +1,7 @@
 package operateur;
 
-import carte.*;
-import entite.*;
+import carte.Map;
+import entite.Direction;
 import exceptions.NotDoableException;
 import personnages.Robot;
 
@@ -29,10 +29,6 @@ public class MoveDir extends Movement {
 		this.lg = lg;
 	}
 
-	public MoveDir() {
-		super();
-	}
-
 	/**
 	 * A move can be done if there is no obstacle
 	 */
@@ -42,27 +38,35 @@ public class MoveDir extends Movement {
 		int x = r.getX();
 		int y = r.getY();
 		Map myMap = r.getEntityMap();
-
+		int j = 0;
 		for (int i = 0; i < lg; i++) {
 			switch (dir) {
 			case NORTH:
-				if (!myMap.isReachable(x, y - i)) {
-					return false;
+				for (j = 1; j <= i; j++) {
+					if (!myMap.isReachable(x, y - j)) {
+						return false;
+					}
 				}
 				break;
 			case EAST:
-				if (!myMap.isReachable(x + i, y)) {
-					return false;
+				for (j = 1; j <= i; j++) {
+					if (!myMap.isReachable(x + i, y)) {
+						return false;
+					}
 				}
 				break;
 			case SOUTH:
-				if (!myMap.isReachable(x, y + i)) {
-					return false;
+				for (j = 1; j <= i; j++) {
+					if (!myMap.isReachable(x, y + i)) {
+						return false;
+					}
 				}
 				break;
 			case WEST:
-				if (!myMap.isReachable(x - i, y)) {
-					return false;
+				for (j = 1; j <= i; j++) {
+					if (!myMap.isReachable(x - i, y)) {
+						return false;
+					}
 				}
 				break;
 			}

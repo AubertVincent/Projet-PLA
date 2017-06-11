@@ -1,7 +1,6 @@
 package operateur;
 
 import carte.Base;
-import entite.Team;
 import exceptions.NotDoableException;
 import personnages.Robot;
 
@@ -33,7 +32,7 @@ public class Recall extends Movement {
 		Base b = r.getBase();
 		int x = b.getX();
 		int y = b.getY();
-		if (r.getEntityMap().isReachable(x, y)){
+		if (r.getEntityMap().isReachable(x, y)) {
 			return true;
 		}
 		return false;
@@ -52,7 +51,10 @@ public class Recall extends Movement {
 			this.lastX = r.getX();
 			this.lastY = r.getY();
 			r.teleport(xBase, yBase);
+		} else {
+			throw new NotDoableException("Impossible to execute this recall");
 		}
+
 		// r.setRecall(time--);
 	}
 

@@ -96,10 +96,9 @@ public class Besace {
 	/*
 	 * Return the size of this besace
 	 */
+	// FIXME : It's not a list
 	public int size() {
-		int i = 0;
-
-		return i;
+		return 0;
 	}
 
 }

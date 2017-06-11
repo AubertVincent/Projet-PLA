@@ -1,6 +1,7 @@
 package carte;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import entite.Entity;
@@ -59,14 +60,15 @@ public class Cell {
 	public Character getOpponent(Team team) throws NotDoableException {
 		int i = 0;
 		Entity e;
-		while (i < this.listeEntites.size()) {
+		for (Iterator<Entity> it = this.listeEntites.iterator(); it.hasNext();) {
+			// while (i < this.listeEntites.size()) {
 			if (this.listeEntites.get(i).isCharacter()) {
 				e = this.listeEntites.get(i);
-
 				if (((Character) e).getTeam() != team) {
 					return ((Character) e);
 				}
 			}
+			i++;
 		}
 		throw new NotDoableException("Il est vrai j'ai trop d'adversaire ... mais pas là");
 	}
@@ -74,13 +76,16 @@ public class Cell {
 	public boolean opponentHere(Team team) {
 		int i = 0;
 		Entity e;
-		while (i < this.listeEntites.size()) {
+		for (Iterator<Entity> it = this.listeEntites.iterator(); it.hasNext();) {
+			// while (i < this.listeEntites.size()) {
 			if (this.listeEntites.get(i).isCharacter()) {
 				e = this.listeEntites.get(i);
 				if (((Character) e).getTeam() != team) {
 					return true;
 				}
+
 			}
+			i++;
 		}
 		return false;
 	}

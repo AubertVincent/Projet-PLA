@@ -58,7 +58,7 @@ public class Player extends Character {
 			int attack, int range, int movePoints, int recall, int attackPoints, Team team, Base base,
 			GUICharacter GUIPlayer) {
 		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
-				base, GUIPlayer);
+				base);
 		robotList = new RobotList();
 	}
 
