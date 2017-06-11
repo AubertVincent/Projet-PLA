@@ -9,6 +9,7 @@ public class Tunnel extends Movement {
 	protected Integer y;
 	private int lastX;
 	private int lastY;
+	private boolean lastExploration = false;
 
 	/**
 	 * set a new Tunnel by means of its arrival coordinates
@@ -33,7 +34,7 @@ public class Tunnel extends Movement {
 	 */
 	@Override
 	protected boolean isDoable(Robot r) {
-		return (r.getEntityMap().isReachable(x, y));
+		return (r.getEntityMap().getCell(x, y).isReachable());
 	}
 
 	@Override
@@ -44,11 +45,19 @@ public class Tunnel extends Movement {
 		this.lastX = x;
 		this.lastY = y;
 		r.teleport(x, y);
+		if (r.getExplorationMap().getCell(x, y).isExplored()) {
+			lastExploration = true;
+		} else {
+			r.getExplorationMap().getCell(x, y).setExplored(true);
+		}
 	}
 
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
 		r.teleport(lastX, lastY);
+		if (lastExploration) {
+			r.getExplorationMap().getCell(x, y).setExplored(false);
+		}
 	}
 
 	@Override
