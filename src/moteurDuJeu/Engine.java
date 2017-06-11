@@ -322,7 +322,7 @@ public class Engine {
 		Robot robot = GUIRobot.getRobot();
 		// TODO : gestion du parseur
 		// pour reccuperer la nouveau sequence
-		_Sequence newAutomaton = Reader.parse("  ");
+		_Sequence newAutomaton = Reader.parse("(MC2E)");
 		robot.setAutomaton(newAutomaton);
 	}
 
@@ -350,18 +350,5 @@ public class Engine {
 	 * @param mouseYCell
 	 *            Y coordinate of the clicked tile
 	 */
-	// public void mousePressed(int button, int mouseXCell, int mouseYCell) {
-	// // TODO A vous de jouer -> decider que faire lors d'un clic de souris
-	//
-	// // @Conseil :
-	// Player player;
-	// Robot robot;
-	// if (playPhase == PlayPhase.behaviorModification) {
-	// // Gestion clic
-	// // Search the player on the Cell x,y
-	// player = this.getPlayerFromXY(mouseXCell, mouseYCell);
-	//
-	// }
-	// }
 
 }
