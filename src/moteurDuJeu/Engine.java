@@ -45,14 +45,14 @@ public class Engine {
 		listPlayer = new ArrayList<Player>();
 		try {
 			guiPlayerTmp = new GUIPlayer(userInterface, 2, 4, entite.Direction.SOUTH, 100, Team.ROUGE);
-			playerTmp = new Player(2, 4, ma_map, Direction.SOUTH, 1, 1, 1, 1, 100, 1, 1, Team.ROUGE,
+			playerTmp = new Player(2, 4, ma_map, Direction.SOUTH, 1, 1, 1, 1, 10, 1, 1, Team.ROUGE,
 					new Base(2, 4, Team.ROUGE), guiPlayerTmp);
 			listPlayer.add(playerTmp);
 			guiPlayerTmp.setPlayer(playerTmp);
 			userInterface.addGUICharactere(guiPlayerTmp);
 
 			guiPlayerTmp = new GUIPlayer(userInterface, 31, 15, entite.Direction.SOUTH, 100, Team.BLEU);
-			playerTmp = new Player(31, 15, ma_map, Direction.SOUTH, 1, 1, 1, 1, 100, 1, 1, Team.BLEU,
+			playerTmp = new Player(31, 15, ma_map, Direction.SOUTH, 1, 1, 1, 1, 10, 1, 1, Team.BLEU,
 					new Base(31, 15, Team.BLEU), guiPlayerTmp);
 
 			listPlayer.add(playerTmp);
@@ -384,7 +384,9 @@ public class Engine {
 				&& this.playPhase == PlayPhase.playerMovement) {
 			this.playPhase = PlayPhase.behaviorModification;
 		} else if (key == Input.KEY_SPACE) {
-			this.playPhase = PlayPhase.automatonExecution;
+			// this.playPhase = PlayPhase.automatonExecution;
+			this.playPhase = PlayPhase.playerMovement;
+			listPlayer.get(0).setMovePoints(10);
 		}
 	}
 
