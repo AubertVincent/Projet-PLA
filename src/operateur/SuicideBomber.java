@@ -4,6 +4,8 @@ import carte.Cell;
 import carte.Map;
 import exceptions.NotDoableException;
 import personnages.Robot;
+import pickable.PickAble;
+import pickable.PickSuicideBomber;
 
 public class SuicideBomber extends Attack {
 
@@ -55,7 +57,17 @@ public class SuicideBomber extends Attack {
 			r.setLife(this.lastLife);
 			r.cancelSuicideBomber();
 		}
-
 	}
+
+	@Override
+	public Class<? extends PickAble> getPickable() {
+		return PickSuicideBomber.class;
+	}
+
+	@Override
+	public String toString() {
+		return "AS";
+	}
+
 
 }

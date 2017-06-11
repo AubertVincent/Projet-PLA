@@ -6,6 +6,8 @@ import entite.Direction;
 import entite.Team;
 import exceptions.NotDoableException;
 import personnages.Robot;
+import pickable.PickAble;
+import pickable.PickClassicAck;
 
 public class ClassicAck extends Attack {
 
@@ -118,6 +120,16 @@ public class ClassicAck extends Attack {
 			r.cancelClassicAtk(target);
 
 		}
-
 	}
+
+	@Override
+	public Class<? extends PickAble> getPickable() {
+		return PickClassicAck.class;
+	}
+
+	@Override
+	public String toString() {
+		return "AC";
+	}
+
 }

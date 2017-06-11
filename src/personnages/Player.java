@@ -1,7 +1,5 @@
 package personnages;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,7 +10,7 @@ import entite.Team;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
-import pickable.*;
+import pickable.Picked;
 
 public class Player extends Character {
 
@@ -103,24 +101,8 @@ public class Player extends Character {
 	// return besace.get(op);
 	// }
 
-	<<<<<<<HEAD
-
-	public List<Robot> getListRobot() {
-		return listRobot;
-	}
-
-	// TODO
-	public void CreateRobot() {
-=======
-
-	public RobotList getListRobot() {
+	public RobotList getRobotList() {
 		return robotList;
-	}
-
-	// TODO
-	public void createRobot() {
->>>>>>> moteur
-
 	}
 
 	@Override
@@ -179,13 +161,7 @@ public class Player extends Character {
 		return false;
 	}
 
-	<<<<<<<HEAD
-
 	public Besace getBesace() {
-=======
-
-	public Map<Class<? extends PickAble>, Integer> getBesace() {
->>>>>>> moteur
 		return besace;
 	}
 

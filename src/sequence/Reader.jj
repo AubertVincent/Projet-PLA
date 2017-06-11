@@ -124,7 +124,7 @@ TOKEN :
 | < DIGIT : ([ "0"-"9" ])+ >
 | < LPAR : "(" >
 | < RPAR : ")" >
-| < BARRE : "|" >
+| < RANDOMBAR : "/" >
 | < SEMICOLON : ";" >
 | < CHEVRON : ">" >
 | < PT : "." >
@@ -135,7 +135,7 @@ TOKEN :
     )+ >
 | < BEH :
     (
-      < BARRE >
+      < RANDOMBAR >
     | < SEMICOLON >
     | < CHEVRON >
     ) 
@@ -146,7 +146,7 @@ Behavior BEH() :
 {
 }
 {
-  < BARRE >
+  < RANDOMBAR >
   {
     return new RandomBar();
   }

@@ -14,4 +14,19 @@ public enum Direction {
 		return value;
 	}
 
+	@Override
+	public String toString() {
+		switch (this) {
+		case NORTH:
+			return "N";
+		case WEST:
+			return "W";
+		case SOUTH:
+			return "S";
+		case EAST:
+			return "E";
+		}
+		return null;
+	}
+
 }

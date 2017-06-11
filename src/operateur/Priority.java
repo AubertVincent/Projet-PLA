@@ -40,6 +40,11 @@ public class Priority extends Behavior {
 
 	}
 
+	@Override
+	public String toString() {
+		return ">";
+	}
+
 	// @Override
 	// protected void execute(Entity e) throws GameException {
 	// if (isDoable(e)) {

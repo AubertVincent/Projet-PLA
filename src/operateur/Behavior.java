@@ -1,8 +1,8 @@
 package operateur;
 
-import sequence._Sequence;
-import exceptions.*;
+import exceptions.NotDoableException;
 import personnages.Robot;
+import sequence._Sequence;
 
 public abstract class Behavior {
 

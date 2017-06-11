@@ -6,6 +6,11 @@ import sequence._Sequence;
 
 public class Succession extends Behavior {
 
+	@Override
+	public String toString() {
+		return ";";
+	}
+
 	/**
 	 * Set a new behavior by means of its 2 actions
 	 * 

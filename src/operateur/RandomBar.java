@@ -55,4 +55,10 @@ public class RandomBar extends Behavior {
 			throw new NotDoableException("Action impossible");
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "/";
+	}
+
 }
