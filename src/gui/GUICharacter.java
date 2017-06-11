@@ -151,7 +151,7 @@ public abstract class GUICharacter {
 		AckDuration = animationDuration * 6;
 
 		this.team = team;
-		this.player = null;
+
 	}
 
 	/**
@@ -229,13 +229,9 @@ public abstract class GUICharacter {
 		return this.team;
 	}
 
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
-
 	protected void movePlayer(Engine engine, Direction direction) {
 		if (!isMoving() && !isAttacking()) {
-			if (engine.doMove(direction, this, engine.ma_map)) {
+			if (engine.doMove(direction, this, engine.getMap())) {
 				this.goToDirection(direction);
 			}
 		}

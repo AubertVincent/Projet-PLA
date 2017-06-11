@@ -11,15 +11,19 @@ import carte.Cell;
 import carte.Coordinates;
 import carte.Map;
 import entite.Direction;
+import entite.Entity;
 import entite.Team;
 import exceptions.NotDoableException;
 import gui.GUI;
 import gui.GUICharacter;
 import gui.GUIPlayer;
+import gui.GUIRobot;
 import personnages.Besace;
 import personnages.Player;
 import personnages.Robot;
+import pickable.PickAble;
 import reader.Reader;
+import sequence._Sequence;
 
 public class Engine {
 
@@ -41,14 +45,16 @@ public class Engine {
 		listPlayer = new ArrayList<Player>();
 		try {
 			guiPlayerTmp = new GUIPlayer(userInterface, 2, 4, entite.Direction.SOUTH, 100, Team.ROUGE);
-			playerTmp = new Player(2, 4, ma_map, Direction.SOUTH, 1, 1, 1, 1, 2, 1, 1, Team.ROUGE,
+
+			playerTmp = new Player(2, 4, ma_map, Direction.SOUTH, 1, 1, 1, 1, 100, 1, 1, Team.ROUGE,
 					new Base(2, 4, Team.ROUGE), guiPlayerTmp);
 			listPlayer.add(playerTmp);
 			guiPlayerTmp.setPlayer(playerTmp);
 			userInterface.addGUICharactere(guiPlayerTmp);
 
 			guiPlayerTmp = new GUIPlayer(userInterface, 31, 15, entite.Direction.SOUTH, 100, Team.BLEU);
-			playerTmp = new Player(31, 15, ma_map, Direction.SOUTH, 1, 1, 1, 1, 2, 1, 1, Team.BLEU,
+
+			playerTmp = new Player(31, 15, ma_map, Direction.SOUTH, 1, 1, 1, 1, 100, 1, 1, Team.BLEU,
 					new Base(31, 15, Team.BLEU), guiPlayerTmp);
 
 			listPlayer.add(playerTmp);
@@ -86,6 +92,10 @@ public class Engine {
 		return this.playPhase;
 	}
 
+	public Map getMap() {
+		return this.ma_map;
+	}
+
 	/**
 	 * 
 	 * @param dir
@@ -96,7 +106,7 @@ public class Engine {
 	 *            The map with all the entity referenced
 	 * @return True is the mouvement is possible, false else
 	 */
-	// TODO : Handle no more movePoint
+	// TODO : Handle with the pickup of pickable when pass on a cell
 	public boolean doMove(Direction dir, GUICharacter perso, Map map) {
 
 		if (this.playPhase.equals(PlayPhase.playerMovement)) {
@@ -109,7 +119,8 @@ public class Engine {
 					switch (dir) {
 
 					case SOUTH:
-						if (map.isFree(player.getX(), player.getY() + 1)) {
+						if (map.isFree(player.getX(), player.getY() + 1)
+								|| map.isPickAble(player.getX(), player.getY() + 1)) {
 
 							player.setY(player.getY() + 1);
 							map.Free(player.getX(), player.getY() - 1);
@@ -118,7 +129,8 @@ public class Engine {
 						break;
 
 					case NORTH:
-						if (map.isFree(player.getX(), player.getY() - 1)) {
+						if (map.isFree(player.getX(), player.getY() - 1)
+								|| map.isPickAble(player.getX(), player.getY() - 1)) {
 							player.setY(player.getY() - 1);
 							map.Free(player.getX(), player.getY() + 1);
 							moveSucces = true;
@@ -126,7 +138,8 @@ public class Engine {
 						break;
 
 					case WEST:
-						if (map.isFree(player.getX() - 1, player.getY())) {
+						if (map.isFree(player.getX() - 1, player.getY())
+								|| map.isPickAble(player.getX() - 1, player.getY())) {
 							player.setX(player.getX() - 1);
 							map.Free(player.getX() + 1, player.getY());
 							moveSucces = true;
@@ -134,7 +147,8 @@ public class Engine {
 						break;
 
 					case EAST:
-						if (map.isFree(player.getX() + 1, player.getY())) {
+						if (map.isFree(player.getX() + 1, player.getY())
+								|| map.isPickAble(player.getX() + 1, player.getY())) {
 							player.setX(player.getX() + 1);
 							map.Free(player.getX() - 1, player.getY());
 							moveSucces = true;
@@ -153,7 +167,8 @@ public class Engine {
 					switch (dir) {
 
 					case SOUTH:
-						if (map.isFree(player.getX(), player.getY() + 1)) {
+						if (map.isFree(player.getX(), player.getY() + 1)
+								|| map.isPickAble(player.getX(), player.getY() + 1)) {
 							player.setY(player.getY() + 1);
 							map.Free(player.getX(), player.getY() - 1);
 							moveSucces = true;
@@ -161,7 +176,8 @@ public class Engine {
 						break;
 
 					case NORTH:
-						if (map.isFree(player.getX(), player.getY() - 1)) {
+						if (map.isFree(player.getX(), player.getY() - 1)
+								|| map.isPickAble(player.getX(), player.getY() - 1)) {
 							player.setY(player.getY() - 1);
 							map.Free(player.getX(), player.getY() + 1);
 							moveSucces = true;
@@ -169,7 +185,8 @@ public class Engine {
 						break;
 
 					case WEST:
-						if (map.isFree(player.getX() - 1, player.getY())) {
+						if (map.isFree(player.getX() - 1, player.getY())
+								|| map.isPickAble(player.getX() - 1, player.getY())) {
 							player.setX(player.getX() - 1);
 							map.Free(player.getX() + 1, player.getY());
 							moveSucces = true;
@@ -178,7 +195,8 @@ public class Engine {
 
 					case EAST:
 
-						if (map.isFree(player.getX() + 1, player.getY())) {
+						if (map.isFree(player.getX() + 1, player.getY())
+								|| map.isPickAble(player.getX() + 1, player.getY())) {
 							player.setX(player.getX() + 1);
 							map.Free(player.getX() - 1, player.getY());
 							moveSucces = true;
@@ -192,14 +210,24 @@ public class Engine {
 				return moveSucces;
 			}
 
+			// Gestion of the besace
 			if (moveSucces) {
+
+				if (map.isPickAble(player.getX(), player.getY())) {
+					Besace PlayerBesace = player.getBesace();
+					for (Entity e : map.getEntity(player.getX(), player.getY())) {
+						PlayerBesace.add(((PickAble) e).getClass());
+					}
+				}
 				map.setEntity(player.getX(), player.getY(), player);
 				player.setMovePoints(player.getMovePoints() - 1);
 			}
 
 			setPlayPhase(0);
 			return moveSucces;
-		} else {
+		} else
+
+		{
 			return false;
 		}
 	}
@@ -283,46 +311,52 @@ public class Engine {
 
 	}
 
-	public void createRobot(GUIPlayer perso, GUI userInterface) {
-		System.out.println("\n \n Je suis la _\n \n");
+	public void createRobot(GUIPlayer GUIPlayer, GUI userInterface, Map map) {
 		// TODO : création d'un robot
 		int Xbase;
 		int Ybase;
 		Player player;
 
-		player = getPlayer(perso.getTeam());
+		player = GUIPlayer.getPlayer();
 		Xbase = player.getBase().getX();
 		Ybase = player.getBase().getY();
 		try {
-			Robot robot = new Robot(Xbase, Ybase, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 1, 1,
-					player.getTeam(), 1, player.getBase(), Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player, perso);
-			player.addRobot(new Coordinates(Xbase, Ybase), robot);
+			if (map.isFree(Xbase, Ybase)) {
+				Robot robot = new Robot(Xbase, Ybase, ma_map, Direction.SOUTH, 1, 1, 1, 1, 1, 1, player.getTeam(), 1,
+						player.getBase(), Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player, GUIPlayer);
+				player.addRobot(new Coordinates(Xbase, Ybase), robot);
+				map.setEntity(Xbase, Ybase, robot);
+				GUIPlayer.createRobot(robot, userInterface);
+			} else {
+				// TODO find the player's base nearest free cell
 
-			perso.createRobot(robot, userInterface);
+			}
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void behaviorModif(GUICharacter robot) {
-
+	public void behaviorModif(GUIRobot GUIRobot, GUI userInterface, Map map) {
+		Player player = getPlayer(GUIRobot.getTeam());
+		Robot robot = GUIRobot.getRobot();
+		// TODO : gestion du parseur
+		// pour reccuperer la nouveau sequence
+		_Sequence newAutomaton = Reader.parse("(MC2E)");
+		robot.setAutomaton(newAutomaton);
 	}
 
-	private void setPlayPhase(int key) {
-		if (getPlayer(Team.ROUGE).getMovePoints() == 0 && getPlayer(Team.BLEU).getMovePoints() == 0) {
+	public void setPlayPhase(int key) {
+		if (getPlayer(Team.ROUGE).getMovePoints() == 0 && getPlayer(Team.BLEU).getMovePoints() == 0
+				&& this.playPhase == PlayPhase.playerMovement) {
 			this.playPhase = PlayPhase.behaviorModification;
-		} else if (key == Input.KEY_ENTER) {
+		} else if (key == Input.KEY_SPACE) {
 			this.playPhase = PlayPhase.automatonExecution;
 		}
 	}
 
-	private Player getPlayerFromXY(int x, int y) {
-		for (Player p : listPlayer) {
-			if (p.getX() == x && p.getY() == y) {
-				return p;
-			}
-		}
-		return null;
+	public void executeAutomaton(GUI userInterface) {
+		// TODO : executer pour tout les robots des deux persoannges, ne pas
+		// oublier le render a chaque mouvement afin d'éviter téléportation
 	}
 
 	/**
@@ -335,18 +369,5 @@ public class Engine {
 	 * @param mouseYCell
 	 *            Y coordinate of the clicked tile
 	 */
-	// public void mousePressed(int button, int mouseXCell, int mouseYCell) {
-	// // TODO A vous de jouer -> decider que faire lors d'un clic de souris
-	//
-	// // @Conseil :
-	// Player player;
-	// Robot robot;
-	// if (playPhase == PlayPhase.behaviorModification) {
-	// // Gestion clic
-	// // Search the player on the Cell x,y
-	// player = this.getPlayerFromXY(mouseXCell, mouseYCell);
-	//
-	// }
-	// }
 
 }

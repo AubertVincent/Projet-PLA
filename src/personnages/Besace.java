@@ -76,4 +76,15 @@ public class Besace {
 	protected Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
+
+	// Test
+	// public void print() {
+
+	// for (Iterator<Class<? extends PickAble>> mapIter =
+	// besace.keySet().iterator(); mapIter.hasNext();) {
+	// System.out.print(mapIter.toString() + " number : " +
+	// besace.get(mapIter.next()));
+	// }
+	// }
+
 }

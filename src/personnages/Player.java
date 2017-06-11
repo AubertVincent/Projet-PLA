@@ -72,6 +72,7 @@ public class Player extends Character {
 		besace.add(PickRecall.class);
 		besace.add(PickSuicideBomber.class);
 		besace.add(PickTunnel.class);
+
 	}
 
 	public void addRobot(Object obj, Robot robot) {

@@ -21,6 +21,8 @@ public class GUIPlayer extends GUICharacter {
 
 	private final List<GUIRobot> guiRobotlist;
 
+	private Player player;
+
 	// The Map<ActionClass, Integer> of the yet added class->number of sprites
 	// of its animation
 	private static Map<Class<? extends Action>, Integer> numberOfSprites = new HashMap<Class<? extends Action>, Integer>();
@@ -55,16 +57,26 @@ public class GUIPlayer extends GUICharacter {
 		guiRobotlist = new ArrayList<GUIRobot>();
 		animationsList.add(ClassicAck.class);
 		animationsList.add(MoveDir.class);
+		this.player = null;
 	}
 
 	public List<GUIRobot> getGuiRobotList() {
 		return this.guiRobotlist;
 	}
 
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public Player getPlayer() {
+		return this.player;
+	}
+
 	public void createRobot(Robot robot, GUI userinterface) throws SlickException {
 		try {
 			GUIRobot tmp = new GUIRobot(userinterface, robot.getX(), robot.getY(), Direction.SOUTH, 100,
 					robot.getTeam());
+
 			guiRobotlist.add(tmp);
 		} catch (Exception e) {
 			e.getMessage();

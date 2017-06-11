@@ -17,6 +17,7 @@ import personnages.Robot;
 
 public class GUIRobot extends GUICharacter {
 
+	Robot robot;
 	// The Map<ActionClass, Integer> of the yet added class->number of sprites
 	// of its animation
 	private static Map<Class<? extends Action>, Integer> numberOfSprites = new HashMap<Class<? extends Action>, Integer>();
@@ -35,9 +36,20 @@ public class GUIRobot extends GUICharacter {
 		List<Class<? extends Action>> possibleActionList = Robot.getPossibleActionsList();
 		for (Iterator<Class<? extends Action>> action = possibleActionList.iterator(); action.hasNext();) {
 			Class<? extends Action> currentAction = action.next();
-			actionSpritePath.put(currentAction, "res/SpriteSheet" + currentAction.toString());
+			actionSpritePath.put(currentAction, "res/Armure/SpriteSheet" + currentAction.getSimpleName() + ".png");
 			actionSpriteNumberOfSprites.put(currentAction, numberOfSprites.get(currentAction));
+			System.out
+					.println("For " + currentAction.getSimpleName() + " will load " + numberOfSprites.get(currentAction)
+							+ " sprites from " + "res/Armure/SpriteSheet" + currentAction.getSimpleName() + ".png");
 		}
+	}
+
+	public void setRobot(Robot robot) {
+		this.robot = robot;
+	}
+
+	public Robot getRobot() {
+		return this.robot;
 	}
 
 	// TODO : bound to be dynamic when something is picked
@@ -49,6 +61,7 @@ public class GUIRobot extends GUICharacter {
 		super(userInterface, x, y, dir, animationDuration, team);
 		animationsList.add(ClassicAck.class);
 		animationsList.add(MoveDir.class);
+		this.robot = null;
 	}
 
 }

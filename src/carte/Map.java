@@ -12,6 +12,7 @@ import pickable.PickAble;
 
 public class Map {
 
+	private int nbrOperatorInit = 128;
 	private int width = 34;
 	private int height = 18;
 
@@ -26,8 +27,11 @@ public class Map {
 	}
 
 	public void init(GUI userInterface, Engine engine) {
-		map[2][4].setEntity(engine.getPlayer(Team.ROUGE));
-		map[31][15].setEntity(engine.getPlayer(Team.BLEU));
+		map[engine.getPlayer(Team.ROUGE).getX()][engine.getPlayer(Team.ROUGE).getY()]
+				.setEntity(engine.getPlayer(Team.ROUGE));
+		map[engine.getPlayer(Team.BLEU).getX()][engine.getPlayer(Team.BLEU).getY()]
+				.setEntity(engine.getPlayer(Team.BLEU));
+		// Set the obstacles on the map
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				if (userInterface.isObstacle(i, j)) {
@@ -35,6 +39,29 @@ public class Map {
 				}
 			}
 		}
+		// Once obstacles are set,
+		// Set random operator at random places
+		int randomX = (int) (Math.random() * (width));
+		int randomY = (int) (Math.random() * (height));
+		PickAble newPickAble;
+		for (int i = 0; i < nbrOperatorInit; i++) {
+			while (!map[randomX][randomY].isFree()) {
+				randomX = (int) (Math.random() * (width));
+				randomY = (int) (Math.random() * (height));
+			}
+			newPickAble = PickAble.randomPickable((int) ((int) 1 + (Math.random() * (9))), randomX, randomY, this);
+			map[randomX][randomY].setEntity(newPickAble);
+			randomX = (int) (Math.random() * (width));
+			randomY = (int) (Math.random() * (height));
+		}
+	}
+
+	public int mapHeight() {
+		return this.height;
+	}
+
+	public int mapWidth() {
+		return this.width;
 	}
 
 	public boolean isEmpty() {
@@ -68,20 +95,42 @@ public class Map {
 		return map[x][y].getListEntity();
 	}
 
-	// private void printMap() {
-	// for (int i = 0; i < width; i++) {
-	// for (int j = 0; j < height; j++) {
-	// System.out.println("case :" + i + ',' + j + " " + map[i][j].isFree());
-	// }
-	// }
-	// }
+	private void printMap() {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				if (map[i][j].getListEntity().size() != 0) {
+					System.out.println(
+							"case :" + i + ',' + j + " " + map[i][j].getListEntity().get(0).getClass().toString());
 
-	// public static void main(String[] args) {
-	// Map ma_map = new Map();
-	// Map.initMap();
-	// Map.printMap();
-	//
-	// }
+				}
+			}
+		}
+	}
+
+	private void testObstacle() {
+		// Once obstacles are set,
+		// Set random operator at random places
+		int randomX = (int) (Math.random() * (width));
+		int randomY = (int) (Math.random() * (height));
+		PickAble newPickAble;
+		for (int i = 0; i < nbrOperatorInit; i++) {
+			while (!map[randomX][randomY].isFree()) {
+				randomX = (int) (Math.random() * (width));
+				randomY = (int) (Math.random() * (height));
+			}
+			newPickAble = PickAble.randomPickable((int) ((int) 1 + (Math.random() * (9))), randomX, randomY, this);
+			map[randomX][randomY].setEntity(newPickAble);
+			randomX = (int) (Math.random() * (width));
+			randomY = (int) (Math.random() * (height));
+		}
+	}
+
+	public static void main(String[] args) {
+		Map ma_map = new Map();
+		ma_map.testObstacle();
+		ma_map.printMap();
+
+	}
 
 	/**
 	 * return the list of the entities present on the cell(x,y)
@@ -147,6 +196,19 @@ public class Map {
 			}
 		}
 		return true;
+	}
+
+	public boolean isPickAble(int x, int y) {
+		List<Entity> EntityList = map[x][y].getListEntity();
+		boolean allIsPickAble = true;
+		if (!EntityList.equals(null)) {
+			for (Entity e : EntityList) {
+				if (!e.isPickAble()) {
+					return false;
+				}
+			}
+		}
+		return allIsPickAble;
 	}
 
 }

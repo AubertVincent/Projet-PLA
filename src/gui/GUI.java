@@ -99,7 +99,9 @@ public class GUI extends BasicGame {
 		map.render(0, 0, 2);
 		for (GUIPlayer p : this.guiPlayerList) {
 			p.render(g);
-
+			for (GUIRobot r : p.getGuiRobotList()) {
+				r.render(g);
+			}
 		}
 
 		map.render(0, 0, 4);
@@ -154,20 +156,31 @@ public class GUI extends BasicGame {
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
 		for (GUIPlayer p : this.guiPlayerList) {
-
 			p.update(this, delta);
+			for (GUIRobot r : p.getGuiRobotList()) {
+				r.update(this, delta);
+			}
 		}
 		this.inputTextField.update(container);
 
 	}
 
 	private GUICharacter getGUICharactereFromMouse(int x, int y) throws NotDoableException {
-		for (GUICharacter p : guiPlayerList) {
+		for (GUIPlayer p : guiPlayerList) {
 			if (p.getCurrentX() == x && p.getCurrentY() == y) {
 				return p;
 			}
+			for (GUIRobot r : p.getGuiRobotList()) {
+				if (r.getCurrentX() == x && r.getCurrentY() == y) {
+					return r;
+				}
+			}
 		}
 		throw new NotDoableException("Pas de personnage sur cette case ou mauvaise phase de jeu");
+	}
+
+	public List<GUIPlayer> getPlayerList() {
+		return this.guiPlayerList;
 	}
 
 	@Override
@@ -179,11 +192,13 @@ public class GUI extends BasicGame {
 			perso = getGUICharactereFromMouse(mouseXCell, mouseYCell);
 			System.out.println("LeftClick on (" + mouseXCell + ", " + mouseYCell + ")");
 			if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
-				behaviorInputNeeded = true;
+
 				if (perso.getClass().equals(GUIPlayer.class)) {
-					engine.createRobot((GUIPlayer) perso, this);
+					behaviorInputNeeded = true;
+					engine.createRobot((GUIPlayer) perso, this, engine.getMap());
 				} else {
-					engine.behaviorModif((GUIRobot) perso);
+					behaviorInputNeeded = true;
+					engine.behaviorModif((GUIRobot) perso, this, engine.getMap());
 				}
 			}
 		} catch (Exception e) {
@@ -205,9 +220,7 @@ public class GUI extends BasicGame {
 	public void keyPressed(int key, char c) {
 		try {
 			System.out.println("Phase de jeu : " + engine.getPlayPhase().toString());
-			// if (engine.getPlayPhase() == PlayPhase.behaviorModification) {
-			// engine.createRobot();
-			// }
+
 			if (engine.getPlayPhase().equals(PlayPhase.playerMovement)) {
 				switch (key) {
 
@@ -259,6 +272,13 @@ public class GUI extends BasicGame {
 				case Input.KEY_B:
 					guiPlayerList.get(1).Attack(engine, Direction.EAST);
 					break;
+				}
+			}
+
+			if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
+				if (key == Input.KEY_SPACE) {
+					engine.setPlayPhase(Input.KEY_SPACE);
+					engine.executeAutomaton(this);
 				}
 			}
 			// } else if
