@@ -37,10 +37,6 @@ public class GUI extends BasicGame {
 
 	protected boolean behaviorInputNeeded = true;
 
-	// TODO Bound to be some kind of list ?
-	// private GUIPlayer perso1;
-	// private GUIPlayer perso2;
-
 	private List<GUIPlayer> guiPlayerList;
 	private Engine engine;
 
@@ -68,22 +64,22 @@ public class GUI extends BasicGame {
 		this.container = container;
 		map = new TiledMap("res/map.tmx");
 
-		try {
-			// perso1 = new GUIPlayer(this, 2, 4, entite.Direction.SOUTH, 100,
-			// Team.ROUGE);
-			// guiCharactersList.add(perso1);
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			// perso2 = new GUIPlayer(this, 31, 15, entite.Direction.SOUTH, 100,
-			// Team.BLEU);
-			// guiCharactersList.add(perso2);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// try {
+		// // perso1 = new GUIPlayer(this, 2, 4, entite.Direction.SOUTH, 100,
+		// // Team.ROUGE);
+		// // guiCharactersList.add(perso1);
+		// } catch (Exception e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
+		// try {
+		// // perso2 = new GUIPlayer(this, 31, 15, entite.Direction.SOUTH, 100,
+		// // Team.BLEU);
+		// // guiCharactersList.add(perso2);
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 
 		this.rectBesace = new GUIBesace(container, WindowWidth, WindowHeight, WidthRect, HeightRect, cellWidth,
 				TextFieldHeight);
