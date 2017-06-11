@@ -108,11 +108,6 @@ public class Player extends Character {
 		return robotList;
 	}
 
-	// TODO
-	public void createRobot() {
-
-	}
-
 	@Override
 	public boolean isPlayer() {
 		return true;

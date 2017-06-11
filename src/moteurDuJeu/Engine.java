@@ -300,7 +300,6 @@ public class Engine {
 
 			perso.createRobot(robot, userInterface);
 		} catch (SlickException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

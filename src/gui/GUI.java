@@ -18,7 +18,7 @@ import entite.Team;
 import exceptions.NotDoableException;
 import moteurDuJeu.Engine;
 import moteurDuJeu.PlayPhase;
-import personnages.Player;
+import personnages.Besace;
 
 public class GUI extends BasicGame {
 
@@ -69,7 +69,6 @@ public class GUI extends BasicGame {
 		// // Team.ROUGE);
 		// // guiCharactersList.add(perso1);
 		// } catch (Exception e1) {
-		// // TODO Auto-generated catch block
 		// e1.printStackTrace();
 		// }
 		// try {
@@ -77,7 +76,6 @@ public class GUI extends BasicGame {
 		// // Team.BLEU);
 		// // guiCharactersList.add(perso2);
 		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
 		// e.printStackTrace();
 		// }
 
@@ -108,9 +106,9 @@ public class GUI extends BasicGame {
 		map.render(0, 0, 5);
 
 		if (behaviorInputNeeded) {
-			Player player;
-			player = engine.getPlayer(Team.ROUGE);
-			this.rectBesace.render(container, g, player.getBesace());
+			Besace besace;
+			besace = engine.getPlayer(Team.ROUGE).getBesace();
+			this.rectBesace.render(container, g, besace);
 			this.inputTextField.render(container, g);
 		}
 	}
@@ -189,7 +187,6 @@ public class GUI extends BasicGame {
 				}
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.getMessage();
 		}
 

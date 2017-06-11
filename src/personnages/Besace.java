@@ -37,7 +37,7 @@ public class Besace {
 		possiblePickAbleList.add(PickRandomMove.class);
 	}
 
-	public void initBesace() {
+	public void init() {
 		for (Iterator<Class<? extends PickAble>> mapIter = possiblePickAbleList.iterator(); mapIter.hasNext();) {
 			Class<? extends PickAble> currentClass;
 			currentClass = mapIter.next();
@@ -49,7 +49,7 @@ public class Besace {
 	public Besace() {
 		super();
 		besace = new HashMap<Class<? extends PickAble>, Integer>();
-		this.initBesace();
+		this.init();
 	}
 
 	public Map<Class<? extends PickAble>, Integer> get() {
