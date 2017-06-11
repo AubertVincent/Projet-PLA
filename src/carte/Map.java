@@ -34,8 +34,10 @@ public class Map {
 	}
 
 	public void init(GUI userInterface, Engine engine) {
-		map[2][4].setEntity(engine.getPlayer(Team.ROUGE));
-		map[31][15].setEntity(engine.getPlayer(Team.BLEU));
+		map[engine.getPlayer(Team.ROUGE).getX()][engine.getPlayer(Team.ROUGE).getY()]
+				.setEntity(engine.getPlayer(Team.ROUGE));
+		map[engine.getPlayer(Team.BLEU).getX()][engine.getPlayer(Team.BLEU).getY()]
+				.setEntity(engine.getPlayer(Team.BLEU));
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				if (userInterface.isObstacle(i, j)) {
@@ -43,6 +45,14 @@ public class Map {
 				}
 			}
 		}
+	}
+
+	public int mapHeight() {
+		return this.height;
+	}
+
+	public int mapWidth() {
+		return this.width;
 	}
 
 	public boolean isEmpty() {
