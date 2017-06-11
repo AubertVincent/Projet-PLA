@@ -23,4 +23,44 @@ public abstract class PickAble extends Entity {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param classReceived
+	 *            Name of content in the bag
+	 * @return String that is displayed to the player
+	 */
+	public static String classToString(String classReceived) {
+		String toString = classReceived;
+		switch (classReceived) {
+		case "PickMoveDir":
+			toString = "MC : Mouvement Classique";
+			break;
+		case "PickRecall":
+			toString = "MR : Mouvement Rappel";
+			break;
+		case "PickTunnel":
+			toString = "MT : Mouvement Tunnel";
+			break;
+		case "PickRandomMove":
+			toString = "RM : Mouvement Random";
+			break;
+		case "PickSuccession":
+			toString = "; : Succession";
+			break;
+		case "PickRandomBar":
+			toString = "/ : Random";
+			break;
+		case "PickPriority":
+			toString = "> : Priorité";
+			break;
+		case "PickClassicAck":
+			toString = "AC : Attaque Classique";
+			break;
+		case "PickSuicideBomber":
+			toString = "AS : Attaque Suicide";
+			break;
+		}
+
+		return toString;
+	}
 }

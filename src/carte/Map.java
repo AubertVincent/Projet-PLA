@@ -2,13 +2,12 @@ package carte;
 
 import java.util.List;
 
-import entite.Direction;
 import entite.Entity;
 import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUI;
-import personnages.Player;
+import moteurDuJeu.Engine;
 import pickable.PickAble;
 
 public class Map {
@@ -26,9 +25,9 @@ public class Map {
 		}
 	}
 
-	public void initMap(GUI userInterface) {
-		map[2][4].setEntity(new Player(2, 4, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1, Team.ROUGE));
-		map[31][15].setEntity(new Player(31, 15, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1, Team.BLEU));
+	public void init(GUI userInterface, Engine engine) {
+		map[2][4].setEntity(engine.getPlayer(Team.ROUGE));
+		map[31][15].setEntity(engine.getPlayer(Team.BLEU));
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				if (userInterface.isObstacle(i, j)) {

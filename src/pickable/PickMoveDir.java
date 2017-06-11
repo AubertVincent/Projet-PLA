@@ -8,5 +8,8 @@ public class PickMoveDir extends PickAble {
 		super(x, y, entityMap);
 	}
 
-
+	@Override
+	public String toString() {
+		return "MC : Mouvement";
+	}
 }

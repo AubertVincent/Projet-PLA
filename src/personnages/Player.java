@@ -4,17 +4,20 @@ import java.util.LinkedList;
 import java.util.List;
 
 import carte.Base;
-import carte.Map;
 import entite.Direction;
 import entite.Team;
+import gui.GUICharacter;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
-import pickable.Picked;
+import pickable.PickMoveDir;
+import pickable.PickRecall;
+import pickable.PickSuicideBomber;
+import pickable.PickTunnel;
 
 public class Player extends Character {
 
-	private Besace besace;
+	public Besace besace;
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 	static {
@@ -55,20 +58,20 @@ public class Player extends Character {
 		return possibleActionsList;
 	}
 
-	public Player(int x, int y, Map entityMap, List<Picked> myOwnBesace, Direction direction, int life, int vision,
-			int attack, int range, int movePoints, int recall, Team team, int attackPoints, Base base, Besace besace,
-			RobotList robotList) {
-		super(x, y, entityMap, myOwnBesace, direction, life, vision, attack, range, movePoints, recall, team,
-				attackPoints, base);
-		this.besace = new Besace();
-		this.robotList = robotList;
-	}
+	PickMoveDir move;
 
-	public Player(int x, int y, carte.Map entityMap, Besace besace, Direction direction, int life, int vision,
-			int attack, int range, int movePoints, int recall, int attackPoints, Team team, Base base) {
-		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
-				base);
+	public Player(int x, int y, carte.Map entityMap, Direction direction, int life, int vision, int attack, int range,
+			int movePoints, int recall, int attackPoints, Team team, Base base, GUICharacter GUIPlayer) {
+		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, team, attackPoints, base,
+				GUIPlayer);
 		robotList = new RobotList();
+
+		besace = new Besace();
+
+		besace.add(PickMoveDir.class);
+		besace.add(PickRecall.class);
+		besace.add(PickSuicideBomber.class);
+		besace.add(PickTunnel.class);
 	}
 
 	public void addRobot(Object obj, Robot robot) {

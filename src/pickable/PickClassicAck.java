@@ -8,4 +8,9 @@ public class PickClassicAck extends PickAble {
 		super(x, y, entityMap);
 	}
 
+	@Override
+	public String toString() {
+		return "AC : Attaque";
+	}
+
 }

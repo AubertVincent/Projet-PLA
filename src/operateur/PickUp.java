@@ -13,23 +13,23 @@ public class PickUp extends Action {
 	}
 
 	@Override
-	public void execute(Robot r) throws NotDoableException {
-		if (isDoable(r)) {
+	public void execute(Robot robot) throws NotDoableException {
+		if (isDoable(robot)) {
 			throw new NotDoableException("Impossible de ramasser"); // Should
 																	// never
 																	// happen
 		} else {
-			r.pickUp();
+			robot.pickUp();
 
 		}
 	}
 
 	@Override
-	public void cancel(Robot r) throws NotDoableException {
+	public void cancel(Robot robot) throws NotDoableException {
 		if (isDoable(r)) {
 			throw new NotDoableException("Impossible de ramasser");
 		} else {
-			r.cancelPickUp();
+			robot.cancelPickUp();
 		}
 
 	}
