@@ -20,9 +20,9 @@ public class SequenceCorrector {
 		_IncompleteSequence incSeq;
 		try {
 			incSeq = produceIncompleteSequence(besace, seq);
+			System.out.println(incSeq.toString());
 			return sequencesToCorrectedList(seq, incSeq);
 		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -30,35 +30,69 @@ public class SequenceCorrector {
 
 	private static _IncompleteSequence produceIncompleteSequence(Besace besace, _Sequence seq)
 			throws CloneNotSupportedException {
+		return produceIncompleteSequenceAux(besace, seq).getFirst();
+	}
+
+	// FIXME : see execution of Test class
+	// It produces an incorrect incSeq : at Emptyleaf & EmptyRootTree, it puts
+	// old leaf and tree
+	private static Pair<_IncompleteSequence, Besace> produceIncompleteSequenceAux(Besace besace, _Sequence seq)
+			throws CloneNotSupportedException {
 		// Will be used as a "current besace state" during tree exploration
-		Besace besaceCopy = (Besace) besace.clone();
+		Besace besaceCopy = new Besace(besace);
 
 		// Base case
 		if (seq.isAction()) {
 			Action seqAct = (Action) seq;
 			// Available leaf case
-			if (besaceCopy.containsKey(seqAct.getPickable()) && besaceCopy.get(seqAct.getPickable()) > 0) {
+			if (besaceCopy.containsKey(seqAct.getPickable()) && (besaceCopy.get(seqAct.getPickable()) > 0)) {
+				System.out.println("Available leaf case : " + seqAct.toString());
 				besaceCopy.remove(seqAct.getPickable());
-				return (_IncompleteSequence) seq;
+				return new Pair<_IncompleteSequence, Besace>((_IncompleteSequence) seq, besaceCopy);
 			}
 			// Unavailable leaf case
 			else {
-				return new EmptyLeaf();
+				System.out.println("Unavailable leaf case : " + seqAct.getPickable().getSimpleName() + "-> EmptyLeaf");
+				return new Pair<_IncompleteSequence, Besace>(new EmptyLeaf(), besaceCopy);
 			}
 		}
 		// Recursive case
 		else if (seq.isTree()) {
 			Tree tree = (Tree) seq;
 			// Available op case
-			if (besaceCopy.containsKey(tree.getOpPickable()) && besaceCopy.get(tree.getOpPickable()) > 0) {
+			if (besaceCopy.containsKey(tree.getOpPickable()) && (besaceCopy.get(tree.getOpPickable()) > 0)) {
+				System.out.println("Available op case : " + tree.getOpPickable().getSimpleName());
 				besaceCopy.remove(tree.getOpPickable());
-				return new IncompleteTree(tree.getOp(), produceIncompleteSequence(besaceCopy, tree.getLeft()),
-						produceIncompleteSequence(besaceCopy, tree.getRight()));
+
+				Pair<_IncompleteSequence, Besace> leftResultingPair = produceIncompleteSequenceAux(besaceCopy,
+						tree.getLeft());
+				besaceCopy = leftResultingPair.getSecond();
+				_IncompleteSequence leftSeqInc = leftResultingPair.getFirst();
+
+				Pair<_IncompleteSequence, Besace> rightResultingPair = produceIncompleteSequenceAux(besaceCopy,
+						tree.getRight());
+				besaceCopy = rightResultingPair.getSecond();
+				_IncompleteSequence rightSeqInc = leftResultingPair.getFirst();
+
+				return new Pair<_IncompleteSequence, Besace>(new IncompleteTree(tree.getOp(), leftSeqInc, rightSeqInc),
+						besaceCopy);
 			}
 			// Unavailable op case
 			else {
-				return new EmptyRootTree(produceIncompleteSequence(besaceCopy, tree.getLeft()),
-						produceIncompleteSequence(besaceCopy, tree.getRight()));
+				System.out
+						.println("Unavailable op case : " + tree.getOpPickable().getSimpleName() + "-> EmptyRootTree");
+
+				Pair<_IncompleteSequence, Besace> leftResultingPair = produceIncompleteSequenceAux(besaceCopy,
+						tree.getLeft());
+				besaceCopy = leftResultingPair.getSecond();
+				_IncompleteSequence leftSeqInc = leftResultingPair.getFirst();
+
+				Pair<_IncompleteSequence, Besace> rightResultingPair = produceIncompleteSequenceAux(besaceCopy,
+						tree.getRight());
+				besaceCopy = rightResultingPair.getSecond();
+				_IncompleteSequence rightSeqInc = leftResultingPair.getFirst();
+
+				return new Pair<_IncompleteSequence, Besace>(new EmptyRootTree(leftSeqInc, rightSeqInc), besaceCopy);
 			}
 		}
 		// Other case -> Exception

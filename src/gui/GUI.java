@@ -29,6 +29,10 @@ import operateur.RandomBar;
 import operateur.Succession;
 import personnages.Besace;
 import personnages.Player;
+import pickable.PickClassicAck;
+import pickable.PickMoveDir;
+import pickable.PickRandomBar;
+import pickable.PickSuccession;
 import sequence.EmptyRootTree;
 import sequence.IncompleteTree;
 import sequence.Tree;
@@ -103,7 +107,6 @@ public class GUI extends BasicGame {
 		// e.printStackTrace();
 		// }
 
-
 		// Test
 		font = new Font("Verdana", Font.BOLD, 20);
 		ttf = new TrueTypeFont(font, true);
@@ -146,10 +149,15 @@ public class GUI extends BasicGame {
 
 		// Test
 
-		Besace besace;
+		Besace besace = new Besace();
+		besace.init();
+		besace.add(PickMoveDir.class);
+		besace.add(PickClassicAck.class);
+		besace.add(PickSuccession.class);
+		besace.add(PickRandomBar.class);
 
 		_Sequence seq = new Tree(new RandomBar(),
-				new Tree(new Priority(), new MoveDir(Direction.NORTH, 5), new ClassicAck()),
+				new Tree(new Succession(), new MoveDir(Direction.NORTH, 5), new ClassicAck()),
 				new Tree(new Succession(), new MoveDir(Direction.NORTH, 7), new ClassicAck()));
 
 		_IncompleteSequence incSeq = new IncompleteTree(new RandomBar(),
@@ -158,6 +166,9 @@ public class GUI extends BasicGame {
 				new EmptyRootTree(new MoveDir(Direction.NORTH, 7), new ClassicAck()));
 
 		List<Pair<? extends _Sequence, Correct>> maListos = SequenceCorrector.correct(besace, seq);
+		System.out.println("fin");
+		// System.out.println(maListos.toString());
+		// System.out.println(besace.toString());
 		drawCorrectedList(g, 10, this.WindowHeight - 30, maListos);
 		// End(Test)
 	}

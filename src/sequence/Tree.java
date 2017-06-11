@@ -49,7 +49,7 @@ public class Tree implements _Sequence {
 
 	public Class<? extends PickAble> getOpPickable() {
 		try {
-			throw new Exception("NYI");
+			return op.getPickable();
 		} catch (Exception e) {
 			// Auto-generated catch block
 			e.printStackTrace();

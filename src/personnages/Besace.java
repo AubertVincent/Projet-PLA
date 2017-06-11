@@ -32,13 +32,19 @@ public class Besace {
 		return besace.containsKey(c);
 	}
 
-	public Integer get(Class<? extends PickAble> c) {
-		return besace.get(c);
+	@Override
+	public String toString() {
+		String str = new String();
+		for (Iterator<Class<? extends PickAble>> itr = besace.keySet().iterator(); itr.hasNext();) {
+			Class<? extends PickAble> currentClass = itr.next();
+			Integer currentInteger = besace.get(currentClass);
+			str += "<" + currentClass.getSimpleName() + "," + currentInteger.toString() + ">,";
+		}
+		return str;
 	}
 
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
+	public Integer get(Class<? extends PickAble> c) {
+		return besace.get(c);
 	}
 
 	protected static List<Class<? extends PickAble>> possiblePickAbleList = new LinkedList<Class<? extends PickAble>>();
@@ -57,7 +63,7 @@ public class Besace {
 		possiblePickAbleList.add(PickRandomMove.class);
 	}
 
-	public void initBesace() {
+	public void init() {
 		for (Iterator<Class<? extends PickAble>> mapIter = possiblePickAbleList.iterator(); mapIter.hasNext();) {
 			Class<? extends PickAble> currentClass;
 			currentClass = mapIter.next();
@@ -69,7 +75,16 @@ public class Besace {
 	public Besace() {
 		super();
 		besace = new HashMap<Class<? extends PickAble>, Integer>();
-		this.initBesace();
+		this.init();
+	}
+
+	public Besace(Besace givenBesace) {
+		besace = new HashMap<Class<? extends PickAble>, Integer>();
+		for (Iterator<Class<? extends PickAble>> itr = givenBesace.get().keySet().iterator(); itr.hasNext();) {
+			Class<? extends PickAble> currentClass = itr.next();
+			Integer currentInteger = givenBesace.get(currentClass);
+			besace.put(currentClass, currentInteger);
+		}
 	}
 
 	public Map<Class<? extends PickAble>, Integer> get() {

@@ -6,7 +6,14 @@ import java.util.List;
 import entite.Direction;
 import operateur.ClassicAck;
 import operateur.MoveDir;
-import operateur.Priority;
+import operateur.RandomBar;
+import operateur.Succession;
+import personnages.Besace;
+import pickable.PickClassicAck;
+import pickable.PickMoveDir;
+import pickable.PickRandomBar;
+import pickable.PickSuccession;
+import test.SequenceCorrector;
 import util.Correct;
 import util.Pair;
 
@@ -17,18 +24,22 @@ public class Test {
 	}
 
 	public static void testos() {
-		_Sequence seq = new Tree(new Priority(),
-				new Tree(new Priority(), new MoveDir(Direction.NORTH, 5), new ClassicAck()),
-				new Tree(new Priority(), new MoveDir(Direction.NORTH, 7), new ClassicAck()));
 
-		_IncompleteSequence incSeq = new IncompleteTree(new Priority(),
-				new IncompleteTree(new Priority(), (_IncompleteSequence) new MoveDir(Direction.NORTH, 5),
-						(_IncompleteSequence) new ClassicAck()),
-				new EmptyRootTree(new MoveDir(Direction.NORTH, 7), new ClassicAck()));
+		Besace besace = new Besace();
+		besace.init();
+		besace.add(PickMoveDir.class);
+		besace.add(PickClassicAck.class);
+		besace.add(PickSuccession.class);
+		besace.add(PickRandomBar.class);
 
+		_Sequence seq = new Tree(new RandomBar(),
+				new Tree(new Succession(), new MoveDir(Direction.NORTH, 5), new ClassicAck()),
+				new Tree(new Succession(), new MoveDir(Direction.NORTH, 7), new ClassicAck()));
+
+		System.out.println(besace.toString());
 		System.out.println(seq.toString());
-		System.out.println(incSeq.toString());
-		List<Pair<? extends _Sequence, Correct>> maListos = treeToCorrectedList(seq, incSeq);
+
+		List<Pair<? extends _Sequence, Correct>> maListos = SequenceCorrector.correct(besace, seq);
 		System.out.println(maListos);
 
 	}
@@ -92,6 +103,5 @@ public class Test {
 		}
 		return list;
 	}
-
 
 }

@@ -4,6 +4,8 @@ import java.util.Random;
 
 import exceptions.NotDoableException;
 import personnages.Robot;
+import pickable.PickAble;
+import pickable.PickRandomBar;
 import sequence._Sequence;
 
 public class RandomBar extends Behavior {
@@ -59,6 +61,11 @@ public class RandomBar extends Behavior {
 	@Override
 	public String toString() {
 		return "/";
+	}
+
+	@Override
+	public Class<? extends PickAble> getPickable() {
+		return PickRandomBar.class;
 	}
 
 }

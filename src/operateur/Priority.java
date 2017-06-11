@@ -2,6 +2,8 @@ package operateur;
 
 import exceptions.NotDoableException;
 import personnages.Robot;
+import pickable.PickAble;
+import pickable.PickPriority;
 import sequence._Sequence;
 
 public class Priority extends Behavior {
@@ -43,6 +45,11 @@ public class Priority extends Behavior {
 	@Override
 	public String toString() {
 		return ">";
+	}
+
+	@Override
+	public Class<? extends PickAble> getPickable() {
+		return PickPriority.class;
 	}
 
 	// @Override

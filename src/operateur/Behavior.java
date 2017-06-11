@@ -2,6 +2,7 @@ package operateur;
 
 import exceptions.NotDoableException;
 import personnages.Robot;
+import pickable.PickAble;
 import sequence._Sequence;
 
 public abstract class Behavior {
@@ -12,5 +13,7 @@ public abstract class Behavior {
 	public String toString() {
 		return this.getClass().getSimpleName();
 	}
+
+	public abstract Class<? extends PickAble> getPickable();
 
 }
