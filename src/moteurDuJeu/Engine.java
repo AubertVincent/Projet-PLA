@@ -43,14 +43,14 @@ public class Engine {
 		listPlayer = new ArrayList<Player>();
 		try {
 			guiPlayerTmp = new GUIPlayer(userInterface, 2, 4, entite.Direction.SOUTH, 100, Team.ROUGE);
-			playerTmp = new Player(2, 4, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 2, 1, 1, Team.ROUGE,
+			playerTmp = new Player(2, 4, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 100, 1, 1, Team.ROUGE,
 					new Base(2, 4, Team.ROUGE), guiPlayerTmp);
 			listPlayer.add(playerTmp);
 			guiPlayerTmp.setPlayer(playerTmp);
 			userInterface.addGUICharactere(guiPlayerTmp);
 
 			guiPlayerTmp = new GUIPlayer(userInterface, 31, 15, entite.Direction.SOUTH, 100, Team.BLEU);
-			playerTmp = new Player(31, 15, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 2, 1, 1, Team.BLEU,
+			playerTmp = new Player(31, 15, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 100, 1, 1, Team.BLEU,
 					new Base(31, 15, Team.BLEU), guiPlayerTmp);
 
 			listPlayer.add(playerTmp);
@@ -101,7 +101,7 @@ public class Engine {
 	 *            The map with all the entity referenced
 	 * @return True is the mouvement is possible, false else
 	 */
-	// TODO : Handle no more movePoint
+	// TODO : Handle with the pickup of pickable when pass on a cell
 	public boolean doMove(Direction dir, GUICharacter perso, Map map) {
 
 		if (this.playPhase.equals(PlayPhase.playerMovement)) {
@@ -114,7 +114,8 @@ public class Engine {
 					switch (dir) {
 
 					case SOUTH:
-						if (map.isFree(player.getX(), player.getY() + 1)) {
+						if (map.isFree(player.getX(), player.getY() + 1)
+								|| map.isPickAble(player.getX(), player.getY() + 1)) {
 
 							player.setY(player.getY() + 1);
 							map.Free(player.getX(), player.getY() - 1);
@@ -123,7 +124,8 @@ public class Engine {
 						break;
 
 					case NORTH:
-						if (map.isFree(player.getX(), player.getY() - 1)) {
+						if (map.isFree(player.getX(), player.getY() - 1)
+								|| map.isPickAble(player.getX(), player.getY() - 1)) {
 							player.setY(player.getY() - 1);
 							map.Free(player.getX(), player.getY() + 1);
 							moveSucces = true;
@@ -131,7 +133,8 @@ public class Engine {
 						break;
 
 					case WEST:
-						if (map.isFree(player.getX() - 1, player.getY())) {
+						if (map.isFree(player.getX() - 1, player.getY())
+								|| map.isPickAble(player.getX() - 1, player.getY())) {
 							player.setX(player.getX() - 1);
 							map.Free(player.getX() + 1, player.getY());
 							moveSucces = true;
@@ -139,7 +142,8 @@ public class Engine {
 						break;
 
 					case EAST:
-						if (map.isFree(player.getX() + 1, player.getY())) {
+						if (map.isFree(player.getX() + 1, player.getY())
+								|| map.isPickAble(player.getX() + 1, player.getY())) {
 							player.setX(player.getX() + 1);
 							map.Free(player.getX() - 1, player.getY());
 							moveSucces = true;
@@ -158,7 +162,8 @@ public class Engine {
 					switch (dir) {
 
 					case SOUTH:
-						if (map.isFree(player.getX(), player.getY() + 1)) {
+						if (map.isFree(player.getX(), player.getY() + 1)
+								|| map.isPickAble(player.getX(), player.getY() + 1)) {
 							player.setY(player.getY() + 1);
 							map.Free(player.getX(), player.getY() - 1);
 							moveSucces = true;
@@ -166,7 +171,8 @@ public class Engine {
 						break;
 
 					case NORTH:
-						if (map.isFree(player.getX(), player.getY() - 1)) {
+						if (map.isFree(player.getX(), player.getY() - 1)
+								|| map.isPickAble(player.getX(), player.getY() - 1)) {
 							player.setY(player.getY() - 1);
 							map.Free(player.getX(), player.getY() + 1);
 							moveSucces = true;
@@ -174,7 +180,8 @@ public class Engine {
 						break;
 
 					case WEST:
-						if (map.isFree(player.getX() - 1, player.getY())) {
+						if (map.isFree(player.getX() - 1, player.getY())
+								|| map.isPickAble(player.getX() - 1, player.getY())) {
 							player.setX(player.getX() - 1);
 							map.Free(player.getX() + 1, player.getY());
 							moveSucces = true;
@@ -183,7 +190,8 @@ public class Engine {
 
 					case EAST:
 
-						if (map.isFree(player.getX() + 1, player.getY())) {
+						if (map.isFree(player.getX() + 1, player.getY())
+								|| map.isPickAble(player.getX() + 1, player.getY())) {
 							player.setX(player.getX() + 1);
 							map.Free(player.getX() - 1, player.getY());
 							moveSucces = true;
@@ -205,7 +213,9 @@ public class Engine {
 
 			setPlayPhase(0);
 			return moveSucces;
-		} else {
+		} else
+
+		{
 			return false;
 		}
 	}
