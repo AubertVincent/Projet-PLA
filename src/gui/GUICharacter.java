@@ -14,6 +14,7 @@ import org.newdawn.slick.SpriteSheet;
 import carte.Coordinates;
 import entite.Direction;
 import entite.Team;
+import exceptions.NotDoableException;
 import moteurDuJeu.Engine;
 import operateur.Action;
 import personnages.Player;
@@ -226,7 +227,7 @@ public abstract class GUICharacter {
 
 	protected void movePlayer(Engine engine, Direction direction) {
 		if (!isMoving() && !isAttacking()) {
-			if (engine.doMove(direction, this, engine.ma_map)) {
+			if (engine.doMove(direction, this, engine.getMap())) {
 				this.goToDirection(direction);
 			}
 		}
@@ -331,11 +332,11 @@ public abstract class GUICharacter {
 		return yPxTarget;
 	}
 
-	private Coordinates getCurrentCoord() {
+	public Coordinates getCurrentCoord() {
 		return coordCell;
 	}
 
-	private Coordinates getTargetCoord() {
+	public Coordinates getTargetCoord() {
 		return coordCellTarget;
 	}
 
@@ -357,26 +358,19 @@ public abstract class GUICharacter {
 		this.dir = dir;
 	}
 
-	public void Attack(Direction dir) {
-		if (!isMoving() && !isAttacking()) {
-			setDirection(dir);
-			setAttackTarget(dir);
-			switch (dir) {
-			case NORTH:
+	public void Attack(Engine engine, Direction dir) throws NotDoableException {
+		try {
+			if (!isMoving() && !isAttacking()) {
+				setDirection(dir);
+				setAttackTarget(dir);
+				engine.doAttack(dir, this, engine.ma_map);
+				setAttackTarget(dir);
 
-				break;
-			case WEST:
-				setAttackTarget(dir);
-				break;
-			case SOUTH:
-				setAttackTarget(dir);
-				break;
-			case EAST:
-				setAttackTarget(dir);
-				break;
+				setAckRequest(true);
+				setAttacking(true);
 			}
-			setAckRequest(true);
-			setAttacking(true);
+		} catch (NotDoableException e) {
+			throw new NotDoableException("Personne à attaquer");
 		}
 	}
 
@@ -397,8 +391,4 @@ public abstract class GUICharacter {
 
 	}
 
-	public void createRobot(int x, int y) throws SlickException {
-		// listRobot.add(new GUIRobot(2, 4, Direction.SOUTH,
-		// "res/SpriteSheetAnimRobot.png", 1));
-	}
 }

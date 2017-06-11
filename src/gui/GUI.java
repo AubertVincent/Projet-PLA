@@ -1,5 +1,8 @@
 package gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
@@ -13,7 +16,9 @@ import org.newdawn.slick.tiled.TiledMap;
 import carte.Coordinates;
 import entite.Direction;
 import entite.Team;
+import exceptions.NotDoableException;
 import moteurDuJeu.Engine;
+import moteurDuJeu.PlayPhase;
 
 public class GUI extends BasicGame {
 
@@ -30,12 +35,13 @@ public class GUI extends BasicGame {
 
 	private GUIBehaviorInput inputTextField;
 
-	protected boolean behaviorInputNeeded = true;
+	protected boolean behaviorInputNeeded = false;
 
 	// TODO Bound to be some kind of list ?
-	private GUIPlayer perso1;
-	private GUIPlayer perso2;
+	// private GUIPlayer perso1;
+	// private GUIPlayer perso2;
 
+	private List<GUIPlayer> guiPlayerList;
 	private Engine engine;
 
 	public static void main(String[] args) throws SlickException {
@@ -49,6 +55,7 @@ public class GUI extends BasicGame {
 		WindowWidth = 1088;
 		cellHeight = 32;
 		cellWidth = 32;
+		guiPlayerList = new ArrayList<GUIPlayer>();
 	}
 
 	@Override
@@ -58,13 +65,19 @@ public class GUI extends BasicGame {
 		this.container = container;
 		map = new TiledMap("res/map.tmx");
 		try {
-			perso1 = new GUIPlayer(this, coordP1, entite.Direction.SOUTH, 100, Team.ROUGE);
+			// perso1 = new GUIPlayer(this, coordP1, entite.Direction.SOUTH,
+			// 100,
+			// Team.ROUGE);
+			// guiCharactersList.add(perso1);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
-			perso2 = new GUIPlayer(this, coordP2, entite.Direction.SOUTH, 100, Team.BLEU);
+			// perso2 = new GUIPlayer(this, coordP2, entite.Direction.SOUTH,
+			// 100,
+			// Team.BLEU);
+			// guiCharactersList.add(perso2);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -75,17 +88,21 @@ public class GUI extends BasicGame {
 		engine = new Engine(this);
 	}
 
+	public void addGUICharactere(GUIPlayer perso) {
+		guiPlayerList.add(perso);
+	}
+
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
 		map.render(0, 0, 3);
 		map.render(0, 0, 0);
 		map.render(0, 0, 1);
 		map.render(0, 0, 2);
-		perso1.render(g);
-		perso2.render(g);
-
-		for (GUIRobot s : perso1.listRobot) {
-			s.render(g);
+		for (GUIPlayer p : this.guiPlayerList) {
+			p.render(g);
+			for (GUIRobot r : p.getGuiRobotList()) {
+				r.render(g);
+			}
 		}
 
 		map.render(0, 0, 4);
@@ -134,20 +151,64 @@ public class GUI extends BasicGame {
 		return collision;
 	}
 
+	/// public void add()
+
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
-		perso1.update(this, delta);
-		perso2.update(this, delta);
+		for (GUIPlayer p : this.guiPlayerList) {
+			p.update(this, delta);
+			for (GUIRobot r : p.getGuiRobotList()) {
+				r.update(this, delta);
+			}
+		}
 		this.inputTextField.update(container);
 
+	}
+
+	private GUICharacter getGUICharactereFromMouse(Coordinates coord) throws NotDoableException {
+		for (GUIPlayer p : guiPlayerList) {
+			if (p.getCurrentCoord() == coord) {
+				return p;
+			}
+			for (GUIRobot r : p.getGuiRobotList()) {
+				if (r.getCurrentCoord() == coord) {
+					return r;
+				}
+			}
+		}
+		throw new NotDoableException("Pas de personnage sur cette case ou mauvaise phase de jeu");
+	}
+
+	public List<GUIPlayer> getPlayerList() {
+		return this.guiPlayerList;
 	}
 
 	@Override
 	public void mousePressed(int button, int x, int y) {
 		int mouseXCell = pixelToCellX(x);
 		int mouseYCell = pixelToCellY(y);
-		System.out.println("LeftClick on (" + mouseXCell + ", " + mouseYCell + ")");
-		engine.mousePressed(button, mouseXCell, mouseYCell);
+		Coordinates mouseCoordCell = new Coordinates(mouseXCell, mouseYCell);
+		GUICharacter perso;
+		try {
+			perso = getGUICharactereFromMouse(mouseCoordCell);
+			System.out.println("LeftClick on (" + mouseXCell + ", " + mouseYCell + ")");
+			if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
+
+				if (perso.getClass().equals(GUIPlayer.class)) {
+					behaviorInputNeeded = true;
+					engine.createRobot((GUIPlayer) perso, this, engine.getMap());
+				} else {
+					behaviorInputNeeded = true;
+					engine.behaviorModif((GUIRobot) perso, this, engine.getMap());
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.getMessage();
+		}
+
+		// engine.mousePressed(button, mouseXCell, mouseYCell);
+
 	}
 
 	@Override
@@ -159,65 +220,90 @@ public class GUI extends BasicGame {
 
 	@Override
 	public void keyPressed(int key, char c) {
-		switch (key) {
-		case Input.KEY_UP:
-			perso1.movePlayer(engine, Direction.NORTH);
-			break;
-		case Input.KEY_LEFT:
-			perso1.movePlayer(engine, Direction.WEST);
-			break;
-		case Input.KEY_DOWN:
-			perso1.movePlayer(engine, Direction.SOUTH);
-			break;
-		case Input.KEY_RIGHT:
-			perso1.movePlayer(engine, Direction.EAST);
-			break;
-		case Input.KEY_Z:
-			perso2.movePlayer(engine, Direction.NORTH);
-			break;
-		case Input.KEY_Q:
-			perso2.movePlayer(engine, Direction.WEST);
-			break;
-		case Input.KEY_S:
-			perso2.movePlayer(engine, Direction.SOUTH);
-			break;
-		case Input.KEY_D:
-			perso2.movePlayer(engine, Direction.EAST);
-			break;
-		case Input.KEY_O:
-			perso1.Attack(Direction.NORTH);
-			break;
-		case Input.KEY_K:
-			perso1.Attack(Direction.WEST);
-			break;
-		case Input.KEY_L:
-			perso1.Attack(Direction.SOUTH);
-			break;
-		case Input.KEY_M:
-			perso1.Attack(Direction.EAST);
-			break;
-		case Input.KEY_F:
-			perso2.Attack(Direction.NORTH);
-			break;
-		case Input.KEY_C:
-			perso2.Attack(Direction.WEST);
-			break;
-		case Input.KEY_V:
-			perso2.Attack(Direction.SOUTH);
-			break;
-		case Input.KEY_B:
-			perso2.Attack(Direction.EAST);
-			break;
-		case Input.KEY_ADD:
-			try {
-				perso1.createRobot(3, 4);
-			} catch (SlickException e) {
-				e.printStackTrace();
+		try {
+			System.out.println("Phase de jeu : " + engine.getPlayPhase().toString());
+
+			if (engine.getPlayPhase().equals(PlayPhase.playerMovement)) {
+				switch (key) {
+
+				case Input.KEY_UP:
+					guiPlayerList.get(0).movePlayer(engine, Direction.NORTH);
+					break;
+				case Input.KEY_LEFT:
+					guiPlayerList.get(0).movePlayer(engine, Direction.WEST);
+					break;
+				case Input.KEY_DOWN:
+					guiPlayerList.get(0).movePlayer(engine, Direction.SOUTH);
+					break;
+				case Input.KEY_RIGHT:
+					guiPlayerList.get(0).movePlayer(engine, Direction.EAST);
+					break;
+				case Input.KEY_Z:
+					guiPlayerList.get(1).movePlayer(engine, Direction.NORTH);
+					break;
+				case Input.KEY_Q:
+					guiPlayerList.get(1).movePlayer(engine, Direction.WEST);
+					break;
+				case Input.KEY_S:
+					guiPlayerList.get(1).movePlayer(engine, Direction.SOUTH);
+					break;
+				case Input.KEY_D:
+					guiPlayerList.get(1).movePlayer(engine, Direction.EAST);
+					break;
+				case Input.KEY_O:
+					guiPlayerList.get(0).Attack(engine, Direction.NORTH);
+					break;
+				case Input.KEY_K:
+					guiPlayerList.get(0).Attack(engine, Direction.WEST);
+					break;
+				case Input.KEY_L:
+					guiPlayerList.get(0).Attack(engine, Direction.SOUTH);
+					break;
+				case Input.KEY_M:
+					guiPlayerList.get(0).Attack(engine, Direction.EAST);
+					break;
+				case Input.KEY_F:
+					guiPlayerList.get(1).Attack(engine, Direction.NORTH);
+					break;
+				case Input.KEY_C:
+					guiPlayerList.get(1).Attack(engine, Direction.WEST);
+					break;
+				case Input.KEY_V:
+					guiPlayerList.get(1).Attack(engine, Direction.SOUTH);
+					break;
+				case Input.KEY_B:
+					guiPlayerList.get(1).Attack(engine, Direction.EAST);
+					break;
+				}
 			}
-			break;
-		case Input.KEY_SPACE:
-			behaviorInputNeeded = true;
-			break;
+
+			if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
+				if (key == Input.KEY_SPACE) {
+					engine.setPlayPhase(Input.KEY_SPACE);
+					engine.executeAutomaton(this);
+				}
+			}
+			// } else if
+			// (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
+			// behaviorInputNeeded = true;
+			// engine.createRobot();
+			// } else {
+			// // engine.executeAutomaton();
+			// }
+			//
+			// case Input.KEY_ADD:
+			// try {
+			// perso1.createRobot(3, 4);
+			// } catch (SlickException e) {
+			// e.printStackTrace();
+			// }
+			// break;
+			// case Input.KEY_SPACE:
+			// behaviorInputNeeded = true;
+			// break;
+			// }
+		} catch (NotDoableException e) {
+
 		}
 	}
 
@@ -273,6 +359,14 @@ public class GUI extends BasicGame {
 	 */
 	public float cellToPixelY(int y) {
 		return (y + 0.5f) * cellHeight;
+	}
+
+	public GUICharacter getGUICharacterFromTeam(Team team) {
+		if (team.equals(Team.ROUGE)) {
+			return guiPlayerList.get(0);
+		} else {
+			return guiPlayerList.get(1);
+		}
 	}
 
 }

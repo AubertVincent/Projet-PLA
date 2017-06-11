@@ -10,6 +10,7 @@ import entite.Direction;
 import entite.Entity;
 import entite.Team;
 import exceptions.NotDoableException;
+import gui.GUICharacter;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
@@ -24,12 +25,22 @@ public class Robot extends Character {
 
 	public Robot(Coordinates coord, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
 			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton,
-			Player player, java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife) {
+			Player player, java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife,
+			GUICharacter GUIPlayer) {
 		super(coord, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
-				base);
+				base, GUIPlayer);
 		this.myAutomaton = myAutomaton;
 		this.player = player;
 		this.targetsLife = targetsLife;
+	}
+
+	public Robot(Coordinates coord, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
+			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton,
+			Player player, GUICharacter GUIPlayer) {
+		super(coord, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
+				base, GUIPlayer);
+		this.myAutomaton = myAutomaton;
+		this.player = player;
 	}
 
 	static {
@@ -60,6 +71,14 @@ public class Robot extends Character {
 
 	public Player getPlayer() {
 		return player;
+	}
+
+	public _Sequence getAutomaton() {
+		return this.myAutomaton;
+	}
+
+	public void setAutomaton(_Sequence automaton) {
+		this.myAutomaton = automaton;
 	}
 
 	/**

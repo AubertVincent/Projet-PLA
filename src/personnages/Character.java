@@ -12,6 +12,7 @@ import entite.Entity;
 import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
+import gui.GUICharacter;
 import operateur.Action;
 import pickable.PickAble;
 
@@ -33,6 +34,7 @@ public abstract class Character extends Entity {
 	protected List<Class<? extends Action>> actionsList = new LinkedList<Class<? extends Action>>();
 	protected Team team;
 	protected Base base;
+	private GUICharacter GUICharactere;
 
 	/**
 	 * Set a new character
@@ -57,7 +59,8 @@ public abstract class Character extends Entity {
 	 *            Character's recall's time
 	 */
 	public Character(Coordinates coord, Map entityMap, Besace besace, Direction direction, int life, int vision,
-			int attack, int range, int movePoints, int recall, Team team, int attackPoints, Base base) {
+			int attack, int range, int movePoints, int recall, Team team, int attackPoints, Base base,
+			GUICharacter GUICharacter) {
 		super(coord, entityMap);
 		this.direction = direction;
 		this.life = life;
@@ -69,6 +72,7 @@ public abstract class Character extends Entity {
 		this.team = team;
 		this.attackPoints = attackPoints;
 		this.base = base;
+		this.GUICharactere = GUICharacter;
 	}
 
 	public Base getBase() {
@@ -304,11 +308,11 @@ public abstract class Character extends Entity {
 		this.coord = coord;
 	}
 
-	// /**
-	// * Pick an entity ('picked' here) on the cell
-	// *
-	// * @throws GameException
-	// */
+	/**
+	 * Pick an entity ('picked' here) on the cell
+	 *
+	 * @throws GameException
+	 */
 	// public void pickUp() throws NotDoableException {
 	// List<Class<PickAble>> listPicked = null;
 	// Picked picked = new Picked(listPicked);
@@ -325,7 +329,7 @@ public abstract class Character extends Entity {
 	// }
 	// picked.add(classPicked);
 	// // FIXME
-	// besace.add(picked);
+	// besace.add(picked.getClass());
 	// }
 	//
 	// } catch (NotDoableException e) {

@@ -2,14 +2,12 @@ package carte;
 
 import java.util.List;
 
-import entite.Direction;
 import entite.Entity;
 import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUI;
-import personnages.Besace;
-import personnages.Player;
+import moteurDuJeu.Engine;
 import pickable.PickAble;
 
 public class Map {
@@ -27,14 +25,12 @@ public class Map {
 		}
 	}
 
-	public void init(GUI userInterface) {
+	public void init(GUI userInterface, Engine engine) {
 		Coordinates coord;
-		Coordinates coordP1 = new Coordinates(2, 4);
-		Coordinates coordP2 = new Coordinates(31, 15);
-		map[2][4].setEntity(new Player(coordP1, this, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 5, 1, 1, Team.ROUGE,
-				new Base(coordP1, Team.ROUGE)));
-		map[31][15].setEntity(new Player(coordP2, this, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 5, 1, 1, Team.BLEU,
-				new Base(coordP2, Team.BLEU)));
+		map[engine.getPlayer(Team.ROUGE).getCoord().getX()][engine.getPlayer(Team.ROUGE).getCoord().getY()]
+				.setEntity(engine.getPlayer(Team.ROUGE));
+		map[engine.getPlayer(Team.BLEU).getCoord().getX()][engine.getPlayer(Team.BLEU).getCoord().getY()]
+				.setEntity(engine.getPlayer(Team.BLEU));
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				coord = new Coordinates(i, j);
@@ -43,6 +39,14 @@ public class Map {
 				}
 			}
 		}
+	}
+
+	public int mapHeight() {
+		return this.height;
+	}
+
+	public int mapWidth() {
+		return this.width;
 	}
 
 	public boolean isEmpty() {

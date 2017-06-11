@@ -7,6 +7,7 @@ import carte.Base;
 import carte.Coordinates;
 import entite.Direction;
 import entite.Team;
+import gui.GUICharacter;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
@@ -55,9 +56,10 @@ public class Player extends Character {
 	}
 
 	public Player(Coordinates coord, carte.Map entityMap, Besace besace, Direction direction, int life, int vision,
-			int attack, int range, int movePoints, int recall, int attackPoints, Team team, Base base) {
+			int attack, int range, int movePoints, int recall, int attackPoints, Team team, Base base,
+			GUICharacter GUIPlayer) {
 		super(coord, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
-				base);
+				base, GUIPlayer);
 		robotList = new RobotList();
 	}
 
