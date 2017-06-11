@@ -1,5 +1,6 @@
 package operateur;
 
+import carte.Coordinates;
 import exceptions.NotDoableException;
 import personnages.Robot;
 
@@ -7,8 +8,7 @@ public class Tunnel extends Movement {
 
 	protected Integer x;
 	protected Integer y;
-	private int lastX;
-	private int lastY;
+	private Coordinates lastCoord;
 
 	/**
 	 * set a new Tunnel by means of its arrival coordinates
@@ -18,14 +18,20 @@ public class Tunnel extends Movement {
 	 * @param y
 	 *            y coordinate on the map
 	 */
-	public Tunnel(int x, int y) {
+	public Tunnel(Coordinates coord) {
 		super();
-		this.x = x;
-		this.y = y;
+		this.x = coord.getX();
+		this.y = coord.getY();
 	}
 
 	public Tunnel() {
 		super();
+	}
+
+	public Tunnel(int x2, int y2) {
+		super();
+		this.x = x2;
+		this.y = y2;
 	}
 
 	/**
@@ -41,14 +47,14 @@ public class Tunnel extends Movement {
 		if (!isDoable(r)) {
 			throw new NotDoableException("La case d'arrivée est occupée");
 		}
-		this.lastX = x;
-		this.lastY = y;
-		r.teleport(x, y);
+		this.lastCoord.setX(x);
+		this.lastCoord.setY(y);
+		r.teleport(lastCoord);
 	}
 
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
-		r.teleport(lastX, lastY);
+		r.teleport(lastCoord);
 	}
 
 	@Override

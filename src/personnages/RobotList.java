@@ -28,8 +28,8 @@ public class RobotList {
 		for (Map.Entry<Class<?>, Map<Object, Robot>> currentClass : fromClassToMap.entrySet()) {
 			currentClassMap = currentClass.getValue();
 			for (Map.Entry<Object, Robot> currentClassMapCell : currentClassMap.entrySet()) {
-				System.out.println("Coordonnée de ce robot :" + currentClassMapCell.getValue().getX() + ";"
-						+ currentClassMapCell.getValue().getY() + "  Class :"
+				System.out.println("Coordonnée de ce robot :" + currentClassMapCell.getValue().getCoord().getX() + ";"
+						+ currentClassMapCell.getValue().getCoord().getY() + "  Class :"
 						+ currentClassMapCell.getKey().getClass());
 			}
 

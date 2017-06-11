@@ -4,8 +4,8 @@ import entite.Entity;
 
 public class Obstacle extends Entity {
 
-	public Obstacle(int x, int y, Map map) {
-		super(x, y, map);
+	public Obstacle(Coordinates coord, Map map) {
+		super(coord, map);
 	}
 
 	@Override

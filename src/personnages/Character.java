@@ -5,6 +5,7 @@ import java.util.List;
 
 import carte.Base;
 import carte.Cell;
+import carte.Coordinates;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
@@ -29,6 +30,7 @@ public abstract class Character extends Entity {
 	protected int player;
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
+	protected List<Class<? extends Action>> actionsList = new LinkedList<Class<? extends Action>>();
 	protected Team team;
 	protected Base base;
 
@@ -54,9 +56,9 @@ public abstract class Character extends Entity {
 	 * @param recall
 	 *            Character's recall's time
 	 */
-	public Character(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
-			int range, int movePoints, int recall, Team team, int attackPoints, Base base) {
-		super(x, y, entityMap);
+	public Character(Coordinates coord, Map entityMap, Besace besace, Direction direction, int life, int vision,
+			int attack, int range, int movePoints, int recall, Team team, int attackPoints, Base base) {
+		super(coord, entityMap);
 		this.direction = direction;
 		this.life = life;
 		this.vision = vision;
@@ -170,6 +172,10 @@ public abstract class Character extends Entity {
 		this.attackPoints = aP;
 	}
 
+	public List<Class<? extends Action>> getActionsList() {
+		return actionsList;
+	}
+
 	// public void resetBesace() {
 	// // FIXME adapt besace : implement clear for this class
 	// this.besace.clear();
@@ -181,16 +187,16 @@ public abstract class Character extends Entity {
 
 		switch (direction) {
 		case NORTH:
-			setY(getY() + lg);
+			coord.setY(coord.getY() + lg);
 			break;
 		case SOUTH:
-			setY(getY() - lg);
+			coord.setY(coord.getY() - lg);
 			break;
 		case EAST:
-			setX(getX() + lg);
+			coord.setX(coord.getX() + lg);
 			break;
 		case WEST:
-			setX(getX() - lg);
+			coord.setX(coord.getX() - lg);
 			break;
 		}
 	}
@@ -240,14 +246,46 @@ public abstract class Character extends Entity {
 		}
 	}
 
-	// TODO pas Terminer (=> a laisser dans le code)
+	// TODO pas fini
 	// public void kill(Robot rob) {
-	// int x = rob.getX();
-	// int y = rob.getY();
-	// ArrayList<PickAble> listePickable;
-	// for (Class<? extends Action> r : rob.getPossibleActionsList()){
-	// listePickable.add(actionToPickAble(r));
+	// List<PickAble> listePickable = new ArrayList<>();
+	// for (Class<? extends Action> act : rob.getActionsList()) {
+	// listePickable.add(actionToPickAble(act, rob.getCoord(),
+	// rob.getEntityMap()));
 	// }
+	// }
+	//
+	// private PickAble actionToPickAble(Class<? extends Action> act,
+	// Coordinates coord, Map pickableMap) {
+	// PickAble picka = null;
+	// if (act.getClass().equals(ClassicAck.class)) {
+	// picka = new PickClassicAck(coord, pickableMap);
+	// }
+	// if (act.getClass().equals(MoveDir.class)) {
+	// picka = new PickMoveDir(coord, pickableMap);
+	// }
+	// if (act.getClass().equals(PickUp.class)) {
+	// picka = new PickPickUp(coord, pickableMap);
+	// }
+	// if (act.getClass().equals(Priority.class)) {
+	// picka = new PickPriority(coord, pickableMap);
+	// }
+	// if (act.getClass().equals(RandomBar.class)) {
+	// picka = new PickRandomBar(coord, pickableMap);
+	// }
+	// if (act.getClass().equals(Recall.class)) {
+	// picka = new PickRecall(coord, pickableMap);
+	// }
+	// if (act.getClass().equals(Succession.class)) {
+	// picka = new PickSuccession(coord, pickableMap);
+	// }
+	// if (act.getClass().equals(SuicideBomber.class)) {
+	// picka = new PickSuicideBomber(coord, pickableMap);
+	// }
+	// if (act.getClass().equals(Tunnel.class)) {
+	// picka = new PickTunnel(coord, pickableMap);
+	// }
+	// return picka;
 	// }
 
 	public void kill(Player joueur) {
@@ -259,14 +297,11 @@ public abstract class Character extends Entity {
 	 * 
 	 * @param e
 	 *            the entity
-	 * @param x
-	 *            x coordinate on the map
-	 * @param y
-	 *            y coordinate on the map
+	 * @param coord
+	 *            coordinates on the map
 	 */
-	public void teleport(int x, int y) {
-		this.setX(x);
-		this.setY(y);
+	public void teleport(Coordinates coord) {
+		this.coord = coord;
 	}
 
 	// /**
@@ -298,9 +333,9 @@ public abstract class Character extends Entity {
 	// }
 	// }
 
-	public void placePickAble(int x, int y, Class<PickAble> picked, Map map) {
+	public void placePickAble(Coordinates coord, Class<PickAble> picked, Map map) {
 		try {
-			map.getCell(x, y).setEntity(picked.newInstance());
+			map.getCell(coord).setEntity(picked.newInstance());
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {

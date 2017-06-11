@@ -28,13 +28,18 @@ public class Map {
 	}
 
 	public void init(GUI userInterface) {
-		map[2][4].setEntity(
-				new Player(2, 4, this, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 5, 1, 1, Team.ROUGE, new Base(2, 4, Team.ROUGE)));
-		map[31][15].setEntity(new Player(31, 15, this, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 5, 1, 1, Team.BLEU,new Base(31, 15, Team.BLEU)));
+		Coordinates coord;
+		Coordinates coordP1 = new Coordinates(2, 4);
+		Coordinates coordP2 = new Coordinates(31, 15);
+		map[2][4].setEntity(new Player(coordP1, this, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 5, 1, 1, Team.ROUGE,
+				new Base(coordP1, Team.ROUGE)));
+		map[31][15].setEntity(new Player(coordP2, this, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 5, 1, 1, Team.BLEU,
+				new Base(coordP2, Team.BLEU)));
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				if (userInterface.isObstacle(i, j)) {
-					map[i][j].setEntity(new Obstacle(i, j, this));
+				coord = new Coordinates(i, j);
+				if (userInterface.isObstacle(coord)) {
+					map[i][j].setEntity(new Obstacle(coord, this));
 				}
 			}
 		}
@@ -51,24 +56,28 @@ public class Map {
 		return my_bool;
 	}
 
-	public void Free(int x, int y) {
-		map[x][y].FreeCell();
+	public void Free(Coordinates coord) {
+		map[coord.getX()][coord.getY()].FreeCell();
 	}
 
-	public void setEntity(int x, int y, Entity ent) {
-		map[x][y].setEntity(ent);
+	public void setEntity(Coordinates coord, Entity ent) {
+		map[coord.getX()][coord.getY()].setEntity(ent);
+	}
+
+	public Cell getCell(Coordinates coord) {
+		return map[coord.getX()][coord.getY()];
 	}
 
 	public Cell getCell(int x, int y) {
 		return map[x][y];
 	}
 
-	public boolean isFree(int x, int y) {
-		return map[x][y].isFree();
+	public boolean isFree(Coordinates coord) {
+		return map[coord.getX()][coord.getY()].isFree();
 	}
 
-	public List<Entity> getEntity(int x, int y) {
-		return map[x][y].getListEntity();
+	public List<Entity> getEntity(Coordinates coord) {
+		return map[coord.getX()][coord.getY()].getListEntity();
 	}
 
 	// private void printMap() {
@@ -95,6 +104,10 @@ public class Map {
 	 *            y coordinate on the map
 	 * @return the list of the entities present on the cell
 	 */
+	public List<Entity> getListEntity(Coordinates coord) {
+		return map[coord.getX()][coord.getY()].getListEntity();
+	}
+
 	public List<Entity> getListEntity(int x, int y) {
 		return map[x][y].getListEntity();
 	}
@@ -110,8 +123,8 @@ public class Map {
 	 * @throws GameException
 	 */
 	@SuppressWarnings("unchecked")
-	public Class<PickAble> pickableEntity(int x, int y) throws NotDoableException {
-		List<Entity> l = map[x][y].getListEntity();
+	public Class<PickAble> pickableEntity(Coordinates coord) throws NotDoableException {
+		List<Entity> l = map[coord.getX()][coord.getY()].getListEntity();
 		int i = 0;
 		while (i < l.size()) {
 			if (l.get(i).isPickAble()) {
@@ -130,8 +143,8 @@ public class Map {
 	 * @param y
 	 *            y coordinate on the map
 	 */
-	public void freePick(Class<PickAble> ramasse, int x, int y) {
-		List<Entity> l = map[x][y].getListEntity();
+	public void freePick(Class<PickAble> ramasse, Coordinates coord) {
+		List<Entity> l = map[coord.getX()][coord.getY()].getListEntity();
 		int i = 0;
 		while (i < l.size()) {
 			if (l.get(i).getClass() == ramasse) {
@@ -139,6 +152,17 @@ public class Map {
 			}
 		}
 
+	}
+
+	public boolean isReachable(Coordinates coord) {
+		List<Entity> l = map[coord.getX()][coord.getY()].getListEntity();
+		int i = 0;
+		while (i < l.size()) {
+			if (l.get(i).isCharacter() || l.get(i).isObstacle()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public boolean isReachable(int x, int y) {

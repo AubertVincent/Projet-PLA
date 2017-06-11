@@ -5,23 +5,17 @@ import entite.Team;
 public class Base {
 
 	// Base coordinate
-	private int x;
-	private int y;
+	private Coordinates coord;
 	private Team baseTeam;
 
-	public Base(int x, int y, Team baseTeam) {
+	public Base(Coordinates coord, Team baseTeam) {
 		super();
-		this.x = x;
-		this.y = y;
+		this.coord = coord;
 		this.baseTeam = baseTeam;
 	}
 
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
+	public Coordinates getCoord() {
+		return this.coord;
 	}
 
 	public Team getBaseTeam() {
@@ -32,12 +26,8 @@ public class Base {
 		this.baseTeam = baseTeam;
 	}
 
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public void setY(int y) {
-		this.y = y;
+	public void setCoord(Coordinates coord) {
+		this.coord = coord;
 	}
 
 }

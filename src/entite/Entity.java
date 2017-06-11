@@ -1,11 +1,11 @@
 package entite;
 
+import carte.Coordinates;
 import carte.Map;
 
 public abstract class Entity {
 
-	protected int x;
-	protected int y;
+	protected Coordinates coord;
 	public final Map entityMap;
 
 	public abstract boolean isObstacle();
@@ -25,31 +25,20 @@ public abstract class Entity {
 	 * @param entityMap
 	 *            The map on which the entity is located
 	 */
-	public Entity(int x, int y, Map entityMap) {
+	public Entity(Coordinates coord, Map entityMap) {
 		super();
-		this.x = x;
-		this.y = y;
+		this.coord = coord;
 		this.entityMap = entityMap;
 	}
 
 	/**
-	 * Set the x coordinate of an Entity
+	 * Set the coordinates of an Entity
 	 * 
-	 * @param x
-	 *            x coordinate on the map
+	 * @param coord
+	 *            coordinates on the map
 	 */
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	/**
-	 * Set the y coordinate of an Entity
-	 * 
-	 * @param y
-	 *            y coordinate on the map
-	 */
-	public void setY(int y) {
-		this.y = y;
+	public void setCoord(Coordinates coord) {
+		this.coord = coord;
 	}
 
 	/**
@@ -57,17 +46,8 @@ public abstract class Entity {
 	 * 
 	 * @return x coordinate on the map of the Entity
 	 */
-	public int getX() {
-		return this.x;
-	}
-
-	/**
-	 * Get the y coordinate of an Entity
-	 * 
-	 * @return y coordinate on the map of the Entity
-	 */
-	public int getY() {
-		return this.y;
+	public Coordinates getCoord() {
+		return this.coord;
 	}
 
 	/**

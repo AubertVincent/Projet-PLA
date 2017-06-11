@@ -11,6 +11,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
+import carte.Coordinates;
 import entite.Direction;
 import entite.Team;
 import moteurDuJeu.Engine;
@@ -31,9 +32,9 @@ public abstract class GUICharacter {
 	// Coordinates to reach in pixels
 	private float xPxTarget, yPxTarget;
 	// Coordinates in cell's position in map
-	private int xCell, yCell;
+	private Coordinates coordCell;
 	// Coordinates to reach in cell's position in map
-	private int xCellTarget, yCellTarget;
+	private Coordinates coordCellTarget;
 
 	private Direction dir;
 
@@ -128,17 +129,15 @@ public abstract class GUICharacter {
 	 * @throws SlickException
 	 *             Indicates a failure of the loading of a sprite sheet
 	 */
-	public GUICharacter(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team)
+	public GUICharacter(GUI userInterface, Coordinates coord, Direction dir, int animationDuration, Team team)
 			throws SlickException, Exception {
 
 		super();
 		this.mainUserInterface = userInterface;
-		this.xCell = x;
-		this.yCell = y;
-		setTargetX(getCurrentX());
-		setTargetY(getCurrentY());
-		this.xPx = mainUserInterface.cellToPixelX(getCurrentX());
-		this.yPx = mainUserInterface.cellToPixelY(getCurrentY());
+		this.coordCell = coord;
+		setTargetCoord(getCurrentCoord());
+		this.xPx = mainUserInterface.cellToPixelX(getCurrentCoord().getX());
+		this.yPx = mainUserInterface.cellToPixelY(getCurrentCoord().getY());
 		this.dir = dir;
 		this.setMoving(false);
 		initAnimations(animationDuration);
@@ -159,7 +158,7 @@ public abstract class GUICharacter {
 	public void render(Graphics g) {
 		g.setColor(new Color(0, 0, 0, .5f));
 		g.fillOval((int) xPx - 16, (int) yPx - 8, 32, 16);
-		// -32 et -60 to center in cell
+		// -32 and -60 to center in cell
 		if (isAttacking()) {
 			g.drawAnimation(animationsList.get(operateur.ClassicAck.class)[dir.toInt() + (isAttacking() ? 4 : 0)],
 					(int) xPx - 32, (int) yPx - 60);
@@ -208,14 +207,14 @@ public abstract class GUICharacter {
 			} else {
 				int nextCellX = mainUserInterface.pixelToCellX(nextXPx);
 				int nextCellY = mainUserInterface.pixelToCellY(nextYPx);
-				if (gui.isObstacle(nextCellX, nextCellY)) {
+				Coordinates nextCellCoord = new Coordinates(nextCellX, nextCellY);
+				if (gui.isObstacle(nextCellCoord)) {
 					System.out.println("Obstacle détecté :|");
 					setMoving(false);
 				} else {
 					this.xPx = nextXPx;
-					setCurrentX(nextCellX);
 					this.yPx = nextYPx;
-					setCurrentY(nextCellY);
+					setCurrentCoord(nextCellCoord);
 				}
 			}
 		}
@@ -249,7 +248,7 @@ public abstract class GUICharacter {
 		isInPlaceWidth = getCurrentXPx() <= maximumAcceptableWidth && getCurrentXPx() >= minimumAcceptableWidth;
 		isInPlaceHeight = getCurrentYPx() <= maximumAcceptableHeight && getCurrentYPx() >= minimumAcceptableHeight;
 
-		return getCurrentX() == getTargetX() && getCurrentY() == getTargetY() && isInPlaceHeight && isInPlaceWidth;
+		return getCurrentCoord() == getTargetCoord() && isInPlaceHeight && isInPlaceWidth;
 	}
 
 	/**
@@ -260,21 +259,24 @@ public abstract class GUICharacter {
 	 */
 	public void goToDirection(Direction dir) {
 		if (!isMoving() && !isAttacking()) {
+
+			Coordinates coordTarget = getTargetCoord();
 			setDirection(dir);
 			switch (dir) {
 			case NORTH:
-				setTargetY(getCurrentY() - 1);
+				coordTarget.setY(getCurrentCoord().getY() - 1);
 				break;
 			case WEST:
-				setTargetX(getCurrentX() - 1);
+				coordTarget.setX(getCurrentCoord().getX() - 1);
 				break;
 			case SOUTH:
-				setTargetY(getCurrentY() + 1);
+				coordTarget.setY(getCurrentCoord().getY() + 1);
 				break;
 			case EAST:
-				setTargetX(getCurrentX() + 1);
+				coordTarget.setX(getCurrentCoord().getX() + 1);
 				break;
 			}
+			setTargetCoord(coordTarget);
 			setMoving(true);
 		}
 	}
@@ -329,38 +331,22 @@ public abstract class GUICharacter {
 		return yPxTarget;
 	}
 
-	private int getCurrentX() {
-		return xCell;
+	private Coordinates getCurrentCoord() {
+		return coordCell;
 	}
 
-	private int getCurrentY() {
-		return yCell;
+	private Coordinates getTargetCoord() {
+		return coordCellTarget;
 	}
 
-	private int getTargetX() {
-		return xCellTarget;
+	private void setCurrentCoord(Coordinates coord) {
+		coordCell = coord;
 	}
 
-	private int getTargetY() {
-		return yCellTarget;
-	}
-
-	private void setCurrentX(int x) {
-		xCell = x;
-	}
-
-	private void setCurrentY(int y) {
-		yCell = y;
-	}
-
-	private void setTargetX(int x) {
-		xCellTarget = x;
-		xPxTarget = mainUserInterface.cellToPixelX(xCellTarget);
-	}
-
-	private void setTargetY(int y) {
-		yCellTarget = y;
-		yPxTarget = mainUserInterface.cellToPixelY(yCellTarget);
+	private void setTargetCoord(Coordinates coord) {
+		coordCellTarget = coord;
+		xPxTarget = mainUserInterface.cellToPixelX(coordCellTarget.getX());
+		yPxTarget = mainUserInterface.cellToPixelY(coordCellTarget.getY());
 	}
 
 	private Direction getDirection() {

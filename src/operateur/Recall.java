@@ -1,6 +1,7 @@
 package operateur;
 
 import carte.Base;
+import carte.Coordinates;
 import entite.Team;
 import exceptions.NotDoableException;
 import personnages.Robot;
@@ -8,8 +9,8 @@ import personnages.Robot;
 public class Recall extends Movement {
 
 	protected Integer time;
-	private int lastX;
-	private int lastY;
+	private Coordinates lastCoord;
+	// private int lastY;
 
 	/**
 	 * Set a new recall by means of its time
@@ -46,12 +47,10 @@ public class Recall extends Movement {
 		// int time = r.getRecall();;
 		// if (r.getRecall() == 0) {
 		Base base = r.getBase();
-		int xBase = base.getX();
-		int yBase = base.getY();
+		Coordinates baseCoord = base.getCoord();
 		if (this.isDoable(r)) {
-			this.lastX = r.getX();
-			this.lastY = r.getY();
-			r.teleport(xBase, yBase);
+			this.lastCoord = r.getCoord();
+			r.teleport(baseCoord);
 		}
 		// r.setRecall(time--);
 	}
@@ -59,7 +58,7 @@ public class Recall extends Movement {
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
 		// teleport le robot à la position avant le recall
-		r.teleport(this.lastX, this.lastY);
+		r.teleport(this.lastCoord);
 		// r.cancelRecall();
 	}
 

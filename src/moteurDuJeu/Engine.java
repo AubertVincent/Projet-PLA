@@ -6,6 +6,7 @@ import java.util.List;
 import org.newdawn.slick.SlickException;
 
 import carte.Base;
+import carte.Coordinates;
 import carte.Map;
 import entite.Direction;
 import entite.Team;
@@ -30,13 +31,15 @@ public class Engine {
 	 */
 
 	public Engine(GUI userInterface) throws SlickException {
+		Coordinates coordP1 = new Coordinates(2, 4);
+		Coordinates coordP2 = new Coordinates(31, 15);
 		ma_map = new Map();
 		ma_map.init(userInterface);
 		listPlayer = new ArrayList<Player>();
-		listPlayer.add(new Player(2, 4, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.ROUGE,
-				new Base(2, 4, Team.ROUGE)));
-		listPlayer.add(new Player(31, 15, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.BLEU,
-				new Base(31, 15, Team.BLEU)));
+		listPlayer.add(new Player(coordP1, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.ROUGE,
+				new Base(coordP1, Team.ROUGE)));
+		listPlayer.add(new Player(coordP2, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 500, 1, 1, Team.BLEU,
+				new Base(coordP2, Team.BLEU)));
 
 	}
 
@@ -52,41 +55,50 @@ public class Engine {
 	public boolean doMove(Direction dir, GUICharacter perso, Map map) {
 
 		boolean moveSucces = false;
+		Coordinates coord;
 		Player player;
 		// Case of Player1
 		if (perso.getTeam() == Team.ROUGE) {
 			player = getPlayer(Team.ROUGE);
+			coord = new Coordinates(player.getCoord());
 			switch (dir) {
 
 			case SOUTH:
-				if (map.isFree(player.getX(), player.getY() + 1)) {
-
-					player.setY(player.getY() + 1);
-					map.Free(player.getX(), player.getY() - 1);
+				coord.setY(coord.getY() + 1);
+				if (map.isFree(coord)) {
+					player.getCoord().setY(coord.getY());
+					coord.setY(coord.getY() - 1);
+					map.Free(coord);
 					moveSucces = true;
 				}
 				break;
 
 			case NORTH:
-				if (map.isFree(player.getX(), player.getY() - 1)) {
-					player.setY(player.getY() - 1);
-					map.Free(player.getX(), player.getY() + 1);
+				coord.setY(coord.getY() - 1);
+				if (map.isFree(coord)) {
+					player.getCoord().setY(coord.getY());
+					coord.setY(coord.getY() + 1);
+					map.Free(coord);
 					moveSucces = true;
 				}
 				break;
 
 			case WEST:
-				if (map.isFree(player.getX() - 1, player.getY())) {
-					player.setX(player.getX() - 1);
-					map.Free(player.getX() + 1, player.getY());
+				coord.setX(coord.getX() - 1);
+				if (map.isFree(coord)) {
+					player.getCoord().setX(coord.getX());
+					coord.setX(coord.getX() + 1);
+					map.Free(coord);
 					moveSucces = true;
 				}
 				break;
 
 			case EAST:
-				if (map.isFree(player.getX() + 1, player.getY())) {
-					player.setX(player.getX() + 1);
-					map.Free(player.getX() - 1, player.getY());
+				coord.setX(coord.getX() + 1);
+				if (map.isFree(coord)) {
+					player.getCoord().setX(coord.getX());
+					coord.setX(coord.getX() - 1);
+					map.Free(coord);
 					moveSucces = true;
 				}
 
@@ -98,40 +110,50 @@ public class Engine {
 		// Case of Player2
 		else if (perso.getTeam() == Team.BLEU) {
 			player = getPlayer(Team.BLEU);
+			coord = new Coordinates(player.getCoord());
 			switch (dir) {
 
 			case SOUTH:
-				if (map.isFree(player.getX(), player.getY() + 1)) {
-					player.setY(player.getY() + 1);
-					map.Free(player.getX(), player.getY() - 1);
+				coord.setY(coord.getY() + 1);
+				if (map.isFree(coord)) {
+					player.getCoord().setY(coord.getY());
+					coord.setY(coord.getY() - 1);
+					map.Free(coord);
 					moveSucces = true;
 				}
 				break;
 
 			case NORTH:
-				if (map.isFree(player.getX(), player.getY() - 1)) {
-					player.setY(player.getY() - 1);
-					map.Free(player.getX(), player.getY() + 1);
+				coord.setY(coord.getY() - 1);
+				if (map.isFree(coord)) {
+					player.getCoord().setY(coord.getY());
+					coord.setY(coord.getY() + 1);
+					map.Free(coord);
 					moveSucces = true;
 				}
 				break;
 
 			case WEST:
-				if (map.isFree(player.getX() - 1, player.getY())) {
-					player.setX(player.getX() - 1);
-					map.Free(player.getX() + 1, player.getY());
+				coord.setX(coord.getX() - 1);
+				if (map.isFree(coord)) {
+					player.getCoord().setX(coord.getX());
+					coord.setX(coord.getX() + 1);
+					map.Free(coord);
 					moveSucces = true;
 				}
 				break;
 
 			case EAST:
-
-				if (map.isFree(player.getX() + 1, player.getY())) {
-					player.setX(player.getX() + 1);
-					map.Free(player.getX() - 1, player.getY());
+				coord.setX(coord.getX() + 1);
+				if (map.isFree(coord)) {
+					player.getCoord().setX(coord.getX());
+					coord.setX(coord.getX() - 1);
+					map.Free(coord);
 					moveSucces = true;
 				}
+
 				break;
+
 			}
 
 		}
@@ -142,7 +164,7 @@ public class Engine {
 		}
 
 		if (moveSucces) {
-			map.setEntity(player.getX(), player.getY(), player);
+			map.setEntity(player.getCoord(), player);
 			player.setMovePoints(player.getMovePoints() - 1);
 		}
 		return moveSucces;

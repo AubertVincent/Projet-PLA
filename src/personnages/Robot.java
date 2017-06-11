@@ -4,12 +4,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import carte.Base;
+import carte.Coordinates;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
 import entite.Team;
 import exceptions.NotDoableException;
-import operateur.*;
+import operateur.Action;
+import operateur.ClassicAck;
+import operateur.MoveDir;
 import sequence._Sequence;
 import util.Pair;
 
@@ -19,10 +22,10 @@ public class Robot extends Character {
 	protected Player player;
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
 
-	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
+	public Robot(Coordinates coord, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
 			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton,
 			Player player, java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife) {
-		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
+		super(coord, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
 				base);
 		this.myAutomaton = myAutomaton;
 		this.player = player;
@@ -70,8 +73,8 @@ public class Robot extends Character {
 	 * Suicide a robot and kill the robots around it
 	 */
 	public void suicideBomber() {
-		int x = this.getX();
-		int y = this.getY();
+		int x = this.getCoord().getX();
+		int y = this.getCoord().getY();
 		List<Entity> northEntityList = this.entityMap.getListEntity(x, y - 1);
 		List<Entity> southEntityList = this.entityMap.getListEntity(x, y + 1);
 		List<Entity> westEntityList = this.entityMap.getListEntity(x - 1, y);
@@ -125,8 +128,8 @@ public class Robot extends Character {
 	}
 
 	public void cancelSuicideBomber() {
-		int x = this.getX();
-		int y = this.getY();
+		int x = this.getCoord().getX();
+		int y = this.getCoord().getY();
 		List<Entity> northEntityList = this.entityMap.getListEntity(x, y - 1);
 		List<Entity> southEntityList = this.entityMap.getListEntity(x, y + 1);
 		List<Entity> westEntityList = this.entityMap.getListEntity(x - 1, y);

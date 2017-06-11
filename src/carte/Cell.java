@@ -9,22 +9,32 @@ import exceptions.NotDoableException;
 import personnages.Character;
 
 public class Cell {
-	protected int x;
-	protected int y;
+	protected Coordinates coord;
 
 	protected List<Entity> listeEntites;
 	boolean isfree;
 
+	public Cell(Coordinates coord) {
+		this.coord = coord;
+		listeEntites = new ArrayList<Entity>();
+		isfree = true;
+	}
+
+	public Cell(Coordinates coord, Entity ent) {
+		this.coord = coord;
+		listeEntites = new ArrayList<Entity>();
+		this.setEntity(ent);
+		isfree = false;
+	}
+
 	public Cell(int x, int y) {
-		this.x = x;
-		this.y = y;
+		coord = new Coordinates(x, y);
 		listeEntites = new ArrayList<Entity>();
 		isfree = true;
 	}
 
 	public Cell(int x, int y, Entity ent) {
-
-		this.y = y;
+		coord = new Coordinates(x, y);
 		listeEntites = new ArrayList<Entity>();
 		this.setEntity(ent);
 		isfree = false;
@@ -85,14 +95,8 @@ public class Cell {
 		return false;
 	}
 
-	@SuppressWarnings("unused")
-	private int getX() {
-		return this.x;
-	}
-
-	@SuppressWarnings("unused")
-	private int getY() {
-		return this.y;
+	private Coordinates getCoord() {
+		return coord;
 	}
 
 	// public static void main(String[] args) {

@@ -1,11 +1,12 @@
 package pickable;
 
+import carte.Coordinates;
 import carte.Map;
 
 public class PickSuicideBomber extends PickAble {
 
-	public PickSuicideBomber(int x, int y, Map entityMap) {
-		super(x, y, entityMap);
+	public PickSuicideBomber(Coordinates coord, Map entityMap) {
+		super(coord, entityMap);
 	}
 
 }

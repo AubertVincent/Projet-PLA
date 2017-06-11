@@ -10,6 +10,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
+import carte.Coordinates;
 import entite.Direction;
 import entite.Team;
 import moteurDuJeu.Engine;
@@ -52,16 +53,18 @@ public class GUI extends BasicGame {
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
+		Coordinates coordP1 = new Coordinates(2, 4);
+		Coordinates coordP2 = new Coordinates(31, 15);
 		this.container = container;
 		map = new TiledMap("res/map.tmx");
 		try {
-			perso1 = new GUIPlayer(this, 2, 4, entite.Direction.SOUTH, 100, Team.ROUGE);
+			perso1 = new GUIPlayer(this, coordP1, entite.Direction.SOUTH, 100, Team.ROUGE);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
-			perso2 = new GUIPlayer(this, 31, 15, entite.Direction.SOUTH, 100, Team.BLEU);
+			perso2 = new GUIPlayer(this, coordP2, entite.Direction.SOUTH, 100, Team.BLEU);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -122,11 +125,11 @@ public class GUI extends BasicGame {
 	 *            y coordinate of the cell
 	 * @return
 	 */
-	public boolean isObstacle(int x, int y) {
+	public boolean isObstacle(Coordinates coord) {
 		// int tileW = map.getTileWidth();
 		// int tileH = map.getTileHeight();
 		int logicLayer = map.getLayerIndex("obstacles");
-		Image tile = map.getTileImage(x, y, logicLayer);
+		Image tile = map.getTileImage(coord.getX(), coord.getY(), logicLayer);
 		boolean collision = tile != null;
 		return collision;
 	}

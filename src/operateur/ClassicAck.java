@@ -28,8 +28,8 @@ public class ClassicAck extends Attack {
 	@Override
 	protected boolean isDoable(Robot r) {
 
-		int x = r.getX();
-		int y = r.getY();
+		int x = r.getCoord().getX();
+		int y = r.getCoord().getY();
 		Team team = r.getTeam();
 
 		Cell testEast = new Cell(x + 1, y);
@@ -48,8 +48,8 @@ public class ClassicAck extends Attack {
 			throw new NotDoableException("Il n'y a personne à attaquer");
 		} else {
 
-			int x = r.getX();
-			int y = r.getY();
+			int x = r.getCoord().getX();
+			int y = r.getCoord().getY();
 			Team team = r.getTeam();
 			Map myMap = r.getEntityMap();
 
@@ -87,8 +87,8 @@ public class ClassicAck extends Attack {
 			throw new NotDoableException("Il n'y a personne à attaquer");
 		} else {
 
-			int x = r.getX();
-			int y = r.getY();
+			int x = r.getCoord().getX();
+			int y = r.getCoord().getY();
 			Team team = r.getTeam();
 			Map myMap = r.getEntityMap();
 
