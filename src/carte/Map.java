@@ -56,15 +56,10 @@ public class Map {
 	}
 
 	public List<Action> pathExists(Robot r, int xa, int ya) {
-		int xd = r.getX();
-		int yd = r.getY();
-		int range = r.getMovePoints();
-		List<Action> path = null;
-		List<List<Action>> allPathes;
+		Cell destination = r.entityMap.getCell(xa, ya);
+		//List<Action> path = Dijkstra.dijkstra(GraphMap.,destination);
 		
-		
-		
-		return path;
+		return null;
 	}
 
 
