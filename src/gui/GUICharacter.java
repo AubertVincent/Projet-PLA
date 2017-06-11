@@ -228,7 +228,7 @@ public abstract class GUICharacter {
 
 	protected void movePlayer(Engine engine, Direction direction) {
 		if (!isMoving() && !isAttacking()) {
-			if (engine.doMove(direction, this, engine.ma_map)) {
+			if (engine.doMove(direction, this, engine.getMap())) {
 				this.goToDirection(direction);
 			}
 		}
@@ -330,11 +330,11 @@ public abstract class GUICharacter {
 		return yPxTarget;
 	}
 
-	private int getCurrentX() {
+	protected int getCurrentX() {
 		return xCell;
 	}
 
-	private int getCurrentY() {
+	protected int getCurrentY() {
 		return yCell;
 	}
 
@@ -405,8 +405,4 @@ public abstract class GUICharacter {
 
 	}
 
-	public void createRobot(int x, int y) throws SlickException {
-		// listRobot.add(new GUIRobot(2, 4, Direction.SOUTH,
-		// "res/SpriteSheetAnimRobot.png", 1));
-	}
 }
