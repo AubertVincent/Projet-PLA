@@ -54,12 +54,12 @@ public class Player extends Character {
 		return possibleActionsList;
 	}
 
-	public Player(int x, int y, carte.Map entityMap, Besace besace, Direction direction, int life, int vision,
-			int attack, int range, int movePoints, int recall, int attackPoints, Team team, Base base,
-			GUICharacter GUIPlayer) {
-		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
-				base, GUIPlayer);
+	public Player(int x, int y, carte.Map entityMap, Direction direction, int life, int vision, int attack, int range,
+			int movePoints, int recall, int attackPoints, Team team, Base base, GUICharacter GUIPlayer) {
+		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, team, attackPoints, base,
+				GUIPlayer);
 		robotList = new RobotList();
+		this.besace = new Besace();
 	}
 
 	public void addRobot(Object obj, Robot robot) {

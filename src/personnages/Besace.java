@@ -86,4 +86,12 @@ public class Besace {
 		}
 	}
 
+	// Test
+	public void print() {
+
+		for (Iterator<Class<? extends PickAble>> mapIter = besace.keySet().iterator(); mapIter.hasNext();) {
+			System.out.print(mapIter.toString() + " number : " + besace.get(mapIter.next()));
+		}
+	}
+
 }

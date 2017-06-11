@@ -56,8 +56,8 @@ public abstract class Character extends Entity {
 	 * @param recall
 	 *            Character's recall's time
 	 */
-	public Character(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
-			int range, int movePoints, int recall, Team team, int attackPoints, Base base, GUICharacter GUICharacter) {
+	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
+			int movePoints, int recall, Team team, int attackPoints, Base base, GUICharacter GUICharacter) {
 		super(x, y, entityMap);
 		this.direction = direction;
 		this.life = life;

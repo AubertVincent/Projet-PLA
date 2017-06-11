@@ -11,6 +11,7 @@ import carte.Cell;
 import carte.Coordinates;
 import carte.Map;
 import entite.Direction;
+import entite.Entity;
 import entite.Team;
 import exceptions.NotDoableException;
 import gui.GUI;
@@ -20,6 +21,7 @@ import gui.GUIRobot;
 import personnages.Besace;
 import personnages.Player;
 import personnages.Robot;
+import pickable.PickAble;
 import reader.Reader;
 import sequence._Sequence;
 
@@ -43,14 +45,14 @@ public class Engine {
 		listPlayer = new ArrayList<Player>();
 		try {
 			guiPlayerTmp = new GUIPlayer(userInterface, 2, 4, entite.Direction.SOUTH, 100, Team.ROUGE);
-			playerTmp = new Player(2, 4, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 100, 1, 1, Team.ROUGE,
+			playerTmp = new Player(2, 4, ma_map, Direction.SOUTH, 1, 1, 1, 1, 100, 1, 1, Team.ROUGE,
 					new Base(2, 4, Team.ROUGE), guiPlayerTmp);
 			listPlayer.add(playerTmp);
 			guiPlayerTmp.setPlayer(playerTmp);
 			userInterface.addGUICharactere(guiPlayerTmp);
 
 			guiPlayerTmp = new GUIPlayer(userInterface, 31, 15, entite.Direction.SOUTH, 100, Team.BLEU);
-			playerTmp = new Player(31, 15, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 100, 1, 1, Team.BLEU,
+			playerTmp = new Player(31, 15, ma_map, Direction.SOUTH, 1, 1, 1, 1, 100, 1, 1, Team.BLEU,
 					new Base(31, 15, Team.BLEU), guiPlayerTmp);
 
 			listPlayer.add(playerTmp);
@@ -206,7 +208,19 @@ public class Engine {
 				return moveSucces;
 			}
 
+			// Gestion of the besace
 			if (moveSucces) {
+
+				if (map.isPickAble(player.getX(), player.getY())) {
+					System.out.println("je suis la");
+					Besace PlayerBesace = player.getBesace();
+					PlayerBesace.print();
+					for (Entity e : map.getEntity(player.getX(), player.getY())) {
+						System.out.println("je suis la");
+						PlayerBesace.add(((PickAble) e).getClass());
+					}
+					PlayerBesace.print();
+				}
 				map.setEntity(player.getX(), player.getY(), player);
 				player.setMovePoints(player.getMovePoints() - 1);
 			}
@@ -311,9 +325,8 @@ public class Engine {
 		Ybase = player.getBase().getY();
 		try {
 			if (map.isFree(Xbase, Ybase)) {
-				Robot robot = new Robot(Xbase, Ybase, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 1, 1,
-						player.getTeam(), 1, player.getBase(), Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player,
-						GUIPlayer);
+				Robot robot = new Robot(Xbase, Ybase, ma_map, Direction.SOUTH, 1, 1, 1, 1, 1, 1, player.getTeam(), 1,
+						player.getBase(), Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player, GUIPlayer);
 				player.addRobot(new Coordinates(Xbase, Ybase), robot);
 				map.setEntity(Xbase, Ybase, robot);
 				GUIPlayer.createRobot(robot, userInterface);
