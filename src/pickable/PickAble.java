@@ -23,9 +23,13 @@ public abstract class PickAble extends Entity {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param classReceived
+	 *            Name of content in the bag
+	 * @return String that is displayed to the player
+	 */
 	public static String classToString(String classReceived) {
-
-		System.out.println(classReceived);
 		String toString = classReceived;
 		switch (classReceived) {
 		case "PickMoveDir":

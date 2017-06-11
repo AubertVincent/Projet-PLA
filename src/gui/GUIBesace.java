@@ -16,16 +16,37 @@ public class GUIBesace {
 	private Rectangle frame;
 	private int x, y;
 
-	protected GUIBesace(GameContainer container, int WindowWidth, int WindowHeight, int WidthRect, int HeightRect,
-			int cellWidth, int TextFieldHeight) {
+	/**
+	 * 
+	 * @param container
+	 *            The context in which GUI components are created and rendered
+	 * @param WindowHeight
+	 *            Height of the game window
+	 * @param WidthRect
+	 *            Width of the game window
+	 * @param HeightRect
+	 *            Height of the rectangle wich corresponds to the bag
+	 * @param cellWidth
+	 *            Width of the map cell
+	 */
+	protected GUIBesace(GameContainer container, int WindowHeight, int WidthRect, int HeightRect, int cellWidth) {
 
 		this.x = cellWidth * 7;
-		this.y = (WindowHeight - 200) - TextFieldHeight * 4;
+		this.y = (WindowHeight / 2) - HeightRect / 2;
 
 		this.frame = new Rectangle(x, y, WidthRect, HeightRect);
 
 	}
 
+	/**
+	 * 
+	 * @param container
+	 *            The context in which GUI components are created and rendered
+	 * @param g
+	 *            A Graphics to represent the GUICharacter in
+	 * @param besace
+	 *            Contents of the player's bag
+	 */
 	protected void render(GameContainer container, Graphics g, Besace besace) {
 		Color backgroundField = new Color(0f, 0f, 0f, 0.8f);
 		g.setColor(backgroundField);
@@ -34,6 +55,13 @@ public class GUIBesace {
 		displayBesace(g, besace);
 	}
 
+	/**
+	 * 
+	 * @param g
+	 *            A Graphics to represent the GUICharacter in
+	 * @param besace
+	 *            Contents of the player's bag
+	 */
 	private void displayBesace(Graphics g, Besace besace) {
 		int interligne;
 		interligne = this.y - 10;

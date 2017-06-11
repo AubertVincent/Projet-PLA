@@ -64,33 +64,16 @@ public class Besace {
 
 		besace.put(myClass, besace.get(myClass) + 1);
 
-		// int i;
-		// for (Iterator<Class<? extends PickAble>> mapIter =
-		// besace.keySet().iterator(); mapIter.hasNext();) {
-		// Class<? extends PickAble> currentClass;
-		// currentClass = mapIter.next();
-		// if (myClass == currentClass) {
-		// i = besace.get(currentClass);
-		// besace.remove(currentClass);
-		// besace.put(currentClass, i++);
-		// }
-		// }
 	}
 
 	public void remove(Class<? extends PickAble> myClass) {
 
 		besace.put(myClass, Math.max(0, besace.get(myClass) - 1));
 
-		// int i;
-		// for (Iterator<Class<? extends PickAble>> mapIter =
-		// besace.keySet().iterator(); mapIter.hasNext();) {
-		// Class<? extends PickAble> currentClass;
-		// currentClass = mapIter.next();
-		// if (myClass == currentClass) {
-		// i = besace.get(currentClass);
-		// besace.remove(currentClass);
-		// besace.put(currentClass, i--);
-		// }
-		// }
+	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 }

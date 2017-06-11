@@ -41,7 +41,7 @@ public class GUI extends BasicGame {
 	private Engine engine;
 
 	private GUIBesace rectBesace;
-	private int WidthRect = 600;
+	private int WidthRect = 32 * 20;
 	private int HeightRect = 300;
 
 	public static void main(String[] args) throws SlickException {
@@ -81,8 +81,7 @@ public class GUI extends BasicGame {
 		// e.printStackTrace();
 		// }
 
-		this.rectBesace = new GUIBesace(container, WindowWidth, WindowHeight, WidthRect, HeightRect, cellWidth,
-				TextFieldHeight);
+		this.rectBesace = new GUIBesace(container, WindowHeight, WidthRect, HeightRect, cellWidth);
 
 		this.inputTextField = new GUIBehaviorInput(container, this, WindowWidth, WindowHeight, TextFieldHeight,
 				"(MC2E | (AC;(MC3W>MT8.3)))");

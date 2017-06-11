@@ -68,22 +68,10 @@ public class Player extends Character {
 
 		besace = new Besace();
 
-		// besace.initBesace();
-
 		besace.add(PickMoveDir.class);
 		besace.add(PickRecall.class);
 		besace.add(PickSuicideBomber.class);
 		besace.add(PickTunnel.class);
-
-		// for (Iterator<Entry<Class<? extends PickAble>, Integer>> iterator =
-		// besace.get().entrySet().iterator(); iterator
-		// .hasNext();) {
-		// Map.Entry<Class<? extends PickAble>, Integer> mapentry =
-		// (Map.Entry<Class<? extends PickAble>, Integer>) iterator
-		// .next();
-		// System.out.println("clé: " + mapentry.getKey() + " | valeur: " +
-		// mapentry.getValue());
-		// }
 	}
 
 	public void addRobot(Object obj, Robot robot) {
