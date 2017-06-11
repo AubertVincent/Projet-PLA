@@ -48,9 +48,7 @@ public class Map {
 			while (!map[randomX][randomY].isFree()) {
 				randomX = (int) (Math.random() * (width));
 				randomY = (int) (Math.random() * (height));
-				System.out.println("je suis la");
 			}
-			System.out.println("je suis la");
 			newPickAble = PickAble.randomPickable((int) ((int) 1 + (Math.random() * (9))), randomX, randomY, this);
 			map[randomX][randomY].setEntity(newPickAble);
 			randomX = (int) (Math.random() * (width));
@@ -97,7 +95,7 @@ public class Map {
 		return map[x][y].getListEntity();
 	}
 
-	private void printMap() {
+	public void print() {
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				if (map[i][j].getListEntity().size() != 0) {
@@ -109,34 +107,36 @@ public class Map {
 		}
 	}
 
-	private void testObstacle() {
-		// Once obstacles are set,
-		// Set random operator at random places
-		int randomX = (int) (Math.random() * (width));
-		int randomY = (int) (Math.random() * (height));
-		PickAble newPickAble;
-		for (int i = 0; i < nbrOperatorInit; i++) {
-			while (!map[randomX][randomY].isFree()) {
-				randomX = (int) (Math.random() * (width));
-				randomY = (int) (Math.random() * (height));
-				System.out.println("je suis la");
-			}
-			System.out.println("je suis la");
-			newPickAble = PickAble.randomPickable((int) ((int) 1 + (Math.random() * (9))), randomX, randomY, this);
-			map[randomX][randomY].setEntity(newPickAble);
-			randomX = (int) (Math.random() * (width));
-			randomY = (int) (Math.random() * (height));
-		}
-	}
-
-	public static void main(String[] args) {
-		Map ma_map = new Map();
-		System.out.println("je suis la");
-		ma_map.testObstacle();
-		System.out.println("je suis la");
-		ma_map.printMap();
-
-	}
+	// Fonction de test
+	// private void testObstacle() {
+	// // Once obstacles are set,
+	// // Set random operator at random places
+	// int randomX = (int) (Math.random() * (width));
+	// int randomY = (int) (Math.random() * (height));
+	// PickAble newPickAble;
+	// for (int i = 0; i < nbrOperatorInit; i++) {
+	// while (!map[randomX][randomY].isFree()) {
+	// randomX = (int) (Math.random() * (width));
+	// randomY = (int) (Math.random() * (height));
+	// System.out.println("je suis la");
+	// }
+	// System.out.println("je suis la");
+	// newPickAble = PickAble.randomPickable((int) ((int) 1 + (Math.random() *
+	// (9))), randomX, randomY, this);
+	// map[randomX][randomY].setEntity(newPickAble);
+	// randomX = (int) (Math.random() * (width));
+	// randomY = (int) (Math.random() * (height));
+	// }
+	// }
+	//
+	// public static void main(String[] args) {
+	// Map ma_map = new Map();
+	// System.out.println("je suis la");
+	// ma_map.testObstacle();
+	// System.out.println("je suis la");
+	// ma_map.print();
+	//
+	// }
 
 	/**
 	 * return the list of the entities present on the cell(x,y)

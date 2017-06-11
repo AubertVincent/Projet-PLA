@@ -63,6 +63,7 @@ public class Engine {
 			e.printStackTrace();
 		}
 		ma_map.init(userInterface, this);
+		ma_map.print();
 		this.playPhase = PlayPhase.playerMovement;
 	}
 
@@ -212,13 +213,15 @@ public class Engine {
 			if (moveSucces) {
 
 				if (map.isPickAble(player.getX(), player.getY())) {
-					System.out.println("je suis la");
+
 					Besace PlayerBesace = player.getBesace();
+					System.out.println(" \n Besace Avant : \n");
 					PlayerBesace.print();
 					for (Entity e : map.getEntity(player.getX(), player.getY())) {
-						System.out.println("je suis la");
+
 						PlayerBesace.add(((PickAble) e).getClass());
 					}
+					System.out.println(" \n Besace Apres : \n");
 					PlayerBesace.print();
 				}
 				map.setEntity(player.getX(), player.getY(), player);
@@ -314,7 +317,7 @@ public class Engine {
 	}
 
 	public void createRobot(GUIPlayer GUIPlayer, GUI userInterface, Map map) {
-		System.out.println("\n \n Je suis la _\n \n");
+		// System.out.println("\n \n Je suis la _\n \n");
 		// TODO : création d'un robot
 		int Xbase;
 		int Ybase;
