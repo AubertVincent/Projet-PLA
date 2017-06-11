@@ -1,6 +1,6 @@
 .project
 doc/
-
+src/reader/
 .classpath
 .settings/
 doc/
