@@ -66,31 +66,10 @@ public class Player extends Character {
 		robotList.add(obj, robot);
 	}
 
-	// public void addOperator(Operator op) {
-	// Integer nbr = besace.get(op);
-	// if (nbr == null) {
-	// besace.put(op, 1);
-	// } else {
-	// besace.put(op, nbr + 1);
-	// }
-	// }
-	//
-	// public void removeOperator(Operator op) {
-	// Integer nbr = besace.get(op);
-	// if (nbr == 1) {
-	// besace.remove(op);
-	// } else {
-	// besace.put(op, nbr - 1);
-	// }
-	// }
-	//
-	// public boolean isInBesace(Operator op) {
-	// return besace.get(op) != null;
-	// }
-	//
-	// public int nbrInBesace(Operator op) {
-	// return besace.get(op);
-	// }
+	public void removeRobot(Robot robot) {
+		robotList.remove(robot);
+
+	}
 
 	// TODO
 	public void CreateRobot() {

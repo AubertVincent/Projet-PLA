@@ -377,7 +377,7 @@ public abstract class GUICharacter {
 			if (!isMoving() && !isAttacking()) {
 				setDirection(dir);
 				setAttackTarget(dir);
-				engine.doAttack(dir, this, engine.ma_map);
+				engine.doAttack(dir, (GUIPlayer) this, engine.ma_map);
 				setAttackTarget(dir);
 
 				setAckRequest(true);

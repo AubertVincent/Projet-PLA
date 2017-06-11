@@ -83,4 +83,13 @@ public class GUIPlayer extends GUICharacter {
 		}
 	}
 
+	public void addGUIRobot(GUIRobot guiRobot) {
+		guiRobotlist.add(guiRobot);
+	}
+
+	public void removeGUIRobot(GUIRobot guiRobot) {
+
+		guiRobotlist.remove(guiRobot);
+	}
+
 }

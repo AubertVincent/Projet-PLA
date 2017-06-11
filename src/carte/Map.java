@@ -95,47 +95,17 @@ public class Map {
 		return map[x][y].getListEntity();
 	}
 
-	public void print() {
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
-				if (map[i][j].getListEntity().size() != 0) {
-					System.out.println(
-							"case :" + i + ',' + j + " " + map[i][j].getListEntity().get(0).getClass().toString());
-
-				}
-			}
-		}
-	}
-
-	// Fonction de test
-	// private void testObstacle() {
-	// // Once obstacles are set,
-	// // Set random operator at random places
-	// int randomX = (int) (Math.random() * (width));
-	// int randomY = (int) (Math.random() * (height));
-	// PickAble newPickAble;
-	// for (int i = 0; i < nbrOperatorInit; i++) {
-	// while (!map[randomX][randomY].isFree()) {
-	// randomX = (int) (Math.random() * (width));
-	// randomY = (int) (Math.random() * (height));
-	// System.out.println("je suis la");
-	// }
-	// System.out.println("je suis la");
-	// newPickAble = PickAble.randomPickable((int) ((int) 1 + (Math.random() *
-	// (9))), randomX, randomY, this);
-	// map[randomX][randomY].setEntity(newPickAble);
-	// randomX = (int) (Math.random() * (width));
-	// randomY = (int) (Math.random() * (height));
-	// }
-	// }
+	// public void print() {
+	// for (int i = 0; i < width; i++) {
+	// for (int j = 0; j < height; j++) {
+	// if (map[i][j].getListEntity().size() != 0) {
+	// System.out.println(
+	// "case :" + i + ',' + j + " " +
+	// map[i][j].getListEntity().get(0).getClass().toString());
 	//
-	// public static void main(String[] args) {
-	// Map ma_map = new Map();
-	// System.out.println("je suis la");
-	// ma_map.testObstacle();
-	// System.out.println("je suis la");
-	// ma_map.print();
-	//
+	// }
+	// }
+	// }
 	// }
 
 	/**

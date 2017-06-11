@@ -173,6 +173,10 @@ public abstract class Character extends Entity {
 		this.attackPoints = aP;
 	}
 
+	public GUICharacter getGUICharacter() {
+		return this.GUICharactere;
+	}
+
 	// public void resetBesace() {
 	// // FIXME adapt besace : implement clear for this class
 	// this.besace.clear();

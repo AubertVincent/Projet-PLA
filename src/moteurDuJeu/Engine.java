@@ -63,7 +63,6 @@ public class Engine {
 			e.printStackTrace();
 		}
 		ma_map.init(userInterface, this);
-		ma_map.print();
 		this.playPhase = PlayPhase.playerMovement;
 	}
 
@@ -215,14 +214,14 @@ public class Engine {
 				if (map.isPickAble(player.getX(), player.getY())) {
 
 					Besace PlayerBesace = player.getBesace();
-					System.out.println(" \n Besace Avant : \n");
-					PlayerBesace.print();
+					// System.out.println(" \n Besace Avant : \n");
+					// PlayerBesace.print();
 					for (Entity e : map.getEntity(player.getX(), player.getY())) {
 
 						PlayerBesace.add(((PickAble) e).getClass());
 					}
-					System.out.println(" \n Besace Apres : \n");
-					PlayerBesace.print();
+					// System.out.println(" \n Besace Apres : \n");
+					// PlayerBesace.print();
 				}
 				map.setEntity(player.getX(), player.getY(), player);
 				player.setMovePoints(player.getMovePoints() - 1);
@@ -238,9 +237,11 @@ public class Engine {
 	}
 
 	// TODO : Handle attackpoints and death is lifepoint is 0
-	public void doAttack(Direction dir, GUICharacter perso, Map map) throws NotDoableException {
+	public void doAttack(Direction dir, GUIPlayer perso, Map map) throws NotDoableException {
 		Cell target;
-		Player player;
+		Player player = null;
+		personnages.Character opponent = null;
+		System.out.println("Je suis arrivé jusqu'ici");
 		try {
 			if (perso.getTeam().equals(Team.ROUGE)) {
 				player = getPlayer(Team.ROUGE);
@@ -248,24 +249,28 @@ public class Engine {
 
 				case SOUTH:
 					target = map.getCell(player.getX(), player.getY() + 1);
+					opponent = target.getOpponent(player.getTeam());
 					player.classicAtk(target);
 					System.out.println(" Joueur 1 attaque la case : " + player.getX() + ";" + (player.getY() + 1));
 					break;
 
 				case NORTH:
 					target = map.getCell(player.getX(), player.getY() - 1);
+					opponent = target.getOpponent(player.getTeam());
 					player.classicAtk(target);
 					System.out.println(" Joueur 1 attaque la case : " + player.getX() + ";" + (player.getY() - 1));
 					break;
 
 				case WEST:
 					target = map.getCell(player.getX() - 1, player.getY());
+					opponent = target.getOpponent(player.getTeam());
 					player.classicAtk(target);
 					System.out.println(" Joueur 1 attaque la case : " + (player.getX() - 1) + ";" + player.getY());
 					break;
 
 				case EAST:
 					target = map.getCell(player.getX() + 1, player.getY());
+					opponent = target.getOpponent(player.getTeam());
 					player.classicAtk(target);
 					System.out.println(" Joueur 1 attaque la case : " + (player.getX() + 1) + ";" + player.getY());
 					break;
@@ -279,24 +284,28 @@ public class Engine {
 
 				case SOUTH:
 					target = map.getCell(player.getX(), player.getY() + 1);
+					opponent = target.getOpponent(player.getTeam());
 					player.classicAtk(target);
 					System.out.println(" Joueur 2 attaque la case : " + player.getX() + ";" + (player.getY() + 1));
 					break;
 
 				case NORTH:
 					target = map.getCell(player.getX(), player.getY() - 1);
+					opponent = target.getOpponent(player.getTeam());
 					player.classicAtk(target);
 					System.out.println(" Joueur 2 attaque la case : " + player.getX() + ";" + (player.getY() - 1));
 					break;
 
 				case WEST:
 					target = map.getCell(player.getX() - 1, player.getY());
+					opponent = target.getOpponent(player.getTeam());
 					player.classicAtk(target);
 					System.out.println(" Joueur 2 attaque la case : " + (player.getX() - 1) + ";" + player.getY());
 					break;
 
 				case EAST:
 					target = map.getCell(player.getX() + 1, player.getY());
+					opponent = target.getOpponent(player.getTeam());
 					player.classicAtk(target);
 					System.out.println(" Joueur 2 attaque la case : " + (player.getX() + 1) + ";" + player.getY());
 					break;
@@ -308,6 +317,21 @@ public class Engine {
 				System.out.println("Plus de point d'attaque !\n");
 			}
 
+			if (opponent != null && opponent.getLife() <= 0) {
+				// If the opponent hero die => End of game
+				if (opponent.getClass().equals(Player.class)) {
+
+				}
+				// The opponent is a robot, remove him from the game
+				else {
+					Player opponentPlayer = getPlayer(opponent.getTeam());
+					((GUIPlayer) opponentPlayer.getGUICharacter())
+							.removeGUIRobot((GUIRobot) opponent.getGUICharacter());
+					opponentPlayer.removeRobot((Robot) opponent);
+					ma_map.Free(opponent.getX(), opponent.getY());
+
+				}
+			}
 			System.out.println("Point de vie du joueur 2 apres attaque : " + getPlayer(Team.BLEU).getLife());
 
 		} catch (NotDoableException e) {
@@ -317,7 +341,6 @@ public class Engine {
 	}
 
 	public void createRobot(GUIPlayer GUIPlayer, GUI userInterface, Map map) {
-		// System.out.println("\n \n Je suis la _\n \n");
 		// TODO : création d'un robot
 		int Xbase;
 		int Ybase;
@@ -328,18 +351,22 @@ public class Engine {
 		Ybase = player.getBase().getY();
 		try {
 			if (map.isFree(Xbase, Ybase)) {
+				GUIRobot tmp = new GUIRobot(userInterface, Xbase, Ybase, Direction.SOUTH, 100, player.getTeam());
 				Robot robot = new Robot(Xbase, Ybase, ma_map, Direction.SOUTH, 1, 1, 1, 1, 1, 1, player.getTeam(), 1,
-						player.getBase(), Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player, GUIPlayer);
+						player.getBase(), Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player, tmp);
 				player.addRobot(new Coordinates(Xbase, Ybase), robot);
+				GUIPlayer.addGUIRobot(tmp);
 				map.setEntity(Xbase, Ybase, robot);
-				GUIPlayer.createRobot(robot, userInterface);
+				// GUIPlayer.createRobot(robot, userInterface);
 			} else {
 				// TODO find the player's base nearest free cell
 
 			}
 		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.getMessage();
+		} catch (Exception e) {
+
+			e.getMessage();
 		}
 	}
 

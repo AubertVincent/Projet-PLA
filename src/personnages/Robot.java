@@ -10,6 +10,7 @@ import entite.Entity;
 import entite.Team;
 import exceptions.NotDoableException;
 import gui.GUICharacter;
+import gui.GUIRobot;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
@@ -21,6 +22,7 @@ public class Robot extends Character {
 	protected _Sequence myAutomaton;
 	protected Player player;
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
+	private GUIRobot guiRobot;
 
 	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
 			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton,
@@ -35,9 +37,9 @@ public class Robot extends Character {
 
 	public Robot(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
 			int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton, Player player,
-			GUICharacter GUIPlayer) {
+			GUICharacter GUIRobot) {
 		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, team, attackPoints, base,
-				GUIPlayer);
+				GUIRobot);
 		this.myAutomaton = myAutomaton;
 		this.player = player;
 	}
