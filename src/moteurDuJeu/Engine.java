@@ -335,6 +335,11 @@ public class Engine {
 		}
 	}
 
+	public void executeAutomaton(GUI userInterface) {
+		// TODO : executer pour tout les robots des deux persoannges, ne pas
+		// oublier le render a chaque mouvement afin d'éviter téléportation
+	}
+
 	/**
 	 * Is called right when mouse is pressed
 	 * 

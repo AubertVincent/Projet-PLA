@@ -174,6 +174,10 @@ public class GUI extends BasicGame {
 		throw new NotDoableException("Pas de personnage sur cette case ou mauvaise phase de jeu");
 	}
 
+	public List<GUIPlayer> getPlayerList() {
+		return this.guiPlayerList;
+	}
+
 	@Override
 	public void mousePressed(int button, int x, int y) {
 		int mouseXCell = pixelToCellX(x);
@@ -270,6 +274,7 @@ public class GUI extends BasicGame {
 			if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
 				if (key == Input.KEY_SPACE) {
 					engine.setPlayPhase(Input.KEY_SPACE);
+					engine.executeAutomaton(this);
 				}
 			}
 			// } else if
