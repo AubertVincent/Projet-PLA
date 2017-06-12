@@ -1,7 +1,6 @@
 package operateur;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import carte.Base;
@@ -24,76 +23,108 @@ public class Explore extends Movement {
 
 	@Override
 	protected boolean isDoable(Robot r) {
-		// TODO Auto-generated method stub
-		return false;
+		if (!(r.getEntityMap().getCell(r.getX()+1, r.getY()).isReachable()) && !(r.getEntityMap().getCell(r.getX()-1, r.getY()).isReachable()) && !(r.getEntityMap().getCell(r.getX(), r.getY()+1).isReachable()) && !(r.getEntityMap().getCell(r.getX(), r.getY()-1).isReachable())){
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
-		// TODO Auto-generated method stub
+		// Useless with the current implementation
 
 	}
 
 	@Override
 	public void execute(Robot r) throws NotDoableException {
+		if (!isDoable(r)){
+			throw new NotDoableException ("Ce robot est entouré d'obstacles");
+		}
 		int range = r.getMovePoints();
 		int x = r.getX();
 		int y = r.getY();
 		int randomCpt = 0;
 		int myRandom = 0;
-		int unexploredcpt = 0;
-		Cell testNorth = r.getEntityMap().getCell(x, y-1);
-		Cell testSouth = r.getEntityMap().getCell(x, y+1);
-		Cell testEast = r.getEntityMap().getCell(x+1, y);
-		Cell testWest = r.getEntityMap().getCell(x-1, y);
+		Cell testNorth = r.getEntityMap().getCell(x, y - 1);
+		Cell testSouth = r.getEntityMap().getCell(x, y + 1);
+		Cell testEast = r.getEntityMap().getCell(x + 1, y);
+		Cell testWest = r.getEntityMap().getCell(x - 1, y);
 		List<Cell> reachable = new ArrayList<Cell>();
-		
-		while (range > 0){
+
+		while (range > 0) {
+			if (!isDoable(r)){
+				throw new NotDoableException ("Ce robot est entouré d'obstacles");
+			}
 			reachable.clear();
 			randomCpt = 0;
-			if (testNorth.isReachable() && !(testNorth.isExplored())){
+			if (testNorth.isReachable() && !(testNorth.isExplored())) {
 				reachable.add(testNorth);
 				randomCpt++;
 			}
-			if (testEast.isReachable() && !(testEast.isExplored())){
+			if (testEast.isReachable() && !(testEast.isExplored())) {
 				reachable.add(testEast);
 				randomCpt++;
 			}
-			if (testWest.isReachable() && !(testWest.isExplored())){
+			if (testWest.isReachable() && !(testWest.isExplored())) {
 				reachable.add(testWest);
 				randomCpt++;
 			}
-			if (testSouth.isReachable() && !(testSouth.isExplored())){
+			if (testSouth.isReachable() && !(testSouth.isExplored())) {
 				reachable.add(testSouth);
 				randomCpt++;
 			}
-			if (randomCpt!=0){
-				myRandom = (int) (Math.random()*randomCpt);
-				//TODO Accéder à la cellule tirée au sort
-			}else{
+			if (randomCpt != 0) {
+				myRandom = (int) (Math.random() * randomCpt);
+				if (reachable.get(myRandom).getX() < x && reachable.get(myRandom).getY() == y) {
+					r.getExplorationMap().getCell(x - 1, y).setExplored(true);
+					r.goTo(Direction.NORTH, 1);
+				} else if (reachable.get(myRandom).getX() > x && reachable.get(myRandom).getY() == y) {
+					r.getExplorationMap().getCell(x + 1, y).setExplored(true);
+					r.goTo(Direction.SOUTH, 1);
+				} else if (reachable.get(myRandom).getX() == x && reachable.get(myRandom).getY() < y) {
+					r.getExplorationMap().getCell(x, y - 1).setExplored(true);
+					r.goTo(Direction.WEST, 1);
+				} else if (reachable.get(myRandom).getX() == x && reachable.get(myRandom).getY() > y) {
+					r.getExplorationMap().getCell(x, y + 1).setExplored(true);
+					r.goTo(Direction.EAST, 1);
+				}
+			} else {
 				randomCpt = 0;
 				reachable.clear();
-				if (testNorth.isReachable()){
+				if (testNorth.isReachable()) {
 					reachable.add(testNorth);
 					randomCpt++;
 				}
-				if (testEast.isReachable()){
+				if (testEast.isReachable()) {
 					reachable.add(testEast);
 					randomCpt++;
 				}
-				if (testWest.isReachable()){
+				if (testWest.isReachable()) {
 					reachable.add(testWest);
 					randomCpt++;
 				}
-				if (testSouth.isReachable()){
+				if (testSouth.isReachable()) {
 					reachable.add(testSouth);
 					randomCpt++;
 				}
-				myRandom = (int) (Math.random()*randomCpt);
-				//TODO Accéder à la cellule tirée au sort
+				myRandom = (int) (Math.random() * randomCpt);
+				if (reachable.get(myRandom).getX() < x && reachable.get(myRandom).getY() == y) {
+					r.getExplorationMap().getCell(x - 1, y).setExplored(true);
+					r.goTo(Direction.NORTH, 1);
+				} else if (reachable.get(myRandom).getX() > x && reachable.get(myRandom).getY() == y) {
+					r.getExplorationMap().getCell(x + 1, y).setExplored(true);
+					r.goTo(Direction.SOUTH, 1);
+				} else if (reachable.get(myRandom).getX() == x && reachable.get(myRandom).getY() < y) {
+					r.getExplorationMap().getCell(x, y - 1).setExplored(true);
+					r.goTo(Direction.WEST, 1);
+				} else if (reachable.get(myRandom).getX() == x && reachable.get(myRandom).getY() > y) {
+					r.getExplorationMap().getCell(x, y + 1).setExplored(true);
+					r.goTo(Direction.EAST, 1);
+				}
 			}
+			range--;
 		}
-		
+
 	}
 
 	// @Override
