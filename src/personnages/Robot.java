@@ -208,9 +208,10 @@ public class Robot extends Character {
 		throw new Exception("NYI");
 		// TODO check every reference to the current robot and delete it
 		player.getListRobot().remove(this);
-		player.getGUIPlayer().removeGUIRobot(this.getGUIRobot());
+
 		// There's also the corresponding GUIRObot
 		this.getGUIRobot().delete();
+		player.getGUIPlayer().removeGUIRobot(this.getGUIRobot());
 
 	}
 
