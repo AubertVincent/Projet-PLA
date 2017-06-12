@@ -22,6 +22,7 @@ import moteurDuJeu.PlayPhase;
 import personnages.Besace;
 import personnages.Player;
 import personnages.Robot;
+import pickable.PickAble;
 
 public class GUI extends BasicGame {
 
@@ -41,7 +42,7 @@ public class GUI extends BasicGame {
 
 	private GUIBehaviorInput inputTextField;
 
-	protected boolean behaviorInputNeeded = true;
+	protected boolean behaviorInputNeeded = false;
 
 	private Engine engine;
 
@@ -90,18 +91,28 @@ public class GUI extends BasicGame {
 		for (Iterator<Player> itrPlayer = engine.getPlayerList().iterator(); itrPlayer.hasNext();) {
 			Player currentPlayer = itrPlayer.next();
 			GUIPlayer guiPlayer = currentPlayer.getMyselfGUI();
-			guiPlayer.render(g);
+			try {
+				guiPlayer.render(g);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 			for (Iterator<Robot> itrRobot = currentPlayer.getRobotList().iterator(); itrRobot.hasNext();) {
 				Robot currentRobot = itrRobot.next();
 				GUIRobot guiRobot = currentRobot.getMyselfGUI();
-				guiRobot.render(g);
+				try {
+					guiRobot.render(g);
+				} catch (Exception e) {
+
+					e.printStackTrace();
+				}
 			}
 
 		}
 
-		for (Iterator<GUIPickAble> itr = engine.getMap().getPickAbleList().iterator(); itr.hasNext();) {
-			GUIPickAble currentPickabke = itr.next();
-			currentPickabke.render();
+		for (Iterator<PickAble> itr = engine.getMap().getPickAbleList().iterator(); itr.hasNext();) {
+			PickAble currentPickable = itr.next();
+
+			currentPickable.getGUIPickAble().render();
 		}
 
 		map.render(0, 0, 4);

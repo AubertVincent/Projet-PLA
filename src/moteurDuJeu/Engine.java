@@ -35,7 +35,7 @@ public class Engine {
 	 * @throws SlickException
 	 */
 	public Engine(GUI userInterface) throws SlickException {
-		myMap = new Map();
+		myMap = new Map(userInterface);
 		playerList = new ArrayList<Player>();
 		try {
 			playerList.add(new Player(new Base(Team.ROUGE), myMap, userInterface));
@@ -77,7 +77,9 @@ public class Engine {
 
 	// TODO : Handle with the pickup of pickable when pass on a cell
 	public void goTo(Character player, Direction dir) {
+
 		player.goTo(dir, 1);
+
 	}
 
 	public void goTo(Character player, Direction dir, int lg) {

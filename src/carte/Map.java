@@ -1,5 +1,6 @@
 package carte;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import entite.Entity;
@@ -22,7 +23,11 @@ public class Map {
 
 	private List<PickAble> pickableList;
 
-	public Map() {
+	private GUI userInterface;
+
+	public Map(GUI userInterface) {
+		this.pickableList = new ArrayList<PickAble>();
+		this.userInterface = userInterface;
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				map[i][j] = new Cell(i, j);
@@ -216,6 +221,10 @@ public class Map {
 			}
 		}
 		// return freeCell;
+	}
+
+	public GUI getGUI() {
+		return this.userInterface;
 	}
 
 }

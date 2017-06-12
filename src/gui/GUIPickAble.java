@@ -27,7 +27,7 @@ public class GUIPickAble {
 		}
 	}
 
-	public GUIPickAble(PickAble pickAble) {
+	public GUIPickAble(PickAble pickAble, GUI userInterface) {
 		String pathToImage = pickPath.get(pickAble.getClass());
 		try {
 			image = new Image(pathToImage);
@@ -36,6 +36,7 @@ public class GUIPickAble {
 			e.printStackTrace();
 		}
 		pick = pickAble;
+		this.mainUserInterface = userInterface;
 	}
 
 	public void render() {

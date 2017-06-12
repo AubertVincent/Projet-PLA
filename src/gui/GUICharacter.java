@@ -283,8 +283,10 @@ public abstract class GUICharacter {
 			// State dead means that dying animation is over means that the
 			// Character should be deleted
 			// It's achieved by calling Die and setting it to null
-			mySelf.Die();
-			mySelf = null;
+
+			// TODO
+			// mySelf.Die();
+			// mySelf = null;
 			break;
 		case RobotCreation:
 			if (actionRequest) {

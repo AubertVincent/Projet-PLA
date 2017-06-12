@@ -50,6 +50,7 @@ public abstract class Character extends Entity {
 
 			this.team = base.getBaseTeam();
 			this.base = base;
+			this.state = State.ClassiqueMove;
 		} else if (this instanceof Robot) {
 			this.direction = Direction.SOUTH;
 			this.life = 5;
@@ -61,6 +62,7 @@ public abstract class Character extends Entity {
 			this.recall = 3;
 			this.team = base.getBaseTeam();
 			this.base = base;
+			this.state = State.ClassiqueMove;
 		} else {
 			try {
 				throw new Exception("Unimplemented subClass Character");
@@ -242,22 +244,24 @@ public abstract class Character extends Entity {
 		Character opponent = null;
 		try {
 			opponent = target.getOpponent(this.getTeam());
+			this.classicAtkTmp(target, opponent);
+			this.setAttackPoints(this.getAttackPoints() - 1);
+
+			if (opponent != null && opponent.getLife() <= 0) {
+				try {
+					throw new Exception("NYI");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		} catch (NotDoableException e) {
 			e.getMessage();
 		}
-		this.classicAtkTmp(target, opponent);
-		this.setAttackPoints(this.getAttackPoints() - 1);
 
-		if (opponent != null && opponent.getLife() <= 0) {
-			try {
-				throw new Exception("NYI");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			// FIXME
-			// If the opponent's hero dies => End of game
-			// opponent.dies();
-		}
+		// FIXME
+		// If the opponent's hero dies => End of game
+		// opponent.dies();
+
 	}
 
 	private void classicAtkTmp(Cell target, Character opponent) {
@@ -325,5 +329,7 @@ public abstract class Character extends Entity {
 	public void setState(State state) {
 		this.state = state;
 	}
+
+	public abstract GUICharacter getMyselfGUI();
 
 }
