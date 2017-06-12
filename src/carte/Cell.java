@@ -74,18 +74,13 @@ public class Cell {
 	}
 
 	public boolean opponentHere(Team team) {
-		int i = 0;
-		Entity e;
 		for (Iterator<Entity> it = this.listeEntites.iterator(); it.hasNext();) {
-			// while (i < this.listeEntites.size()) {
-			if (this.listeEntites.get(i).isCharacter()) {
-				e = this.listeEntites.get(i);
-				if (((Character) e).getTeam() != team) {
+			Entity currentEntity = it.next();
+			if (currentEntity.isCharacter()) {
+				if (((Character) currentEntity).getTeam() != team) {
 					return true;
 				}
-
 			}
-			i++;
 		}
 		return false;
 	}

@@ -38,35 +38,26 @@ public class MoveDir extends Movement {
 		int x = r.getX();
 		int y = r.getY();
 		Map myMap = r.getEntityMap();
-		int j = 0;
-		for (int i = 0; i < lg; i++) {
+		for (int i = 1; i <= lg; i++) {
 			switch (dir) {
 			case NORTH:
-				for (j = 1; j <= i; j++) {
-					if (!myMap.isReachable(x, y - j)) {
-						return false;
-					}
+				if (!myMap.isReachable(x, y - i)) {
+					return false;
 				}
 				break;
 			case EAST:
-				for (j = 1; j <= i; j++) {
-					if (!myMap.isReachable(x + i, y)) {
-						return false;
-					}
+				if (!myMap.isReachable(x + i, y)) {
+					return false;
 				}
 				break;
 			case SOUTH:
-				for (j = 1; j <= i; j++) {
-					if (!myMap.isReachable(x, y + i)) {
-						return false;
-					}
+				if (!myMap.isReachable(x, y + i)) {
+					return false;
 				}
 				break;
 			case WEST:
-				for (j = 1; j <= i; j++) {
-					if (!myMap.isReachable(x - i, y)) {
-						return false;
-					}
+				if (!myMap.isReachable(x - i, y)) {
+					return false;
 				}
 				break;
 			}

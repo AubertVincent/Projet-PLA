@@ -37,8 +37,8 @@ public class ClassicAck extends Attack {
 		Cell testSouth = map.getCell(x, y + 1);
 		Cell testNorth = map.getCell(x, y - 1);
 		Cell testWest = map.getCell(x - 1, y);
-		b = !(testEast.opponentHere(team)) && !(testWest.opponentHere(team)) && !(testSouth.opponentHere(team))
-				&& !(testNorth.opponentHere(team));
+		b = !(!(testEast.opponentHere(team)) && !(testWest.opponentHere(team)) && !(testSouth.opponentHere(team))
+				&& !(testNorth.opponentHere(team)));
 		return b;
 	}
 

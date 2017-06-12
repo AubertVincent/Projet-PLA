@@ -159,12 +159,13 @@ public class Map {
 	// FIXME i is never incremented
 	public boolean isReachable(int x, int y) {
 		List<Entity> l = map[x][y].getListEntity();
-		int i = 1;
+		int i = 0;
 		while (i < l.size()) {
 			boolean b = l.get(i).isCharacter() || l.get(i).isObstacle();
 			if (b) {
 				return false;
 			}
+			i++;
 		}
 		return true;
 	}

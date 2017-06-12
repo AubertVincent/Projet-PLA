@@ -29,7 +29,6 @@ public class Robot extends Character {
 				base);
 
 		this.myAutomaton = myAutomaton;
-		this.player = player;
 	}
 
 	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
