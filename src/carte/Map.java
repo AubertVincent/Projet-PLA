@@ -20,6 +20,8 @@ public class Map {
 
 	public final Cell[][] map = new Cell[width][height];
 
+	private List<PickAble> pickableList;
+
 	public Map() {
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
@@ -53,6 +55,7 @@ public class Map {
 			}
 			newPickAble = PickAble.randomPickable((int) ((int) 1 + (Math.random() * (9))), randomX, randomY, this);
 			map[randomX][randomY].setEntity(newPickAble);
+			this.addPickable(newPickAble);
 			randomX = (int) (Math.random() * (width));
 			randomY = (int) (Math.random() * (height));
 		}
@@ -101,6 +104,7 @@ public class Map {
 		return map[x][y].getPickAbleList();
 	}
 
+	// TEST
 	// public void print() {
 	// for (int i = 0; i < width; i++) {
 	// for (int j = 0; j < height; j++) {
@@ -166,7 +170,6 @@ public class Map {
 				l.remove(i);
 			}
 		}
-
 	}
 
 	public boolean isReachable(int x, int y) {
@@ -196,13 +199,18 @@ public class Map {
 	public void movePlayer(Player player, int newX, int newY) {
 		this.Free(player.getX(), player.getY());
 		this.setEntity(newX, newY, player);
-
 	}
 
 	public void moveRobot(Robot player, int newX, int newY) {
 		this.Free(player.getX(), player.getY());
 		this.setEntity(newX, newY, player);
-
 	}
 
+	public List<PickAble> getPickableList() {
+		return this.pickableList;
+	}
+
+	public void addPickable(PickAble pickable) {
+		pickableList.add(pickable);
+	}
 }

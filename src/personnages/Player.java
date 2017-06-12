@@ -65,7 +65,7 @@ public class Player extends Character {
 					base.getBaseTeam(), this);
 
 			this.guiPlayer = GUIPlayer;
-			userInterface.addGUICharactere(GUIPlayer);
+			userInterface.addGUIPlayer(GUIPlayer);
 		} catch (SlickException e) {
 			e.getMessage();
 		} catch (Exception e) {
@@ -83,10 +83,6 @@ public class Player extends Character {
 		this.guiPlayer.removeGUIRobot(robot.getGUIRobot());
 		robotList.remove(robot);
 
-	}
-
-	// TODO
-	public void CreateRobot() {
 	}
 
 	public RobotList getListRobot() {
@@ -127,12 +123,10 @@ public class Player extends Character {
 
 	@Override
 	public boolean isObstacle() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public Besace getBesace() {
-
 		return besace;
 	}
 
@@ -142,13 +136,11 @@ public class Player extends Character {
 
 	@Override
 	public boolean isPickAble() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public void movePlayer(int newX, int newY) {
 		this.getEntityMap().movePlayer(this, newX, newY);
-
 	}
 
 }

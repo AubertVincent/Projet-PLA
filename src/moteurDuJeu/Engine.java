@@ -47,7 +47,6 @@ public class Engine {
 			listPlayer.add(new Player(new Base(Team.BLEU), myMap, userInterface));
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		myMap.init(userInterface, this);
@@ -227,7 +226,6 @@ public class Engine {
 		} catch (NotDoableException e) {
 			throw new NotDoableException("Echec de l'attaque");
 		}
-
 	}
 
 	public void createRobot(GUIPlayer GUIPlayer, GUI userInterface, Map map) {

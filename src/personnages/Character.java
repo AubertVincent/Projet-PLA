@@ -19,13 +19,13 @@ public abstract class Character extends Entity {
 	protected Besace besace;
 
 	protected Direction direction = Direction.SOUTH;
-	protected int life = 10;
-	protected int vision = 5;
-	protected int attack = 3;
-	protected int range = 3;
-	protected int movePoints = 10;
-	protected int attackPoints = 5;
-	protected int recall = 3;
+	protected int life;
+	protected int vision;
+	protected int attack;
+	protected int range;
+	protected int movePoints;
+	protected int attackPoints;
+	protected int recall;
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 	protected Team team;
@@ -82,33 +82,9 @@ public abstract class Character extends Entity {
 			this.team = base.getBaseTeam();
 			this.base = base;
 		} else {
-
 			throw new Exception("Unimplemented subClass Character");
 		}
 	}
-
-	// public Character(int x, int y, Map entityMap, Direction direction, int
-	// life, int vision, int attack, int range,
-	// int movePoints, int recall, int attackPoints, Team team, Base base)
-	// throws Exception {
-	//
-	// super(x, y, entityMap);
-	// if (this instanceof Robot) {
-	//
-	// this.direction = direction;
-	// this.life = life;
-	// this.vision = vision;
-	// this.attack = attack;
-	// this.range = range;
-	// this.movePoints = movePoints;
-	// this.recall = recall;
-	// this.team = team;
-	// this.attackPoints = attackPoints;
-	// this.base = base;
-	// } else {
-	// throw new Exception("Unimplemented subClass Character");
-	// }
-	// }
 
 	public Base getBase() {
 		return base;
@@ -211,23 +187,8 @@ public abstract class Character extends Entity {
 		this.attackPoints = aP;
 	}
 
-	// public GUICharacter getGUICharacter() {
-	// return this.GUICharactere;
-	// }
-	//
-	// public void setGUICharacter(GUICharacter guiCharacter) {
-	// this.GUICharactere = guiCharacter;
-	// }
-
-	// public void resetBesace() {
-	// // FIXME adapt besace : implement clear for this class
-	// this.besace.clear();
-	// }
-
 	public void goTo(Direction dir, int lg) {
-
 		direction = dir;
-
 		switch (direction) {
 		case NORTH:
 			setY(getY() + lg);
@@ -323,6 +284,8 @@ public abstract class Character extends Entity {
 	 *
 	 * @throws GameException
 	 */
+	// TODO Not working
+
 	// public void pickUp() throws NotDoableException {
 	// List<Class<PickAble>> listPicked = null;
 	// Picked picked = new Picked(listPicked);
@@ -357,6 +320,8 @@ public abstract class Character extends Entity {
 		}
 	}
 
+	// TODO Not working
+
 	// public void cancelPickUp() throws NotDoableException {
 	// int x = this.getX();
 	// int y = this.getY();
@@ -377,20 +342,3 @@ public abstract class Character extends Entity {
 	// }
 
 }
-
-//
-// public int getXBase() {
-// if (this.getTeam() == Team.ROUGE) {
-// return 2;
-// } else {
-// return 31;
-// }
-// }
-//
-// public int getYBase() {
-// if (this.getTeam() == Team.ROUGE) {
-// return 4;
-// } else {
-// return 15;
-// }
-// }

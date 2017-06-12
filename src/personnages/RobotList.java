@@ -23,6 +23,7 @@ public class RobotList {
 		fromClassToMap.get(objClass).put(obj, robot);
 	}
 
+	// TEST
 	private void printList() {
 		Map<Object, Robot> currentClassMap;
 		for (Map.Entry<Class<?>, Map<Object, Robot>> currentClass : fromClassToMap.entrySet()) {
@@ -51,8 +52,6 @@ public class RobotList {
 			}
 		}
 	}
-
-	// TODO : get fonction
 
 	public Object getRobotInfoFromClass(Class<?> classRobot, Robot robot) {
 		Map<Object, Robot> currentClassMap;

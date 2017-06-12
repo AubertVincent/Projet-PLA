@@ -58,7 +58,7 @@ public class Cell {
 		return pickableList;
 	}
 
-	public void FreeEntity() {
+	public void FreePickable() {
 		// TODO ne pas tout nettoyer
 	}
 

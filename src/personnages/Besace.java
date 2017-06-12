@@ -60,24 +60,8 @@ public class Besace {
 		this.besace = besace;
 	}
 
-	// public void add(Class<? extends PickAble> myClass) {
-	// int i;
-	// for (Iterator<Class<? extends PickAble>> mapIter =
-	// besace.keySet().iterator(); mapIter.hasNext();) {
-	// Class<? extends PickAble> currentClass;
-	// currentClass = mapIter.next();
-	// if (myClass == currentClass) {
-	// i = besace.get(currentClass);
-	// besace.remove(currentClass);
-	// besace.put(currentClass, i++);
-	// }
-	// }
-	// }
-
 	public void add(Class<? extends PickAble> myClass) {
-
 		besace.put(myClass, besace.get(myClass) + 1);
-
 	}
 
 	public void remove(Class<? extends PickAble> myClass) {

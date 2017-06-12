@@ -14,7 +14,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
 import entite.Direction;
-import entite.Team;
 import exceptions.NotDoableException;
 import moteurDuJeu.Engine;
 import moteurDuJeu.PlayPhase;
@@ -61,29 +60,12 @@ public class GUI extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 		this.container = container;
 		map = new TiledMap("res/map.tmx");
-		try {
-			// perso1 = new GUIPlayer(this, 2, 4, entite.Direction.SOUTH, 100,
-			// Team.ROUGE);
-			// guiCharactersList.add(perso1);
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			// perso2 = new GUIPlayer(this, 31, 15, entite.Direction.SOUTH, 100,
-			// Team.BLEU);
-			// guiCharactersList.add(perso2);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		this.inputTextField = new GUIBehaviorInput(container, this, WindowWidth, WindowHeight, TextFieldHeight,
 				"(MC2E | (AC;(MC3W>MT8.3)))");
 		engine = new Engine(this);
 	}
 
-	public void addGUICharactere(GUIPlayer perso) {
+	public void addGUIPlayer(GUIPlayer perso) {
 		guiPlayerList.add(perso);
 	}
 
@@ -138,15 +120,11 @@ public class GUI extends BasicGame {
 	 * @return
 	 */
 	public boolean isObstacle(int x, int y) {
-		// int tileW = map.getTileWidth();
-		// int tileH = map.getTileHeight();
 		int logicLayer = map.getLayerIndex("obstacles");
 		Image tile = map.getTileImage(x, y, logicLayer);
 		boolean collision = tile != null;
 		return collision;
 	}
-
-	/// public void add()
 
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
@@ -157,7 +135,6 @@ public class GUI extends BasicGame {
 			}
 		}
 		this.inputTextField.update(container);
-
 	}
 
 	private GUICharacter getGUICharactereFromMouse(int x, int y) throws NotDoableException {
@@ -182,8 +159,8 @@ public class GUI extends BasicGame {
 	public void mousePressed(int button, int x, int y) {
 		int mouseXCell = pixelToCellX(x);
 		int mouseYCell = pixelToCellY(y);
-		// TODO recupere guiperso
 		GUICharacter guiPerso;
+		System.out.println("LeftClick on (" + mouseXCell + ", " + mouseYCell + ")");
 		try {
 			if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
 
@@ -192,20 +169,8 @@ public class GUI extends BasicGame {
 
 			}
 		} catch (NotDoableException e) {
-			// TODO Auto-generated catch block
 			e.getMessage();
 		}
-		// TODO Appelle engine pour mettre a jour comportement du perso
-		// correspondant a guiperso
-
-		System.out.println("LeftClick on (" + mouseXCell + ", " + mouseYCell + ")");
-		// if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
-		//
-
-		// }
-
-		// engine.mousePressed(button, mouseXCell, mouseYCell);
-
 	}
 
 	@Override
@@ -280,25 +245,7 @@ public class GUI extends BasicGame {
 					engine.executeAutomaton(this);
 				}
 			}
-			// } else if
-			// (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
-			// behaviorInputNeeded = true;
-			// engine.createRobot();
-			// } else {
-			// // engine.executeAutomaton();
-			// }
-			//
-			// case Input.KEY_ADD:
-			// try {
-			// perso1.createRobot(3, 4);
-			// } catch (SlickException e) {
-			// e.printStackTrace();
-			// }
-			// break;
-			// case Input.KEY_SPACE:
-			// behaviorInputNeeded = true;
-			// break;
-			// }
+
 		} catch (NotDoableException e) {
 
 		}
@@ -356,14 +303,6 @@ public class GUI extends BasicGame {
 	 */
 	public float cellToPixelY(int y) {
 		return (y + 0.5f) * cellHeight;
-	}
-
-	public GUICharacter getGUICharacterFromTeam(Team team) {
-		if (team.equals(Team.ROUGE)) {
-			return guiPlayerList.get(0);
-		} else {
-			return guiPlayerList.get(1);
-		}
 	}
 
 	public void setBehaviorInputNeeded(boolean behaviorInputNeeded) {
