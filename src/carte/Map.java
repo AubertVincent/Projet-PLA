@@ -1,15 +1,9 @@
 package carte;
 
-import java.util.List;
-
-import entite.Entity;
 import entite.Team;
-import exceptions.GameException;
-import exceptions.NotDoableException;
 import gui.GUI;
 import moteurDuJeu.Engine;
 import moteurDuJeu.Test;
-import pickable.PickAble;
 
 public class Map {
 
@@ -66,25 +60,16 @@ public class Map {
 		return my_bool;
 	}
 
-	public void Free(int x, int y) {
-		map[x][y].FreeCell();
-	}
-
-	public void setEntity(int x, int y, Entity ent) {
-		map[x][y].setEntity(ent);
-	}
-
 	public Cell getCell(int x, int y) {
 		return map[x][y];
 	}
 
-	public boolean isFree(int x, int y) {
-		return map[x][y].isFree();
-	}
-
-	public List<Entity> getEntity(int x, int y) {
-		return map[x][y].getListEntity();
-	}
+	// public List<Action> pathExists(Robot r, int xa, int ya) {
+	// Cell destination = r.entityMap.getCell(xa, ya);
+	// //List<Action> path = Dijkstra.dijkstra(GraphMap.,destination);
+	//
+	// return null;
+	// }
 
 	// private void printMap() {
 	// for (int i = 0; i < width; i++) {
@@ -100,74 +85,5 @@ public class Map {
 	// Map.printMap();
 	//
 	// }
-
-	/**
-	 * return the list of the entities present on the cell(x,y)
-	 * 
-	 * @param x
-	 *            x coordinate on the map
-	 * @param y
-	 *            y coordinate on the map
-	 * @return the list of the entities present on the cell
-	 */
-	public List<Entity> getListEntity(int x, int y) {
-		return map[x][y].getListEntity();
-	}
-
-	/**
-	 * return the class of an entity present on the cell
-	 * 
-	 * @param x
-	 *            x coordinate on the map
-	 * @param y
-	 *            y coordinate on the map
-	 * @return the class of the first pickAble object
-	 * @throws GameException
-	 */
-	@SuppressWarnings("unchecked")
-	public Class<PickAble> pickableEntity(int x, int y) throws NotDoableException {
-		List<Entity> l = map[x][y].getListEntity();
-		int i = 0;
-		while (i < l.size()) {
-			if (l.get(i).isPickAble()) {
-				return ((Class<PickAble>) l.get(i).getClass());
-			}
-		}
-		throw new NotDoableException("Rien à ramasser ici");
-	}
-
-	/**
-	 * Take out the object of the cell
-	 * 
-	 * @param ramasse
-	 * @param x
-	 *            x coordinate on the map
-	 * @param y
-	 *            y coordinate on the map
-	 */
-	public void freePick(Class<PickAble> ramasse, int x, int y) {
-		List<Entity> l = map[x][y].getListEntity();
-		int i = 0;
-		while (i < l.size()) {
-			if (l.get(i).getClass() == ramasse) {
-				l.remove(i);
-			}
-		}
-
-	}
-
-	// FIXME i is never incremented
-	public boolean isReachable(int x, int y) {
-		List<Entity> l = map[x][y].getListEntity();
-		int i = 0;
-		while (i < l.size()) {
-			boolean b = l.get(i).isCharacter() || l.get(i).isObstacle();
-			if (b) {
-				return false;
-			}
-			i++;
-		}
-		return true;
-	}
 
 }

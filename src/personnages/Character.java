@@ -298,10 +298,11 @@ public abstract class Character extends Entity {
 		List<Class<PickAble>> listPicked = null;
 		Picked picked = new Picked(listPicked);
 		Map myMap = this.getEntityMap();
-		try {
-			while (true) {
-				Class<PickAble> classPicked = myMap.pickableEntity(this.getX(), this.getY());
-				myMap.freePick(classPicked, this.getX(), this.getY());
+		boolean allPickedUp = false;
+		while (!allPickedUp) {
+			Class<PickAble> classPicked = myMap.getCell(this.getX(), this.getY()).pickableEntity();
+			if (classPicked != null) {
+				myMap.getCell(this.getX(), this.getY()).freePick(classPicked);
 				if (this.isRobot()) {
 					((Robot) this).getPlayer().getBesace().add(classPicked);
 				} else if (this.isPlayer()) {
@@ -311,10 +312,9 @@ public abstract class Character extends Entity {
 				// FIXME : this fonction take public void add(Class<PickAble>
 				// classPicked)
 				besace.add(picked);
+			} else {
+				allPickedUp = true;
 			}
-
-		} catch (NotDoableException e) {
-
 		}
 	}
 

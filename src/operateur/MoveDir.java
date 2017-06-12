@@ -38,26 +38,30 @@ public class MoveDir extends Movement {
 		int x = r.getX();
 		int y = r.getY();
 		Map myMap = r.getEntityMap();
-		for (int i = 1; i <= lg; i++) {
+
+		for (int i = 0; i < lg; i++) {
 			switch (dir) {
 			case NORTH:
-				if (!myMap.isReachable(x, y - i)) {
+				if (!myMap.getCell(x, y - i).isReachable()) {
 					return false;
 				}
 				break;
 			case EAST:
-				if (!myMap.isReachable(x + i, y)) {
+
+				if (!myMap.getCell(x + i, y).isReachable()) {
 					return false;
 				}
 				break;
 			case SOUTH:
-				if (!myMap.isReachable(x, y + i)) {
+				if (!myMap.getCell(x, y + i).isReachable()) {
 					return false;
 				}
 				break;
 			case WEST:
-				if (!myMap.isReachable(x - i, y)) {
+
+				if (!myMap.getCell(x - i, y).isReachable()) {
 					return false;
+
 				}
 				break;
 			}
@@ -69,6 +73,28 @@ public class MoveDir extends Movement {
 
 		if (!isDoable(r)) {
 			throw new NotDoableException("Un obstacle est sur votre chemin");
+		}
+		switch (dir) {
+		case NORTH:
+			for (int i = 1; i <= lg; i++) {
+				r.getExplorationMap().getCell(r.getX(), r.getY() - i).setExplored(true);
+			}
+			break;
+		case EAST:
+			for (int i = 1; i <= lg; i++) {
+				r.getExplorationMap().getCell(r.getX() + 1, r.getY()).setExplored(true);
+			}
+			break;
+		case SOUTH:
+			for (int i = 1; i <= lg; i++) {
+				r.getExplorationMap().getCell(r.getX(), r.getY() + i).setExplored(true);
+			}
+			break;
+		case WEST:
+			for (int i = 1; i <= lg; i++) {
+				r.getExplorationMap().getCell(r.getX() - i, r.getY()).setExplored(true);
+			}
+			break;
 		}
 		r.goTo(dir, lg);
 

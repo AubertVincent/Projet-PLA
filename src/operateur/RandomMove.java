@@ -22,22 +22,22 @@ public class RandomMove extends Action implements _Random {
 		for (int i = 1; i <= lg; i++) {
 			switch (dir) {
 			case NORTH:
-				if (r.getEntityMap().isReachable(r.getX(), r.getY() - 1)) {
+				if (r.getEntityMap().getCell(r.getX(), r.getY() - 1).isReachable()) {
 					return false;
 				}
 				break;
 			case SOUTH:
-				if (r.getEntityMap().isReachable(r.getX(), r.getY() + 1)) {
+				if (r.getEntityMap().getCell(r.getX(), r.getY() + 1).isReachable()) {
 					return false;
 				}
 				break;
 			case EAST:
-				if (r.getEntityMap().isReachable(r.getX() + 1, r.getY())) {
+				if (r.getEntityMap().getCell(r.getX() + 1, r.getY()).isReachable()) {
 					return false;
 				}
 				break;
 			case WEST:
-				if (r.getEntityMap().isReachable(r.getX() - 1, r.getY())) {
+				if (r.getEntityMap().getCell(r.getX() - 1, r.getY()).isReachable()) {
 					return false;
 				}
 				break;
@@ -73,6 +73,28 @@ public class RandomMove extends Action implements _Random {
 		} while (!isReachable(r, dir, lg));
 		this.direction = dir;
 		this.lg = lg;
+		switch (dir) {
+		case NORTH:
+			for (int i = 1; i <= lg ; i++){
+				r.getExplorationMap().getCell(r.getX(), r.getY()-i).setExplored(true);
+			}
+			break;
+		case EAST:
+			for (int i = 1; i <= lg ; i++){
+				r.getExplorationMap().getCell(r.getX()+1, r.getY()).setExplored(true);
+			}
+			break;
+		case SOUTH:
+			for (int i = 1; i <= lg ; i++){
+				r.getExplorationMap().getCell(r.getX(), r.getY()+i).setExplored(true);
+			}
+			break;
+		case WEST:
+			for (int i = 1; i <= lg ; i++){
+				r.getExplorationMap().getCell(r.getX()-i, r.getY()).setExplored(true);
+			}
+			break;
+		}
 		r.goTo(dir, lg);
 	}
 
@@ -100,8 +122,8 @@ public class RandomMove extends Action implements _Random {
 		int x = r.getX();
 		int y = r.getY();
 		Map myMap = r.getEntityMap();
-		if (!myMap.isReachable(x, y - 1) && !myMap.isReachable(x + 1, y) && !myMap.isReachable(x, y + 1)
-				&& !myMap.isReachable(x - 1, y)) {
+		if (!myMap.getCell(x, y - 1).isReachable() && !myMap.getCell(x + 1, y).isReachable()
+				&& !myMap.getCell(x, y + 1).isReachable() && !myMap.getCell(x - 1, y).isReachable()) {
 			return false;
 		}
 		return true;

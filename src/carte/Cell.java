@@ -8,6 +8,7 @@ import entite.Entity;
 import entite.Team;
 import exceptions.NotDoableException;
 import personnages.Character;
+import pickable.PickAble;
 
 public class Cell {
 	protected int x;
@@ -15,12 +16,14 @@ public class Cell {
 
 	protected List<Entity> listeEntites;
 	boolean isfree;
+	boolean isExplored;
 
 	public Cell(int x, int y) {
 		this.x = x;
 		this.y = y;
 		listeEntites = new ArrayList<Entity>();
 		isfree = true;
+		isExplored = false;
 	}
 
 	public Cell(int x, int y, Entity ent) {
@@ -29,10 +32,19 @@ public class Cell {
 		listeEntites = new ArrayList<Entity>();
 		this.setEntity(ent);
 		isfree = false;
+		isExplored = false;
 	}
 
 	public boolean isEmpty() {
 		return listeEntites.isEmpty();
+	}
+
+	public boolean isExplored() {
+		return isExplored;
+	}
+
+	public void setExplored(boolean isExplored) {
+		this.isExplored = isExplored;
 	}
 
 	public boolean isFree() {
@@ -55,6 +67,39 @@ public class Cell {
 
 	public List<Entity> getListEntity() {
 		return listeEntites;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Class<PickAble> pickableEntity() {
+		List<Entity> entityList = this.getListEntity();
+		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
+			Entity currentEntity = entityIterator.next();
+			if (currentEntity.isPickAble()) {
+				return ((Class<PickAble>) currentEntity.getClass());
+			}
+		}
+		return null;
+	}
+
+	public void freePick(Class<PickAble> ramasse) {
+		List<Entity> entityList = this.getListEntity();
+		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
+			Entity currentEntity = entityIterator.next();
+			if (currentEntity.getClass() == ramasse) {
+				entityList.remove(currentEntity);
+			}
+		}
+	}
+
+	public boolean isReachable() {
+		List<Entity> entityList = this.getListEntity();
+		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
+			Entity currentEntity = entityIterator.next();
+			if (currentEntity.isCharacter() || currentEntity.isObstacle()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public Character getOpponent(Team team) throws NotDoableException {
@@ -85,14 +130,23 @@ public class Cell {
 		return false;
 	}
 
-	@SuppressWarnings("unused")
-	private int getX() {
+	public int getX() {
 		return this.x;
 	}
 
-	@SuppressWarnings("unused")
-	private int getY() {
+	public int getY() {
 		return this.y;
+	}
+
+	public boolean pickAbleHere() {
+		List<Entity> entityList = this.getListEntity();
+		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
+			Entity currentEntity = entityIterator.next();
+			if (currentEntity.isPickAble()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	// public static void main(String[] args) {
