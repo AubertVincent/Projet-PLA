@@ -30,6 +30,8 @@ public class Robot extends Character {
 				base);
 
 		this.myAutomaton = myAutomaton;
+		this.explorationMap = entityMap;
+		this.explorationMap.getCell(this.x, this.y).setExplored(true);
 	}
 
 	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,

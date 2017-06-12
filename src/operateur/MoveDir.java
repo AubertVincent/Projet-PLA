@@ -39,7 +39,7 @@ public class MoveDir extends Movement {
 		int y = r.getY();
 		Map myMap = r.getEntityMap();
 
-		for (int i = 0; i < lg; i++) {
+		for (int i = 1; i <= lg; i++) {
 			switch (dir) {
 			case NORTH:
 				if (!myMap.getCell(x, y - i).isReachable()) {
