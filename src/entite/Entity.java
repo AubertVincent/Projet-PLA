@@ -6,7 +6,7 @@ import carte.Map;
 public abstract class Entity {
 
 	protected Coordinates coord;
-	public final Map entityMap;
+	private final Map entityMap;
 
 	public abstract boolean isObstacle();
 

@@ -14,7 +14,25 @@ import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUICharacter;
 import operateur.Action;
+import operateur.ClassicAck;
+import operateur.MoveDir;
+import operateur.PickUp;
+import operateur.Priority;
+import operateur.RandomBar;
+import operateur.Recall;
+import operateur.Succession;
+import operateur.SuicideBomber;
+import operateur.Tunnel;
 import pickable.PickAble;
+import pickable.PickClassicAck;
+import pickable.PickMoveDir;
+import pickable.PickPickUp;
+import pickable.PickPriority;
+import pickable.PickRandomBar;
+import pickable.PickRecall;
+import pickable.PickSuccession;
+import pickable.PickSuicideBomber;
+import pickable.PickTunnel;
 
 public abstract class Character extends Entity {
 
@@ -250,47 +268,41 @@ public abstract class Character extends Entity {
 		}
 	}
 
-	// TODO pas fini
-	// public void kill(Robot rob) {
-	// List<PickAble> listePickable = new ArrayList<>();
-	// for (Class<? extends Action> act : rob.getActionsList()) {
-	// listePickable.add(actionToPickAble(act, rob.getCoord(),
-	// rob.getEntityMap()));
-	// }
-	// }
-	//
-	// private PickAble actionToPickAble(Class<? extends Action> act,
-	// Coordinates coord, Map pickableMap) {
-	// PickAble picka = null;
-	// if (act.getClass().equals(ClassicAck.class)) {
-	// picka = new PickClassicAck(coord, pickableMap);
-	// }
-	// if (act.getClass().equals(MoveDir.class)) {
-	// picka = new PickMoveDir(coord, pickableMap);
-	// }
-	// if (act.getClass().equals(PickUp.class)) {
-	// picka = new PickPickUp(coord, pickableMap);
-	// }
-	// if (act.getClass().equals(Priority.class)) {
-	// picka = new PickPriority(coord, pickableMap);
-	// }
-	// if (act.getClass().equals(RandomBar.class)) {
-	// picka = new PickRandomBar(coord, pickableMap);
-	// }
-	// if (act.getClass().equals(Recall.class)) {
-	// picka = new PickRecall(coord, pickableMap);
-	// }
-	// if (act.getClass().equals(Succession.class)) {
-	// picka = new PickSuccession(coord, pickableMap);
-	// }
-	// if (act.getClass().equals(SuicideBomber.class)) {
-	// picka = new PickSuicideBomber(coord, pickableMap);
-	// }
-	// if (act.getClass().equals(Tunnel.class)) {
-	// picka = new PickTunnel(coord, pickableMap);
-	// }
-	// return picka;
-	// }
+	public void kill(Robot rob) {
+		for (Class<? extends Action> act : rob.getActionsList()) {
+			rob.getEntityMap().getCell(rob.getCoord())
+					.setEntity(actionToPickAble(act, rob.getCoord(), rob.getEntityMap()));
+		}
+		rob.delete();
+		rob = null;
+	}
+
+	private PickAble actionToPickAble(Class<? extends Action> act, Coordinates coordRobot, Map pickableMap) {
+		PickAble picka;
+		Coordinates coordPicka = new Coordinates(coordRobot);
+		if (act.getClass().equals(ClassicAck.class)) {
+			picka = new PickClassicAck(coordPicka, pickableMap);
+		} else if (act.getClass().equals(MoveDir.class)) {
+			picka = new PickMoveDir(coordPicka, pickableMap);
+		} else if (act.getClass().equals(PickUp.class)) {
+			picka = new PickPickUp(coordPicka, pickableMap);
+		} else if (act.getClass().equals(Priority.class)) {
+			picka = new PickPriority(coordPicka, pickableMap);
+		} else if (act.getClass().equals(RandomBar.class)) {
+			picka = new PickRandomBar(coordPicka, pickableMap);
+		} else if (act.getClass().equals(Recall.class)) {
+			picka = new PickRecall(coordPicka, pickableMap);
+		} else if (act.getClass().equals(Succession.class)) {
+			picka = new PickSuccession(coordPicka, pickableMap);
+		} else if (act.getClass().equals(SuicideBomber.class)) {
+			picka = new PickSuicideBomber(coordPicka, pickableMap);
+		} else if (act.getClass().equals(Tunnel.class)) {
+			picka = new PickTunnel(coordPicka, pickableMap);
+		} else {
+			picka = null;
+		}
+		return picka;
+	}
 
 	public void kill(Player joueur) {
 

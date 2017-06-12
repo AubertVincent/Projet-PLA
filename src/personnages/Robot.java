@@ -94,10 +94,10 @@ public class Robot extends Character {
 	public void suicideBomber() {
 		int x = this.getCoord().getX();
 		int y = this.getCoord().getY();
-		List<Entity> northEntityList = this.entityMap.getListEntity(x, y - 1);
-		List<Entity> southEntityList = this.entityMap.getListEntity(x, y + 1);
-		List<Entity> westEntityList = this.entityMap.getListEntity(x - 1, y);
-		List<Entity> eastEntityList = this.entityMap.getListEntity(x + 1, y);
+		List<Entity> northEntityList = this.getEntityMap().getListEntity(x, y - 1);
+		List<Entity> southEntityList = this.getEntityMap().getListEntity(x, y + 1);
+		List<Entity> westEntityList = this.getEntityMap().getListEntity(x - 1, y);
+		List<Entity> eastEntityList = this.getEntityMap().getListEntity(x + 1, y);
 
 		// Cell testN = this.entityMap.getCell(x, y-1);
 
@@ -149,10 +149,10 @@ public class Robot extends Character {
 	public void cancelSuicideBomber() {
 		int x = this.getCoord().getX();
 		int y = this.getCoord().getY();
-		List<Entity> northEntityList = this.entityMap.getListEntity(x, y - 1);
-		List<Entity> southEntityList = this.entityMap.getListEntity(x, y + 1);
-		List<Entity> westEntityList = this.entityMap.getListEntity(x - 1, y);
-		List<Entity> eastEntityList = this.entityMap.getListEntity(x + 1, y);
+		List<Entity> northEntityList = this.getEntityMap().getListEntity(x, y - 1);
+		List<Entity> southEntityList = this.getEntityMap().getListEntity(x, y + 1);
+		List<Entity> westEntityList = this.getEntityMap().getListEntity(x - 1, y);
+		List<Entity> eastEntityList = this.getEntityMap().getListEntity(x + 1, y);
 
 		int i = 0;
 		for (Iterator<Entity> entityIterator = northEntityList.iterator(); entityIterator.hasNext();) {
@@ -201,6 +201,22 @@ public class Robot extends Character {
 
 	public void execute() throws NotDoableException {
 		myAutomaton.execute(this);
+	}
+
+	// Used to remove a entirely robot
+	public void delete() {
+		throw new Exception("NYI");
+		// TODO check every reference to the current robot and delete it
+		player.getListRobot().remove(this);
+		player.getGUIPlayer().removeGUIRobot(this.getGUIRobot());
+		// There's also the corresponding GUIRObot
+		this.getGUIRobot().delete();
+
+	}
+
+	private Object getGUIRobot() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

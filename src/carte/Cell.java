@@ -95,7 +95,7 @@ public class Cell {
 		return false;
 	}
 
-	private Coordinates getCoord() {
+	public Coordinates getCoord() {
 		return coord;
 	}
 
