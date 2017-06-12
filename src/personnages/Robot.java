@@ -9,6 +9,7 @@ import entite.Direction;
 import entite.Entity;
 import entite.Team;
 import exceptions.NotDoableException;
+import gui.GUICharacter;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
@@ -22,15 +23,34 @@ public class Robot extends Character {
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
 	private Map explorationMap;
 
+	// For test, delete when test is over
 	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
-			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton,
-			Player player) {
+			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton) {
 		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
 				base);
+
+		this.myAutomaton = myAutomaton;
+	}
+
+	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
+			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton,
+			Player player, java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife,
+			GUICharacter GUIPlayer) {
+		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
+				base, GUIPlayer);
 		this.myAutomaton = myAutomaton;
 		this.player = player;
 		this.explorationMap = entityMap;
 		this.explorationMap.getCell(this.x, this.y).setExplored(true);
+	}
+
+	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
+			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton,
+			Player player, GUICharacter GUIPlayer) {
+		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
+				base, GUIPlayer);
+		this.myAutomaton = myAutomaton;
+		this.player = player;
 	}
 
 	static {
@@ -69,6 +89,14 @@ public class Robot extends Character {
 
 	public Player getPlayer() {
 		return player;
+	}
+
+	public _Sequence getAutomaton() {
+		return this.myAutomaton;
+	}
+
+	public void setAutomaton(_Sequence automaton) {
+		this.myAutomaton = automaton;
 	}
 
 	/**

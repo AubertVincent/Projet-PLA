@@ -3,17 +3,10 @@ package operateur;
 import java.util.ArrayList;
 import java.util.List;
 
-import carte.Base;
 import carte.Cell;
-import carte.Map;
 import entite.Direction;
-import entite.Team;
 import exceptions.NotDoableException;
-import personnages.Besace;
-import personnages.Player;
 import personnages.Robot;
-import sequence.Tree;
-import sequence._Sequence;
 
 public class Explore extends Movement {
 
@@ -198,27 +191,27 @@ public class Explore extends Movement {
 	// }
 	// }
 
-	public static void main(String[] args) throws NotDoableException {
-		Behavior b = new RandomBar();
-		MoveDir m1 = new MoveDir(Direction.SOUTH, 1);
-		MoveDir m2 = new MoveDir(Direction.EAST, 0);
-		Map map = new Map();
-
-		_Sequence sequence = new Tree(b, m1, m2);
-
-		Player player = new Player(1, 1, map, new Besace(), Direction.EAST, 1, 1, 1, 1, 1, 1, 1, Team.BLEU,
-				new Base(2, 4, Team.ROUGE));
-
-		Robot robot = new Robot(5, 5, map, new Besace(), Direction.NORTH, 10, 3, 3, 3, 1, 3, Team.BLEU, 1,
-				new Base(2, 4, Team.ROUGE), sequence, player);
-
-		Explore e = new Explore();
-
-		try {
-			e.execute(robot);
-		} catch (NotDoableException e2) {
-
-		}
-	}
+//	public static void main(String[] args) throws NotDoableException {
+//		Behavior b = new RandomBar();
+//		MoveDir m1 = new MoveDir(Direction.SOUTH, 1);
+//		MoveDir m2 = new MoveDir(Direction.EAST, 0);
+//		Map map = new Map();
+//
+//		_Sequence sequence = new Tree(b, m1, m2);
+//
+//		Player player = new Player(1, 1, map, new Besace(), Direction.EAST, 1, 1, 1, 1, 1, 1, 1, Team.BLEU,
+//				new Base(2, 4, Team.ROUGE));
+//
+//		Robot robot = new Robot(5, 5, map, new Besace(), Direction.NORTH, 10, 3, 3, 3, 1, 3, Team.BLEU, 1,
+//				new Base(2, 4, Team.ROUGE), sequence, player);
+//
+//		Explore e = new Explore();
+//
+//		try {
+//			e.execute(robot);
+//		} catch (NotDoableException e2) {
+//
+//		}
+//	}
 
 }

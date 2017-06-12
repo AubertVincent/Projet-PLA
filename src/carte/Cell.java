@@ -23,6 +23,7 @@ public class Cell {
 		this.y = y;
 		listeEntites = new ArrayList<Entity>();
 		isfree = true;
+		isExplored = false;
 	}
 
 	public Cell(int x, int y, Entity ent) {
@@ -103,15 +104,16 @@ public class Cell {
 
 	public Character getOpponent(Team team) throws NotDoableException {
 		int i = 0;
-		Entity e;	
-		while (i < this.listeEntites.size()) {
+		Entity e;
+		for (Iterator<Entity> it = this.listeEntites.iterator(); it.hasNext();) {
+			// while (i < this.listeEntites.size()) {
 			if (this.listeEntites.get(i).isCharacter()) {
 				e = this.listeEntites.get(i);
-
 				if (((Character) e).getTeam() != team) {
 					return ((Character) e);
 				}
 			}
+			i++;
 		}
 		throw new NotDoableException("Il est vrai j'ai trop d'adversaire ... mais pas là");
 	}
@@ -119,13 +121,15 @@ public class Cell {
 	public boolean opponentHere(Team team) {
 		int i = 0;
 		Entity e;
-		while (i < this.listeEntites.size()) {
+		for (Iterator<Entity> it = this.listeEntites.iterator(); it.hasNext();) {
+			// while (i < this.listeEntites.size()) {
 			if (this.listeEntites.get(i).isCharacter()) {
 				e = this.listeEntites.get(i);
 				if (((Character) e).getTeam() != team) {
 					return true;
 				}
 			}
+			i++;
 		}
 		return false;
 	}
@@ -142,10 +146,10 @@ public class Cell {
 		List<Entity> entityList = this.getListEntity();
 		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
 			Entity currentEntity = entityIterator.next();
-				if (currentEntity.isPickAble()){
-					return true;
-				}
+			if (currentEntity.isPickAble()) {
+				return true;
 			}
+		}
 		return false;
 	}
 

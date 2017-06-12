@@ -14,6 +14,10 @@ public class RandomMove extends Action implements _Random {
 		super();
 	}
 
+	// FIXME This function is going to check in all the direction but it need to
+	// check all the robot's path
+	// Or mabye we just need to check in one direction ? In this case, just
+	// replace 1 by i
 	protected boolean isReachable(Robot r, Direction dir, int lg) {
 		for (int i = 1; i <= lg; i++) {
 			switch (dir) {

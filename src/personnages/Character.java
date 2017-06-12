@@ -2,6 +2,7 @@ package personnages;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import carte.Base;
 import carte.Cell;
 import carte.Map;
@@ -10,10 +11,10 @@ import entite.Entity;
 import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
+import gui.GUICharacter;
 import operateur.Action;
-
-import pickable.*;
 import pickable.PickAble;
+import pickable.Picked;
 
 public abstract class Character extends Entity {
 
@@ -32,6 +33,7 @@ public abstract class Character extends Entity {
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 	protected Team team;
 	protected Base base;
+	private GUICharacter GUICharactere;
 
 	/**
 	 * Set a new character
@@ -55,6 +57,23 @@ public abstract class Character extends Entity {
 	 * @param recall
 	 *            Character's recall's time
 	 */
+	public Character(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
+			int range, int movePoints, int recall, Team team, int attackPoints, Base base, GUICharacter GUICharacter) {
+		super(x, y, entityMap);
+		this.direction = direction;
+		this.life = life;
+		this.vision = vision;
+		this.attack = attack;
+		this.range = range;
+		this.movePoints = movePoints;
+		this.recall = recall;
+		this.team = team;
+		this.attackPoints = attackPoints;
+		this.base = base;
+		this.GUICharactere = GUICharacter;
+	}
+
+	// For test, delete when it's over
 	public Character(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
 			int range, int movePoints, int recall, Team team, int attackPoints, Base base) {
 		super(x, y, entityMap);
@@ -171,10 +190,10 @@ public abstract class Character extends Entity {
 		this.attackPoints = aP;
 	}
 
-	public void resetBesace() {
-		// FIXME adapt besace : implement clear for this class
-		this.besace.clear();
-	}
+	// public void resetBesace() {
+	// // FIXME adapt besace : implement clear for this class
+	// this.besace.clear();
+	// }
 
 	public void goTo(Direction dir, int lg) {
 
@@ -182,10 +201,10 @@ public abstract class Character extends Entity {
 
 		switch (direction) {
 		case NORTH:
-			setY(getY() + lg);
+			setY(getY() - lg);
 			break;
 		case SOUTH:
-			setY(getY() - lg);
+			setY(getY() + lg);
 			break;
 		case EAST:
 			setX(getX() + lg);
@@ -272,7 +291,7 @@ public abstract class Character extends Entity {
 
 	/**
 	 * Pick an entity ('picked' here) on the cell
-	 * 
+	 *
 	 * @throws GameException
 	 */
 	public void pickUp() throws NotDoableException {
@@ -290,7 +309,8 @@ public abstract class Character extends Entity {
 					((Player) this).getBesace().add(classPicked);
 				}
 				picked.add(classPicked);
-				// FIXME
+				// FIXME : this fonction take public void add(Class<PickAble>
+				// classPicked)
 				besace.add(picked);
 			} else {
 				allPickedUp = true;
@@ -308,6 +328,8 @@ public abstract class Character extends Entity {
 		}
 	}
 
+	// FIXME : This fonction is obsolete beacause it didn't use a list anymore.
+	// We are not sure we need it
 	public void cancelPickUp() throws NotDoableException {
 		int x = this.getX();
 		int y = this.getY();
@@ -328,20 +350,3 @@ public abstract class Character extends Entity {
 	}
 
 }
-
-//
-// public int getXBase() {
-// if (this.getTeam() == Team.ROUGE) {
-// return 2;
-// } else {
-// return 31;
-// }
-// }
-//
-// public int getYBase() {
-// if (this.getTeam() == Team.ROUGE) {
-// return 4;
-// } else {
-// return 15;
-// }
-// }

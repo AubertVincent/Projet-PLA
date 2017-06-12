@@ -1,17 +1,9 @@
 package carte;
 
-import java.util.List;
-
-import entite.Direction;
-import entite.Entity;
 import entite.Team;
-import exceptions.GameException;
-import exceptions.NotDoableException;
 import gui.GUI;
-import operateur.Action;
-import personnages.Player;
-import personnages.Robot;
-import pickable.PickAble;
+import moteurDuJeu.Engine;
+import moteurDuJeu.Test;
 
 public class Map {
 
@@ -28,9 +20,18 @@ public class Map {
 		}
 	}
 
-	public void initMap(GUI userInterface) {
-		map[2][4].setEntity(new Player(2, 4, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1, Team.ROUGE));
-		map[31][15].setEntity(new Player(31, 15, this, Direction.NORTH, 1, 1, 1, 1, 5, 1, 1, Team.BLEU));
+	// Used for test delete when it's over
+	public void init(Test test) {
+		map[5][10].setEntity(test.getRobot(Team.ROUGE));
+		map[5][11].setEntity(test.getRobot(Team.BLEU));
+		map[5][12].setEntity(new Obstacle(5, 5, this));
+	}
+
+	public void init(GUI userInterface, Engine engine) {
+		map[engine.getPlayer(Team.ROUGE).getX()][engine.getPlayer(Team.ROUGE).getY()]
+				.setEntity(engine.getPlayer(Team.ROUGE));
+		map[engine.getPlayer(Team.BLEU).getX()][engine.getPlayer(Team.BLEU).getY()]
+				.setEntity(engine.getPlayer(Team.BLEU));
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				if (userInterface.isObstacle(i, j)) {
@@ -38,6 +39,14 @@ public class Map {
 				}
 			}
 		}
+	}
+
+	public int mapHeight() {
+		return this.height;
+	}
+
+	public int mapWidth() {
+		return this.width;
 	}
 
 	public boolean isEmpty() {
@@ -55,12 +64,12 @@ public class Map {
 		return map[x][y];
 	}
 
-	public List<Action> pathExists(Robot r, int xa, int ya) {
-		Cell destination = r.entityMap.getCell(xa, ya);
-		//List<Action> path = Dijkstra.dijkstra(GraphMap.,destination);
-		
-		return null;
-	}
+//	public List<Action> pathExists(Robot r, int xa, int ya) {
+//		Cell destination = r.entityMap.getCell(xa, ya);
+//		//List<Action> path = Dijkstra.dijkstra(GraphMap.,destination);
+//		
+//		return null;
+//	}
 
 
 
@@ -78,5 +87,6 @@ public class Map {
 	// Map.printMap();
 	//
 	// }
+
 
 }
