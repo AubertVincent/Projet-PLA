@@ -27,7 +27,9 @@ public class ClassicAck extends Attack {
 	 */
 	@Override
 	protected boolean isDoable(Robot r) {
-
+		if (r.getAttackPoints() <= 0) {
+			return false;
+		}
 		int x = r.getX();
 		int y = r.getY();
 		boolean b;
@@ -46,7 +48,7 @@ public class ClassicAck extends Attack {
 
 	public void execute(Robot r) throws NotDoableException {
 		if (!isDoable(r)) {
-			throw new NotDoableException("Il n'y a personne à attaquer");
+			throw new NotDoableException("Il n'y a personne à attaquer ou pas assez de point d'attaque");
 		} else {
 
 			int x = r.getX();
