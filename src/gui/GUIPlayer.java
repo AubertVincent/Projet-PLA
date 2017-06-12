@@ -20,7 +20,7 @@ public class GUIPlayer extends GUICharacter {
 
 	private final List<GUIRobot> guiRobotlist;
 
-	Player player;
+	Player mySelf;
 
 	// The Map<ActionClass, Integer> of the yet added class->number of sprites
 	// of its animation
@@ -51,24 +51,24 @@ public class GUIPlayer extends GUICharacter {
 
 	public GUIPlayer(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team, Player player)
 			throws SlickException, Exception {
-		super(userInterface, x, y, dir, animationDuration, team);
+		super(userInterface, x, y, dir, animationDuration, team, player);
 
 		guiRobotlist = new ArrayList<GUIRobot>();
 		animationsList.add(ClassicAck.class);
 		animationsList.add(MoveDir.class);
-		this.player = player;
+		this.mySelf = player;
 	}
 
 	public List<GUIRobot> getGuiRobotList() {
 		return this.guiRobotlist;
 	}
 
-	public void setPlayer(Player player) {
-		this.player = player;
+	public void setMySelf(Player player) {
+		this.mySelf = player;
 	}
 
-	public Player getPlayer() {
-		return this.player;
+	public Player getMyself() {
+		return this.mySelf;
 	}
 
 	public void addGUIRobot(GUIRobot guiRobot) {

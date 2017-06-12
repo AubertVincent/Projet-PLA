@@ -11,25 +11,27 @@ import entite.Entity;
 import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
+import gui.GUICharacter;
 import operateur.Action;
 import pickable.PickAble;
 
 public abstract class Character extends Entity {
 
-	protected Besace besace;
+	// protected Besace besace;
 
 	protected Direction direction = Direction.SOUTH;
 	protected int life;
 	protected int vision;
-	protected int attack;
+	protected int damages;
 	protected int range;
 	protected int movePoints;
-	protected int attackPoints;
+	protected int remainingAttacks;
 	protected int recall;
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 	protected Team team;
 	protected Base base;
+	private GUICharacter mySelfGUI;
 
 	/**
 	 * Set a new character
@@ -44,7 +46,7 @@ public abstract class Character extends Entity {
 	 *            Character's life
 	 * @param vision
 	 *            Character's vision range
-	 * @param attack
+	 * @param damages
 	 *            Character's attack
 	 * @param range
 	 *            Character's range
@@ -62,10 +64,10 @@ public abstract class Character extends Entity {
 			this.direction = Direction.SOUTH;
 			this.life = 10;
 			this.vision = 5;
-			this.attack = 3;
+			this.damages = 3;
 			this.range = 3;
 			this.movePoints = 10;
-			this.attackPoints = 5;
+			this.remainingAttacks = 5;
 			this.recall = 3;
 
 			this.team = base.getBaseTeam();
@@ -74,10 +76,10 @@ public abstract class Character extends Entity {
 			this.direction = Direction.SOUTH;
 			this.life = 5;
 			this.vision = 1;
-			this.attack = 2;
+			this.damages = 2;
 			this.range = 4;
 			this.movePoints = 5;
-			this.attackPoints = 3;
+			this.remainingAttacks = 3;
 			this.recall = 3;
 			this.team = base.getBaseTeam();
 			this.base = base;
@@ -148,11 +150,11 @@ public abstract class Character extends Entity {
 	}
 
 	public int getAttack() {
-		return this.attack;
+		return this.damages;
 	}
 
 	public void setAttack(int attack) {
-		this.attack = attack;
+		this.damages = attack;
 	}
 
 	public int getRange() {
@@ -180,29 +182,70 @@ public abstract class Character extends Entity {
 	}
 
 	public int getAttackPoints() {
-		return this.attackPoints;
+		return this.remainingAttacks;
 	}
 
 	public void setAttackPoints(int aP) {
-		this.attackPoints = aP;
+		this.remainingAttacks = aP;
+	}
+
+	public Besace getBesace() throws Exception {
+		if (this instanceof Player) {
+			return this.getBesace();
+		} else {
+			throw new Exception("Pas de besace pour un robot");
+		}
+	}
+
+	@Override
+	public void setX(int x) {
+		this.getEntityMap().moveCharacter(this, x, this.getY());
+		super.setX(x);
+	}
+
+	@Override
+	public void setY(int y) {
+		this.getEntityMap().moveCharacter(this, this.getX(), y);
+		super.setY(y);
+	}
+
+	public void setGUICharacter(GUICharacter guiCharacter) {
+		this.mySelfGUI = guiCharacter;
 	}
 
 	public void goTo(Direction dir, int lg) {
-		direction = dir;
-		switch (direction) {
-		case NORTH:
-			setY(getY() + lg);
-			break;
-		case SOUTH:
-			setY(getY() - lg);
-			break;
-		case EAST:
-			setX(getX() + lg);
-			break;
-		case WEST:
-			setX(getX() - lg);
-			break;
+		for (int i = 0; i < lg; i++) {
+			switch (dir) {
+			case SOUTH:
+				this.setY((this.getY() + 1));
+				break;
+			case NORTH:
+				this.setY(this.getY() - 1);
+				break;
+			case WEST:
+				this.setX(this.getX() - 1);
+				break;
+			case EAST:
+				this.setX(this.getX() + 1);
+				break;
+			}
+
+			this.pickUp();
+			this.setMovePoints(this.getMovePoints() - 1);
 		}
+	}
+
+	public void pickUp() {
+		Besace PlayerBesace;
+		try {
+			PlayerBesace = this.getBesace();
+			for (Entity e : this.getEntityMap().getPickAbleList(this.getX(), this.getY())) {
+				PlayerBesace.add(((PickAble) e).getClass());
+			}
+		} catch (Exception e1) {
+			e1.getMessage();
+		}
+
 	}
 
 	/**
@@ -212,23 +255,36 @@ public abstract class Character extends Entity {
 	 *            The cell targeted
 	 * @throws GameException
 	 */
-	public void classicAtk(Cell target) throws NotDoableException {
+	public void classicAtk(Cell target) {
+
+		Character opponent = null;
+		Map map = this.getEntityMap();
 		try {
-			Character opponent = target.getOpponent(this.team);
-			int lifeA = this.getLife();
-			int lifeE = opponent.getLife();
-			int atkA = this.getAttack();
-			int atkE = opponent.getAttack();
-
-			lifeA = lifeA - atkE;
-			lifeE = lifeE - atkA;
-
-			this.setLife(lifeA);
-			opponent.setLife(lifeE);
-
+			opponent = target.getOpponent(this.getTeam());
 		} catch (NotDoableException e) {
-			throw new NotDoableException("Personne à attaquer");
+			e.getMessage();
 		}
+		this.classicAtkTmp(target, opponent);
+		System.out.println(" Joueur 1 attaque la case : " + this.getX() + ";" + (this.getY() + 1));
+		this.setAttackPoints(this.getAttackPoints() - 1);
+
+		if (opponent != null && opponent.getLife() <= 0) {
+			// If the opponent's hero dies => End of game
+			// opponent.dies();
+		}
+	}
+
+	private void classicAtkTmp(Cell target, Character opponent) {
+		int lifeA = this.getLife();
+		int lifeE = opponent.getLife();
+		int atkA = this.getAttack();
+		int atkE = opponent.getAttack();
+
+		lifeA = lifeA - atkE;
+		lifeE = lifeE - atkA;
+
+		this.setLife(lifeA);
+		opponent.setLife(lifeE);
 	}
 
 	public void cancelClassicAtk(Cell target) throws NotDoableException {
@@ -260,10 +316,6 @@ public abstract class Character extends Entity {
 	// }
 	// }
 
-	public void kill(Player joueur) {
-
-	}
-
 	/**
 	 * Teleport an entity to the coordinates given
 	 * 
@@ -277,6 +329,7 @@ public abstract class Character extends Entity {
 	public void teleport(int x, int y) {
 		this.setX(x);
 		this.setY(y);
+		this.pickUp();
 	}
 
 	/**

@@ -21,19 +21,19 @@ public class Robot extends Character {
 
 	protected _Sequence myAutomaton;
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
-	private GUIRobot guiRobot;
+	private GUIRobot mySelfGUI;
 
 	private Player player;
 
 	public Robot(Base base, Map entityMap, GUI userInterface, _Sequence myAutomaton, Player player) throws Exception {
 		super(base.getX(), base.getY(), entityMap, base);
 		this.myAutomaton = myAutomaton;
-		this.guiRobot = new GUIRobot(userInterface, base.getX(), base.getY(), Direction.SOUTH, 100, base.getBaseTeam(),
-				this, player.getGUIPlayer());
+		this.mySelfGUI = new GUIRobot(userInterface, base.getX(), base.getY(), Direction.SOUTH, 100, base.getBaseTeam(),
+				this, player.getMyselfGUI());
 		this.player = player;
 		this.player.addRobot(new Coordinates(base.getX(), base.getY()), this);
-		this.player.getGUIPlayer().addGUIRobot(this.guiRobot);
-
+		this.player.getMyselfGUI().addGUIRobot(this.mySelfGUI);
+		super.setGUICharacter(this.mySelfGUI);
 	}
 
 	static {
@@ -70,8 +70,12 @@ public class Robot extends Character {
 		this.myAutomaton = automaton;
 	}
 
-	public GUIRobot getGUIRobot() {
-		return this.guiRobot;
+	public GUIRobot getMyselfGUI() {
+		return this.mySelfGUI;
+	}
+
+	public Player getPlayer() {
+		return this.player;
 	}
 
 	/**
@@ -195,23 +199,4 @@ public class Robot extends Character {
 	public void execute() throws NotDoableException {
 		myAutomaton.execute(this);
 	}
-
-	public void setX(int x) {
-		this.getEntityMap().moveRobot(this, x, this.getY());
-		super.setX(x);
-	}
-
-	public void setY(int y) {
-		this.getEntityMap().moveRobot(this, this.getX(), y);
-		super.setY(y);
-	}
-
-	public int getX() {
-		return super.getX();
-	}
-
-	public int getY() {
-		return super.getY();
-	}
-
 }

@@ -8,7 +8,7 @@ import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUI;
 import moteurDuJeu.Engine;
-import personnages.Player;
+import personnages.Character;
 import personnages.Robot;
 import pickable.PickAble;
 
@@ -196,9 +196,9 @@ public class Map {
 		return allIsPickAble;
 	}
 
-	public void movePlayer(Player player, int newX, int newY) {
-		this.Free(player.getX(), player.getY());
-		this.setEntity(newX, newY, player);
+	public void moveCharacter(Character character, int newX, int newY) {
+		this.Free(character.getX(), character.getY());
+		this.setEntity(newX, newY, character);
 	}
 
 	public void moveRobot(Robot player, int newX, int newY) {
@@ -213,4 +213,28 @@ public class Map {
 	public void addPickable(PickAble pickable) {
 		pickableList.add(pickable);
 	}
+
+	// TODO find cell
+	public static void nearestFreeCell(int x, int y) {
+		// Cell freeCell = getCell(x, y);
+		int distance = 3;
+		for (int i = distance; i >= -distance; i--) {
+			if (i > 0) {
+				for (int j = -Math.abs(distance - i); j <= Math.abs(distance - i); j++) {
+					System.out.println("Je vise la case : " + i + " ;" + j);
+				}
+			} else {
+				for (int j = distance + i; j >= -(distance + i); j--) {
+					System.out.println("Je vise la case : " + i + " ;" + j);
+				}
+			}
+		}
+		// return freeCell;
+	}
+
+	public static void main(String[] args) {
+		Map mapTest = new Map();
+		nearestFreeCell(0, 0);
+	}
+
 }

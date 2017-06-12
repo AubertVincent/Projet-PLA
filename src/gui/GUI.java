@@ -1,7 +1,6 @@
 package gui;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
@@ -14,9 +13,13 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
 import entite.Direction;
+import entite.Team;
 import exceptions.NotDoableException;
 import moteurDuJeu.Engine;
 import moteurDuJeu.PlayPhase;
+import personnages.Besace;
+import personnages.Player;
+import personnages.Robot;
 
 public class GUI extends BasicGame {
 
@@ -39,8 +42,9 @@ public class GUI extends BasicGame {
 	// private GUIPlayer perso1;
 	// private GUIPlayer perso2;
 
-	private List<GUIPlayer> guiPlayerList;
 	private Engine engine;
+
+	Character myself;
 
 	public static void main(String[] args) throws SlickException {
 		GUI mainUI = new GUI();
@@ -53,7 +57,6 @@ public class GUI extends BasicGame {
 		WindowWidth = 1088;
 		cellHeight = 32;
 		cellWidth = 32;
-		guiPlayerList = new ArrayList<GUIPlayer>();
 	}
 
 	@Override
@@ -65,27 +68,37 @@ public class GUI extends BasicGame {
 		engine = new Engine(this);
 	}
 
-	public void addGUIPlayer(GUIPlayer perso) {
-		guiPlayerList.add(perso);
-	}
-
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
 		map.render(0, 0, 3);
 		map.render(0, 0, 0);
 		map.render(0, 0, 1);
 		map.render(0, 0, 2);
-		for (GUIPlayer p : this.guiPlayerList) {
-			p.render(g);
-			for (GUIRobot r : p.getGuiRobotList()) {
-				r.render(g);
+
+		for (Iterator<Player> itrPlayer = engine.getPlayerList().iterator(); itrPlayer.hasNext();) {
+			Player currentPlayer = itrPlayer.next();
+			GUIPlayer guiPlayer = currentPlayer.getMyselfGUI();
+			guiPlayer.render(g);
+			for (Iterator<Robot> itrRobot = currentPlayer.getRobotList().iterator(); itrRobot.hasNext();) {
+				Robot currentRobot = itrRobot.next();
+				GUIRobot guiRobot = currentRobot.getMyselfGUI();
+				guiRobot.render(g);
 			}
+
+		}
+
+		for (Iterator<GUIPickAble> itr = engine.getMap().getPickAbleList().iterator(); itr.hasNext();) {
+			GUIPickAble currentPickabke = itr.next();
+			currentPickabke.render();
 		}
 
 		map.render(0, 0, 4);
 		map.render(0, 0, 5);
 
 		if (behaviorInputNeeded) {
+			Besace besace;
+			besace = engine.getPlayer(Team.ROUGE).getBesace();
+			this.rectBesace.render(container, g, besace);
 			this.inputTextField.render(container, g);
 		}
 	}
@@ -151,26 +164,32 @@ public class GUI extends BasicGame {
 		throw new NotDoableException("Pas de personnage sur cette case ou mauvaise phase de jeu");
 	}
 
-	public List<GUIPlayer> getPlayerList() {
-		return this.guiPlayerList;
-	}
-
 	@Override
 	public void mousePressed(int button, int x, int y) {
 		int mouseXCell = pixelToCellX(x);
 		int mouseYCell = pixelToCellY(y);
 		GUICharacter guiPerso;
 		System.out.println("LeftClick on (" + mouseXCell + ", " + mouseYCell + ")");
+
 		try {
-			if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
-
-				guiPerso = getGUICharactereFromMouse(mouseXCell, mouseYCell);
-				guiPerso.behaviorModif(this, engine);
-
+			guiPerso = getGUICharactereFromMouse(mouseXCell, mouseYCell);
+			if (guiPerso instanceof GUIPlayer) {
+				engine.createRobot(guiPerso.getPlayer(), this);
+			} else {
+				try {
+					engine.behaviorModif(guiPerso.getRobot(), this);
+				} catch (Exception e) {
+					e.getMessage();
+				}
 			}
 		} catch (NotDoableException e) {
 			e.getMessage();
 		}
+
+	}
+
+	public Engine getEngine() {
+		return this.engine;
 	}
 
 	@Override
@@ -189,52 +208,52 @@ public class GUI extends BasicGame {
 				switch (key) {
 
 				case Input.KEY_UP:
-					guiPlayerList.get(0).movePlayer(engine, Direction.NORTH);
+					engine.goTo(engine.getPlayer(Team.ROUGE), Direction.NORTH);
 					break;
 				case Input.KEY_LEFT:
-					guiPlayerList.get(0).movePlayer(engine, Direction.WEST);
+					engine.goTo(engine.getPlayer(Team.ROUGE), Direction.WEST);
 					break;
 				case Input.KEY_DOWN:
-					guiPlayerList.get(0).movePlayer(engine, Direction.SOUTH);
+					engine.goTo(engine.getPlayer(Team.ROUGE), Direction.SOUTH);
 					break;
 				case Input.KEY_RIGHT:
-					guiPlayerList.get(0).movePlayer(engine, Direction.EAST);
+					engine.goTo(engine.getPlayer(Team.ROUGE), Direction.EAST);
 					break;
 				case Input.KEY_Z:
-					guiPlayerList.get(1).movePlayer(engine, Direction.NORTH);
+					engine.goTo(engine.getPlayer(Team.BLEU), Direction.NORTH);
 					break;
 				case Input.KEY_Q:
-					guiPlayerList.get(1).movePlayer(engine, Direction.WEST);
+					engine.goTo(engine.getPlayer(Team.BLEU), Direction.WEST);
 					break;
 				case Input.KEY_S:
-					guiPlayerList.get(1).movePlayer(engine, Direction.SOUTH);
+					engine.goTo(engine.getPlayer(Team.BLEU), Direction.SOUTH);
 					break;
 				case Input.KEY_D:
-					guiPlayerList.get(1).movePlayer(engine, Direction.EAST);
+					engine.goTo(engine.getPlayer(Team.BLEU), Direction.EAST);
 					break;
 				case Input.KEY_O:
-					guiPlayerList.get(0).Attack(engine, Direction.NORTH);
+					engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.NORTH);
 					break;
 				case Input.KEY_K:
-					guiPlayerList.get(0).Attack(engine, Direction.WEST);
+					engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.WEST);
 					break;
 				case Input.KEY_L:
-					guiPlayerList.get(0).Attack(engine, Direction.SOUTH);
+					engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.SOUTH);
 					break;
 				case Input.KEY_M:
-					guiPlayerList.get(0).Attack(engine, Direction.EAST);
+					engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.EAST);
 					break;
 				case Input.KEY_F:
-					guiPlayerList.get(1).Attack(engine, Direction.NORTH);
+					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.NORTH);
 					break;
 				case Input.KEY_C:
-					guiPlayerList.get(1).Attack(engine, Direction.WEST);
+					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.WEST);
 					break;
 				case Input.KEY_V:
-					guiPlayerList.get(1).Attack(engine, Direction.SOUTH);
+					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.SOUTH);
 					break;
 				case Input.KEY_B:
-					guiPlayerList.get(1).Attack(engine, Direction.EAST);
+					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.EAST);
 					break;
 				}
 			}

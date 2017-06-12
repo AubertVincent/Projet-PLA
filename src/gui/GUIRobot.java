@@ -13,13 +13,13 @@ import entite.Team;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
-import personnages.Player;
 import personnages.Robot;
 
 public class GUIRobot extends GUICharacter {
 
-	Robot robot;
+	Robot mySelf;
 	GUIPlayer guiPlayer;
+
 	// The Map<ActionClass, Integer> of the yet added class->number of sprites
 	// of its animation
 	private static Map<Class<? extends Action>, Integer> numberOfSprites = new HashMap<Class<? extends Action>, Integer>();
@@ -47,15 +47,11 @@ public class GUIRobot extends GUICharacter {
 	}
 
 	public void setRobot(Robot robot) {
-		this.robot = robot;
+		this.mySelf = robot;
 	}
 
-	public Robot getRobot() {
-		return this.robot;
-	}
-
-	public Player getPlayer() {
-		return this.guiPlayer.getPlayer();
+	public Robot getMyself() {
+		return this.mySelf;
 	}
 
 	// TODO : bound to be dynamic when something is picked
@@ -63,12 +59,12 @@ public class GUIRobot extends GUICharacter {
 
 	public GUIRobot(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team, Robot robot,
 			GUIPlayer guiPlayer) throws SlickException, Exception {
-		super(userInterface, x, y, dir, animationDuration, team);
+		super(userInterface, x, y, dir, animationDuration, team, robot);
 
 		this.guiPlayer = guiPlayer;
 		animationsList.add(ClassicAck.class);
 		animationsList.add(MoveDir.class);
-		this.robot = robot;
+		this.mySelf = robot;
 	}
 
 }

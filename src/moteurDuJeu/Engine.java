@@ -10,22 +10,18 @@ import carte.Base;
 import carte.Cell;
 import carte.Map;
 import entite.Direction;
-import entite.Entity;
 import entite.Team;
 import exceptions.NotDoableException;
 import gui.GUI;
-import gui.GUIPlayer;
-import gui.GUIRobot;
-import personnages.Besace;
+import personnages.Character;
 import personnages.Player;
 import personnages.Robot;
-import pickable.PickAble;
 import reader.Reader;
 import sequence._Sequence;
 
 public class Engine {
 
-	private List<Player> listPlayer;
+	private List<Player> playerList;
 
 	private Map myMap;
 
@@ -40,11 +36,11 @@ public class Engine {
 	 */
 	public Engine(GUI userInterface) throws SlickException {
 		myMap = new Map();
-		listPlayer = new ArrayList<Player>();
+		playerList = new ArrayList<Player>();
 		try {
 
-			listPlayer.add(new Player(new Base(Team.ROUGE), myMap, userInterface));
-			listPlayer.add(new Player(new Base(Team.BLEU), myMap, userInterface));
+			playerList.add(new Player(new Base(Team.ROUGE), myMap, userInterface));
+			playerList.add(new Player(new Base(Team.BLEU), myMap, userInterface));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -60,7 +56,7 @@ public class Engine {
 	 * @return the player who match the team
 	 */
 	public Player getPlayer(Team team) {
-		for (Player p : listPlayer) {
+		for (Player p : playerList) {
 			if (p.getTeam().equals(team)) {
 				return p;
 			}
@@ -69,7 +65,7 @@ public class Engine {
 	}
 
 	public List<Player> getPlayerList() {
-		return listPlayer;
+		return playerList;
 	}
 
 	public PlayPhase getPlayPhase() {
@@ -91,158 +87,53 @@ public class Engine {
 	 * @return True is the mouvement is possible, false else
 	 */
 	// TODO : Handle with the pickup of pickable when pass on a cell
-	public boolean doMove(GUIPlayer perso, Direction dir, Map map) {
-		boolean moveSucces = false;
-		Player player = perso.getPlayer();
-		if (this.playPhase.equals(PlayPhase.playerMovement)) {
+	public void goTo(Character player, Direction dir) {
 
-			// Case of Player1
-			if (player.getMovePoints() > 0) {
-				switch (dir) {
+		player.goTo(dir, 1);
+	}
 
-				case SOUTH:
-					if (map.isFree(player.getX(), player.getY() + 1)
-							|| map.isPickAble(player.getX(), player.getY() + 1)) {
+	public void goTo(Character player, Direction dir, int lg) {
 
-						player.setY(player.getY() + 1);
-						// map.Free(player.getX(), player.getY() - 1);
-						moveSucces = true;
-					}
-					break;
-
-				case NORTH:
-					if (map.isFree(player.getX(), player.getY() - 1)
-							|| map.isPickAble(player.getX(), player.getY() - 1)) {
-						player.setY(player.getY() - 1);
-						// map.Free(player.getX(), player.getY() + 1);
-						moveSucces = true;
-					}
-					break;
-
-				case WEST:
-					if (map.isFree(player.getX() - 1, player.getY())
-							|| map.isPickAble(player.getX() - 1, player.getY())) {
-						player.setX(player.getX() - 1);
-						// map.Free(player.getX() + 1, player.getY());
-						moveSucces = true;
-					}
-					break;
-
-				case EAST:
-					if (map.isFree(player.getX() + 1, player.getY())
-							|| map.isPickAble(player.getX() + 1, player.getY())) {
-						player.setX(player.getX() + 1);
-						// map.Free(player.getX() - 1, player.getY());
-						moveSucces = true;
-					}
-
-					break;
-				}
-			}
-		}
-		// If the player doesn't have MP
-		else {
-			return moveSucces;
-		}
-
-		// Gestion of the besace
-		if (moveSucces) {
-
-			Besace PlayerBesace = player.getBesace();
-
-			for (Entity e : map.getPickAbleList(player.getX(), player.getY())) {
-				PlayerBesace.add(((PickAble) e).getClass());
-			}
-
-			// map.setEntity(player.getX(), player.getY(), player);
-			player.setMovePoints(player.getMovePoints() - 1);
-			setPlayPhase(0);
-		}
-		return moveSucces;
-
+		player.goTo(dir, lg);
 	}
 
 	// TODO : Handle attackpoints and death is lifepoint is 0
-	public void doAttack(GUIPlayer perso, Direction dir, Map map) throws NotDoableException {
-		Cell target;
-		Player player = perso.getPlayer();
-		personnages.Character opponent = null;
-		try {
-			if (player.getAttackPoints() > 0) {
-
-				switch (dir) {
-
-				case SOUTH:
-					target = map.getCell(player.getX(), player.getY() + 1);
-					opponent = target.getOpponent(player.getTeam());
-					player.classicAtk(target);
-					System.out.println(" Joueur 1 attaque la case : " + player.getX() + ";" + (player.getY() + 1));
-					break;
-
-				case NORTH:
-					target = map.getCell(player.getX(), player.getY() - 1);
-					opponent = target.getOpponent(player.getTeam());
-					player.classicAtk(target);
-					System.out.println(" Joueur 1 attaque la case : " + player.getX() + ";" + (player.getY() - 1));
-					break;
-
-				case WEST:
-					target = map.getCell(player.getX() - 1, player.getY());
-					opponent = target.getOpponent(player.getTeam());
-					player.classicAtk(target);
-					System.out.println(" Joueur 1 attaque la case : " + (player.getX() - 1) + ";" + player.getY());
-					break;
-
-				case EAST:
-					target = map.getCell(player.getX() + 1, player.getY());
-					opponent = target.getOpponent(player.getTeam());
-					player.classicAtk(target);
-					System.out.println(" Joueur 1 attaque la case : " + (player.getX() + 1) + ";" + player.getY());
-					break;
-
-				}
-				player.setAttackPoints(player.getAttackPoints() - 1);
-
-			} else {
-				System.out.println("Plus de point d'attaque !\n");
-			}
-
-			if (opponent != null && opponent.getLife() <= 0) {
-				// If the opponent hero die => End of game
-				if (opponent.getClass().equals(Player.class)) {
-
-				}
-				// The opponent is a robot, remove him from the game
-				else {
-					Player opponentPlayer = getPlayer(opponent.getTeam());
-					opponentPlayer.removeRobot((Robot) opponent);
-
-					myMap.Free(opponent.getX(), opponent.getY());
-
-				}
-			}
-			System.out.println("Point de vie du joueur 2 apres attaque : " + getPlayer(Team.BLEU).getLife());
-
-		} catch (NotDoableException e) {
-			throw new NotDoableException("Echec de l'attaque");
-		}
+	public void classicAtk(Character character, Cell target) {
+		character.classicAtk(target);
 	}
 
-	public void createRobot(GUIPlayer GUIPlayer, GUI userInterface, Map map) {
+	public void classicAtk(Character character, Direction dir) throws NotDoableException {
+		Cell target = null;
+		switch (dir) {
+		case NORTH:
+			target = getMap().getCell(character.getX(), character.getY() - 1);
+			break;
+		case SOUTH:
+			target = getMap().getCell(character.getX(), character.getY() + 1);
+			break;
+		case EAST:
+			target = getMap().getCell(character.getX() + 1, character.getY());
+			break;
+		case WEST:
+			target = getMap().getCell(character.getX() - 1, character.getY());
+			break;
+		}
+		character.classicAtk(target);
+
+	}
+
+	public void createRobot(Player player, GUI userInterface) {
 		// TODO : création d'un robot
 		int Xbase;
 		int Ybase;
-		Player player;
-
-		player = GUIPlayer.getPlayer();
 		Xbase = player.getBase().getX();
 		Ybase = player.getBase().getY();
 		try {
-			if (map.isFree(Xbase, Ybase)) {
+			if (getMap().isFree(Xbase, Ybase)) {
 
 				Robot robot = new Robot(player.getBase(), myMap, userInterface,
 						Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player);
-				map.setEntity(Xbase, Ybase, robot);
+				getMap().setEntity(Xbase, Ybase, robot);
 			} else {
 				// TODO find the player's base nearest free cell
 
@@ -263,9 +154,8 @@ public class Engine {
 		this.currentModifier = currentPlayer;
 	}
 
-	public void behaviorModif(GUIRobot GUIRobot, GUI userInterface, Map map) {
-		Player player = getPlayer(GUIRobot.getTeam());
-		Robot robot = GUIRobot.getRobot();
+	public void behaviorModif(Robot robot, GUI userInterface) {
+		Player player = robot.getPlayer();
 		// TODO : gestion du parseur
 		// pour reccuperer la nouveau sequence
 		_Sequence newAutomaton = Reader.parse("(MC2E)");
@@ -279,7 +169,7 @@ public class Engine {
 		} else if (key == Input.KEY_SPACE) {
 			// this.playPhase = PlayPhase.automatonExecution;
 			this.playPhase = PlayPhase.playerMovement;
-			listPlayer.get(0).setMovePoints(10);
+			playerList.get(0).setMovePoints(10);
 		}
 	}
 
