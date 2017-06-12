@@ -15,11 +15,12 @@ import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
 import personnages.Player;
-import personnages.Robot;
 
 public class GUIPlayer extends GUICharacter {
 
 	private final List<GUIRobot> guiRobotlist;
+
+	Player mySelf;
 
 	// The Map<ActionClass, Integer> of the yet added class->number of sprites
 	// of its animation
@@ -48,27 +49,34 @@ public class GUIPlayer extends GUICharacter {
 	// TODO : bound to be dynamic when something is picked
 	List<Class<? extends operateur.Action>> animationsList = new LinkedList<Class<? extends operateur.Action>>();
 
-	public GUIPlayer(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team)
+	public GUIPlayer(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team, Player player)
 			throws SlickException, Exception {
-		super(userInterface, x, y, dir, animationDuration, team);
+		super(userInterface, x, y, dir, animationDuration, team, player);
 
 		guiRobotlist = new ArrayList<GUIRobot>();
 		animationsList.add(ClassicAck.class);
 		animationsList.add(MoveDir.class);
+		this.mySelf = player;
 	}
 
 	public List<GUIRobot> getGuiRobotList() {
 		return this.guiRobotlist;
 	}
 
-	public void createRobot(Robot robot, GUI userinterface) throws SlickException {
-		try {
-			GUIRobot tmp = new GUIRobot(userinterface, robot.getX(), robot.getY(), Direction.SOUTH, 100,
-					robot.getTeam());
-			guiRobotlist.add(tmp);
-		} catch (Exception e) {
-			e.getMessage();
-		}
+	public void setMySelf(Player player) {
+		this.mySelf = player;
+	}
+
+	public Player getMyself() {
+		return this.mySelf;
+	}
+
+	public void addGUIRobot(GUIRobot guiRobot) {
+		guiRobotlist.add(guiRobot);
+	}
+
+	public void removeGUIRobot(GUIRobot guiRobot) {
+		guiRobotlist.remove(guiRobot);
 	}
 
 }

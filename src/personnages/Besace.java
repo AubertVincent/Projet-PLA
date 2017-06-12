@@ -64,6 +64,7 @@ public class Besace {
 	}
 
 	public void init() {
+
 		for (Iterator<Class<? extends PickAble>> mapIter = possiblePickAbleList.iterator(); mapIter.hasNext();) {
 			Class<? extends PickAble> currentClass;
 			currentClass = mapIter.next();
@@ -85,6 +86,7 @@ public class Besace {
 			Integer currentInteger = givenBesace.get(currentClass);
 			besace.put(currentClass, currentInteger);
 		}
+
 	}
 
 	public Map<Class<? extends PickAble>, Integer> get() {
@@ -96,9 +98,7 @@ public class Besace {
 	}
 
 	public void add(Class<? extends PickAble> myClass) {
-
 		besace.put(myClass, besace.get(myClass) + 1);
-
 	}
 
 	public void remove(Class<? extends PickAble> myClass) {
@@ -148,6 +148,14 @@ public class Besace {
 			}
 		}
 		return resultingSequence;
+	}
+
+	// Test
+	public void print() {
+
+		for (Iterator<Class<? extends PickAble>> mapIter = besace.keySet().iterator(); mapIter.hasNext();) {
+			System.out.print(mapIter.getClass().toString() + " number : " + besace.get(mapIter.next()) + "\n");
+		}
 	}
 
 }

@@ -8,24 +8,22 @@ import org.newdawn.slick.SlickException;
 
 import carte.Base;
 import carte.Cell;
-import carte.Coordinates;
 import carte.Map;
 import entite.Direction;
 import entite.Team;
 import exceptions.NotDoableException;
 import gui.GUI;
-import gui.GUICharacter;
-import gui.GUIPlayer;
-import personnages.Besace;
+import personnages.Character;
 import personnages.Player;
 import personnages.Robot;
 import reader.Reader;
+import sequence._Sequence;
 
 public class Engine {
 
-	private List<Player> listPlayer;
+	private List<Player> playerList;
 
-	public Map ma_map;
+	private Map myMap;
 
 	private PlayPhase playPhase;
 
@@ -37,31 +35,17 @@ public class Engine {
 	 * @throws SlickException
 	 */
 	public Engine(GUI userInterface) throws SlickException {
-		ma_map = new Map();
-		GUIPlayer guiPlayerTmp;
-		Player playerTmp;
-		listPlayer = new ArrayList<Player>();
+		myMap = new Map();
+		playerList = new ArrayList<Player>();
 		try {
-			guiPlayerTmp = new GUIPlayer(userInterface, 2, 4, entite.Direction.SOUTH, 100, Team.ROUGE);
-			playerTmp = new Player(2, 4, ma_map, Direction.SOUTH, 1, 1, 1, 1, 2, 1, 1, Team.ROUGE,
-					new Base(2, 4, Team.ROUGE), guiPlayerTmp);
-			listPlayer.add(playerTmp);
-			guiPlayerTmp.setPlayer(playerTmp);
-			userInterface.addGUIPlayer(guiPlayerTmp);
 
-			guiPlayerTmp = new GUIPlayer(userInterface, 31, 15, entite.Direction.SOUTH, 100, Team.BLEU);
-			playerTmp = new Player(31, 15, ma_map, Direction.SOUTH, 1, 1, 1, 1, 2, 1, 1, Team.BLEU,
-					new Base(31, 15, Team.BLEU), guiPlayerTmp);
+			playerList.add(new Player(new Base(Team.ROUGE), myMap, userInterface));
+			playerList.add(new Player(new Base(Team.BLEU), myMap, userInterface));
 
-			listPlayer.add(playerTmp);
-			guiPlayerTmp.setPlayer(playerTmp);
-			userInterface.addGUIPlayer(guiPlayerTmp);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		ma_map.init(userInterface, this);
+		myMap.init(userInterface, this);
 		this.playPhase = PlayPhase.playerMovement;
 	}
 
@@ -72,8 +56,8 @@ public class Engine {
 	 * @return the player who match the team
 	 */
 	public Player getPlayer(Team team) {
-		for (Player p : listPlayer) {
-			if (p.getTeam() == team) {
+		for (Player p : playerList) {
+			if (p.getTeam().equals(team)) {
 				return p;
 			}
 		}
@@ -81,241 +65,72 @@ public class Engine {
 	}
 
 	public List<Player> getPlayerList() {
-		return listPlayer;
+		return playerList;
 	}
 
 	public PlayPhase getPlayPhase() {
 		return this.playPhase;
 	}
 
-	/**
-	 * 
-	 * @param dir
-	 *            The direction of the mouvement
-	 * @param perso
-	 *            The GUICharacter whos gonna do the mouvement
-	 * @param map
-	 *            The map with all the entity referenced
-	 * @return True is the mouvement is possible, false else
-	 */
-	// TODO : Handle no more movePoint
-	public boolean doMove(Direction dir, GUICharacter perso, Map map) {
+	public Map getMap() {
+		return this.myMap;
+	}
 
-		if (this.playPhase.equals(PlayPhase.playerMovement)) {
-			boolean moveSucces = false;
-			Player player;
-			// Case of Player1
-			if (perso.getTeam().equals(Team.ROUGE)) {
-				player = getPlayer(Team.ROUGE);
-				if (player.getMovePoints() > 0) {
-					switch (dir) {
+	// TODO : Handle with the pickup of pickable when pass on a cell
+	public void goTo(Character player, Direction dir) {
+		player.goTo(dir, 1);
+	}
 
-					case SOUTH:
-						if (map.isFree(player.getX(), player.getY() + 1)) {
-
-							player.setY(player.getY() + 1);
-							map.Free(player.getX(), player.getY() - 1);
-							moveSucces = true;
-						}
-						break;
-
-					case NORTH:
-						if (map.isFree(player.getX(), player.getY() - 1)) {
-							player.setY(player.getY() - 1);
-							map.Free(player.getX(), player.getY() + 1);
-							moveSucces = true;
-						}
-						break;
-
-					case WEST:
-						if (map.isFree(player.getX() - 1, player.getY())) {
-							player.setX(player.getX() - 1);
-							map.Free(player.getX() + 1, player.getY());
-							moveSucces = true;
-						}
-						break;
-
-					case EAST:
-						if (map.isFree(player.getX() + 1, player.getY())) {
-							player.setX(player.getX() + 1);
-							map.Free(player.getX() - 1, player.getY());
-							moveSucces = true;
-						}
-
-						break;
-
-					}
-				}
-
-			}
-			// Case of Player2
-			else if (perso.getTeam().equals(Team.BLEU)) {
-				player = getPlayer(Team.BLEU);
-				if (player.getMovePoints() > 0) {
-					switch (dir) {
-
-					case SOUTH:
-						if (map.isFree(player.getX(), player.getY() + 1)) {
-							player.setY(player.getY() + 1);
-							map.Free(player.getX(), player.getY() - 1);
-							moveSucces = true;
-						}
-						break;
-
-					case NORTH:
-						if (map.isFree(player.getX(), player.getY() - 1)) {
-							player.setY(player.getY() - 1);
-							map.Free(player.getX(), player.getY() + 1);
-							moveSucces = true;
-						}
-						break;
-
-					case WEST:
-						if (map.isFree(player.getX() - 1, player.getY())) {
-							player.setX(player.getX() - 1);
-							map.Free(player.getX() + 1, player.getY());
-							moveSucces = true;
-						}
-						break;
-
-					case EAST:
-
-						if (map.isFree(player.getX() + 1, player.getY())) {
-							player.setX(player.getX() + 1);
-							map.Free(player.getX() - 1, player.getY());
-							moveSucces = true;
-						}
-						break;
-					}
-				}
-			}
-			// If the player doesn't have MP
-			else {
-				return moveSucces;
-			}
-
-			if (moveSucces) {
-				map.setEntity(player.getX(), player.getY(), player);
-				player.setMovePoints(player.getMovePoints() - 1);
-			}
-
-			setPlayPhase(0);
-			return moveSucces;
-		} else {
-			return false;
-		}
+	public void goTo(Character player, Direction dir, int lg) {
+		player.goTo(dir, lg);
 	}
 
 	// TODO : Handle attackpoints and death is lifepoint is 0
-	public void doAttack(Direction dir, GUICharacter perso, Map map) throws NotDoableException {
-		Cell target;
-		Player player;
-		try {
-			if (perso.getTeam().equals(Team.ROUGE)) {
-				player = getPlayer(Team.ROUGE);
-				switch (dir) {
+	public void classicAtk(Character character, Cell target) {
+		character.classicAtk(target);
+	}
 
-				case SOUTH:
-					target = map.getCell(player.getX(), player.getY() + 1);
-					player.classicAtk(target);
-					System.out.println(" Joueur 1 attaque la case : " + player.getX() + ";" + (player.getY() + 1));
-					break;
-
-				case NORTH:
-					target = map.getCell(player.getX(), player.getY() - 1);
-					player.classicAtk(target);
-					System.out.println(" Joueur 1 attaque la case : " + player.getX() + ";" + (player.getY() - 1));
-					break;
-
-				case WEST:
-					target = map.getCell(player.getX() - 1, player.getY());
-					player.classicAtk(target);
-					System.out.println(" Joueur 1 attaque la case : " + (player.getX() - 1) + ";" + player.getY());
-					break;
-
-				case EAST:
-					target = map.getCell(player.getX() + 1, player.getY());
-					player.classicAtk(target);
-					System.out.println(" Joueur 1 attaque la case : " + (player.getX() + 1) + ";" + player.getY());
-					break;
-
-				}
-				player.setAttackPoints(player.getAttackPoints() - 1);
-
-			} else if (perso.getTeam().equals(Team.BLEU)) {
-				player = getPlayer(Team.BLEU);
-				switch (dir) {
-
-				case SOUTH:
-					target = map.getCell(player.getX(), player.getY() + 1);
-					player.classicAtk(target);
-					System.out.println(" Joueur 2 attaque la case : " + player.getX() + ";" + (player.getY() + 1));
-					break;
-
-				case NORTH:
-					target = map.getCell(player.getX(), player.getY() - 1);
-					player.classicAtk(target);
-					System.out.println(" Joueur 2 attaque la case : " + player.getX() + ";" + (player.getY() - 1));
-					break;
-
-				case WEST:
-					target = map.getCell(player.getX() - 1, player.getY());
-					player.classicAtk(target);
-					System.out.println(" Joueur 2 attaque la case : " + (player.getX() - 1) + ";" + player.getY());
-					break;
-
-				case EAST:
-					target = map.getCell(player.getX() + 1, player.getY());
-					player.classicAtk(target);
-					System.out.println(" Joueur 2 attaque la case : " + (player.getX() + 1) + ";" + player.getY());
-					break;
-
-				}
-				player.setAttackPoints(player.getAttackPoints() - 1);
-
-			} else {
-				System.out.println("Plus de point d'attaque !\n");
-			}
-
-			System.out.println("Point de vie du joueur 2 apres attaque : " + getPlayer(Team.BLEU).getLife());
-
-		} catch (NotDoableException e) {
-			throw new NotDoableException("Echec de l'attaque");
+	public void classicAtk(Character character, Direction dir) throws NotDoableException {
+		Cell target = null;
+		switch (dir) {
+		case NORTH:
+			target = getMap().getCell(character.getX(), character.getY() - 1);
+			break;
+		case SOUTH:
+			target = getMap().getCell(character.getX(), character.getY() + 1);
+			break;
+		case EAST:
+			target = getMap().getCell(character.getX() + 1, character.getY());
+			break;
+		case WEST:
+			target = getMap().getCell(character.getX() - 1, character.getY());
+			break;
 		}
+		character.classicAtk(target);
 
 	}
 
-	public void createRobot(GUIPlayer perso, GUI userInterface) {
-		System.out.println("\n \n Je suis la _\n \n");
+	public void createRobot(Player player, GUI userInterface) {
 		// TODO : création d'un robot
 		int Xbase;
 		int Ybase;
-		Player player;
-
-		player = getPlayer(perso.getTeam());
 		Xbase = player.getBase().getX();
 		Ybase = player.getBase().getY();
 		try {
-			Robot robot = new Robot(Xbase, Ybase, ma_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 1, 1,
-					player.getTeam(), 1, player.getBase(), Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player, perso);
-			player.addRobot(new Coordinates(Xbase, Ybase), robot);
+			if (getMap().isFree(Xbase, Ybase)) {
 
-			perso.createRobot(robot, userInterface);
+				Robot robot = new Robot(player.getBase(), myMap, userInterface,
+						Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player);
+				getMap().setEntity(Xbase, Ybase, robot);
+			} else {
+				// TODO find the player's base nearest free cell
+
+			}
 		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+			e.getMessage();
+		} catch (Exception e) {
 
-	public void behaviorModif(GUICharacter robot) {
-
-	}
-
-	private void setPlayPhase(int key) {
-		if (getPlayer(Team.ROUGE).getMovePoints() == 0 && getPlayer(Team.BLEU).getMovePoints() == 0) {
-			this.playPhase = PlayPhase.behaviorModification;
-		} else if (key == Input.KEY_ENTER) {
-			this.playPhase = PlayPhase.automatonExecution;
+			e.getMessage();
 		}
 	}
 
@@ -325,6 +140,35 @@ public class Engine {
 
 	public void setCurrentModifier(Player currentPlayer) {
 		this.currentModifier = currentPlayer;
+	}
+
+	public void behaviorModif(Robot robot, GUI userInterface) {
+		Player player = robot.getPlayer();
+		// TODO : gestion du parseur
+		// pour reccuperer la nouveau sequence
+		_Sequence newAutomaton = Reader.parse("(MC2E)");
+		robot.setAutomaton(newAutomaton);
+	}
+
+	public void setPlayPhase(int key) {
+		if (getPlayer(Team.ROUGE).getMovePoints() == 0 && getPlayer(Team.BLEU).getMovePoints() == 0
+				&& this.playPhase == PlayPhase.playerMovement) {
+			this.playPhase = PlayPhase.behaviorModification;
+		} else if (key == Input.KEY_SPACE) {
+			// this.playPhase = PlayPhase.automatonExecution;
+			this.playPhase = PlayPhase.playerMovement;
+			playerList.get(0).setMovePoints(10);
+		}
+	}
+
+	public void executeAutomaton(GUI userInterface) {
+		// TODO : executer pour tout les robots des deux persoannges, ne pas
+		// oublier le render a chaque mouvement afin d'éviter téléportation
+		try {
+			throw new Exception("NYI");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -337,18 +181,5 @@ public class Engine {
 	 * @param mouseYCell
 	 *            Y coordinate of the clicked tile
 	 */
-	// public void mousePressed(int button, int mouseXCell, int mouseYCell) {
-	// // TODO A vous de jouer -> decider que faire lors d'un clic de souris
-	//
-	// // @Conseil :
-	// Player player;
-	// Robot robot;
-	// if (playPhase == PlayPhase.behaviorModification) {
-	// // Gestion clic
-	// // Search the player on the Cell x,y
-	// player = this.getPlayerFromXY(mouseXCell, mouseYCell);
-	//
-	// }
-	// }
 
 }

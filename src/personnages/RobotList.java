@@ -1,7 +1,9 @@
 package personnages;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class RobotList {
@@ -23,6 +25,7 @@ public class RobotList {
 		fromClassToMap.get(objClass).put(obj, robot);
 	}
 
+	// TEST
 	private void printList() {
 		Map<Object, Robot> currentClassMap;
 		for (Map.Entry<Class<?>, Map<Object, Robot>> currentClass : fromClassToMap.entrySet()) {
@@ -51,8 +54,6 @@ public class RobotList {
 			}
 		}
 	}
-
-	// TODO : get fonction
 
 	public Object getRobotInfoFromClass(Class<?> classRobot, Robot robot) {
 		Map<Object, Robot> currentClassMap;
@@ -84,4 +85,22 @@ public class RobotList {
 		}
 		return null;
 	}
+
+	public List<Robot> getRobotList() {
+		List<Robot> robotList = new ArrayList<Robot>();
+		Map<Object, Robot> currentClassMap;
+		for (Iterator<Map.Entry<Class<?>, Map<Object, Robot>>> itr = fromClassToMap.entrySet().iterator(); itr
+				.hasNext();) {
+			Map.Entry<Class<?>, Map<Object, Robot>> entry = itr.next();
+			currentClassMap = entry.getValue();
+			for (Iterator<Map.Entry<Object, Robot>> itrMap = currentClassMap.entrySet().iterator(); itrMap.hasNext();) {
+				Map.Entry<Object, Robot> entryMap = itrMap.next();
+				if (!robotList.contains(entryMap.getValue())) {
+					robotList.add(entryMap.getValue());
+				}
+			}
+		}
+		return robotList;
+	}
+
 }

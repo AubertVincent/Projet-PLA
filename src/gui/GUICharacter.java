@@ -13,9 +13,8 @@ import org.newdawn.slick.SpriteSheet;
 
 import entite.Direction;
 import entite.Team;
-import exceptions.NotDoableException;
-import moteurDuJeu.Engine;
 import operateur.Action;
+import personnages.Character;
 import personnages.Player;
 import personnages.Robot;
 
@@ -57,7 +56,7 @@ public abstract class GUICharacter {
 	private int beginAck;
 	private int AckDuration;
 
-	private Player player;
+	private Character myself;
 
 	protected Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y, int animationDuration) {
 		Animation animation = new Animation();
@@ -132,8 +131,8 @@ public abstract class GUICharacter {
 	 *             Indicates a failure of the loading of a sprite sheet
 	 */
 
-	public GUICharacter(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team)
-			throws SlickException, Exception {
+	public GUICharacter(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team,
+			Character character) throws SlickException, Exception {
 
 		super();
 		this.mainUserInterface = userInterface;
@@ -151,7 +150,7 @@ public abstract class GUICharacter {
 		AckDuration = animationDuration * 6;
 
 		this.team = team;
-		this.player = null;
+		this.myself = character;
 	}
 
 	/**
@@ -229,18 +228,6 @@ public abstract class GUICharacter {
 		return this.team;
 	}
 
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
-
-	protected void movePlayer(Engine engine, Direction direction) {
-		if (!isMoving() && !isAttacking()) {
-			if (engine.doMove(direction, this, engine.ma_map)) {
-				this.goToDirection(direction);
-			}
-		}
-	}
-
 	// returns true if GUIChararcter is in targetCell
 	private boolean isInPlace() {
 
@@ -316,6 +303,10 @@ public abstract class GUICharacter {
 		return moving;
 	}
 
+	protected boolean isAtacking() {
+		return attacking;
+	}
+
 	// TODO : Temporary until 'void setState(Etat state, boolean bool)'
 	private void setMoving(boolean moving) {
 		this.moving = moving;
@@ -379,19 +370,11 @@ public abstract class GUICharacter {
 		this.dir = dir;
 	}
 
-	public void Attack(Engine engine, Direction dir) throws NotDoableException {
-		try {
-			if (!isMoving() && !isAttacking()) {
-				setDirection(dir);
-				setAttackTarget(dir);
-				engine.doAttack(dir, this, engine.ma_map);
-				setAttackTarget(dir);
-
-				setAckRequest(true);
-				setAttacking(true);
-			}
-		} catch (NotDoableException e) {
-			throw new NotDoableException("Personne à attaquer");
+	public Robot getRobot() throws Exception {
+		if (this instanceof GUIRobot) {
+			return this.getRobot();
+		} else {
+			throw new Exception("Pas un GUIRobot");
 		}
 	}
 

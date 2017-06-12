@@ -17,6 +17,9 @@ import personnages.Robot;
 
 public class GUIRobot extends GUICharacter {
 
+	Robot mySelf;
+	GUIPlayer guiPlayer;
+
 	// The Map<ActionClass, Integer> of the yet added class->number of sprites
 	// of its animation
 	private static Map<Class<? extends Action>, Integer> numberOfSprites = new HashMap<Class<? extends Action>, Integer>();
@@ -35,20 +38,33 @@ public class GUIRobot extends GUICharacter {
 		List<Class<? extends Action>> possibleActionList = Robot.getPossibleActionsList();
 		for (Iterator<Class<? extends Action>> action = possibleActionList.iterator(); action.hasNext();) {
 			Class<? extends Action> currentAction = action.next();
-			actionSpritePath.put(currentAction, "res/SpriteSheet" + currentAction.toString());
+			actionSpritePath.put(currentAction, "res/Armure/SpriteSheet" + currentAction.getSimpleName() + ".png");
 			actionSpriteNumberOfSprites.put(currentAction, numberOfSprites.get(currentAction));
+			System.out
+					.println("For " + currentAction.getSimpleName() + " will load " + numberOfSprites.get(currentAction)
+							+ " sprites from " + "res/Armure/SpriteSheet" + currentAction.getSimpleName() + ".png");
 		}
+	}
+
+	public void setRobot(Robot robot) {
+		this.mySelf = robot;
+	}
+
+	public Robot getMyself() {
+		return this.mySelf;
 	}
 
 	// TODO : bound to be dynamic when something is picked
 	List<Class<? extends operateur.Action>> animationsList = new LinkedList<Class<? extends operateur.Action>>();
 
+	public GUIRobot(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team, Robot robot,
+			GUIPlayer guiPlayer) throws SlickException, Exception {
+		super(userInterface, x, y, dir, animationDuration, team, robot);
 
-	public GUIRobot(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team)
-			throws SlickException, Exception {
-		super(userInterface, x, y, dir, animationDuration, team);
+		this.guiPlayer = guiPlayer;
 		animationsList.add(ClassicAck.class);
 		animationsList.add(MoveDir.class);
+		this.mySelf = robot;
 	}
 
 }

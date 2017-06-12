@@ -4,12 +4,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import carte.Base;
+import carte.Coordinates;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
-import entite.Team;
 import exceptions.NotDoableException;
-import gui.GUICharacter;
+import gui.GUI;
+import gui.GUIRobot;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
@@ -19,27 +20,20 @@ import util.Pair;
 public class Robot extends Character {
 
 	protected _Sequence myAutomaton;
-	protected Player player;
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
+	private GUIRobot mySelfGUI;
 
-	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
-			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton,
-			Player player, java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife,
-			GUICharacter GUIPlayer) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, team, attackPoints, base,
-				GUIPlayer);
-		this.myAutomaton = myAutomaton;
-		this.player = player;
-		this.targetsLife = targetsLife;
-	}
+	private Player player;
 
-	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
-			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton,
-			Player player, GUICharacter GUIPlayer) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, team, attackPoints, base,
-				GUIPlayer);
+	public Robot(Base base, Map entityMap, GUI userInterface, _Sequence myAutomaton, Player player) throws Exception {
+		super(base.getX(), base.getY(), entityMap, base);
 		this.myAutomaton = myAutomaton;
+		this.mySelfGUI = new GUIRobot(userInterface, base.getX(), base.getY(), Direction.SOUTH, 100, base.getBaseTeam(),
+				this, player.getMyselfGUI());
 		this.player = player;
+		this.player.addRobot(new Coordinates(base.getX(), base.getY()), this);
+		this.player.getMyselfGUI().addGUIRobot(this.mySelfGUI);
+		super.setGUICharacter(this.mySelfGUI);
 	}
 
 	static {
@@ -68,8 +62,20 @@ public class Robot extends Character {
 		return false;
 	}
 
+	public _Sequence getAutomaton() {
+		return this.myAutomaton;
+	}
+
+	public void setAutomaton(_Sequence automaton) {
+		this.myAutomaton = automaton;
+	}
+
+	public GUIRobot getMyselfGUI() {
+		return this.mySelfGUI;
+	}
+
 	public Player getPlayer() {
-		return player;
+		return this.player;
 	}
 
 	/**
@@ -193,5 +199,4 @@ public class Robot extends Character {
 	public void execute() throws NotDoableException {
 		myAutomaton.execute(this);
 	}
-
 }

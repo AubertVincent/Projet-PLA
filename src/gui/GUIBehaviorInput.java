@@ -82,6 +82,10 @@ public class GUIBehaviorInput {
 		}
 	}
 
+	public void changeText(String s) {
+		textField.setText(s);
+	}
+
 	/**
 	 * 
 	 * @param container
