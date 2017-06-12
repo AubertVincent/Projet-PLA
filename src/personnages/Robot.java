@@ -28,8 +28,8 @@ public class Robot extends Character {
 	public Robot(Base base, Map entityMap, GUI userInterface, _Sequence myAutomaton, Player player) throws Exception {
 		super(base.getCoordinates(), entityMap, base);
 		this.myAutomaton = myAutomaton;
-		this.mySelfGUI = new GUIRobot(userInterface, base.getCoordinates(), Direction.SOUTH, 100, base.getBaseTeam(), this,
-				player.getGUIPlayer());
+		this.mySelfGUI = new GUIRobot(userInterface, base.getCoordinates(), Direction.SOUTH, 100, base.getBaseTeam(),
+				this, player.getGUIPlayer());
 		this.player = player;
 		this.player.addRobot(new Coordinates(base.getCoordinates()), this);
 		this.player.getGUIPlayer().addGUIRobot(this.mySelfGUI);
@@ -198,7 +198,6 @@ public class Robot extends Character {
 
 	// Used to remove a entirely robot
 	public void die() {
-		// throw new Exception("NYI");
 		// TODO check every reference to the current robot and delete it
 		player.getListRobot().remove(this);
 		this.getEntityMap().getCell(this.getCoordinates()).getListEntity().remove(this);

@@ -315,13 +315,20 @@ public abstract class Character extends Entity {
 
 	protected abstract void die();
 
-	public void kill(Robot robot) {
-		for (Class<? extends Action> act : robot.getActionsList()) {
-			robot.getEntityMap().getCell(robot.getCoordinates())
-					.setEntity(actionToPickAble(act, robot.getCoordinates(), robot.getEntityMap()));
+	public void kill(Character character) {
+
+		character.emptyOnCell();
+		for (Class<? extends Action> act : character.getActionsList()) {
+			character.getEntityMap().getCell(character.getCoordinates())
+					.setEntity(actionToPickAble(act, character.getCoordinates(), character.getEntityMap()));
 		}
-		robot.setState(State.Dying);
+		character.setState(State.Dying);
 	}
+
+	// private void emptyOnCell() {
+	// this.besace.get();
+	//
+	// }
 
 	private PickAble actionToPickAble(Class<? extends Action> act, Coordinates coordinatesRobot, Map pickableMap) {
 		PickAble pickAble;
@@ -348,10 +355,6 @@ public abstract class Character extends Entity {
 			pickAble = null;
 		}
 		return pickAble;
-	}
-
-	public void kill(Player joueur) {
-		throw new Exception("NYI");
 	}
 
 	/**

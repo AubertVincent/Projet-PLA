@@ -136,7 +136,8 @@ public class Player extends Character {
 
 	@Override
 	protected void die() {
-		throw new Exception("NYI");
+		this.getEntityMap().getCell(this.getCoordinates()).getListEntity().remove(this);
+		this.guiPlayer = null;
 		// TODO Auto-generated method stub
 
 	}
