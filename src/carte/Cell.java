@@ -58,6 +58,16 @@ public class Cell {
 		listeEntites.clear();
 	}
 
+	public List<Entity> getPickAbleList() {
+		List<Entity> pickableList = new ArrayList<Entity>();
+		for (Entity e : listeEntites) {
+			if (e.isPickAble()) {
+				pickableList.add(e);
+			}
+		}
+		return pickableList;
+	}
+
 	public void FreeEntity() {
 		// TODO ne pas tout nettoyer
 	}
@@ -73,10 +83,11 @@ public class Cell {
 			if (this.listeEntites.get(i).isCharacter()) {
 				e = this.listeEntites.get(i);
 
-				if (((Character) e).getTeam() != team) {
+				if (!((Character) e).getTeam().equals(team)) {
 					return ((Character) e);
 				}
 			}
+			i++;
 		}
 		throw new NotDoableException("Il est vrai j'ai trop d'adversaire ... mais pas là");
 	}
@@ -91,6 +102,7 @@ public class Cell {
 					return true;
 				}
 			}
+			i++;
 		}
 		return false;
 	}

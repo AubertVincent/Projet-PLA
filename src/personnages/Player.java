@@ -3,11 +3,13 @@ package personnages;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.newdawn.slick.SlickException;
+
 import carte.Base;
 import carte.Coordinates;
 import entite.Direction;
-import entite.Team;
-import gui.GUICharacter;
+import gui.GUI;
+import gui.GUIPlayer;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
@@ -25,6 +27,8 @@ public class Player extends Character {
 	}
 
 	private RobotList robotList;
+
+	private GUIPlayer guiPlayer;
 
 	/**
 	 * Set a new Player
@@ -55,43 +59,32 @@ public class Player extends Character {
 		return possibleActionsList;
 	}
 
-	public Player(Coordinates coord, carte.Map entityMap, Besace besace, Direction direction, int life, int vision,
-			int attack, int range, int movePoints, int recall, int attackPoints, Team team, Base base,
-			GUICharacter GUIPlayer) {
-		super(coord, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
-				base, GUIPlayer);
+	public Player(Base base, carte.Map entityMap, GUI userInterface) throws Exception {
+		super(base.getCoord(), entityMap, base);
+		try {
+			GUIPlayer GUIPlayer = new GUIPlayer(userInterface, base.getCoord(), Direction.SOUTH, 100,
+					base.getBaseTeam(), this);
+
+			this.guiPlayer = GUIPlayer;
+			userInterface.addGUICharactere(GUIPlayer);
+		} catch (SlickException e) {
+			e.getMessage();
+		} catch (Exception e) {
+			e.getMessage();
+		}
 		robotList = new RobotList();
+		this.besace = new Besace();
 	}
 
 	public void addRobot(Object obj, Robot robot) {
 		robotList.add(obj, robot);
 	}
 
-	// public void addOperator(Operator op) {
-	// Integer nbr = besace.get(op);
-	// if (nbr == null) {
-	// besace.put(op, 1);
-	// } else {
-	// besace.put(op, nbr + 1);
-	// }
-	// }
-	//
-	// public void removeOperator(Operator op) {
-	// Integer nbr = besace.get(op);
-	// if (nbr == 1) {
-	// besace.remove(op);
-	// } else {
-	// besace.put(op, nbr - 1);
-	// }
-	// }
-	//
-	// public boolean isInBesace(Operator op) {
-	// return besace.get(op) != null;
-	// }
-	//
-	// public int nbrInBesace(Operator op) {
-	// return besace.get(op);
-	// }
+	public void removeRobot(Robot robot) {
+		this.guiPlayer.removeGUIRobot(robot.getGUIRobot());
+		robotList.remove(robot);
+
+	}
 
 	// TODO
 	public void CreateRobot() {
@@ -119,29 +112,9 @@ public class Player extends Character {
 		return super.getCoord();
 	}
 
-	// // Tests main
-	// public static void main(String[] args) {
-	// Player joueur = new Player(5, 12, Direction.NORTH, 1, 1, 1, 1, 5, 1);
-	//
-	// System.out.println("is player ? " + joueur.isPlayer());
-	// System.out.println("is Robot ? " + joueur.isRobot());
-	// joueur.addRobot(new Robot(0, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
-	// joueur.addRobot(new Robot(1, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
-	// joueur.addRobot(new Robot(2, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
-	// joueur.addRobot(new Robot(3, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
-	// System.out.println(joueur.getListRobot().size());
-	// System.out.println("Position avant : " + joueur.getX() + " " +
-	// joueur.getY());
-	// joueur.setX(10);
-	// joueur.setY(10);
-	// System.out.println("Position avant : " + joueur.getX() + " " +
-	// joueur.getY());
-	// ClassicAck test = new ClassicAck(4,5);
-	//// joueur.addOperator(test);
-	//// System.out.println("Is in the besace : ? " + joueur.isInBesace(test));
-	//
-	//
-	// }
+	public GUIPlayer getGUIPlayer() {
+		return this.guiPlayer;
+	}
 
 	@Override
 	public boolean isObstacle() {
@@ -162,6 +135,11 @@ public class Player extends Character {
 	public boolean isPickAble() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public void movePlayer(Coordinates newCoord) {
+		this.getEntityMap().movePlayer(this, newCoord);
+
 	}
 
 }

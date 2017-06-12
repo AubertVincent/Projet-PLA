@@ -8,9 +8,9 @@ import carte.Coordinates;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
-import entite.Team;
 import exceptions.NotDoableException;
-import gui.GUICharacter;
+import gui.GUI;
+import gui.GUIRobot;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
@@ -20,27 +20,20 @@ import util.Pair;
 public class Robot extends Character {
 
 	protected _Sequence myAutomaton;
-	protected Player player;
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
+	private GUIRobot guiRobot;
 
-	public Robot(Coordinates coord, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
-			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton,
-			Player player, java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife,
-			GUICharacter GUIPlayer) {
-		super(coord, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
-				base, GUIPlayer);
-		this.myAutomaton = myAutomaton;
-		this.player = player;
-		this.targetsLife = targetsLife;
-	}
+	private Player player;
 
-	public Robot(Coordinates coord, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
-			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton,
-			Player player, GUICharacter GUIPlayer) {
-		super(coord, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
-				base, GUIPlayer);
+	public Robot(Base base, Map entityMap, GUI userInterface, _Sequence myAutomaton, Player player) throws Exception {
+		super(base.getCoord(), entityMap, base);
 		this.myAutomaton = myAutomaton;
+		this.guiRobot = new GUIRobot(userInterface, base.getCoord(), Direction.SOUTH, 100, base.getBaseTeam(), this,
+				player.getGUIPlayer());
 		this.player = player;
+		this.player.addRobot(new Coordinates(base.getCoord()), this);
+		this.player.getGUIPlayer().addGUIRobot(this.guiRobot);
+
 	}
 
 	static {
@@ -69,16 +62,16 @@ public class Robot extends Character {
 		return false;
 	}
 
-	public Player getPlayer() {
-		return player;
-	}
-
 	public _Sequence getAutomaton() {
 		return this.myAutomaton;
 	}
 
 	public void setAutomaton(_Sequence automaton) {
 		this.myAutomaton = automaton;
+	}
+
+	public GUIRobot getGUIRobot() {
+		return this.guiRobot;
 	}
 
 	/**
@@ -205,7 +198,7 @@ public class Robot extends Character {
 
 	// Used to remove a entirely robot
 	public void delete() {
-		throw new Exception("NYI");
+		// throw new Exception("NYI");
 		// TODO check every reference to the current robot and delete it
 		player.getListRobot().remove(this);
 
@@ -215,9 +208,13 @@ public class Robot extends Character {
 
 	}
 
-	private Object getGUIRobot() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setCoord(Coordinates coord) {
+		this.getEntityMap().moveRobot(this, coord);
+		super.setCoord(coord);
+	}
+
+	public Coordinates getCoord() {
+		return super.getCoord();
 	}
 
 }

@@ -7,11 +7,20 @@ public class Base {
 	// Base coordinate
 	private Coordinates coord;
 	private Team baseTeam;
+	private static final Coordinates coordBleu = new Coordinates(31, 15);
+	private static final Coordinates coordRouge = new Coordinates(2, 4);
 
-	public Base(Coordinates coord, Team baseTeam) {
+	public Base(Team team) {
 		super();
-		this.coord = coord;
-		this.baseTeam = baseTeam;
+		switch (team) {
+		case BLEU:
+			this.setCoord(coordBleu);
+			break;
+		case ROUGE:
+			this.setCoord(coordRouge);
+			break;
+		}
+		this.baseTeam = team;
 	}
 
 	public Coordinates getCoord() {

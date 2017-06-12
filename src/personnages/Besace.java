@@ -37,9 +37,8 @@ public class Besace {
 		possiblePickAbleList.add(PickRandomMove.class);
 	}
 
-	private void initBesace() {
-		besace = new HashMap<Class<? extends PickAble>, Integer>();
-		for (Iterator<Class<? extends PickAble>> mapIter = besace.keySet().iterator(); mapIter.hasNext();) {
+	public void initBesace() {
+		for (Iterator<Class<? extends PickAble>> mapIter = possiblePickAbleList.iterator(); mapIter.hasNext();) {
 			Class<? extends PickAble> currentClass;
 			currentClass = mapIter.next();
 			besace.put(currentClass, 0);
@@ -49,6 +48,7 @@ public class Besace {
 
 	public Besace() {
 		super();
+		besace = new HashMap<Class<? extends PickAble>, Integer>();
 		this.initBesace();
 	}
 
@@ -60,17 +60,24 @@ public class Besace {
 		this.besace = besace;
 	}
 
+	// public void add(Class<? extends PickAble> myClass) {
+	// int i;
+	// for (Iterator<Class<? extends PickAble>> mapIter =
+	// besace.keySet().iterator(); mapIter.hasNext();) {
+	// Class<? extends PickAble> currentClass;
+	// currentClass = mapIter.next();
+	// if (myClass == currentClass) {
+	// i = besace.get(currentClass);
+	// besace.remove(currentClass);
+	// besace.put(currentClass, i++);
+	// }
+	// }
+	// }
+
 	public void add(Class<? extends PickAble> myClass) {
-		int i;
-		for (Iterator<Class<? extends PickAble>> mapIter = besace.keySet().iterator(); mapIter.hasNext();) {
-			Class<? extends PickAble> currentClass;
-			currentClass = mapIter.next();
-			if (myClass == currentClass) {
-				i = besace.get(currentClass);
-				besace.remove(currentClass);
-				besace.put(currentClass, i++);
-			}
-		}
+
+		besace.put(myClass, besace.get(myClass) + 1);
+
 	}
 
 	public void remove(Class<? extends PickAble> myClass) {
@@ -83,6 +90,14 @@ public class Besace {
 				besace.remove(currentClass);
 				besace.put(currentClass, i--);
 			}
+		}
+	}
+
+	// Test
+	public void print() {
+
+		for (Iterator<Class<? extends PickAble>> mapIter = besace.keySet().iterator(); mapIter.hasNext();) {
+			System.out.print(mapIter.getClass().toString() + " number : " + besace.get(mapIter.next()) + "\n");
 		}
 	}
 

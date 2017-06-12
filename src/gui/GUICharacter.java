@@ -227,7 +227,7 @@ public abstract class GUICharacter {
 
 	protected void movePlayer(Engine engine, Direction direction) {
 		if (!isMoving() && !isAttacking()) {
-			if (engine.doMove(direction, this, engine.getMap())) {
+			if (engine.doMove((GUIPlayer) this, direction, engine.getMap())) {
 				this.goToDirection(direction);
 			}
 		}
@@ -305,6 +305,18 @@ public abstract class GUICharacter {
 		return nextY;
 	}
 
+	public void behaviorModif(GUI userInterface, Engine engine) {
+		Player player = this.getPlayer();
+		engine.setCurrentModifier(player);
+		if (this.getClass().equals(GUIPlayer.class)) {
+			userInterface.setBehaviorInputNeeded(true);
+			engine.createRobot((GUIPlayer) this, userInterface, engine.getMap());
+		} else {
+			userInterface.setBehaviorInputNeeded(true);
+			engine.behaviorModif((GUIRobot) this, userInterface, engine.getMap());
+		}
+	}
+
 	// TODO : Temporary until adapt to 'boolean isState(State state)'
 	protected boolean isMoving() {
 		return moving;
@@ -357,12 +369,16 @@ public abstract class GUICharacter {
 		this.dir = dir;
 	}
 
+	public Player getPlayer() {
+		return this.getPlayer();
+	}
+
 	public void Attack(Engine engine, Direction dir) throws NotDoableException {
 		try {
 			if (!isMoving() && !isAttacking()) {
 				setDirection(dir);
 				setAttackTarget(dir);
-				engine.doAttack(dir, this, engine.ma_map);
+				engine.doAttack((GUIPlayer) this, dir, engine.getMap());
 				setAttackTarget(dir);
 
 				setAckRequest(true);

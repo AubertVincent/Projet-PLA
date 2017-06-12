@@ -188,24 +188,28 @@ public class GUI extends BasicGame {
 		int mouseXCell = pixelToCellX(x);
 		int mouseYCell = pixelToCellY(y);
 		Coordinates mouseCoordCell = new Coordinates(mouseXCell, mouseYCell);
-		GUICharacter perso;
+		GUICharacter guiPerso;
 		try {
-			perso = getGUICharactereFromMouse(mouseCoordCell);
+			guiPerso = getGUICharactereFromMouse(mouseCoordCell);
 			System.out.println("LeftClick on (" + mouseXCell + ", " + mouseYCell + ")");
 			if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
 
-				if (perso.getClass().equals(GUIPlayer.class)) {
-					behaviorInputNeeded = true;
-					engine.createRobot((GUIPlayer) perso, this, engine.getMap());
-				} else {
-					behaviorInputNeeded = true;
-					engine.behaviorModif((GUIRobot) perso, this, engine.getMap());
-				}
+				guiPerso = getGUICharactereFromMouse(mouseCoordCell);
+				guiPerso.behaviorModif(this, engine);
+
 			}
-		} catch (Exception e) {
+		} catch (NotDoableException e) {
 			// TODO Auto-generated catch block
 			e.getMessage();
 		}
+		// TODO Appelle engine pour mettre a jour comportement du perso
+		// correspondant a guiperso
+
+		System.out.println("LeftClick on (" + mouseXCell + ", " + mouseYCell + ")");
+		// if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
+		//
+
+		// }
 
 		// engine.mousePressed(button, mouseXCell, mouseYCell);
 
@@ -367,6 +371,10 @@ public class GUI extends BasicGame {
 		} else {
 			return guiPlayerList.get(1);
 		}
+	}
+
+	public void setBehaviorInputNeeded(boolean behaviorInputNeeded) {
+		this.behaviorInputNeeded = behaviorInputNeeded;
 	}
 
 }
