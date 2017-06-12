@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.newdawn.slick.AppGameContainer;
@@ -17,30 +16,9 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.tiled.TiledMap;
 
 import entite.Direction;
-import entite.Team;
 import exceptions.NotDoableException;
 import moteurDuJeu.Engine;
 import moteurDuJeu.PlayPhase;
-import operateur.Action;
-import operateur.ClassicAck;
-import operateur.MoveDir;
-import operateur.Priority;
-import operateur.RandomBar;
-import operateur.Succession;
-import personnages.Besace;
-import personnages.Player;
-import pickable.PickClassicAck;
-import pickable.PickMoveDir;
-import pickable.PickRandomBar;
-import pickable.PickSuccession;
-import sequence.EmptyRootTree;
-import sequence.IncompleteTree;
-import sequence.Tree;
-import sequence._IncompleteSequence;
-import sequence._Sequence;
-import test.SequenceCorrector;
-import util.Correct;
-import util.Pair;
 
 public class GUI extends BasicGame {
 
@@ -51,8 +29,6 @@ public class GUI extends BasicGame {
 
 	private GameContainer container;
 	private TiledMap map;
-
-	private final int TextFieldHeight = 50;
 
 	private final int WindowHeight;
 	private final int WindowWidth;
@@ -90,38 +66,17 @@ public class GUI extends BasicGame {
 
 		this.container = container;
 		map = new TiledMap("res/map.tmx");
-
-		// Won't be used -> bound to be removed at merge with Benjamin
-		// try {
-		// // perso1 = new GUIPlayer(this, 2, 4, entite.Direction.SOUTH, 100,
-		// // Team.ROUGE);
-		// // guiCharactersList.add(perso1);
-		// } catch (Exception e1) {
-		// e1.printStackTrace();
-		// }
-		// try {
-		// // perso2 = new GUIPlayer(this, 31, 15, entite.Direction.SOUTH, 100,
-		// // Team.BLEU);
-		// // guiCharactersList.add(perso2);
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-
-		// Test
-		font = new Font("Verdana", Font.BOLD, 20);
-		ttf = new TrueTypeFont(font, true);
-		// End(Test)
-
-		this.inputTextField = new GUIBehaviorInput(container, this, WindowWidth, WindowHeight, TextFieldHeight,
-				"(MC5N;AC) / (MC7N;AC))");
-		// engine = new Engine(this);
-
-		this.rectBesace = new GUIBesace(container, WindowHeight, WidthRect, HeightRect, cellWidth);
-
+		inputTextField = new GUIBehaviorInput(container, this, WindowWidth, WindowHeight);
+		rectBesace = new GUIBesace(container, WindowHeight, WidthRect, HeightRect, cellWidth);
 		engine = new Engine(this);
+
+		// TODO It's a backup, may be used in GUIBehviorInput.drawCorrectedList
+		// font = new Font("Verdana", Font.BOLD, 20);
+		// ttf = new TrueTypeFont(font, true);
+
 	}
 
-	public void addGUICharactere(GUIPlayer perso) {
+	public void addGUIPlayer(GUIPlayer perso) {
 		guiPlayerList.add(perso);
 	}
 
@@ -132,69 +87,19 @@ public class GUI extends BasicGame {
 		map.render(0, 0, 1);
 		map.render(0, 0, 2);
 
-		// for (GUIPlayer p : this.guiPlayerList) {
-		// p.render(g);
-		//
-		// }
+		for (GUIPlayer p : this.guiPlayerList) {
+			p.render(g);
+
+		}
 
 		map.render(0, 0, 4);
 		map.render(0, 0, 5);
 
 		if (behaviorInputNeeded) {
-			Player player;
-			player = engine.getPlayer(Team.ROUGE);
-			this.rectBesace.render(container, g, player.getBesace());
+			this.rectBesace.render(container, g, engine.getCurrentModifier().getBesace());
 			this.inputTextField.render(container, g);
 		}
 
-		// Test
-
-		Besace besace = new Besace();
-		besace.init();
-		besace.add(PickMoveDir.class);
-		besace.add(PickClassicAck.class);
-		besace.add(PickSuccession.class);
-		besace.add(PickRandomBar.class);
-
-		_Sequence seq = new Tree(new RandomBar(),
-				new Tree(new Succession(), new MoveDir(Direction.NORTH, 5), new ClassicAck()),
-				new Tree(new Succession(), new MoveDir(Direction.NORTH, 7), new ClassicAck()));
-
-		_IncompleteSequence incSeq = new IncompleteTree(new RandomBar(),
-				new IncompleteTree(new Priority(), (_IncompleteSequence) new MoveDir(Direction.NORTH, 5),
-						(_IncompleteSequence) new ClassicAck()),
-				new EmptyRootTree(new MoveDir(Direction.NORTH, 7), new ClassicAck()));
-
-		List<Pair<? extends _Sequence, Correct>> maListos = SequenceCorrector.correct(besace, seq);
-		System.out.println("fin");
-		// System.out.println(maListos.toString());
-		// System.out.println(besace.toString());
-		drawCorrectedList(g, 10, this.WindowHeight - 30, maListos);
-		// End(Test)
-	}
-
-	private void drawCorrectedList(Graphics g, int x, int y, List<Pair<? extends _Sequence, Correct>> list) {
-		for (Iterator<Pair<? extends _Sequence, Correct>> itr = list.iterator(); itr.hasNext();) {
-			Pair<? extends _Sequence, Correct> currentPair = itr.next();
-			Correct currentEltCorrectness = currentPair.getSecond();
-			_Sequence currentSeq = currentPair.getFirst();
-			switch (currentEltCorrectness) {
-			case CORRECT:
-				g.setColor(Color.green);
-				break;
-			case INCORRECT:
-				g.setColor(Color.red);
-				break;
-			}
-			if (currentSeq instanceof Action) {
-				g.drawString(currentSeq.toString(), x, y);
-				x += 40;
-			} else if (currentSeq instanceof Tree) {
-				g.drawString(((Tree) currentSeq).getOp().toString(), x, y);
-				x += 10;
-			}
-
-		}
 	}
 
 	/**
@@ -241,8 +146,9 @@ public class GUI extends BasicGame {
 		//
 		// p.update(this, delta);
 		// }
-		this.inputTextField.update(container);
-
+		if (engine.getPlayPhase() == PlayPhase.behaviorModification) {
+			this.inputTextField.update(container, engine.getCurrentModifier());
+		}
 	}
 
 	private GUICharacter getGUICharactereFromMouse(int x, int y) throws NotDoableException {
@@ -426,12 +332,12 @@ public class GUI extends BasicGame {
 		return (y + 0.5f) * cellHeight;
 	}
 
-	public GUICharacter getGUICharacterFromTeam(Team team) {
-		if (team.equals(Team.ROUGE)) {
-			return guiPlayerList.get(0);
-		} else {
-			return guiPlayerList.get(1);
-		}
+	public int getWindowHeight() {
+		return WindowHeight;
+	}
+
+	public int getWindowWidth() {
+		return WindowWidth;
 	}
 
 }

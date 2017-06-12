@@ -29,6 +29,8 @@ public class Engine {
 
 	private PlayPhase playPhase;
 
+	private Player currentModifier;
+
 	/**
 	 * Create an Engine Object An Engine has a map and a list of its players
 	 * 
@@ -45,7 +47,7 @@ public class Engine {
 					new Base(2, 4, Team.ROUGE), guiPlayerTmp);
 			listPlayer.add(playerTmp);
 			guiPlayerTmp.setPlayer(playerTmp);
-			userInterface.addGUICharactere(guiPlayerTmp);
+			userInterface.addGUIPlayer(guiPlayerTmp);
 
 			guiPlayerTmp = new GUIPlayer(userInterface, 31, 15, entite.Direction.SOUTH, 100, Team.BLEU);
 			playerTmp = new Player(31, 15, ma_map, Direction.SOUTH, 1, 1, 1, 1, 2, 1, 1, Team.BLEU,
@@ -53,7 +55,7 @@ public class Engine {
 
 			listPlayer.add(playerTmp);
 			guiPlayerTmp.setPlayer(playerTmp);
-			userInterface.addGUICharactere(guiPlayerTmp);
+			userInterface.addGUIPlayer(guiPlayerTmp);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -317,13 +319,12 @@ public class Engine {
 		}
 	}
 
-	private Player getPlayerFromXY(int x, int y) {
-		for (Player p : listPlayer) {
-			if (p.getX() == x && p.getY() == y) {
-				return p;
-			}
-		}
-		return null;
+	public Player getCurrentModifier() {
+		return this.currentModifier;
+	}
+
+	public void setCurrentModifier(Player currentPlayer) {
+		this.currentModifier = currentPlayer;
 	}
 
 	/**

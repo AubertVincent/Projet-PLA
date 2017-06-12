@@ -1,7 +1,11 @@
 package test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 
 import operateur.Action;
 import personnages.Besace;
@@ -16,11 +20,13 @@ import util.Pair;
 
 public class SequenceCorrector {
 
+	List<Pair<? extends _Sequence, Correct>> correctedList;
+	boolean correct;
+
 	public static List<Pair<? extends _Sequence, Correct>> correct(Besace besace, _Sequence seq) {
 		_IncompleteSequence incSeq;
 		try {
 			incSeq = produceIncompleteSequence(besace, seq);
-			System.out.println(incSeq.toString());
 			return sequencesToCorrectedList(seq, incSeq);
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
@@ -46,14 +52,12 @@ public class SequenceCorrector {
 			Action seqAct = (Action) seq;
 			// Available leaf case
 			if (besaceCopy.containsKey(seqAct.getPickable()) && (besaceCopy.get(seqAct.getPickable()) > 0)) {
-				System.out.println("Available leaf case : " + seqAct.toString());
 				besaceCopy.remove(seqAct.getPickable());
 				return new Pair<_IncompleteSequence, Besace>((_IncompleteSequence) seq, besaceCopy);
 			}
 			// Unavailable leaf case
 			else {
-				System.out.println("Unavailable leaf case : " + seqAct.getPickable().getSimpleName() + "-> EmptyLeaf");
-				return new Pair<_IncompleteSequence, Besace>(new EmptyLeaf(), besaceCopy);
+				return new Pair<_IncompleteSequence, Besace>((_IncompleteSequence) new EmptyLeaf(), besaceCopy);
 			}
 		}
 		// Recursive case
@@ -61,7 +65,6 @@ public class SequenceCorrector {
 			Tree tree = (Tree) seq;
 			// Available op case
 			if (besaceCopy.containsKey(tree.getOpPickable()) && (besaceCopy.get(tree.getOpPickable()) > 0)) {
-				System.out.println("Available op case : " + tree.getOpPickable().getSimpleName());
 				besaceCopy.remove(tree.getOpPickable());
 
 				Pair<_IncompleteSequence, Besace> leftResultingPair = produceIncompleteSequenceAux(besaceCopy,
@@ -72,15 +75,13 @@ public class SequenceCorrector {
 				Pair<_IncompleteSequence, Besace> rightResultingPair = produceIncompleteSequenceAux(besaceCopy,
 						tree.getRight());
 				besaceCopy = rightResultingPair.getSecond();
-				_IncompleteSequence rightSeqInc = leftResultingPair.getFirst();
+				_IncompleteSequence rightSeqInc = rightResultingPair.getFirst();
 
 				return new Pair<_IncompleteSequence, Besace>(new IncompleteTree(tree.getOp(), leftSeqInc, rightSeqInc),
 						besaceCopy);
 			}
 			// Unavailable op case
 			else {
-				System.out
-						.println("Unavailable op case : " + tree.getOpPickable().getSimpleName() + "-> EmptyRootTree");
 
 				Pair<_IncompleteSequence, Besace> leftResultingPair = produceIncompleteSequenceAux(besaceCopy,
 						tree.getLeft());
@@ -153,6 +154,54 @@ public class SequenceCorrector {
 			}
 		}
 		return list;
+	}
+
+	public void drawCorrectedList(Graphics g, int x, int y) {
+		List<Pair<? extends _Sequence, Correct>> list = correctedList;
+		for (Iterator<Pair<? extends _Sequence, Correct>> itr = list.iterator(); itr.hasNext();) {
+			Pair<? extends _Sequence, Correct> currentPair = itr.next();
+			Correct currentEltCorrectness = currentPair.getSecond();
+			_Sequence currentSeq = currentPair.getFirst();
+			switch (currentEltCorrectness) {
+			case CORRECT:
+				g.setColor(Color.green);
+				break;
+			case INCORRECT:
+				g.setColor(Color.red);
+				break;
+			}
+			if (currentSeq instanceof Action) {
+				g.drawString(currentSeq.toString(), x, y);
+				x += 40;
+			} else if (currentSeq instanceof Tree) {
+				g.drawString(((Tree) currentSeq).getOp().toString(), x, y);
+				x += 10;
+			}
+
+		}
+	}
+
+	// ↓ Getters and setters ↓
+
+	public void set(Besace besace, _Sequence receivedSequence) {
+		correctedList = correct(besace, receivedSequence);
+		correct = isCorrect(correctedList);
+	}
+
+	private static boolean isCorrect(List<Pair<? extends _Sequence, Correct>> correctedList2) {
+		for (Iterator<Pair<? extends _Sequence, Correct>> itr = correctedList2.iterator(); itr.hasNext();) {
+			Pair<? extends _Sequence, Correct> currentPair = itr.next();
+			// The sequence isn't correct if one of the correctnesses in the
+			// list is INCORRECT
+			if (currentPair.getSecond() == Correct.INCORRECT) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean getCorrectness() {
+		return isCorrect(correctedList);
 	}
 
 }

@@ -17,7 +17,7 @@ import pickable.PickTunnel;
 
 public class Player extends Character {
 
-	public Besace besace;
+	private Besace besace;
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 	static {
