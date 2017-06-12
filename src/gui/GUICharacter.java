@@ -248,8 +248,7 @@ public abstract class GUICharacter {
 
 		isInPlaceWidth = getCurrentXPx() <= maximumAcceptableWidth && getCurrentXPx() >= minimumAcceptableWidth;
 		isInPlaceHeight = getCurrentYPx() <= maximumAcceptableHeight && getCurrentYPx() >= minimumAcceptableHeight;
-
-		return getCurrentCoord() == getTargetCoord() && isInPlaceHeight && isInPlaceWidth;
+		return getCurrentCoord().equals(getTargetCoord()) && isInPlaceHeight && isInPlaceWidth;
 	}
 
 	/**
@@ -277,7 +276,7 @@ public abstract class GUICharacter {
 				coordTarget.setX(getCurrentCoord().getX() + 1);
 				break;
 			}
-			setTargetCoord(coordTarget);
+			setTargetCoord(new Coordinates(coordTarget));
 			setMoving(true);
 		}
 	}

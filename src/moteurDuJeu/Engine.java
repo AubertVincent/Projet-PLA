@@ -118,7 +118,8 @@ public class Engine {
 				case SOUTH:
 					coord.setY(coord.getY() + 1);
 					if (map.isFree(coord)) {
-						player.getCoord().setY(coord.getY());
+						player.setCoord(new Coordinates(coord));
+						// player.getCoord().setY(coord.getY());
 						coord.setY(coord.getY() - 1);
 						map.Free(coord);
 						moveSucces = true;
@@ -127,7 +128,8 @@ public class Engine {
 				case NORTH:
 					coord.setY(coord.getY() - 1);
 					if (map.isFree(coord)) {
-						player.getCoord().setY(coord.getY());
+						player.setCoord(new Coordinates(coord));
+						// player.getCoord().setY(coord.getY());
 						coord.setY(coord.getY() + 1);
 						map.Free(coord);
 						moveSucces = true;
@@ -136,7 +138,8 @@ public class Engine {
 				case WEST:
 					coord.setX(coord.getX() - 1);
 					if (map.isFree(coord)) {
-						player.getCoord().setX(coord.getX());
+						player.setCoord(new Coordinates(coord));
+						// player.getCoord().setX(coord.getX());
 						coord.setX(coord.getX() + 1);
 						map.Free(coord);
 						moveSucces = true;
@@ -145,7 +148,8 @@ public class Engine {
 				case EAST:
 					coord.setX(coord.getX() + 1);
 					if (map.isFree(coord)) {
-						player.getCoord().setX(coord.getX());
+						player.setCoord(new Coordinates(coord));
+						// player.getCoord().setX(coord.getX());
 						coord.setX(coord.getX() - 1);
 						map.Free(coord);
 						moveSucces = true;
@@ -165,7 +169,8 @@ public class Engine {
 				case SOUTH:
 					coord.setY(coord.getY() + 1);
 					if (map.isFree(coord)) {
-						player.getCoord().setY(coord.getY());
+						player.setCoord(new Coordinates(coord));
+						// player.getCoord().setY(coord.getY());
 						coord.setY(coord.getY() - 1);
 						map.Free(coord);
 						moveSucces = true;
@@ -175,7 +180,8 @@ public class Engine {
 				case NORTH:
 					coord.setY(coord.getY() - 1);
 					if (map.isFree(coord)) {
-						player.getCoord().setY(coord.getY());
+						player.setCoord(new Coordinates(coord));
+						// player.getCoord().setY(coord.getY());
 						coord.setY(coord.getY() + 1);
 						map.Free(coord);
 						moveSucces = true;
@@ -185,7 +191,8 @@ public class Engine {
 				case WEST:
 					coord.setX(coord.getX() - 1);
 					if (map.isFree(coord)) {
-						player.getCoord().setX(coord.getX());
+						player.setCoord(new Coordinates(coord));
+						// player.getCoord().setX(coord.getX());
 						coord.setX(coord.getX() + 1);
 						map.Free(coord);
 						moveSucces = true;
@@ -194,7 +201,8 @@ public class Engine {
 				case EAST:
 					coord.setX(coord.getX() + 1);
 					if (map.isFree(coord)) {
-						player.getCoord().setX(coord.getX());
+						player.setCoord(new Coordinates(coord));
+						// player.getCoord().setX(coord.getX());
 						coord.setX(coord.getX() - 1);
 						map.Free(coord);
 						moveSucces = true;

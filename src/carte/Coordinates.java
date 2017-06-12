@@ -2,6 +2,10 @@ package carte;
 
 public class Coordinates {
 
+	public boolean equals(Coordinates coord) {
+		return coord.getX() == x && coord.getY() == y;
+	}
+
 	private int x;
 	private int y;
 
