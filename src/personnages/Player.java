@@ -9,20 +9,24 @@ import carte.Base;
 import entite.Direction;
 import gui.GUI;
 import gui.GUIPlayer;
-import operateur.Action;
-import operateur.ClassicAck;
-import operateur.MoveDir;
 
 public class Player extends Character {
 
 	private Besace besace;
 
-	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
+	protected static List<Class<?>> possibleActionsList = new LinkedList<Class<?>>();
 	static {
-		possibleActionsList.add(ClassicAck.class);
-		possibleActionsList.add(MoveDir.class);
-		// possibleActionsList.add(Tunnel.class);
-		// possibleActionsList.add(Recall.class);
+		// Move-like animations
+		possibleActionsList.add(operateur.MoveDir.class);
+		possibleActionsList.add(operateur.RandomMove.class);
+
+		// Teleport-like animations
+		possibleActionsList.add(operateur.Recall.class);
+		possibleActionsList.add(operateur.Tunnel.class);
+		possibleActionsList.add(operateur.CreateRobot.class);
+
+		// ClassicAttack-like animations
+		possibleActionsList.add(operateur.ClassicAck.class);
 	}
 
 	private RobotList robotList;
@@ -54,7 +58,7 @@ public class Player extends Character {
 	 *            Player's recall's time
 	 */
 
-	public static List<Class<? extends Action>> getPossibleActionsList() {
+	public static List<Class<?>> getPossibleActionsList() {
 		return possibleActionsList;
 	}
 
@@ -71,6 +75,7 @@ public class Player extends Character {
 		}
 		robotList = new RobotList();
 		this.besace = new Besace();
+
 	}
 
 	public void addRobot(Object obj, Robot robot) {
@@ -80,7 +85,6 @@ public class Player extends Character {
 	public void removeRobot(Robot robot) {
 		this.mySelfGUI.removeGUIRobot(robot.getMyselfGUI());
 		robotList.remove(robot);
-
 	}
 
 	@Override

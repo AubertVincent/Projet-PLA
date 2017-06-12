@@ -38,7 +38,6 @@ public class Engine {
 		myMap = new Map();
 		playerList = new ArrayList<Player>();
 		try {
-
 			playerList.add(new Player(new Base(Team.ROUGE), myMap, userInterface));
 			playerList.add(new Player(new Base(Team.BLEU), myMap, userInterface));
 
@@ -110,27 +109,24 @@ public class Engine {
 
 	}
 
-	public void createRobot(Player player, GUI userInterface) {
+	public void createRobot(GUI userInterface, Player player) {
 		// TODO : création d'un robot
 		int Xbase;
 		int Ybase;
 		Xbase = player.getBase().getX();
 		Ybase = player.getBase().getY();
-		try {
-			if (getMap().isFree(Xbase, Ybase)) {
+		if (getMap().isFree(Xbase, Ybase)) {
 
-				Robot robot = new Robot(player.getBase(), myMap, userInterface,
-						Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player);
-				getMap().setEntity(Xbase, Ybase, robot);
-			} else {
-				// TODO find the player's base nearest free cell
-
+			Robot robot = new Robot(player.getBase(), myMap, userInterface, Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"),
+					player);
+			getMap().setEntity(Xbase, Ybase, robot);
+		} else {
+			// TODO find the player's base nearest free cell
+			try {
+				throw new Exception("NYI");
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (SlickException e) {
-			e.getMessage();
-		} catch (Exception e) {
-
-			e.getMessage();
 		}
 	}
 
@@ -142,7 +138,7 @@ public class Engine {
 		this.currentModifier = currentPlayer;
 	}
 
-	public void behaviorModif(Robot robot, GUI userInterface) {
+	public void behaviorModif(GUI userInterface, Robot robot) {
 		Player player = robot.getPlayer();
 		// TODO : gestion du parseur
 		// pour reccuperer la nouveau sequence
@@ -170,16 +166,4 @@ public class Engine {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * Is called right when mouse is pressed
-	 * 
-	 * @param button
-	 *            The index of the button (Input.'index')
-	 * @param mouseXCell
-	 *            X coordinate of the clicked tile
-	 * @param mouseYCell
-	 *            Y coordinate of the clicked tile
-	 */
-
 }

@@ -2,6 +2,7 @@ package gui;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,10 +14,10 @@ import org.newdawn.slick.SpriteSheet;
 
 import entite.Direction;
 import entite.Team;
-import operateur.Action;
 import personnages.Character;
 import personnages.Player;
 import personnages.Robot;
+import personnages.State;
 
 // Contenu a rajouter a personnages.Personnage 
 public abstract class GUICharacter {
@@ -39,24 +40,16 @@ public abstract class GUICharacter {
 
 	private Team team;
 
-	// TODO
-	// Tableau etat -> booleen
-	// Map<entite.Etat, Boolean> tableauEtat = new HashMap<entite.Etat,
-	// Boolean>();
-	// Pour l'instant : booleen moving
-	private boolean moving;
-
 	// Tableau action -> animation[]
-	Map<Class<? extends operateur.Action>, Animation[]> animationsList = new HashMap<Class<? extends operateur.Action>, Animation[]>();
+	Map<Class<?>, Animation[]> animationsList = new HashMap<Class<?>, Animation[]>();
 
 	// Pour l'instant : animation[]
 
-	private boolean AckRequest;
-	private boolean attacking;
-	private int beginAck;
-	private int AckDuration;
+	private boolean actionRequest;
+	private int animationDuration;
+	private int beginTimeAnimation;
 
-	private Character myself;
+	private Character mySelf;
 
 	protected Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y, int animationDuration) {
 		Animation animation = new Animation();
@@ -66,32 +59,48 @@ public abstract class GUICharacter {
 		return animation;
 	}
 
-	protected void initAnimations(int animationDuration) throws SlickException, Exception {
+	protected void initAnimations(int animationDuration) {
 
 		// Get possibleActionList of the current Character
-		List<Class<? extends Action>> possibleActionList;
+		List<Class<?>> possibleActionList = new LinkedList<Class<?>>();
 		if (this instanceof GUIPlayer) {
 			possibleActionList = Player.getPossibleActionsList();
 		} else if (this instanceof GUIRobot) {
 			possibleActionList = Robot.getPossibleActionsList();
 		} else {
-			throw new Exception("Unknown Character subclass");
+			try {
+				throw new Exception("Unknown Character subclass");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		// load the animation of each action element of the possibleActionList
-		for (Iterator<Class<? extends Action>> action = possibleActionList.iterator(); action.hasNext();) {
-			Class<? extends Action> currentAction = action.next();
+		for (Iterator<Class<?>> action = possibleActionList.iterator(); action.hasNext();) {
+			Class<?> currentAction = action.next();
 			SpriteSheet currentSpriteSheet = null;
 			int currentNumberOfSprites = 0;
 			if (this instanceof GUIPlayer) {
-				currentSpriteSheet = new SpriteSheet(GUIPlayer.actionSpritePath.get(currentAction), spriteSheetWidth,
-						spriteSheetHeight);
+				try {
+					currentSpriteSheet = new SpriteSheet(GUIPlayer.actionSpritePath.get(currentAction),
+							spriteSheetWidth, spriteSheetHeight);
+				} catch (SlickException e) {
+					e.printStackTrace();
+				}
 				currentNumberOfSprites = GUIPlayer.actionSpriteNumberOfSprites.get(currentAction);
 			} else if (this instanceof GUIRobot) {
-				currentSpriteSheet = new SpriteSheet(GUIRobot.actionSpritePath.get(currentAction), spriteSheetWidth,
-						spriteSheetHeight);
+				try {
+					currentSpriteSheet = new SpriteSheet(GUIRobot.actionSpritePath.get(currentAction), spriteSheetWidth,
+							spriteSheetHeight);
+				} catch (SlickException e) {
+					e.printStackTrace();
+				}
 				currentNumberOfSprites = GUIRobot.actionSpriteNumberOfSprites.get(currentAction);
 			} else {
-				throw new Exception("Unknown Charcter subclass");
+				try {
+					throw new Exception("Unknown Charcter subclass");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 
 			Animation[] currentAnimation = new Animation[8];
@@ -132,7 +141,7 @@ public abstract class GUICharacter {
 	 */
 
 	public GUICharacter(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team,
-			Character character) throws SlickException, Exception {
+			Character character) {
 
 		super();
 		this.mainUserInterface = userInterface;
@@ -143,14 +152,13 @@ public abstract class GUICharacter {
 		this.xPx = mainUserInterface.cellToPixelX(getCurrentX());
 		this.yPx = mainUserInterface.cellToPixelY(getCurrentY());
 		this.dir = dir;
-		this.setMoving(false);
 		initAnimations(animationDuration);
 
 		// TODO If animation is longer than animationDuration, set it here
-		AckDuration = animationDuration * 6;
+		this.animationDuration = animationDuration * 6;
 
 		this.team = team;
-		this.myself = character;
+		this.mySelf = character;
 	}
 
 	/**
@@ -158,17 +166,42 @@ public abstract class GUICharacter {
 	 * 
 	 * @param g
 	 *            A Graphics to represent the GUICharacter in
+	 * @throws Exception
 	 */
-	public void render(Graphics g) {
+	public void render(Graphics g) throws Exception {
 		g.setColor(new Color(0, 0, 0, .5f));
 		g.fillOval((int) xPx - 16, (int) yPx - 8, 32, 16);
 		// -32 et -60 to center in cell
-		if (isAttacking()) {
-			g.drawAnimation(animationsList.get(operateur.ClassicAck.class)[dir.toInt() + (isAttacking() ? 4 : 0)],
-					(int) xPx - 32, (int) yPx - 60);
-		} else {
-			g.drawAnimation(animationsList.get(operateur.MoveDir.class)[dir.toInt() + (isMoving() ? 4 : 0)],
-					(int) xPx - 32, (int) yPx - 60);
+
+		int xAnim = (int) xPx - 32;
+		int yAnim = (int) yPx - 60;
+
+		switch (mySelf.getState()) {
+		case ClassiqueMove:
+			g.drawAnimation(animationsList.get(operateur.MoveDir.class)[dir.toInt() + 4], xAnim, yAnim);
+			break;
+		case TeleportMove:
+
+			break;
+		case ClassicAttack:
+			g.drawAnimation(animationsList.get(operateur.ClassicAck.class)[dir.toInt() + 4], xAnim, yAnim);
+			break;
+		case SuicideBomberAttack:
+			g.drawAnimation(animationsList.get(operateur.SuicideBomber.class)[dir.toInt() + 4], xAnim, yAnim);
+
+			break;
+		case Dying:
+			g.drawAnimation(animationsList.get(operateur.Dying.class)[dir.toInt() + 4], xAnim, yAnim);
+
+			break;
+		case RobotCreation:
+			g.drawAnimation(animationsList.get(operateur.CreateRobot.class)[dir.toInt() + 4], xAnim, yAnim);
+			break;
+		case Wait:
+			g.drawAnimation(animationsList.get(operateur.MoveDir.class)[dir.toInt()], xAnim, yAnim);
+			break;
+		case Dead:
+			throw new Exception("Trying to render a dead character");
 		}
 	}
 
@@ -182,22 +215,9 @@ public abstract class GUICharacter {
 	 *            The delay (in milliseconds) since the last call of this method
 	 */
 	public void update(GUI gui, int delta) {
-		if (isAttacking()) {
-			if (AckRequest) {
-				System.out.println("Ordonne l'attaque");
-				setAckRequest(false);
-				beginAck = (int) System.currentTimeMillis();
-			} else {
-				if ((beginAck + AckDuration) <= (int) System.currentTimeMillis()) {
-					setAttacking(false);
-				}
-			}
-		}
 
-		if (isMoving()) {
-
-			setAttacking(false);
-
+		switch (mySelf.getState()) {
+		case ClassiqueMove:
 			float nextXPx = getCurrentXPx(), nextYPx = getCurrentYPx();
 
 			if (getDirection() == Direction.WEST || getDirection() == Direction.EAST) {
@@ -207,13 +227,12 @@ public abstract class GUICharacter {
 			}
 
 			if (isInPlace()) {
-				setMoving(false);
+				mySelf.setState(State.Wait);
 			} else {
 				int nextCellX = mainUserInterface.pixelToCellX(nextXPx);
 				int nextCellY = mainUserInterface.pixelToCellY(nextYPx);
 				if (gui.isObstacle(nextCellX, nextCellY)) {
-					System.out.println("Obstacle détecté :|");
-					setMoving(false);
+					mySelf.setState(State.Wait);
 				} else {
 					this.xPx = nextXPx;
 					setCurrentX(nextCellX);
@@ -221,7 +240,65 @@ public abstract class GUICharacter {
 					setCurrentY(nextCellY);
 				}
 			}
+			break;
+		case TeleportMove:
+			if (actionRequest) {
+				beginTimeAnimation = (int) System.currentTimeMillis();
+				actionRequest = false;
+			}
+			if ((beginTimeAnimation + animationDuration) <= (int) System.currentTimeMillis()) {
+				setCurrentX(mySelf.getX());
+				setCurrentY(mySelf.getY());
+				mySelf.setState(State.Wait);
+			}
+			break;
+		case ClassicAttack:
+			if (actionRequest) {
+				beginTimeAnimation = (int) System.currentTimeMillis();
+				actionRequest = false;
+			}
+			if ((beginTimeAnimation + animationDuration) <= (int) System.currentTimeMillis()) {
+				mySelf.setState(State.Wait);
+			}
+			break;
+		case SuicideBomberAttack:
+			if (actionRequest) {
+				beginTimeAnimation = (int) System.currentTimeMillis();
+				actionRequest = false;
+			}
+			if ((beginTimeAnimation + animationDuration) <= (int) System.currentTimeMillis()) {
+				mySelf.setState(State.Dying);
+			}
+			break;
+		case Dying:
+			if (actionRequest) {
+				beginTimeAnimation = (int) System.currentTimeMillis();
+				actionRequest = false;
+			}
+			if ((beginTimeAnimation + animationDuration) <= (int) System.currentTimeMillis()) {
+				mySelf.setState(State.Dead);
+			}
+			break;
+		case Dead:
+			// State dead means that dying animation is over means that the
+			// Character should be deleted
+			// It's achieved by calling Die and setting it to null
+			mySelf.Die();
+			mySelf = null;
+			break;
+		case RobotCreation:
+			if (actionRequest) {
+				beginTimeAnimation = (int) System.currentTimeMillis();
+				actionRequest = false;
+			}
+			if ((beginTimeAnimation + animationDuration) <= (int) System.currentTimeMillis()) {
+				mySelf.setState(State.Wait);
+			}
+			break;
+		case Wait:
+			break;
 		}
+
 	}
 
 	public Team getTeam() {
@@ -247,33 +324,6 @@ public abstract class GUICharacter {
 		return getCurrentX() == getTargetX() && getCurrentY() == getTargetY() && isInPlaceHeight && isInPlaceWidth;
 	}
 
-	/**
-	 * Makes the GUICharacter move of one cell in the given direction
-	 * 
-	 * @param dir
-	 *            The direction in which the GUICharacter will move
-	 */
-	public void goToDirection(Direction dir) {
-		if (!isMoving() && !isAttacking()) {
-			setDirection(dir);
-			switch (dir) {
-			case NORTH:
-				setTargetY(getCurrentY() - 1);
-				break;
-			case WEST:
-				setTargetX(getCurrentX() - 1);
-				break;
-			case SOUTH:
-				setTargetY(getCurrentY() + 1);
-				break;
-			case EAST:
-				setTargetX(getCurrentX() + 1);
-				break;
-			}
-			setMoving(true);
-		}
-	}
-
 	private float getNextXPx(int delta) {
 		float nextX = getCurrentXPx();
 
@@ -296,20 +346,6 @@ public abstract class GUICharacter {
 			nextY = getCurrentYPx() + .1f * delta;
 		}
 		return nextY;
-	}
-
-	// TODO : Temporary until adapt to 'boolean isState(State state)'
-	protected boolean isMoving() {
-		return moving;
-	}
-
-	protected boolean isAtacking() {
-		return attacking;
-	}
-
-	// TODO : Temporary until 'void setState(Etat state, boolean bool)'
-	private void setMoving(boolean moving) {
-		this.moving = moving;
 	}
 
 	private float getCurrentXPx() {
@@ -370,29 +406,6 @@ public abstract class GUICharacter {
 		this.dir = dir;
 	}
 
-	public Robot getRobot() throws Exception {
-		if (this instanceof GUIRobot) {
-			return this.getRobot();
-		} else {
-			throw new Exception("Pas un GUIRobot");
-		}
-	}
-
-	private void setAckRequest(boolean ackRequest) {
-		this.AckRequest = ackRequest;
-	}
-
-	private boolean isAttacking() {
-		return attacking;
-	}
-
-	private void setAttacking(boolean attacking) {
-		this.attacking = attacking;
-	}
-
-	private void setAttackTarget(Direction dir) {
-		// TODO Attack the cell on the abscissa
-
-	}
+	public abstract Character getMyself();
 
 }

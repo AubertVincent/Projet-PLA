@@ -12,7 +12,6 @@ import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUICharacter;
-import operateur.Action;
 import pickable.PickAble;
 
 public abstract class Character extends Entity {
@@ -28,12 +27,14 @@ public abstract class Character extends Entity {
 	protected int remainingAttacks;
 	protected int recall;
 
-	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
+	protected static List<Class<?>> possibleActionsList = new LinkedList<Class<?>>();
 	protected Team team;
 	protected Base base;
 	private GUICharacter mySelfGUI;
 
-	public Character(int x, int y, Map entityMap, Base base) throws Exception {
+	private State state;
+
+	public Character(int x, int y, Map entityMap, Base base) {
 
 		super(x, y, entityMap);
 		if (this instanceof Player) {
@@ -61,7 +62,11 @@ public abstract class Character extends Entity {
 			this.team = base.getBaseTeam();
 			this.base = base;
 		} else {
-			throw new Exception("Unimplemented subClass Character");
+			try {
+				throw new Exception("Unimplemented subClass Character");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -311,6 +316,14 @@ public abstract class Character extends Entity {
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
 	}
 
 }

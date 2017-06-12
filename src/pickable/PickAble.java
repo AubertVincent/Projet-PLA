@@ -1,12 +1,35 @@
 package pickable;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import carte.Map;
 import entite.Entity;
+import gui.GUIPickAble;
 
 public abstract class PickAble extends Entity {
 
+	GUIPickAble guiPickAble;
+
+	public static List<Class<? extends PickAble>> possiblePickAbleList = new LinkedList<Class<? extends PickAble>>();
+	static {
+
+		possiblePickAbleList.add(PickClassicAck.class);
+		possiblePickAbleList.add(PickSuicideBomber.class);
+		possiblePickAbleList.add(PickTunnel.class);
+		possiblePickAbleList.add(PickMoveDir.class);
+		possiblePickAbleList.add(PickRecall.class);
+		// possiblePickAbleList.add(PickPickUp.class);
+		possiblePickAbleList.add(PickSuccession.class);
+		possiblePickAbleList.add(PickRandomBar.class);
+		possiblePickAbleList.add(PickPriority.class);
+		possiblePickAbleList.add(PickRandomMove.class);
+
+	}
+
 	public PickAble(int x, int y, Map entityMap) {
 		super(x, y, entityMap);
+		guiPickAble = new GUIPickAble(this);
 	}
 
 	@Override
@@ -69,6 +92,7 @@ public abstract class PickAble extends Entity {
 		switch (Pickable) {
 		case 1:
 			newOperator = new PickMoveDir(x, y, myMap);
+
 			break;
 		case 2:
 			newOperator = new PickClassicAck(x, y, myMap);
@@ -98,4 +122,7 @@ public abstract class PickAble extends Entity {
 		return newOperator;
 	}
 
+	public static List<Class<? extends PickAble>> getPossiblePickAbleList() {
+		return possiblePickAbleList;
+	}
 }

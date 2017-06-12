@@ -11,13 +11,24 @@ import entite.Entity;
 import exceptions.NotDoableException;
 import gui.GUI;
 import gui.GUIRobot;
-import operateur.Action;
-import operateur.ClassicAck;
-import operateur.MoveDir;
 import sequence._Sequence;
 import util.Pair;
 
 public class Robot extends Character {
+
+	static {
+		// Move-like animations
+		possibleActionsList.add(operateur.MoveDir.class);
+		possibleActionsList.add(operateur.RandomMove.class);
+
+		// Teleport-like animations
+		possibleActionsList.add(operateur.Recall.class);
+		possibleActionsList.add(operateur.Tunnel.class);
+		possibleActionsList.add(operateur.SuicideBomber.class);
+
+		// ClassicAttack-like animations
+		possibleActionsList.add(operateur.ClassicAck.class);
+	}
 
 	protected _Sequence myAutomaton;
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
@@ -25,8 +36,9 @@ public class Robot extends Character {
 
 	private Player player;
 
-	public Robot(Base base, Map entityMap, GUI userInterface, _Sequence myAutomaton, Player player) throws Exception {
+	public Robot(Base base, Map entityMap, GUI userInterface, _Sequence myAutomaton, Player player) {
 		super(base.getX(), base.getY(), entityMap, base);
+
 		this.myAutomaton = myAutomaton;
 		this.mySelfGUI = new GUIRobot(userInterface, base.getX(), base.getY(), Direction.SOUTH, 100, base.getBaseTeam(),
 				this, player.getMyselfGUI());
@@ -36,14 +48,7 @@ public class Robot extends Character {
 		super.setGUICharacter(this.mySelfGUI);
 	}
 
-	static {
-		possibleActionsList.add(ClassicAck.class);
-		possibleActionsList.add(MoveDir.class);
-		// possibleActionsList.add(Tunnel.class);
-		// possibleActionsList.add(Recall.class);
-	}
-
-	public static List<Class<? extends Action>> getPossibleActionsList() {
+	public static List<Class<?>> getPossibleActionsList() {
 		return possibleActionsList;
 	}
 

@@ -104,20 +104,6 @@ public class Map {
 		return map[x][y].getPickAbleList();
 	}
 
-	// TEST
-	// public void print() {
-	// for (int i = 0; i < width; i++) {
-	// for (int j = 0; j < height; j++) {
-	// if (map[i][j].getListEntity().size() != 0) {
-	// System.out.println(
-	// "case :" + i + ',' + j + " " +
-	// map[i][j].getListEntity().get(0).getClass().toString());
-	//
-	// }
-	// }
-	// }
-	// }
-
 	/**
 	 * return the list of the entities present on the cell(x,y)
 	 * 
@@ -230,11 +216,6 @@ public class Map {
 			}
 		}
 		// return freeCell;
-	}
-
-	public static void main(String[] args) {
-		Map mapTest = new Map();
-		nearestFreeCell(0, 0);
 	}
 
 }

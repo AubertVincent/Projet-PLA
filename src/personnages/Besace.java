@@ -150,12 +150,4 @@ public class Besace {
 		return resultingSequence;
 	}
 
-	// Test
-	public void print() {
-
-		for (Iterator<Class<? extends PickAble>> mapIter = besace.keySet().iterator(); mapIter.hasNext();) {
-			System.out.print(mapIter.getClass().toString() + " number : " + besace.get(mapIter.next()) + "\n");
-		}
-	}
-
 }

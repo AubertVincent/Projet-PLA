@@ -109,9 +109,9 @@ public class GUI extends BasicGame {
 
 		if (behaviorInputNeeded) {
 			this.rectBesace.render(container, g, engine.getCurrentModifier().getBesace());
+
 			Besace besace;
 			besace = engine.getPlayer(Team.ROUGE).getBesace();
-			this.rectBesace.render(container, g, besace);
 			this.inputTextField.render(container, g);
 		}
 
@@ -155,35 +155,44 @@ public class GUI extends BasicGame {
 
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
-		// for (GUIPlayer p : this.guiPlayerList) {
-		//
-		// p.update(this, delta);
-		// }
+
 		if (engine.getPlayPhase() == PlayPhase.behaviorModification) {
 			this.inputTextField.update(container, engine.getCurrentModifier());
 		}
 
-		for (GUIPlayer p : this.guiPlayerList) {
-			p.update(this, delta);
-			for (GUIRobot r : p.getGuiRobotList()) {
-				r.update(this, delta);
+		for (Player currentPlayer : engine.getPlayerList()) {
+			GUIPlayer guiCurrentPlayer = currentPlayer.getMyselfGUI();
+			guiCurrentPlayer.update(this, delta);
+			for (Robot currentRobot : currentPlayer.getRobotList()) {
+				GUIRobot guiCurrentRobot = currentRobot.getMyselfGUI();
+				guiCurrentRobot.update(this, delta);
 			}
 		}
-		this.inputTextField.update(container);
+		if (engine.getPlayPhase() == PlayPhase.behaviorModification) {
+			Player player = engine.getCurrentModifier();
+			this.inputTextField.update(container, player);
+		}
 	}
 
-	private GUICharacter getGUICharactereFromMouse(int x, int y) throws NotDoableException {
-		for (GUIPlayer p : guiPlayerList) {
-			if (p.getCurrentX() == x && p.getCurrentY() == y) {
-				return p;
+	private GUICharacter getGUICharactereFromMouse(int x, int y) {
+		for (Player currentPlayer : engine.getPlayerList()) {
+			GUIPlayer guiCurrentPlayer = currentPlayer.getMyselfGUI();
+
+			if (guiCurrentPlayer.getCurrentX() == x && guiCurrentPlayer.getCurrentY() == y) {
+				return guiCurrentPlayer;
 			}
-			for (GUIRobot r : p.getGuiRobotList()) {
-				if (r.getCurrentX() == x && r.getCurrentY() == y) {
-					return r;
+			for (GUIRobot guiCurrentRobot : guiCurrentPlayer.getGuiRobotList()) {
+				if (guiCurrentRobot.getCurrentX() == x && guiCurrentRobot.getCurrentY() == y) {
+					return guiCurrentRobot;
 				}
 			}
 		}
-		throw new NotDoableException("Pas de personnage sur cette case ou mauvaise phase de jeu");
+		try {
+			throw new NotDoableException("Pas de personnage sur cette case ou mauvaise phase de jeu");
+		} catch (NotDoableException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
@@ -195,17 +204,18 @@ public class GUI extends BasicGame {
 		GUICharacter guiPerso;
 		try {
 			guiPerso = getGUICharactereFromMouse(mouseXCell, mouseYCell);
-			if (guiPerso instanceof GUIPlayer) {
-				engine.createRobot(guiPerso.getPlayer(), this);
-			} else {
-				try {
-					engine.behaviorModif(guiPerso.getRobot(), this);
-				} catch (Exception e) {
-					e.getMessage();
+			if (!guiPerso.equals(null)) {
+				if (guiPerso instanceof GUIPlayer) {
+					engine.createRobot(this, (Player) guiPerso.getMyself());
+				} else {
+					try {
+						engine.behaviorModif(this, (Robot) guiPerso.getMyself());
+					} catch (Exception e) {
+						e.getMessage();
+					}
 				}
 			}
 		} catch (Exception e) {
-
 			e.getMessage();
 		}
 
