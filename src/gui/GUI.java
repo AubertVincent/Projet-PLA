@@ -18,6 +18,7 @@ import entite.Team;
 import exceptions.NotDoableException;
 import moteurDuJeu.Engine;
 import moteurDuJeu.PlayPhase;
+import personnages.Player;
 
 public class GUI extends BasicGame {
 
@@ -182,24 +183,33 @@ public class GUI extends BasicGame {
 	public void mousePressed(int button, int x, int y) {
 		int mouseXCell = pixelToCellX(x);
 		int mouseYCell = pixelToCellY(y);
-		GUICharacter perso;
+		// TODO recupere guiperso
+		GUICharacter guiPerso;
 		try {
-			perso = getGUICharactereFromMouse(mouseXCell, mouseYCell);
-			System.out.println("LeftClick on (" + mouseXCell + ", " + mouseYCell + ")");
 			if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
 
-				if (perso.getClass().equals(GUIPlayer.class)) {
-					behaviorInputNeeded = true;
-					engine.createRobot((GUIPlayer) perso, this, engine.getMap());
-				} else {
-					behaviorInputNeeded = true;
-					engine.behaviorModif((GUIRobot) perso, this, engine.getMap());
-				}
+				guiPerso = getGUICharactereFromMouse(mouseXCell, mouseYCell);
+				Player player = guiPerso.getPlayer();
+				engine.setCurrentModifier(player);
 			}
-		} catch (Exception e) {
+		} catch (NotDoableException e) {
 			// TODO Auto-generated catch block
 			e.getMessage();
 		}
+		// TODO Appelle engine pour mettre a jour comportement du perso
+		// correspondant a guiperso
+
+		System.out.println("LeftClick on (" + mouseXCell + ", " + mouseYCell + ")");
+		// if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
+		//
+		// if (guiPerso.getClass().equals(GUIPlayer.class)) {
+		// behaviorInputNeeded = true;
+		// engine.createRobot((GUIPlayer) guiPerso, this, engine.getMap());
+		// } else {
+		// behaviorInputNeeded = true;
+		// engine.behaviorModif((GUIRobot) guiPerso, this, engine.getMap());
+		// }
+		// }
 
 		// engine.mousePressed(button, mouseXCell, mouseYCell);
 

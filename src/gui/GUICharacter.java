@@ -372,12 +372,16 @@ public abstract class GUICharacter {
 		this.dir = dir;
 	}
 
+	public Player getPlayer() {
+		return this.getPlayer();
+	}
+
 	public void Attack(Engine engine, Direction dir) throws NotDoableException {
 		try {
 			if (!isMoving() && !isAttacking()) {
 				setDirection(dir);
 				setAttackTarget(dir);
-				engine.doAttack(dir, (GUIPlayer) this, engine.ma_map);
+				engine.doAttack(dir, (GUIPlayer) this, engine.myMap);
 				setAttackTarget(dir);
 
 				setAckRequest(true);

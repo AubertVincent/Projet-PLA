@@ -29,7 +29,7 @@ public class Robot extends Character {
 		super(base.getX(), base.getY(), entityMap, base);
 		this.myAutomaton = myAutomaton;
 		this.guiRobot = new GUIRobot(userInterface, base.getX(), base.getY(), Direction.SOUTH, 100, base.getBaseTeam(),
-				this);
+				this, player.getGUIPlayer());
 		this.player = player;
 		this.player.addRobot(new Coordinates(base.getX(), base.getY()), this);
 		this.player.getGUIPlayer().addGUIRobot(this.guiRobot);

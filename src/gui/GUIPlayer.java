@@ -15,7 +15,6 @@ import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
 import personnages.Player;
-import personnages.Robot;
 
 public class GUIPlayer extends GUICharacter {
 
@@ -70,17 +69,6 @@ public class GUIPlayer extends GUICharacter {
 
 	public Player getPlayer() {
 		return this.player;
-	}
-
-	public void createRobot(Robot robot, GUI userinterface) throws SlickException {
-		try {
-			GUIRobot tmp = new GUIRobot(userinterface, robot.getX(), robot.getY(), Direction.SOUTH, 100,
-					robot.getTeam(), robot);
-
-			guiRobotlist.add(tmp);
-		} catch (Exception e) {
-			e.getMessage();
-		}
 	}
 
 	public void addGUIRobot(GUIRobot guiRobot) {

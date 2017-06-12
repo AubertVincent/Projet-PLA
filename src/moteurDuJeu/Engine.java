@@ -27,9 +27,11 @@ public class Engine {
 
 	private List<Player> listPlayer;
 
-	public Map ma_map;
+	public Map myMap;
 
 	private PlayPhase playPhase;
+
+	private Player currentModifier;
 
 	/**
 	 * Create an Engine Object An Engine has a map and a list of its players
@@ -37,18 +39,18 @@ public class Engine {
 	 * @throws SlickException
 	 */
 	public Engine(GUI userInterface) throws SlickException {
-		ma_map = new Map();
+		myMap = new Map();
 		listPlayer = new ArrayList<Player>();
 		try {
 
-			listPlayer.add(new Player(new Base(2, 4, Team.ROUGE), ma_map, userInterface));
-			listPlayer.add(new Player(new Base(31, 15, Team.BLEU), ma_map, userInterface));
+			listPlayer.add(new Player(new Base(2, 4, Team.ROUGE), myMap, userInterface));
+			listPlayer.add(new Player(new Base(31, 15, Team.BLEU), myMap, userInterface));
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ma_map.init(userInterface, this);
+		myMap.init(userInterface, this);
 		this.playPhase = PlayPhase.playerMovement;
 	}
 
@@ -76,7 +78,7 @@ public class Engine {
 	}
 
 	public Map getMap() {
-		return this.ma_map;
+		return this.myMap;
 	}
 
 	/**
@@ -221,10 +223,8 @@ public class Engine {
 				else {
 					Player opponentPlayer = getPlayer(opponent.getTeam());
 					opponentPlayer.removeRobot((Robot) opponent);
-					// ((GUIPlayer) opponentPlayer.getGUICharacter())
-					// .removeGUIRobot((GUIRobot) opponent.getGUICharacter());
-					// opponentPlayer.removeRobot((Robot) opponent);
-					ma_map.Free(opponent.getX(), opponent.getY());
+
+					myMap.Free(opponent.getX(), opponent.getY());
 
 				}
 			}
@@ -248,7 +248,7 @@ public class Engine {
 		try {
 			if (map.isFree(Xbase, Ybase)) {
 
-				Robot robot = new Robot(player.getBase(), ma_map, userInterface,
+				Robot robot = new Robot(player.getBase(), myMap, userInterface,
 						Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player);
 				map.setEntity(Xbase, Ybase, robot);
 			} else {
@@ -261,6 +261,14 @@ public class Engine {
 
 			e.getMessage();
 		}
+	}
+
+	public Player getCurrentModifier() {
+		return this.currentModifier;
+	}
+
+	public void setCurrentModifier(Player currentPlayer) {
+		this.currentModifier = currentPlayer;
 	}
 
 	public void behaviorModif(GUIRobot GUIRobot, GUI userInterface, Map map) {
