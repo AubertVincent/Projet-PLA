@@ -22,6 +22,9 @@ public class RandomBar extends Behavior {
 
 	@Override
 	public void execute(Robot r, _Sequence left, _Sequence right) throws NotDoableException {
+		// test
+		// System.out.println(" Voici un random !");
+		// end test
 		Random random = new Random();
 		int n = random.nextInt(2);
 		try {

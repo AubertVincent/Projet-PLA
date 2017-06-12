@@ -12,8 +12,11 @@ import exceptions.NotDoableException;
 import operateur.Behavior;
 import operateur.ClassicAck;
 import operateur.MoveDir;
+import operateur.Priority;
 import operateur.RandomBar;
+import operateur.RandomMove;
 import operateur.Recall;
+import operateur.Succession;
 import operateur.Tunnel;
 import personnages.Besace;
 import personnages.Robot;
@@ -40,59 +43,78 @@ public class Test {
 		// x, y, entityMap, besace, direction, life, vision, attack, range,
 		// movePoints, recall, team, attackPoints,
 		// base
-		Behavior b = new RandomBar();
+		Behavior random = new RandomBar();
+		Behavior succession = new Succession();
+		Behavior priority = new Priority();
 		Recall r = new Recall(0);
-		MoveDir m1 = new MoveDir(Direction.NORTH, 1);
+		MoveDir m1 = new MoveDir(Direction.WEST, 8);
 		MoveDir m2 = new MoveDir(Direction.SOUTH, 3);
+		RandomMove rm1 = new RandomMove();
 		ClassicAck ack = new ClassicAck();
-		Tunnel t = new Tunnel(10, 9);
+		Tunnel t = new Tunnel(5, 9);
 		int xRobot1 = 5;
-		int yRobot1 = 9;
-		int xRobot2 = 5;
-		int yRobot2 = 11;
+		int yRobot1 = 10;
+		int xRobot2 = 20;
+		int yRobot2 = 14;
+		int xRobot3 = 6;
+		int yRobot3 = 5;
+		int xRobot4 = 10;
+		int yRobot4 = 10;
 
-		_Sequence sequence = new Tree(b, t, t);
-		_Sequence sequence2 = new Tree(b, t, t);
+		_Sequence arbre = new Tree(succession, t, ack);
+		_Sequence pr = new Tree(succession, r, ack);
+		_Sequence sequence = new Tree(succession, pr, arbre);
+		// _Sequence sequence2 = new Tree(b, t, t);
 		// _Sequence sequence2 = new Tree(b, ack, ack);
-		Robot robot = new Robot(xRobot1, yRobot1, my_map, new Besace(), Direction.SOUTH, 10, 1, 1, 1, 100, 1,
-				Team.ROUGE, 1, new Base(2, 4, Team.ROUGE), sequence);
-		Robot robot2 = new Robot(xRobot2, yRobot2, my_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 100, 1, Team.BLEU,
-				1, new Base(21, 8, Team.BLEU), sequence2);
+		Robot robot = new Robot(xRobot1, yRobot1, my_map, new Besace(), Direction.SOUTH, 10, 1, 1, 1, 2, 1, Team.BLEU,
+				1, new Base(2, 4, Team.BLEU), sequence);
+		Robot robot2 = new Robot(xRobot2, yRobot2, my_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 2, 1, Team.ROUGE,
+				1, new Base(21, 8, Team.ROUGE), sequence);
+		Robot robot3 = new Robot(xRobot3, yRobot3, my_map, new Besace(), Direction.SOUTH, 10, 1, 1, 1, 2, 1, Team.BLEU,
+				1, new Base(21, 8, Team.BLEU), sequence);
+		Robot robot4 = new Robot(xRobot4, yRobot4, my_map, new Besace(), Direction.SOUTH, 10, 1, 1, 1, 2, 1, Team.BLEU,
+				1, new Base(21, 8, Team.BLEU), sequence);
 		my_map.getCell(xRobot1, yRobot1).setEntity(robot);
 		my_map.getCell(xRobot2, yRobot2).setEntity(robot2);
-		my_map.getCell(5, 13).setEntity(new Obstacle(5, 13, my_map));
+		my_map.getCell(6, 5).setEntity(new Obstacle(5, 13, my_map));
+		// my_map.getCell(5, 4).setEntity(new Obstacle(5, 13, my_map));
+		// my_map.getCell(1, 10).setEntity(new Obstacle(5, 13, my_map));
 		listRobot.add(robot);// new Robot(2, 4, ma_map, new Besace(),
 		listRobot.add(robot2); // Direction.SOUTH, 1, 1, 1, 1, 10, 1, 1,
 								// Team.ROUGE,
 
 		// my_map.init(this);
 		while (true) {
-			System.out.println("First Position Robot 1 : ");
+			// System.out.println("First Position Robot 1 : ");
 			int x = robot.getX();
 			int y = robot.getY();
-			System.out.println("x:" + x + "; y:" + y);
-			System.out.println("First Position Robot 2 : ");
+			// System.out.println("x:" + x + "; y:" + y);
+			// System.out.println("First Position Robot 2 : ");
 			x = robot2.getX();
 			y = robot2.getY();
-			System.out.println("x:" + x + "; y:" + y);
+			// System.out.println("x:" + x + "; y:" + y);
 			int life = robot.getLife();
-			System.out.println("Avant life : " + life);
+			// System.out.println("Avant life R1: " + life);
+			// System.out.println("Avant life R3: " + robot3.getLife());
+			// System.out.println("Avant life R4: " + robot4.getLife());
 			try {
-				sequence2.execute(robot2);
-				sequence.execute(robot);
+				sequence.execute(robot2);
+				// sequence.execute(robot);
 			} catch (NotDoableException e) {
 				System.out.println("\"ERROR\"");
 			}
 			life = robot.getLife();
-			System.out.println("Après life : " + life);
-			System.out.println("Second Position Robot 1 : ");
+			// System.out.println("Après life R1: " + life);
+			// System.out.println("Après life R3: " + robot3.getLife());
+			// System.out.println("Après life R4: " + robot4.getLife());
+			// System.out.println("Second Position Robot 1 : ");
 			x = robot.getX();
 			y = robot.getY();
-			System.out.println("x:" + x + "; y:" + y);
-			System.out.println("Second Position Robot 2 : ");
+			// System.out.println("x:" + x + "; y:" + y);
+			// System.out.println("Second Position Robot 2 : ");
 			x = robot2.getX();
 			y = robot2.getY();
-			System.out.println("x:" + x + "; y:" + y);
+			// System.out.println("x:" + x + "; y:" + y);
 			life = robot.getLife();
 		}
 	}

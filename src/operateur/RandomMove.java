@@ -19,36 +19,51 @@ public class RandomMove extends Action implements _Random {
 	// Or mabye we just need to check in one direction ? In this case, just
 	// replace 1 by i
 	protected boolean isReachable(Robot r, Direction dir, int lg) {
-		for (int i = 1; i <= lg; i++) {
-			switch (dir) {
-			case NORTH:
-				if (r.getEntityMap().getCell(r.getX(), r.getY() - 1).isReachable()) {
-					return false;
+		int x = r.getX();
+		int y = r.getY();
+		if (r.getMovePoints() >= lg) {
+			for (int i = 1; i <= lg; i++) {
+				switch (dir) {
+				case NORTH:
+					if (y - i < 0 || y - i > r.getEntityMap().mapHeight()
+							|| !(r.getEntityMap().getCell(x, y - 1).isReachable())) {
+						return false;
+					}
+					break;
+				case SOUTH:
+					if (y + i < 0 || y + i > r.getEntityMap().mapHeight()
+							|| !(r.getEntityMap().getCell(x, y + 1).isReachable())) {
+						return false;
+					}
+					break;
+				case EAST:
+					if (x + i < 0 || x + i > r.getEntityMap().mapHeight()
+							|| !(r.getEntityMap().getCell(x + 1, y).isReachable())) {
+						return false;
+					}
+					break;
+				case WEST:
+					if (x - i < 0 || x - i > r.getEntityMap().mapHeight()
+							|| !(r.getEntityMap().getCell(x - 1, y).isReachable())) {
+						return false;
+					}
+					break;
 				}
-				break;
-			case SOUTH:
-				if (r.getEntityMap().getCell(r.getX(), r.getY() + 1).isReachable()) {
-					return false;
-				}
-				break;
-			case EAST:
-				if (r.getEntityMap().getCell(r.getX() + 1, r.getY()).isReachable()) {
-					return false;
-				}
-				break;
-			case WEST:
-				if (r.getEntityMap().getCell(r.getX() - 1, r.getY()).isReachable()) {
-					return false;
-				}
-				break;
-			}
 
+			}
+			return true;
+		} else {
+			return false;
 		}
-		return true;
 	}
 
 	@Override
 	public void execute(Robot r) throws NotDoableException {
+		System.out.println("J'execute le mouvement au hasard !");
+
+		if (!isDoable(r)) {
+			throw new NotDoableException("Entité entourée de cases inaccessibles");
+		}
 		int d = 0;
 		int lg = 0;
 		Direction dir = null;
@@ -75,23 +90,23 @@ public class RandomMove extends Action implements _Random {
 		this.lg = lg;
 		switch (dir) {
 		case NORTH:
-			for (int i = 1; i <= lg ; i++){
-				r.getExplorationMap().getCell(r.getX(), r.getY()-i).setExplored(true);
+			for (int i = 1; i <= lg; i++) {
+				r.getExplorationMap().getCell(r.getX(), r.getY() - i).setExplored(true);
 			}
 			break;
 		case EAST:
-			for (int i = 1; i <= lg ; i++){
-				r.getExplorationMap().getCell(r.getX()+1, r.getY()).setExplored(true);
+			for (int i = 1; i <= lg; i++) {
+				r.getExplorationMap().getCell(r.getX() + 1, r.getY()).setExplored(true);
 			}
 			break;
 		case SOUTH:
-			for (int i = 1; i <= lg ; i++){
-				r.getExplorationMap().getCell(r.getX(), r.getY()+i).setExplored(true);
+			for (int i = 1; i <= lg; i++) {
+				r.getExplorationMap().getCell(r.getX(), r.getY() + i).setExplored(true);
 			}
 			break;
 		case WEST:
-			for (int i = 1; i <= lg ; i++){
-				r.getExplorationMap().getCell(r.getX()-i, r.getY()).setExplored(true);
+			for (int i = 1; i <= lg; i++) {
+				r.getExplorationMap().getCell(r.getX() - i, r.getY()).setExplored(true);
 			}
 			break;
 		}
@@ -122,10 +137,25 @@ public class RandomMove extends Action implements _Random {
 		int x = r.getX();
 		int y = r.getY();
 		Map myMap = r.getEntityMap();
-		if (!myMap.getCell(x, y - 1).isReachable() && !myMap.getCell(x + 1, y).isReachable()
-				&& !myMap.getCell(x, y + 1).isReachable() && !myMap.getCell(x - 1, y).isReachable()) {
+		if (x == 0 && y == 0 && !myMap.getCell(x, y + 1).isReachable() && !myMap.getCell(x + 1, y).isReachable()) {
 			return false;
+		} else if (x == myMap.mapWidth() - 1 && y == 0 && !myMap.getCell(x, y + 1).isReachable()
+				&& !myMap.getCell(x - 1, y).isReachable()) {
+			return false;
+		} else if (x == myMap.mapWidth() - 1 && y == myMap.mapHeight() - 1 && !myMap.getCell(x, y - 1).isReachable()
+				&& !myMap.getCell(x - 1, y).isReachable()) {
+			return false;
+		} else if (x == 0 && y == myMap.mapHeight() - 1 && !myMap.getCell(x, y - 1).isReachable()
+				&& !myMap.getCell(x + 1, y).isReachable()) {
+			return false;
+		} else if (x == 0 && !myMap.getCell(x, y - 1).isReachable() && !myMap.getCell(x, y + 1).isReachable()
+				&& !myMap.getCell(x + 1, y).isReachable()) {
+			return false;
+		} else if (y == 0 && !myMap.getCell(x + 1, y).isReachable() && !myMap.getCell(x, y + 1).isReachable()
+				&& !myMap.getCell(x - 1, y).isReachable()) {
+			return false;
+		} else {
+			return true;
 		}
-		return true;
 	}
 }

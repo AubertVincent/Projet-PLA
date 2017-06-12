@@ -28,7 +28,9 @@ public class Priority extends Behavior {
 
 	@Override
 	public void execute(Robot r, _Sequence left, _Sequence right) throws NotDoableException {
-
+		// test
+		// System.out.println("Voici une priorité !");
+		// end test
 		if (left instanceof Action && right instanceof Action) {
 			try {
 				left.execute(r);

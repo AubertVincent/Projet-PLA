@@ -16,7 +16,10 @@ public class Explore extends Movement {
 
 	@Override
 	protected boolean isDoable(Robot r) {
-		if (!(r.getEntityMap().getCell(r.getX()+1, r.getY()).isReachable()) && !(r.getEntityMap().getCell(r.getX()-1, r.getY()).isReachable()) && !(r.getEntityMap().getCell(r.getX(), r.getY()+1).isReachable()) && !(r.getEntityMap().getCell(r.getX(), r.getY()-1).isReachable())){
+		if (!(r.getEntityMap().getCell(r.getX() + 1, r.getY()).isReachable())
+				&& !(r.getEntityMap().getCell(r.getX() - 1, r.getY()).isReachable())
+				&& !(r.getEntityMap().getCell(r.getX(), r.getY() + 1).isReachable())
+				&& !(r.getEntityMap().getCell(r.getX(), r.getY() - 1).isReachable())) {
 			return false;
 		}
 		return true;
@@ -30,8 +33,11 @@ public class Explore extends Movement {
 
 	@Override
 	public void execute(Robot r) throws NotDoableException {
-		if (!isDoable(r)){
-			throw new NotDoableException ("Ce robot est entouré d'obstacles");
+		// test
+		// System.out.println("J'execute le tunnel !");
+		// end test
+		if (!isDoable(r)) {
+			throw new NotDoableException("Ce robot est entouré d'obstacles");
 		}
 		int range = r.getMovePoints();
 		int x = r.getX();
@@ -45,8 +51,8 @@ public class Explore extends Movement {
 		List<Cell> reachable = new ArrayList<Cell>();
 
 		while (range > 0) {
-			if (!isDoable(r)){
-				throw new NotDoableException ("Ce robot est entouré d'obstacles");
+			if (!isDoable(r)) {
+				throw new NotDoableException("Ce robot est entouré d'obstacles");
 			}
 			reachable.clear();
 			randomCpt = 0;
@@ -191,27 +197,29 @@ public class Explore extends Movement {
 	// }
 	// }
 
-//	public static void main(String[] args) throws NotDoableException {
-//		Behavior b = new RandomBar();
-//		MoveDir m1 = new MoveDir(Direction.SOUTH, 1);
-//		MoveDir m2 = new MoveDir(Direction.EAST, 0);
-//		Map map = new Map();
-//
-//		_Sequence sequence = new Tree(b, m1, m2);
-//
-//		Player player = new Player(1, 1, map, new Besace(), Direction.EAST, 1, 1, 1, 1, 1, 1, 1, Team.BLEU,
-//				new Base(2, 4, Team.ROUGE));
-//
-//		Robot robot = new Robot(5, 5, map, new Besace(), Direction.NORTH, 10, 3, 3, 3, 1, 3, Team.BLEU, 1,
-//				new Base(2, 4, Team.ROUGE), sequence, player);
-//
-//		Explore e = new Explore();
-//
-//		try {
-//			e.execute(robot);
-//		} catch (NotDoableException e2) {
-//
-//		}
-//	}
+	// public static void main(String[] args) throws NotDoableException {
+	// Behavior b = new RandomBar();
+	// MoveDir m1 = new MoveDir(Direction.SOUTH, 1);
+	// MoveDir m2 = new MoveDir(Direction.EAST, 0);
+	// Map map = new Map();
+	//
+	// _Sequence sequence = new Tree(b, m1, m2);
+	//
+	// Player player = new Player(1, 1, map, new Besace(), Direction.EAST, 1, 1,
+	// 1, 1, 1, 1, 1, Team.BLEU,
+	// new Base(2, 4, Team.ROUGE));
+	//
+	// Robot robot = new Robot(5, 5, map, new Besace(), Direction.NORTH, 10, 3,
+	// 3, 3, 1, 3, Team.BLEU, 1,
+	// new Base(2, 4, Team.ROUGE), sequence, player);
+	//
+	// Explore e = new Explore();
+	//
+	// try {
+	// e.execute(robot);
+	// } catch (NotDoableException e2) {
+	//
+	// }
+	// }
 
 }
