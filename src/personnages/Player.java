@@ -3,10 +3,12 @@ package personnages;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.newdawn.slick.SlickException;
+
 import carte.Base;
 import entite.Direction;
-import entite.Team;
-import gui.GUICharacter;
+import gui.GUI;
+import gui.GUIPlayer;
 import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
@@ -24,6 +26,8 @@ public class Player extends Character {
 	}
 
 	private RobotList robotList;
+
+	private GUIPlayer guiPlayer;
 
 	/**
 	 * Set a new Player
@@ -54,10 +58,19 @@ public class Player extends Character {
 		return possibleActionsList;
 	}
 
-	public Player(int x, int y, carte.Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, int attackPoints, Team team, Base base, GUICharacter GUIPlayer) {
-		super(x, y, entityMap, direction, life, vision, attack, range, movePoints, recall, team, attackPoints, base,
-				GUIPlayer);
+	public Player(Base base, carte.Map entityMap, GUI userInterface) throws Exception {
+		super(base.getX(), base.getY(), entityMap, base);
+		try {
+			GUIPlayer GUIPlayer = new GUIPlayer(userInterface, base.getX(), base.getY(), Direction.SOUTH, 100,
+					base.getBaseTeam(), this);
+
+			this.guiPlayer = GUIPlayer;
+			userInterface.addGUICharactere(GUIPlayer);
+		} catch (SlickException e) {
+			e.getMessage();
+		} catch (Exception e) {
+			e.getMessage();
+		}
 		robotList = new RobotList();
 		this.besace = new Besace();
 	}
@@ -67,6 +80,7 @@ public class Player extends Character {
 	}
 
 	public void removeRobot(Robot robot) {
+		this.guiPlayer.removeGUIRobot(robot.getGuiRobot());
 		robotList.remove(robot);
 
 	}
@@ -105,29 +119,9 @@ public class Player extends Character {
 		return super.getY();
 	}
 
-	// // Tests main
-	// public static void main(String[] args) {
-	// Player joueur = new Player(5, 12, Direction.NORTH, 1, 1, 1, 1, 5, 1);
-	//
-	// System.out.println("is player ? " + joueur.isPlayer());
-	// System.out.println("is Robot ? " + joueur.isRobot());
-	// joueur.addRobot(new Robot(0, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
-	// joueur.addRobot(new Robot(1, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
-	// joueur.addRobot(new Robot(2, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
-	// joueur.addRobot(new Robot(3, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
-	// System.out.println(joueur.getListRobot().size());
-	// System.out.println("Position avant : " + joueur.getX() + " " +
-	// joueur.getY());
-	// joueur.setX(10);
-	// joueur.setY(10);
-	// System.out.println("Position avant : " + joueur.getX() + " " +
-	// joueur.getY());
-	// ClassicAck test = new ClassicAck(4,5);
-	//// joueur.addOperator(test);
-	//// System.out.println("Is in the besace : ? " + joueur.isInBesace(test));
-	//
-	//
-	// }
+	public GUIPlayer getGUIPlayer() {
+		return this.guiPlayer;
+	}
 
 	@Override
 	public boolean isObstacle() {

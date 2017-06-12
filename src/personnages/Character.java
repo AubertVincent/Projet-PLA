@@ -11,7 +11,6 @@ import entite.Entity;
 import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
-import gui.GUICharacter;
 import operateur.Action;
 import pickable.PickAble;
 
@@ -19,20 +18,18 @@ public abstract class Character extends Entity {
 
 	protected Besace besace;
 
-	protected Direction direction;
-	protected int life;
-	protected int vision;
-	protected int attack;
-	protected int range;
-	protected int movePoints;
-	protected int attackPoints;
-	protected int recall;
-	protected int player;
+	protected Direction direction = Direction.SOUTH;
+	protected int life = 10;
+	protected int vision = 5;
+	protected int attack = 3;
+	protected int range = 3;
+	protected int movePoints = 10;
+	protected int attackPoints = 5;
+	protected int recall = 3;
 
 	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 	protected Team team;
 	protected Base base;
-	private GUICharacter GUICharactere;
 
 	/**
 	 * Set a new character
@@ -55,22 +52,63 @@ public abstract class Character extends Entity {
 	 *            Character's move points
 	 * @param recall
 	 *            Character's recall's time
+	 * @throws Exception
 	 */
-	public Character(int x, int y, Map entityMap, Direction direction, int life, int vision, int attack, int range,
-			int movePoints, int recall, Team team, int attackPoints, Base base, GUICharacter GUICharacter) {
+	public Character(int x, int y, Map entityMap, Base base) throws Exception {
+
 		super(x, y, entityMap);
-		this.direction = direction;
-		this.life = life;
-		this.vision = vision;
-		this.attack = attack;
-		this.range = range;
-		this.movePoints = movePoints;
-		this.recall = recall;
-		this.team = team;
-		this.attackPoints = attackPoints;
-		this.base = base;
-		this.GUICharactere = GUICharacter;
+		if (this instanceof Player) {
+
+			this.direction = Direction.SOUTH;
+			this.life = 10;
+			this.vision = 5;
+			this.attack = 3;
+			this.range = 3;
+			this.movePoints = 10;
+			this.attackPoints = 5;
+			this.recall = 3;
+
+			this.team = base.getBaseTeam();
+			this.base = base;
+		} else if (this instanceof Robot) {
+			this.direction = Direction.SOUTH;
+			this.life = 1;
+			this.vision = 3;
+			this.attack = 2;
+			this.range = 4;
+			this.movePoints = 5;
+			this.attackPoints = 3;
+			this.recall = 3;
+			this.team = base.getBaseTeam();
+			this.base = base;
+		} else {
+
+			throw new Exception("Unimplemented subClass Character");
+		}
 	}
+
+	// public Character(int x, int y, Map entityMap, Direction direction, int
+	// life, int vision, int attack, int range,
+	// int movePoints, int recall, int attackPoints, Team team, Base base)
+	// throws Exception {
+	//
+	// super(x, y, entityMap);
+	// if (this instanceof Robot) {
+	//
+	// this.direction = direction;
+	// this.life = life;
+	// this.vision = vision;
+	// this.attack = attack;
+	// this.range = range;
+	// this.movePoints = movePoints;
+	// this.recall = recall;
+	// this.team = team;
+	// this.attackPoints = attackPoints;
+	// this.base = base;
+	// } else {
+	// throw new Exception("Unimplemented subClass Character");
+	// }
+	// }
 
 	public Base getBase() {
 		return base;
@@ -173,9 +211,13 @@ public abstract class Character extends Entity {
 		this.attackPoints = aP;
 	}
 
-	public GUICharacter getGUICharacter() {
-		return this.GUICharactere;
-	}
+	// public GUICharacter getGUICharacter() {
+	// return this.GUICharactere;
+	// }
+	//
+	// public void setGUICharacter(GUICharacter guiCharacter) {
+	// this.GUICharactere = guiCharacter;
+	// }
 
 	// public void resetBesace() {
 	// // FIXME adapt besace : implement clear for this class
