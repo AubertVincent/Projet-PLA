@@ -9,35 +9,35 @@ import exceptions.NotDoableException;
 import personnages.Character;
 
 public class Cell {
-	protected Coordinates coord;
+	protected Coordinates coordinates;
 
 	protected List<Entity> listeEntites;
-	boolean isfree;
+	boolean isFree;
 
-	public Cell(Coordinates coord) {
-		this.coord = coord;
+	public Cell(Coordinates coordinates) {
+		this.coordinates = coordinates;
 		listeEntites = new ArrayList<Entity>();
-		isfree = true;
+		isFree = true;
 	}
 
-	public Cell(Coordinates coord, Entity ent) {
-		this.coord = coord;
+	public Cell(Coordinates coordinates, Entity entity) {
+		this.coordinates = coordinates;
 		listeEntites = new ArrayList<Entity>();
-		this.setEntity(ent);
-		isfree = false;
+		this.setEntity(entity);
+		isFree = false;
 	}
 
 	public Cell(int x, int y) {
-		coord = new Coordinates(x, y);
+		coordinates = new Coordinates(x, y);
 		listeEntites = new ArrayList<Entity>();
-		isfree = true;
+		isFree = true;
 	}
 
-	public Cell(int x, int y, Entity ent) {
-		coord = new Coordinates(x, y);
+	public Cell(int x, int y, Entity entity) {
+		coordinates = new Coordinates(x, y);
 		listeEntites = new ArrayList<Entity>();
-		this.setEntity(ent);
-		isfree = false;
+		this.setEntity(entity);
+		isFree = false;
 	}
 
 	public boolean isEmpty() {
@@ -45,16 +45,16 @@ public class Cell {
 	}
 
 	public boolean isFree() {
-		return this.isfree;
+		return this.isFree;
 	}
 
-	public void setEntity(Entity ent) {
-		listeEntites.add(ent);
-		this.isfree = false;
+	public void setEntity(Entity entity) {
+		listeEntites.add(entity);
+		this.isFree = false;
 	}
 
 	public void FreeCell() {
-		isfree = true;
+		isFree = true;
 		listeEntites.clear();
 	}
 
@@ -78,13 +78,13 @@ public class Cell {
 
 	public Character getOpponent(Team team) throws NotDoableException {
 		int i = 0;
-		Entity e;
+		Entity entity;
 		while (i < this.listeEntites.size()) {
 			if (this.listeEntites.get(i).isCharacter()) {
-				e = this.listeEntites.get(i);
+				entity = this.listeEntites.get(i);
 
-				if (!((Character) e).getTeam().equals(team)) {
-					return ((Character) e);
+				if (!((Character) entity).getTeam().equals(team)) {
+					return ((Character) entity);
 				}
 			}
 			i++;
@@ -94,11 +94,11 @@ public class Cell {
 
 	public boolean opponentHere(Team team) {
 		int i = 0;
-		Entity e;
+		Entity entity;
 		while (i < this.listeEntites.size()) {
 			if (this.listeEntites.get(i).isCharacter()) {
-				e = this.listeEntites.get(i);
-				if (((Character) e).getTeam() != team) {
+				entity = this.listeEntites.get(i);
+				if (((Character) entity).getTeam() != team) {
 					return true;
 				}
 			}
@@ -107,8 +107,8 @@ public class Cell {
 		return false;
 	}
 
-	public Coordinates getCoord() {
-		return coord;
+	public Coordinates getCoordinates() {
+		return coordinates;
 	}
 
 	// public static void main(String[] args) {

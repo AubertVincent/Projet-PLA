@@ -19,10 +19,10 @@ public class Succession extends Behavior {
 	}
 
 	@Override
-	public void execute(Robot r, _Sequence left, _Sequence right) throws NotDoableException {
+	public void execute(Robot robot, _Sequence left, _Sequence right) throws NotDoableException {
 		try {
-			left.execute(r);
-			right.execute(r);
+			left.execute(robot);
+			right.execute(robot);
 		} catch (NotDoableException e) {
 			throw new NotDoableException("Action impossible");
 		}

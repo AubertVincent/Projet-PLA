@@ -2,8 +2,8 @@ package carte;
 
 public class Coordinates {
 
-	public boolean equals(Coordinates coord) {
-		return coord.getX() == x && coord.getY() == y;
+	public boolean equals(Coordinates coordinates) {
+		return coordinates.getX() == x && coordinates.getY() == y;
 	}
 
 	private int x;
@@ -14,9 +14,9 @@ public class Coordinates {
 		this.y = y;
 	}
 
-	public Coordinates(Coordinates coord) {
-		this.x = coord.getX();
-		this.y = coord.getY();
+	public Coordinates(Coordinates coordinates) {
+		this.x = coordinates.getX();
+		this.y = coordinates.getY();
 	}
 
 	public void setX(int x) {

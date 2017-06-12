@@ -5,8 +5,8 @@ import carte.Map;
 
 public class PickPickUp extends PickAble {
 
-	public PickPickUp(Coordinates coord, Map entityMap) {
-		super(coord, entityMap);
+	public PickPickUp(Coordinates coordinates, Map entityMap) {
+		super(coordinates, entityMap);
 	}
 
 }

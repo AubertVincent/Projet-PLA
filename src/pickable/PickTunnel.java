@@ -5,8 +5,8 @@ import carte.Map;
 
 public class PickTunnel extends PickAble {
 
-	public PickTunnel(Coordinates coord, Map entityMap) {
-		super(coord, entityMap);
+	public PickTunnel(Coordinates coordinates, Map entityMap) {
+		super(coordinates, entityMap);
 	}
 
 }

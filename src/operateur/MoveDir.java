@@ -40,34 +40,34 @@ public class MoveDir extends Movement {
 	@Override
 
 	protected boolean isDoable(Robot r) {
-		int x = r.getCoord().getX();
-		int y = r.getCoord().getY();
-		Coordinates coord;
+		int x = r.getCoordinates().getX();
+		int y = r.getCoordinates().getY();
+		Coordinates coordinates;
 		Map myMap = r.getEntityMap();
 
 		for (int i = 0; i < lg; i++) {
 			switch (dir) {
 			case NORTH:
-				coord = new Coordinates(x, y - i);
-				if (!myMap.isReachable(coord)) {
+				coordinates = new Coordinates(x, y - i);
+				if (!myMap.isReachable(coordinates)) {
 					return false;
 				}
 				break;
 			case EAST:
-				coord = new Coordinates(x + i, y);
-				if (!myMap.isReachable(coord)) {
+				coordinates = new Coordinates(x + i, y);
+				if (!myMap.isReachable(coordinates)) {
 					return false;
 				}
 				break;
 			case SOUTH:
-				coord = new Coordinates(x, y + i);
-				if (!myMap.isReachable(coord)) {
+				coordinates = new Coordinates(x, y + i);
+				if (!myMap.isReachable(coordinates)) {
 					return false;
 				}
 				break;
 			case WEST:
-				coord = new Coordinates(x - i, y);
-				if (!myMap.isReachable(coord)) {
+				coordinates = new Coordinates(x - i, y);
+				if (!myMap.isReachable(coordinates)) {
 					return false;
 				}
 				break;

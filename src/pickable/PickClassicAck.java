@@ -5,8 +5,8 @@ import carte.Map;
 
 public class PickClassicAck extends PickAble {
 
-	public PickClassicAck(Coordinates coord, Map entityMap) {
-		super(coord, entityMap);
+	public PickClassicAck(Coordinates coordinates, Map entityMap) {
+		super(coordinates, entityMap);
 	}
 
 }

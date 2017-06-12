@@ -5,8 +5,8 @@ import carte.Map;
 
 public class PickSuicideBomber extends PickAble {
 
-	public PickSuicideBomber(Coordinates coord, Map entityMap) {
-		super(coord, entityMap);
+	public PickSuicideBomber(Coordinates coordinates, Map entityMap) {
+		super(coordinates, entityMap);
 	}
 
 }

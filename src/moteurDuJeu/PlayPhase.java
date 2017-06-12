@@ -6,8 +6,8 @@ public enum PlayPhase {
 
 	private final int value;
 
-	private PlayPhase(int val) {
-		value = val;
+	private PlayPhase(int value) {
+		this.value = value;
 	}
 
 	public int toInt() {

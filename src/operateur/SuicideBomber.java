@@ -10,27 +10,27 @@ public class SuicideBomber extends Attack {
 	private int lastLife; // Life of the robot before it suicides
 
 	@Override
-	public boolean isDoable(Robot r) {
+	public boolean isDoable(Robot robot) {
 
 		// We have to check if there is at least one opponent around this robot
 		// (North, South, Est, West)
-		int x = r.getCoord().getX();
-		int y = r.getCoord().getY();
-		Map m = r.getEntityMap();
+		int x = robot.getCoordinates().getX();
+		int y = robot.getCoordinates().getY();
+		Map m = robot.getEntityMap();
 		Cell cellule = m.getCell(x + 1, y);
-		if (cellule.opponentHere(r.getTeam())) {
+		if (cellule.opponentHere(robot.getTeam())) {
 			return true;
 		}
 		cellule = m.getCell(x - 1, y);
-		if (cellule.opponentHere(r.getTeam())) {
+		if (cellule.opponentHere(robot.getTeam())) {
 			return true;
 		}
 		cellule = m.getCell(x, y - 1);
-		if (cellule.opponentHere(r.getTeam())) {
+		if (cellule.opponentHere(robot.getTeam())) {
 			return true;
 		}
 		cellule = m.getCell(x, y - 1);
-		if (cellule.opponentHere(r.getTeam())) {
+		if (cellule.opponentHere(robot.getTeam())) {
 			return true;
 		}
 		return false;

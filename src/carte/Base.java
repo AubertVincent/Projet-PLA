@@ -5,26 +5,26 @@ import entite.Team;
 public class Base {
 
 	// Base coordinate
-	private Coordinates coord;
+	private Coordinates coordinates;
 	private Team baseTeam;
-	private static final Coordinates coordBleu = new Coordinates(31, 15);
-	private static final Coordinates coordRouge = new Coordinates(2, 4);
+	private static final Coordinates coordinatesBleu = new Coordinates(31, 15);
+	private static final Coordinates coordinatesRouge = new Coordinates(2, 4);
 
 	public Base(Team team) {
 		super();
 		switch (team) {
 		case BLEU:
-			this.setCoord(coordBleu);
+			this.setCoordinates(coordinatesBleu);
 			break;
 		case ROUGE:
-			this.setCoord(coordRouge);
+			this.setCoordinates(coordinatesRouge);
 			break;
 		}
 		this.baseTeam = team;
 	}
 
-	public Coordinates getCoord() {
-		return this.coord;
+	public Coordinates getCoordinates() {
+		return this.coordinates;
 	}
 
 	public Team getBaseTeam() {
@@ -35,8 +35,8 @@ public class Base {
 		this.baseTeam = baseTeam;
 	}
 
-	public void setCoord(Coordinates coord) {
-		this.coord = coord;
+	public void setCoordinates(Coordinates coordinates) {
+		this.coordinates = coordinates;
 	}
 
 }

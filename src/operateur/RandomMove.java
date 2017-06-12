@@ -15,8 +15,8 @@ public class RandomMove extends Action implements _Random {
 	}
 
 	protected boolean isReachable(Robot r, Direction dir, int lg) {
-		int x = r.getCoord().getX();
-		int y = r.getCoord().getY();
+		int x = r.getCoordinates().getX();
+		int y = r.getCoordinates().getY();
 		for (int i = 1; i <= lg; i++) {
 			switch (dir) {
 			case NORTH:
@@ -95,8 +95,8 @@ public class RandomMove extends Action implements _Random {
 
 	@Override
 	protected boolean isDoable(Robot r) {
-		int x = r.getCoord().getX();
-		int y = r.getCoord().getY();
+		int x = r.getCoordinates().getX();
+		int y = r.getCoordinates().getY();
 		Map myMap = r.getEntityMap();
 		if (!myMap.isReachable(x, y - 1) && !myMap.isReachable(x + 1, y) && !myMap.isReachable(x, y + 1)
 				&& !myMap.isReachable(x - 1, y)) {

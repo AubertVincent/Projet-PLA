@@ -97,51 +97,51 @@ public class Engine {
 	// TODO : Handle with the pickup of pickable when pass on a cell
 	public boolean doMove(GUIPlayer perso, Direction dir, Map map) {
 		boolean moveSucces = false;
-		Coordinates coord;
+		Coordinates coordinates;
 		Player player = perso.getPlayer();
 		if (this.playPhase.equals(PlayPhase.playerMovement)) {
 
 			// Case of Player1
 			if (player.getMovePoints() > 0) {
-				coord = new Coordinates(player.getCoord());
+				coordinates = new Coordinates(player.getCoordinates());
 				switch (dir) {
 
 				case SOUTH:
-					coord.setY(coord.getY() + 1);
-					if (map.isFree(coord) || map.isPickAble(coord)) {
-						player.setCoord(new Coordinates(coord));
-						coord.setY(coord.getY() - 1);
-						map.Free(coord);
+					coordinates.setY(coordinates.getY() + 1);
+					if (map.isFree(coordinates) || map.isPickAble(coordinates)) {
+						player.setCoordinates(new Coordinates(coordinates));
+						coordinates.setY(coordinates.getY() - 1);
+						map.Free(coordinates);
 						moveSucces = true;
 					}
 					break;
 
 				case NORTH:
-					coord.setY(coord.getY() - 1);
-					if (map.isFree(coord) || map.isPickAble(coord)) {
-						player.setCoord(new Coordinates(coord));
-						coord.setY(coord.getY() + 1);
-						map.Free(coord);
+					coordinates.setY(coordinates.getY() - 1);
+					if (map.isFree(coordinates) || map.isPickAble(coordinates)) {
+						player.setCoordinates(new Coordinates(coordinates));
+						coordinates.setY(coordinates.getY() + 1);
+						map.Free(coordinates);
 						moveSucces = true;
 					}
 					break;
 
 				case WEST:
-					coord.setX(coord.getX() - 1);
-					if (map.isFree(coord) || map.isPickAble(coord)) {
-						player.setCoord(new Coordinates(coord));
-						coord.setY(coord.getX() + 1);
-						map.Free(coord);
+					coordinates.setX(coordinates.getX() - 1);
+					if (map.isFree(coordinates) || map.isPickAble(coordinates)) {
+						player.setCoordinates(new Coordinates(coordinates));
+						coordinates.setY(coordinates.getX() + 1);
+						map.Free(coordinates);
 						moveSucces = true;
 					}
 					break;
 
 				case EAST:
-					coord.setX(coord.getX() + 1);
-					if (map.isFree(coord) || map.isPickAble(coord)) {
-						player.setCoord(new Coordinates(coord));
-						coord.setY(coord.getX() - 1);
-						map.Free(coord);
+					coordinates.setX(coordinates.getX() + 1);
+					if (map.isFree(coordinates) || map.isPickAble(coordinates)) {
+						player.setCoordinates(new Coordinates(coordinates));
+						coordinates.setY(coordinates.getX() - 1);
+						map.Free(coordinates);
 						moveSucces = true;
 					}
 					break;
@@ -159,7 +159,7 @@ public class Engine {
 
 			Besace PlayerBesace = player.getBesace();
 
-			for (Entity e : map.getPickAbleList(player.getCoord())) {
+			for (Entity e : map.getPickAbleList(player.getCoordinates())) {
 				PlayerBesace.add(((PickAble) e).getClass());
 			}
 
@@ -182,35 +182,35 @@ public class Engine {
 				switch (dir) {
 
 				case SOUTH:
-					target = map.getCell(player.getCoord().getX(), player.getCoord().getY() + 1);
+					target = map.getCell(player.getCoordinates().getX(), player.getCoordinates().getY() + 1);
 					opponent = target.getOpponent(player.getTeam());
 					player.classicAtk(target);
-					System.out.println(" Joueur 1 attaque la case : " + player.getCoord().getX() + ";"
-							+ (player.getCoord().getY() + 1));
+					System.out.println(" Joueur 1 attaque la case : " + player.getCoordinates().getX() + ";"
+							+ (player.getCoordinates().getY() + 1));
 					break;
 
 				case NORTH:
-					target = map.getCell(player.getCoord().getX(), player.getCoord().getY() - 1);
+					target = map.getCell(player.getCoordinates().getX(), player.getCoordinates().getY() - 1);
 					opponent = target.getOpponent(player.getTeam());
 					player.classicAtk(target);
-					System.out.println(" Joueur 1 attaque la case : " + player.getCoord().getX() + ";"
-							+ (player.getCoord().getY() - 1));
+					System.out.println(" Joueur 1 attaque la case : " + player.getCoordinates().getX() + ";"
+							+ (player.getCoordinates().getY() - 1));
 					break;
 
 				case WEST:
-					target = map.getCell(player.getCoord().getX() - 1, player.getCoord().getY());
+					target = map.getCell(player.getCoordinates().getX() - 1, player.getCoordinates().getY());
 					opponent = target.getOpponent(player.getTeam());
 					player.classicAtk(target);
-					System.out.println(" Joueur 1 attaque la case : " + (player.getCoord().getX() - 1) + ";"
-							+ player.getCoord().getY());
+					System.out.println(" Joueur 1 attaque la case : " + (player.getCoordinates().getX() - 1) + ";"
+							+ player.getCoordinates().getY());
 					break;
 
 				case EAST:
-					target = map.getCell(player.getCoord().getX() + 1, player.getCoord().getY());
+					target = map.getCell(player.getCoordinates().getX() + 1, player.getCoordinates().getY());
 					opponent = target.getOpponent(player.getTeam());
 					player.classicAtk(target);
-					System.out.println(" Joueur 1 attaque la case : " + (player.getCoord().getX() + 1) + ";"
-							+ player.getCoord().getY());
+					System.out.println(" Joueur 1 attaque la case : " + (player.getCoordinates().getX() + 1) + ";"
+							+ player.getCoordinates().getY());
 					break;
 				}
 				player.setAttackPoints(player.getAttackPoints() - 1);
@@ -229,7 +229,7 @@ public class Engine {
 					Player opponentPlayer = getPlayer(opponent.getTeam());
 					opponentPlayer.removeRobot((Robot) opponent);
 
-					myMap.Free(opponent.getCoord());
+					myMap.Free(opponent.getCoordinates());
 				}
 			}
 			System.out.println("Point de vie du joueur 2 apres attaque : " + getPlayer(Team.BLEU).getLife());
@@ -241,18 +241,18 @@ public class Engine {
 
 	public void createRobot(GUIPlayer GUIPlayer, GUI userInterface, Map map) {
 		// TODO : création d'un robot
-		Coordinates coordBase;
+		Coordinates baseCoordinates;
 		Player player;
 
 		player = GUIPlayer.getPlayer();
-		coordBase = player.getBase().getCoord();
+		baseCoordinates = player.getBase().getCoordinates();
 		try {
-			if (map.isFree(coordBase)) {
+			if (map.isFree(baseCoordinates)) {
 
 				Robot robot = new Robot(player.getBase(), myMap, userInterface,
 						Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player);
-				player.addRobot(coordBase, robot);
-				map.setEntity(coordBase, robot);
+				player.addRobot(baseCoordinates, robot);
+				map.setEntity(baseCoordinates, robot);
 				GUIPlayer.createRobot(robot, userInterface);
 			} else {
 				// TODO find the player's base nearest free cell

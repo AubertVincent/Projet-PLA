@@ -5,8 +5,8 @@ public enum Team {
 
 	private final int value;
 
-	private Team(int val) {
-		value = val;
+	private Team(int value) {
+		this.value = value;
 	}
 
 	public int toInt() {

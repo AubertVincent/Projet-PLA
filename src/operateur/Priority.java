@@ -27,12 +27,12 @@ public class Priority extends Behavior {
 	// }
 
 	@Override
-	public void execute(Robot r, _Sequence left, _Sequence right) throws NotDoableException {
+	public void execute(Robot robot, _Sequence left, _Sequence right) throws NotDoableException {
 		try {
-			left.execute(r);
+			left.execute(robot);
 		} catch (NotDoableException e) {
 			try {
-				right.execute(r);
+				right.execute(robot);
 			} catch (NotDoableException e2) {
 				throw new NotDoableException("Action impossible");
 			}

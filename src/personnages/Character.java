@@ -75,9 +75,9 @@ public abstract class Character extends Entity {
 	 * @throws Exception
 	 */
 
-	public Character(Coordinates coord, Map entityMap, Base base) throws Exception {
+	public Character(Coordinates coordinates, Map entityMap, Base base) throws Exception {
 
-		super(coord, entityMap);
+		super(coordinates, entityMap);
 		if (this instanceof Player) {
 
 			this.direction = Direction.SOUTH;
@@ -254,16 +254,16 @@ public abstract class Character extends Entity {
 
 		switch (direction) {
 		case NORTH:
-			coord.setY(coord.getY() + lg);
+			coordinates.setY(coordinates.getY() + lg);
 			break;
 		case SOUTH:
-			coord.setY(coord.getY() - lg);
+			coordinates.setY(coordinates.getY() - lg);
 			break;
 		case EAST:
-			coord.setX(coord.getX() + lg);
+			coordinates.setX(coordinates.getX() + lg);
 			break;
 		case WEST:
-			coord.setX(coord.getX() - lg);
+			coordinates.setX(coordinates.getX() - lg);
 			break;
 		}
 	}
@@ -313,44 +313,45 @@ public abstract class Character extends Entity {
 		}
 	}
 
-	public void kill(Robot rob) {
-		for (Class<? extends Action> act : rob.getActionsList()) {
-			rob.getEntityMap().getCell(rob.getCoord())
-					.setEntity(actionToPickAble(act, rob.getCoord(), rob.getEntityMap()));
+	protected abstract void die();
+
+	public void kill(Robot robot) {
+		for (Class<? extends Action> act : robot.getActionsList()) {
+			robot.getEntityMap().getCell(robot.getCoordinates())
+					.setEntity(actionToPickAble(act, robot.getCoordinates(), robot.getEntityMap()));
 		}
-		rob.delete();
-		rob = null;
+		robot.setState(State.Dying);
 	}
 
-	private PickAble actionToPickAble(Class<? extends Action> act, Coordinates coordRobot, Map pickableMap) {
-		PickAble picka;
-		Coordinates coordPicka = new Coordinates(coordRobot);
+	private PickAble actionToPickAble(Class<? extends Action> act, Coordinates coordinatesRobot, Map pickableMap) {
+		PickAble pickAble;
+		Coordinates pickAbleCoordinates = new Coordinates(coordinatesRobot);
 		if (act.getClass().equals(ClassicAck.class)) {
-			picka = new PickClassicAck(coordPicka, pickableMap);
+			pickAble = new PickClassicAck(pickAbleCoordinates, pickableMap);
 		} else if (act.getClass().equals(MoveDir.class)) {
-			picka = new PickMoveDir(coordPicka, pickableMap);
+			pickAble = new PickMoveDir(pickAbleCoordinates, pickableMap);
 		} else if (act.getClass().equals(PickUp.class)) {
-			picka = new PickPickUp(coordPicka, pickableMap);
+			pickAble = new PickPickUp(pickAbleCoordinates, pickableMap);
 		} else if (act.getClass().equals(Priority.class)) {
-			picka = new PickPriority(coordPicka, pickableMap);
+			pickAble = new PickPriority(pickAbleCoordinates, pickableMap);
 		} else if (act.getClass().equals(RandomBar.class)) {
-			picka = new PickRandomBar(coordPicka, pickableMap);
+			pickAble = new PickRandomBar(pickAbleCoordinates, pickableMap);
 		} else if (act.getClass().equals(Recall.class)) {
-			picka = new PickRecall(coordPicka, pickableMap);
+			pickAble = new PickRecall(pickAbleCoordinates, pickableMap);
 		} else if (act.getClass().equals(Succession.class)) {
-			picka = new PickSuccession(coordPicka, pickableMap);
+			pickAble = new PickSuccession(pickAbleCoordinates, pickableMap);
 		} else if (act.getClass().equals(SuicideBomber.class)) {
-			picka = new PickSuicideBomber(coordPicka, pickableMap);
+			pickAble = new PickSuicideBomber(pickAbleCoordinates, pickableMap);
 		} else if (act.getClass().equals(Tunnel.class)) {
-			picka = new PickTunnel(coordPicka, pickableMap);
+			pickAble = new PickTunnel(pickAbleCoordinates, pickableMap);
 		} else {
-			picka = null;
+			pickAble = null;
 		}
-		return picka;
+		return pickAble;
 	}
 
 	public void kill(Player joueur) {
-
+		throw new Exception("NYI");
 	}
 
 	/**
@@ -358,11 +359,11 @@ public abstract class Character extends Entity {
 	 * 
 	 * @param e
 	 *            the entity
-	 * @param coord
+	 * @param coordinates
 	 *            coordinates on the map
 	 */
-	public void teleport(Coordinates coord) {
-		this.coord = coord;
+	public void teleport(Coordinates coordinates) {
+		this.coordinates = coordinates;
 	}
 
 	/**
@@ -394,9 +395,9 @@ public abstract class Character extends Entity {
 	// }
 	// }
 
-	public void placePickAble(Coordinates coord, Class<PickAble> picked, Map map) {
+	public void placePickAble(Coordinates coordinates, Class<PickAble> picked, Map map) {
 		try {
-			map.getCell(coord).setEntity(picked.newInstance());
+			map.getCell(coordinates).setEntity(picked.newInstance());
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {

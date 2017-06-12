@@ -8,7 +8,7 @@ public class Tunnel extends Movement {
 
 	protected Integer x;
 	protected Integer y;
-	private Coordinates lastCoord;
+	private Coordinates lastCoordinates;
 
 	/**
 	 * set a new Tunnel by means of its arrival coordinates
@@ -18,10 +18,10 @@ public class Tunnel extends Movement {
 	 * @param y
 	 *            y coordinate on the map
 	 */
-	public Tunnel(Coordinates coord) {
+	public Tunnel(Coordinates coordinates) {
 		super();
-		this.x = coord.getX();
-		this.y = coord.getY();
+		this.x = coordinates.getX();
+		this.y = coordinates.getY();
 	}
 
 	public Tunnel() {
@@ -47,14 +47,14 @@ public class Tunnel extends Movement {
 		if (!isDoable(r)) {
 			throw new NotDoableException("La case d'arrivée est occupée");
 		}
-		this.lastCoord.setX(x);
-		this.lastCoord.setY(y);
-		r.teleport(lastCoord);
+		this.lastCoordinates.setX(x);
+		this.lastCoordinates.setY(y);
+		r.teleport(lastCoordinates);
 	}
 
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
-		r.teleport(lastCoord);
+		r.teleport(lastCoordinates);
 	}
 
 	@Override

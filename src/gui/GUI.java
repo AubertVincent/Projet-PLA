@@ -93,15 +93,15 @@ public class GUI extends BasicGame {
 	}
 
 	@Override
-	public void render(GameContainer container, Graphics g) throws SlickException {
+	public void render(GameContainer container, Graphics graphics) throws SlickException {
 		map.render(0, 0, 3);
 		map.render(0, 0, 0);
 		map.render(0, 0, 1);
 		map.render(0, 0, 2);
 		for (GUIPlayer p : this.guiPlayerList) {
-			p.render(g);
+			p.render(graphics);
 			for (GUIRobot r : p.getGuiRobotList()) {
-				r.render(g);
+				r.render(graphics);
 			}
 		}
 
@@ -109,7 +109,7 @@ public class GUI extends BasicGame {
 		map.render(0, 0, 5);
 
 		if (behaviorInputNeeded) {
-			this.inputTextField.render(container, g);
+			this.inputTextField.render(container, graphics);
 		}
 	}
 
@@ -142,11 +142,11 @@ public class GUI extends BasicGame {
 	 *            y coordinate of the cell
 	 * @return
 	 */
-	public boolean isObstacle(Coordinates coord) {
+	public boolean isObstacle(Coordinates coordinates) {
 		// int tileW = map.getTileWidth();
 		// int tileH = map.getTileHeight();
 		int logicLayer = map.getLayerIndex("obstacles");
-		Image tile = map.getTileImage(coord.getX(), coord.getY(), logicLayer);
+		Image tile = map.getTileImage(coordinates.getX(), coordinates.getY(), logicLayer);
 		boolean collision = tile != null;
 		return collision;
 	}
@@ -165,13 +165,13 @@ public class GUI extends BasicGame {
 
 	}
 
-	private GUICharacter getGUICharactereFromMouse(Coordinates coord) throws NotDoableException {
+	private GUICharacter getGUICharactereFromMouse(Coordinates coordinates) throws NotDoableException {
 		for (GUIPlayer p : guiPlayerList) {
-			if (p.getCurrentCoord() == coord) {
+			if (p.getCurrentCoord() == coordinates) {
 				return p;
 			}
 			for (GUIRobot r : p.getGuiRobotList()) {
-				if (r.getCurrentCoord() == coord) {
+				if (r.getCurrentCoord() == coordinates) {
 					return r;
 				}
 			}
@@ -187,14 +187,14 @@ public class GUI extends BasicGame {
 	public void mousePressed(int button, int x, int y) {
 		int mouseXCell = pixelToCellX(x);
 		int mouseYCell = pixelToCellY(y);
-		Coordinates mouseCoordCell = new Coordinates(mouseXCell, mouseYCell);
+		Coordinates mouseCoordinatesCell = new Coordinates(mouseXCell, mouseYCell);
 		GUICharacter guiPerso;
 		try {
-			guiPerso = getGUICharactereFromMouse(mouseCoordCell);
+			guiPerso = getGUICharactereFromMouse(mouseCoordinatesCell);
 			System.out.println("LeftClick on (" + mouseXCell + ", " + mouseYCell + ")");
 			if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
 
-				guiPerso = getGUICharactereFromMouse(mouseCoordCell);
+				guiPerso = getGUICharactereFromMouse(mouseCoordinatesCell);
 				guiPerso.behaviorModif(this, engine);
 
 			}

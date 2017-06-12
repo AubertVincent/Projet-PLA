@@ -21,18 +21,18 @@ public class Robot extends Character {
 
 	protected _Sequence myAutomaton;
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
-	private GUIRobot guiRobot;
+	private GUIRobot mySelfGUI;
 
 	private Player player;
 
 	public Robot(Base base, Map entityMap, GUI userInterface, _Sequence myAutomaton, Player player) throws Exception {
-		super(base.getCoord(), entityMap, base);
+		super(base.getCoordinates(), entityMap, base);
 		this.myAutomaton = myAutomaton;
-		this.guiRobot = new GUIRobot(userInterface, base.getCoord(), Direction.SOUTH, 100, base.getBaseTeam(), this,
+		this.mySelfGUI = new GUIRobot(userInterface, base.getCoordinates(), Direction.SOUTH, 100, base.getBaseTeam(), this,
 				player.getGUIPlayer());
 		this.player = player;
-		this.player.addRobot(new Coordinates(base.getCoord()), this);
-		this.player.getGUIPlayer().addGUIRobot(this.guiRobot);
+		this.player.addRobot(new Coordinates(base.getCoordinates()), this);
+		this.player.getGUIPlayer().addGUIRobot(this.mySelfGUI);
 
 	}
 
@@ -71,7 +71,7 @@ public class Robot extends Character {
 	}
 
 	public GUIRobot getGUIRobot() {
-		return this.guiRobot;
+		return this.mySelfGUI;
 	}
 
 	/**
@@ -85,8 +85,8 @@ public class Robot extends Character {
 	 * Suicide a robot and kill the robots around it
 	 */
 	public void suicideBomber() {
-		int x = this.getCoord().getX();
-		int y = this.getCoord().getY();
+		int x = this.getCoordinates().getX();
+		int y = this.getCoordinates().getY();
 		List<Entity> northEntityList = this.getEntityMap().getListEntity(x, y - 1);
 		List<Entity> southEntityList = this.getEntityMap().getListEntity(x, y + 1);
 		List<Entity> westEntityList = this.getEntityMap().getListEntity(x - 1, y);
@@ -140,8 +140,8 @@ public class Robot extends Character {
 	}
 
 	public void cancelSuicideBomber() {
-		int x = this.getCoord().getX();
-		int y = this.getCoord().getY();
+		int x = this.getCoordinates().getX();
+		int y = this.getCoordinates().getY();
 		List<Entity> northEntityList = this.getEntityMap().getListEntity(x, y - 1);
 		List<Entity> southEntityList = this.getEntityMap().getListEntity(x, y + 1);
 		List<Entity> westEntityList = this.getEntityMap().getListEntity(x - 1, y);
@@ -197,24 +197,23 @@ public class Robot extends Character {
 	}
 
 	// Used to remove a entirely robot
-	public void delete() {
+	public void die() {
 		// throw new Exception("NYI");
 		// TODO check every reference to the current robot and delete it
 		player.getListRobot().remove(this);
-
-		// There's also the corresponding GUIRObot
-		this.getGUIRobot().delete();
+		this.getEntityMap().getCell(this.getCoordinates()).getListEntity().remove(this);
 		player.getGUIPlayer().removeGUIRobot(this.getGUIRobot());
+		this.mySelfGUI = null;
 
 	}
 
-	public void setCoord(Coordinates coord) {
-		this.getEntityMap().moveRobot(this, coord);
-		super.setCoord(coord);
+	public void setCoordinates(Coordinates coordinates) {
+		this.getEntityMap().moveRobot(this, coordinates);
+		super.setCoordinates(coordinates);
 	}
 
-	public Coordinates getCoord() {
-		return super.getCoord();
+	public Coordinates getCoordinates() {
+		return super.getCoordinates();
 	}
 
 }

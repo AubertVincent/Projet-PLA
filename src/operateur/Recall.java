@@ -9,7 +9,7 @@ import personnages.Robot;
 public class Recall extends Movement {
 
 	protected Integer time;
-	private Coordinates lastCoord;
+	private Coordinates lastCoordinates;
 	// private int lastY;
 
 	/**
@@ -47,10 +47,10 @@ public class Recall extends Movement {
 		// int time = r.getRecall();;
 		// if (r.getRecall() == 0) {
 		Base base = r.getBase();
-		Coordinates baseCoord = base.getCoord();
+		Coordinates baseCoordinates = base.getCoordinates();
 		if (this.isDoable(r)) {
-			this.lastCoord = r.getCoord();
-			r.teleport(baseCoord);
+			this.lastCoordinates = r.getCoordinates();
+			r.teleport(baseCoordinates);
 		}
 		// r.setRecall(time--);
 	}
@@ -58,7 +58,7 @@ public class Recall extends Movement {
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
 		// teleport le robot à la position avant le recall
-		r.teleport(this.lastCoord);
+		r.teleport(this.lastCoordinates);
 		// r.cancelRecall();
 	}
 

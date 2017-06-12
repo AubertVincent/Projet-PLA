@@ -5,8 +5,8 @@ import carte.Map;
 
 public class PickPriority extends PickAble {
 
-	public PickPriority(Coordinates coord, Map entityMap) {
-		super(coord, entityMap);
+	public PickPriority(Coordinates coordinates, Map entityMap) {
+		super(coordinates, entityMap);
 	}
 
 }

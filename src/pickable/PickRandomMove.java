@@ -5,8 +5,8 @@ import carte.Map;
 
 public class PickRandomMove extends PickAble {
 
-	public PickRandomMove(Coordinates coord, Map entityMap) {
-		super(coord, entityMap);
+	public PickRandomMove(Coordinates coordinates, Map entityMap) {
+		super(coordinates, entityMap);
 	}
 
 }

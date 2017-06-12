@@ -6,8 +6,8 @@ public enum Direction {
 
 	private final int value;
 
-	private Direction(int val) {
-		value = val;
+	private Direction(int value) {
+		this.value = value;
 	}
 
 	public int toInt() {

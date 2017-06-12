@@ -60,9 +60,9 @@ public class Player extends Character {
 	}
 
 	public Player(Base base, carte.Map entityMap, GUI userInterface) throws Exception {
-		super(base.getCoord(), entityMap, base);
+		super(base.getCoordinates(), entityMap, base);
 		try {
-			GUIPlayer GUIPlayer = new GUIPlayer(userInterface, base.getCoord(), Direction.SOUTH, 100,
+			GUIPlayer GUIPlayer = new GUIPlayer(userInterface, base.getCoordinates(), Direction.SOUTH, 100,
 					base.getBaseTeam(), this);
 
 			this.guiPlayer = GUIPlayer;
@@ -104,14 +104,6 @@ public class Player extends Character {
 		return false;
 	}
 
-	public void setCoord(Coordinates coord) {
-		super.setCoord(coord);
-	}
-
-	public Coordinates getCoord() {
-		return super.getCoord();
-	}
-
 	public GUIPlayer getGUIPlayer() {
 		return this.guiPlayer;
 	}
@@ -137,8 +129,15 @@ public class Player extends Character {
 		return false;
 	}
 
-	public void movePlayer(Coordinates newCoord) {
-		this.getEntityMap().movePlayer(this, newCoord);
+	public void movePlayer(Coordinates newCoordinates) {
+		this.getEntityMap().movePlayer(this, newCoordinates);
+
+	}
+
+	@Override
+	protected void die() {
+		throw new Exception("NYI");
+		// TODO Auto-generated method stub
 
 	}
 

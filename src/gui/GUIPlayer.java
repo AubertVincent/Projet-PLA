@@ -51,9 +51,9 @@ public class GUIPlayer extends GUICharacter {
 	// TODO : bound to be dynamic when something is picked
 	List<Class<? extends operateur.Action>> animationsList = new LinkedList<Class<? extends operateur.Action>>();
 
-	public GUIPlayer(GUI userInterface, Coordinates coord, Direction dir, int animationDuration, Team team,
+	public GUIPlayer(GUI userInterface, Coordinates coordinates, Direction dir, int animationDuration, Team team,
 			Player player) throws SlickException, Exception {
-		super(userInterface, coord, dir, animationDuration, team);
+		super(userInterface, coordinates, dir, animationDuration, team);
 
 		guiRobotlist = new ArrayList<GUIRobot>();
 		animationsList.add(ClassicAck.class);
@@ -76,7 +76,7 @@ public class GUIPlayer extends GUICharacter {
 	public void createRobot(Robot robot, GUI userinterface) throws
 	 SlickException {
 	 try {
-		 GUIRobot tmp = new GUIRobot(userinterface, robot.getCoord(),
+		 GUIRobot tmp = new GUIRobot(userinterface, robot.getCoordinates(),
 				 Direction.SOUTH, 100, robot.getTeam(), robot, this);
 	 	}
 	 }

@@ -5,8 +5,8 @@ import carte.Map;
 
 public class PickMoveDir extends PickAble {
 
-	public PickMoveDir(Coordinates coord, Map entityMap) {
-		super(coord, entityMap);
+	public PickMoveDir(Coordinates coordinates, Map entityMap) {
+		super(coordinates, entityMap);
 	}
 
 }
