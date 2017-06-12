@@ -358,16 +358,4 @@ public class Engine {
 		// TODO : executer pour tout les robots des deux persoannges, ne pas
 		// oublier le render a chaque mouvement afin d'éviter téléportation
 	}
-
-	/**
-	 * Is called right when mouse is pressed
-	 * 
-	 * @param button
-	 *            The index of the button (Input.'index')
-	 * @param mouseXCell
-	 *            X coordinate of the clicked tile
-	 * @param mouseYCell
-	 *            Y coordinate of the clicked tile
-	 */
-
 }

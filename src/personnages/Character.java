@@ -12,7 +12,6 @@ import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUICharacter;
-import operateur.Action;
 import pickable.PickAble;
 
 public abstract class Character extends Entity {
@@ -29,10 +28,11 @@ public abstract class Character extends Entity {
 	protected int recall;
 	protected int player;
 
-	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
+	protected static List<Class<?>> possibleActionsList = new LinkedList<Class<?>>();
 	protected Team team;
 	protected Base base;
 	private GUICharacter GUICharactere;
+	private State state;
 
 	/**
 	 * Set a new character
@@ -309,6 +309,14 @@ public abstract class Character extends Entity {
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
 	}
 
 	// public void cancelPickUp() throws NotDoableException {

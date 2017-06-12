@@ -10,13 +10,24 @@ import entite.Entity;
 import entite.Team;
 import exceptions.NotDoableException;
 import gui.GUICharacter;
-import operateur.Action;
-import operateur.ClassicAck;
-import operateur.MoveDir;
 import sequence._Sequence;
 import util.Pair;
 
 public class Robot extends Character {
+
+	static {
+		// Move-like animations
+		possibleActionsList.add(operateur.MoveDir.class);
+		possibleActionsList.add(operateur.RandomMove.class);
+
+		// Teleport-like animations
+		possibleActionsList.add(operateur.Recall.class);
+		possibleActionsList.add(operateur.Tunnel.class);
+		possibleActionsList.add(operateur.SuicideBomber.class);
+
+		// ClassicAttack-like animations
+		possibleActionsList.add(operateur.ClassicAck.class);
+	}
 
 	protected _Sequence myAutomaton;
 	protected Player player;
@@ -42,14 +53,7 @@ public class Robot extends Character {
 		this.player = player;
 	}
 
-	static {
-		possibleActionsList.add(ClassicAck.class);
-		possibleActionsList.add(MoveDir.class);
-		// possibleActionsList.add(Tunnel.class);
-		// possibleActionsList.add(Recall.class);
-	}
-
-	public static List<Class<? extends Action>> getPossibleActionsList() {
+	public static List<Class<?>> getPossibleActionsList() {
 		return possibleActionsList;
 	}
 

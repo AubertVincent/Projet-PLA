@@ -2,43 +2,17 @@ package personnages;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import pickable.PickAble;
-import pickable.PickClassicAck;
-import pickable.PickMoveDir;
-import pickable.PickPickUp;
-import pickable.PickPriority;
-import pickable.PickRandomBar;
-import pickable.PickRandomMove;
-import pickable.PickRecall;
-import pickable.PickSuccession;
-import pickable.PickSuicideBomber;
-import pickable.PickTunnel;
 
 public class Besace {
 
 	private Map<Class<? extends PickAble>, Integer> besace;
 
-	public static List<Class<? extends PickAble>> possiblePickAbleList = new LinkedList<Class<? extends PickAble>>();
-	static {
-
-		possiblePickAbleList.add(PickClassicAck.class);
-		possiblePickAbleList.add(PickSuicideBomber.class);
-		possiblePickAbleList.add(PickTunnel.class);
-		possiblePickAbleList.add(PickMoveDir.class);
-		possiblePickAbleList.add(PickRecall.class);
-		possiblePickAbleList.add(PickPickUp.class);
-		possiblePickAbleList.add(PickSuccession.class);
-		possiblePickAbleList.add(PickRandomBar.class);
-		possiblePickAbleList.add(PickPriority.class);
-		possiblePickAbleList.add(PickRandomMove.class);
-	}
-
 	public void init() {
-		for (Iterator<Class<? extends PickAble>> mapIter = possiblePickAbleList.iterator(); mapIter.hasNext();) {
+		for (Iterator<Class<? extends PickAble>> mapIter = PickAble.possiblePickAbleList.iterator(); mapIter
+				.hasNext();) {
 			Class<? extends PickAble> currentClass;
 			currentClass = mapIter.next();
 			besace.put(currentClass, 0);

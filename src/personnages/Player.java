@@ -1,15 +1,11 @@
 package personnages;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import carte.Base;
 import entite.Direction;
 import entite.Team;
 import gui.GUICharacter;
-import operateur.Action;
-import operateur.ClassicAck;
-import operateur.MoveDir;
 import pickable.PickMoveDir;
 import pickable.PickRecall;
 import pickable.PickSuicideBomber;
@@ -17,15 +13,21 @@ import pickable.PickTunnel;
 
 public class Player extends Character {
 
-	public Besace besace;
-
-	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
 	static {
-		possibleActionsList.add(ClassicAck.class);
-		possibleActionsList.add(MoveDir.class);
-		// possibleActionsList.add(Tunnel.class);
-		// possibleActionsList.add(Recall.class);
+		// Move-like animations
+		possibleActionsList.add(operateur.MoveDir.class);
+		possibleActionsList.add(operateur.RandomMove.class);
+
+		// Teleport-like animations
+		possibleActionsList.add(operateur.Recall.class);
+		possibleActionsList.add(operateur.Tunnel.class);
+		possibleActionsList.add(operateur.CreateRobot.class);
+
+		// ClassicAttack-like animations
+		possibleActionsList.add(operateur.ClassicAck.class);
 	}
+
+	public Besace besace;
 
 	private RobotList robotList;
 
@@ -54,7 +56,7 @@ public class Player extends Character {
 	 *            Player's recall's time
 	 */
 
-	public static List<Class<? extends Action>> getPossibleActionsList() {
+	public static List<Class<?>> getPossibleActionsList() {
 		return possibleActionsList;
 	}
 
@@ -117,22 +119,6 @@ public class Player extends Character {
 	@Override
 	public boolean isRobot() {
 		return false;
-	}
-
-	public void setX(int x) {
-		super.setX(x);
-	}
-
-	public void setY(int y) {
-		super.setY(y);
-	}
-
-	public int getX() {
-		return super.getX();
-	}
-
-	public int getY() {
-		return super.getY();
 	}
 
 	// // Tests main

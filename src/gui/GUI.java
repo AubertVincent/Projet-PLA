@@ -1,6 +1,7 @@
 package gui;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.newdawn.slick.AppGameContainer;
@@ -13,12 +14,15 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
+import com.sun.glass.ui.Robot;
+
 import entite.Direction;
 import entite.Team;
 import exceptions.NotDoableException;
 import moteurDuJeu.Engine;
 import moteurDuJeu.PlayPhase;
 import personnages.Besace;
+import personnages.Player;
 
 public class GUI extends BasicGame {
 
@@ -64,27 +68,13 @@ public class GUI extends BasicGame {
 		this.container = container;
 		map = new TiledMap("res/map.tmx");
 
-		// try {
-		// // perso1 = new GUIPlayer(this, 2, 4, entite.Direction.SOUTH, 100,
-		// // Team.ROUGE);
-		// // guiCharactersList.add(perso1);
-		// } catch (Exception e1) {
-		// e1.printStackTrace();
-		// }
-		// try {
-		// // perso2 = new GUIPlayer(this, 31, 15, entite.Direction.SOUTH, 100,
-		// // Team.BLEU);
-		// // guiCharactersList.add(perso2);
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-
 		this.rectBesace = new GUIBesace(container, WindowHeight, WidthRect, HeightRect, cellWidth);
 
 		this.inputTextField = new GUIBehaviorInput(container, this, WindowWidth, WindowHeight, TextFieldHeight,
 				"(MC2E | (AC;(MC3W>MT8.3)))");
 
 		engine = new Engine(this);
+
 	}
 
 	public void addGUICharactere(GUIPlayer perso) {
@@ -97,11 +87,22 @@ public class GUI extends BasicGame {
 		map.render(0, 0, 0);
 		map.render(0, 0, 1);
 		map.render(0, 0, 2);
-		for (GUIPlayer p : this.guiPlayerList) {
-			p.render(g);
-			for (GUIRobot r : p.getGuiRobotList()) {
-				r.render(g);
+
+		for (Iterator<Player> itrPlayer = engine.getPlayerList().iterator(); itrPlayer.hasNext();) {
+			Player currentPlayer = itrPlayer.next();
+			GUIPlayer guiPlayer = currentPlayer.getGUIPlayer();
+			guiPlayer.render(g);
+			for (Iterator<Robot> itrRobot = currentPlayer.getRobotList().iterator(); itrRobot.hasNext();) {
+				Robot currentRobot = itrRobot.next();
+				GUIRobot guiRobot = currentRobot.getGUIRobot();
+				guiRobot.render(g);
 			}
+
+		}
+
+		for (Iterator<GUIPickAble> itr = engine.getMap().getPickAbleList().iterator(); itr.hasNext();) {
+			GUIPickAble currentPickabke = itr.next();
+			currentPickabke.render();
 		}
 
 		map.render(0, 0, 4);
