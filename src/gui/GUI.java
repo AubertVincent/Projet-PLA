@@ -18,7 +18,6 @@ import entite.Team;
 import exceptions.NotDoableException;
 import moteurDuJeu.Engine;
 import moteurDuJeu.PlayPhase;
-import personnages.Player;
 
 public class GUI extends BasicGame {
 
@@ -189,8 +188,8 @@ public class GUI extends BasicGame {
 			if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
 
 				guiPerso = getGUICharactereFromMouse(mouseXCell, mouseYCell);
-				Player player = guiPerso.getPlayer();
-				engine.setCurrentModifier(player);
+				guiPerso.behaviorModif(this, engine);
+
 			}
 		} catch (NotDoableException e) {
 			// TODO Auto-generated catch block
@@ -202,13 +201,7 @@ public class GUI extends BasicGame {
 		System.out.println("LeftClick on (" + mouseXCell + ", " + mouseYCell + ")");
 		// if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
 		//
-		// if (guiPerso.getClass().equals(GUIPlayer.class)) {
-		// behaviorInputNeeded = true;
-		// engine.createRobot((GUIPlayer) guiPerso, this, engine.getMap());
-		// } else {
-		// behaviorInputNeeded = true;
-		// engine.behaviorModif((GUIRobot) guiPerso, this, engine.getMap());
-		// }
+
 		// }
 
 		// engine.mousePressed(button, mouseXCell, mouseYCell);
@@ -371,6 +364,10 @@ public class GUI extends BasicGame {
 		} else {
 			return guiPlayerList.get(1);
 		}
+	}
+
+	public void setBehaviorInputNeeded(boolean behaviorInputNeeded) {
+		this.behaviorInputNeeded = behaviorInputNeeded;
 	}
 
 }

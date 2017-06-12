@@ -48,6 +48,16 @@ public class Cell {
 		listeEntites.clear();
 	}
 
+	public List<Entity> getPickAbleList() {
+		List<Entity> pickableList = new ArrayList<Entity>();
+		for (Entity e : listeEntites) {
+			if (e.isPickAble()) {
+				pickableList.add(e);
+			}
+		}
+		return pickableList;
+	}
+
 	public void FreeEntity() {
 		// TODO ne pas tout nettoyer
 	}

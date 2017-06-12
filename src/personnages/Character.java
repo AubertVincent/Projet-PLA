@@ -72,8 +72,8 @@ public abstract class Character extends Entity {
 			this.base = base;
 		} else if (this instanceof Robot) {
 			this.direction = Direction.SOUTH;
-			this.life = 1;
-			this.vision = 3;
+			this.life = 5;
+			this.vision = 1;
 			this.attack = 2;
 			this.range = 4;
 			this.movePoints = 5;

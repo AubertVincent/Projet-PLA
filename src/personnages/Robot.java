@@ -70,7 +70,7 @@ public class Robot extends Character {
 		this.myAutomaton = automaton;
 	}
 
-	public GUIRobot getGuiRobot() {
+	public GUIRobot getGUIRobot() {
 		return this.guiRobot;
 	}
 
@@ -194,6 +194,24 @@ public class Robot extends Character {
 
 	public void execute() throws NotDoableException {
 		myAutomaton.execute(this);
+	}
+
+	public void setX(int x) {
+		this.getEntityMap().moveRobot(this, x, this.getY());
+		super.setX(x);
+	}
+
+	public void setY(int y) {
+		this.getEntityMap().moveRobot(this, this.getX(), y);
+		super.setY(y);
+	}
+
+	public int getX() {
+		return super.getX();
+	}
+
+	public int getY() {
+		return super.getY();
 	}
 
 }

@@ -8,6 +8,8 @@ import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUI;
 import moteurDuJeu.Engine;
+import personnages.Player;
+import personnages.Robot;
 import pickable.PickAble;
 
 public class Map {
@@ -93,6 +95,10 @@ public class Map {
 
 	public List<Entity> getEntity(int x, int y) {
 		return map[x][y].getListEntity();
+	}
+
+	public List<Entity> getPickAbleList(int x, int y) {
+		return map[x][y].getPickAbleList();
 	}
 
 	// public void print() {
@@ -185,6 +191,18 @@ public class Map {
 			}
 		}
 		return allIsPickAble;
+	}
+
+	public void movePlayer(Player player, int newX, int newY) {
+		this.Free(player.getX(), player.getY());
+		this.setEntity(newX, newY, player);
+
+	}
+
+	public void moveRobot(Robot player, int newX, int newY) {
+		this.Free(player.getX(), player.getY());
+		this.setEntity(newX, newY, player);
+
 	}
 
 }

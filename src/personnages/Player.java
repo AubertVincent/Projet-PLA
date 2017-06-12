@@ -80,7 +80,7 @@ public class Player extends Character {
 	}
 
 	public void removeRobot(Robot robot) {
-		this.guiPlayer.removeGUIRobot(robot.getGuiRobot());
+		this.guiPlayer.removeGUIRobot(robot.getGUIRobot());
 		robotList.remove(robot);
 
 	}
@@ -104,10 +104,12 @@ public class Player extends Character {
 	}
 
 	public void setX(int x) {
+		this.getEntityMap().movePlayer(this, x, this.getY());
 		super.setX(x);
 	}
 
 	public void setY(int y) {
+		this.getEntityMap().movePlayer(this, this.getX(), y);
 		super.setY(y);
 	}
 
@@ -142,6 +144,11 @@ public class Player extends Character {
 	public boolean isPickAble() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public void movePlayer(int newX, int newY) {
+		this.getEntityMap().movePlayer(this, newX, newY);
+
 	}
 
 }

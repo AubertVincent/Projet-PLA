@@ -27,7 +27,7 @@ public class Engine {
 
 	private List<Player> listPlayer;
 
-	public Map myMap;
+	private Map myMap;
 
 	private PlayPhase playPhase;
 
@@ -43,8 +43,8 @@ public class Engine {
 		listPlayer = new ArrayList<Player>();
 		try {
 
-			listPlayer.add(new Player(new Base(2, 4, Team.ROUGE), myMap, userInterface));
-			listPlayer.add(new Player(new Base(31, 15, Team.BLEU), myMap, userInterface));
+			listPlayer.add(new Player(new Base(Team.ROUGE), myMap, userInterface));
+			listPlayer.add(new Player(new Base(Team.BLEU), myMap, userInterface));
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -92,7 +92,7 @@ public class Engine {
 	 * @return True is the mouvement is possible, false else
 	 */
 	// TODO : Handle with the pickup of pickable when pass on a cell
-	public boolean doMove(Direction dir, GUIPlayer perso, Map map) {
+	public boolean doMove(GUIPlayer perso, Direction dir, Map map) {
 		boolean moveSucces = false;
 		Player player = perso.getPlayer();
 		if (this.playPhase.equals(PlayPhase.playerMovement)) {
@@ -106,7 +106,7 @@ public class Engine {
 							|| map.isPickAble(player.getX(), player.getY() + 1)) {
 
 						player.setY(player.getY() + 1);
-						map.Free(player.getX(), player.getY() - 1);
+						// map.Free(player.getX(), player.getY() - 1);
 						moveSucces = true;
 					}
 					break;
@@ -115,7 +115,7 @@ public class Engine {
 					if (map.isFree(player.getX(), player.getY() - 1)
 							|| map.isPickAble(player.getX(), player.getY() - 1)) {
 						player.setY(player.getY() - 1);
-						map.Free(player.getX(), player.getY() + 1);
+						// map.Free(player.getX(), player.getY() + 1);
 						moveSucces = true;
 					}
 					break;
@@ -124,7 +124,7 @@ public class Engine {
 					if (map.isFree(player.getX() - 1, player.getY())
 							|| map.isPickAble(player.getX() - 1, player.getY())) {
 						player.setX(player.getX() - 1);
-						map.Free(player.getX() + 1, player.getY());
+						// map.Free(player.getX() + 1, player.getY());
 						moveSucces = true;
 					}
 					break;
@@ -133,7 +133,7 @@ public class Engine {
 					if (map.isFree(player.getX() + 1, player.getY())
 							|| map.isPickAble(player.getX() + 1, player.getY())) {
 						player.setX(player.getX() + 1);
-						map.Free(player.getX() - 1, player.getY());
+						// map.Free(player.getX() - 1, player.getY());
 						moveSucces = true;
 					}
 
@@ -149,19 +149,13 @@ public class Engine {
 		// Gestion of the besace
 		if (moveSucces) {
 
-			if (map.isPickAble(player.getX(), player.getY())) {
+			Besace PlayerBesace = player.getBesace();
 
-				Besace PlayerBesace = player.getBesace();
-				// System.out.println(" \n Besace Avant : \n");
-				// PlayerBesace.print();
-				for (Entity e : map.getEntity(player.getX(), player.getY())) {
-
-					PlayerBesace.add(((PickAble) e).getClass());
-				}
-				// System.out.println(" \n Besace Apres : \n");
-				// PlayerBesace.print();
+			for (Entity e : map.getPickAbleList(player.getX(), player.getY())) {
+				PlayerBesace.add(((PickAble) e).getClass());
 			}
-			map.setEntity(player.getX(), player.getY(), player);
+
+			// map.setEntity(player.getX(), player.getY(), player);
 			player.setMovePoints(player.getMovePoints() - 1);
 			setPlayPhase(0);
 		}
@@ -170,7 +164,7 @@ public class Engine {
 	}
 
 	// TODO : Handle attackpoints and death is lifepoint is 0
-	public void doAttack(Direction dir, GUIPlayer perso, Map map) throws NotDoableException {
+	public void doAttack(GUIPlayer perso, Direction dir, Map map) throws NotDoableException {
 		Cell target;
 		Player player = perso.getPlayer();
 		personnages.Character opponent = null;
