@@ -156,12 +156,4 @@ public class Besace {
 		this.clear();
 	}
 
-	/*
-	 * Return the size of this besace
-	 */
-	// FIXME : It's not a list
-	public int size() {
-		return 0;
-	}
-
 }

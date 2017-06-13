@@ -160,6 +160,17 @@ public class Cell {
 		return false;
 	}
 
+	public boolean robotHere() {
+		List<Entity> entityList = this.getListEntity();
+		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
+			Entity currentEntity = entityIterator.next();
+			if (currentEntity.isCharacter() && ((Character) currentEntity).isRobot()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	// public static void main(String[] args) {
 	// Cell ma_Cell = new Cell(4, 5);
 	// System.out.println("is free ? : " + ma_Cell.isFree());

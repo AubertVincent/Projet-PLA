@@ -1,9 +1,11 @@
 package personnages;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 import carte.Base;
+import carte.Cell;
 import carte.Coordinates;
 import carte.Map;
 import entite.Direction;
@@ -31,7 +33,7 @@ public class Robot extends Character {
 	}
 
 	protected _Sequence myAutomaton;
-	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
+	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife = new HashMap<Pair<Direction, Integer>, Pair<Robot, Integer>>();
 	private GUIRobot mySelfGUI;
 
 	private Player player;
@@ -51,6 +53,19 @@ public class Robot extends Character {
 		this.player.addRobot(new Coordinates(base.getX(), base.getY()), this);
 		this.player.getMyselfGUI().addGUIRobot(this.mySelfGUI);
 		super.setGUICharacter(this.mySelfGUI);
+	}
+
+	// For test delete when it's over
+	public Robot(Base base, Map entityMap, _Sequence myAutomaton, Player player) {
+		super(base.getX(), base.getY(), entityMap, base);
+		this.myAutomaton = myAutomaton;
+		this.player = player;
+		this.explorationMap = entityMap;
+		this.explorationMap.getCell(this.x, this.y).setExplored(true);
+
+		this.myAutomaton = myAutomaton;
+		this.player = player;
+		this.player.addRobot(new Coordinates(base.getX(), base.getY()), this);
 	}
 
 	public static List<Class<?>> getPossibleActionsList() {
@@ -106,61 +121,27 @@ public class Robot extends Character {
 	/**
 	 * Suicide a robot and kill the robots around it
 	 */
-	public void suicideBomber() {
-		int x = this.getX();
-		int y = this.getY();
-		List<Entity> northEntityList = this.entityMap.getCell(x, y - 1).getListEntity();
-		List<Entity> southEntityList = this.entityMap.getCell(x, y + 1).getListEntity();
-		List<Entity> westEntityList = this.entityMap.getCell(x - 1, y).getListEntity();
-		List<Entity> eastEntityList = this.entityMap.getCell(x + 1, y).getListEntity();
+	public void suicideBomber(List<Cell> listCell) {
 
-		// Cell testN = this.entityMap.getCell(x, y-1);
-
-		int i = 0;
-		for (Iterator<Entity> entityIterator = northEntityList.iterator(); entityIterator.hasNext();) {
-			Entity eCourant = entityIterator.next();
-			if (eCourant instanceof Robot) {
-				this.targetsLife.put(new Pair<Direction, Integer>(Direction.NORTH, i),
-						new Pair<Robot, Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
-				((Robot) eCourant).setLife(0);
-				i++;
+		for (Iterator<Cell> cellIterator = listCell.iterator(); cellIterator.hasNext();) {
+			Cell testCell = cellIterator.next();
+			List<Entity> testEntityList = testCell.getListEntity();
+			int i = 0;
+			for (Iterator<Entity> entityIterator = testEntityList.iterator(); entityIterator.hasNext();) {
+				Entity eCourant = entityIterator.next();
+				if (eCourant instanceof Robot) {
+					this.targetsLife.put(new Pair<Direction, Integer>(Direction.NORTH, i),
+							new Pair<Robot, Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
+					((Robot) eCourant).setLife(0);
+					i++;
+				}
 			}
 		}
+		this.setLife(0);
 
-		i = 0;
-		for (Iterator<Entity> entityIterator = southEntityList.iterator(); entityIterator.hasNext();) {
-			Entity eCourant = entityIterator.next();
-			if (eCourant instanceof Robot) {
-				this.targetsLife.put(new Pair<Direction, Integer>(Direction.SOUTH, i),
-						new Pair<Robot, Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
-				((Robot) eCourant).setLife(0);
-				i++;
-			}
-		}
-
-		i = 0;
-		for (Iterator<Entity> entityIterator = westEntityList.iterator(); entityIterator.hasNext();) {
-			Entity eCourant = entityIterator.next();
-			if (eCourant instanceof Robot) {
-				this.targetsLife.put(new Pair<Direction, Integer>(Direction.WEST, i),
-						new Pair<Robot, Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
-				((Robot) eCourant).setLife(0);
-				i++;
-			}
-		}
-
-		i = 0;
-		for (Iterator<Entity> entityIterator = eastEntityList.iterator(); entityIterator.hasNext();) {
-			Entity eCourant = entityIterator.next();
-			if (eCourant instanceof Robot) {
-				this.targetsLife.put(new Pair<Direction, Integer>(Direction.EAST, i),
-						new Pair<Robot, Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
-				((Robot) eCourant).setLife(0);
-				i++;
-			}
-		}
 	}
 
+	// TODO Update or delete if not needed
 	public void cancelSuicideBomber() {
 		int x = this.getX();
 		int y = this.getY();

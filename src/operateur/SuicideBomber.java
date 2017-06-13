@@ -1,5 +1,9 @@
 package operateur;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import carte.Cell;
 import carte.Map;
 import exceptions.NotDoableException;
 import personnages.Robot;
@@ -17,18 +21,20 @@ public class SuicideBomber extends Attack {
 		// (North, South, Est, West)
 		int x = r.getX();
 		int y = r.getY();
-		Map m = r.getEntityMap();
+		Map myMap = r.getEntityMap();
 
-		if (x < r.getEntityMap().mapWidth() && m.getCell(x + 1, y).opponentHere(r.getTeam())) {
+		if (x + 1 < r.getEntityMap().mapWidth() && myMap.getCell(x + 1, y).robotHere()
+				&& myMap.getCell(x + 1, y).opponentHere(r.getTeam())) {
 			return true;
 		}
-		if (x > 0 && m.getCell(x - 1, y).opponentHere(r.getTeam())) {
+		if (x - 1 >= 0 && myMap.getCell(x - 1, y).robotHere() && myMap.getCell(x - 1, y).opponentHere(r.getTeam())) {
 			return true;
 		}
-		if (y > 0 && m.getCell(x, y - 1).opponentHere(r.getTeam())) {
+		if (y - 1 >= 0 && myMap.getCell(x, y - 1).robotHere() && myMap.getCell(x, y - 1).opponentHere(r.getTeam())) {
 			return true;
 		}
-		if (y < r.getEntityMap().mapHeight() && m.getCell(x, y + 1).opponentHere(r.getTeam())) {
+		if (y + 1 < r.getEntityMap().mapHeight() && myMap.getCell(x, y + 1).robotHere()
+				&& myMap.getCell(x, y + 1).opponentHere(r.getTeam())) {
 			return true;
 		}
 		return false;
@@ -42,7 +48,25 @@ public class SuicideBomber extends Attack {
 		if (!isDoable(r)) {
 			throw new NotDoableException("Il n'y a personne à tuer");
 		} else {
-			r.suicideBomber();
+			List<Cell> targets = new ArrayList<Cell>();
+			int x = r.getX();
+			int y = r.getY();
+			Map myMap = r.getEntityMap();
+
+			if (x + 1 < r.getEntityMap().mapWidth() && myMap.getCell(x + 1, y).robotHere()) {
+				targets.add(myMap.getCell(x + 1, y));
+			}
+			if (x - 1 >= 0 && myMap.getCell(x - 1, y).robotHere()) {
+				targets.add(myMap.getCell(x - 1, y));
+			}
+			if (y - 1 >= 0 && myMap.getCell(x, y - 1).robotHere()) {
+				targets.add(myMap.getCell(x, y - 1));
+			}
+			if (y + 1 < r.getEntityMap().mapHeight() && myMap.getCell(x, y + 1).robotHere()) {
+				targets.add(myMap.getCell(x, y + 1));
+			}
+
+			r.suicideBomber(targets);
 			this.lastLife = r.getLife();
 		}
 	}
@@ -66,6 +90,5 @@ public class SuicideBomber extends Attack {
 	public String toString() {
 		return "AS";
 	}
-
 
 }
