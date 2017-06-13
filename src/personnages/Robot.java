@@ -25,15 +25,9 @@ public class Robot extends Character {
 		possibleActionsList.add(operateur.Recall.class);
 		possibleActionsList.add(operateur.Tunnel.class);
 		possibleActionsList.add(operateur.SuicideBomber.class);
-
-<<<<<<< HEAD
 		// ClassicAttack-like animations
 		possibleActionsList.add(operateur.ClassicAck.class);
-=======
-		this.myAutomaton = myAutomaton;
-		this.explorationMap = entityMap;
-		this.explorationMap.getCell(this.x, this.y).setExplored(true);
->>>>>>> automate_dev
+
 	}
 
 	protected _Sequence myAutomaton;
@@ -49,18 +43,6 @@ public class Robot extends Character {
 		this.player = player;
 		this.explorationMap = entityMap;
 		this.explorationMap.getCell(this.x, this.y).setExplored(true);
-
-		// // For test, delete when test is over
-		// public Robot(int x, int y, Map entityMap, Besace besace, Direction
-		// direction, int life, int vision, int attack,
-		// int range, int movePoints, int recall, Team team, int attackPoints,
-		// Base base, _Sequence myAutomaton) {
-		// super(x, y, entityMap, besace, direction, life, vision, attack,
-		// range, movePoints, recall, team, attackPoints,
-		// base);
-		//
-		// this.myAutomaton = myAutomaton;
-		// }
 
 		this.myAutomaton = myAutomaton;
 		this.mySelfGUI = new GUIRobot(userInterface, base.getX(), base.getY(), Direction.SOUTH, 100, base.getBaseTeam(),
