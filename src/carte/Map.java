@@ -98,7 +98,7 @@ public class Map {
 	// }
 
 	public void moveCharacter(Character character, int newX, int newY) {
-		this.getCell(character.getX(), character.getY()).isFree();
+		this.getCell(character.getX(), character.getY()).FreeCell();
 		this.getCell(newX, newY).setEntity(character);
 	}
 

@@ -60,25 +60,23 @@ public class Test {
 		Tunnel t = new Tunnel(5, 9);
 		Explore explore = new Explore();
 		SuicideBomber bomb = new SuicideBomber();
-		int xRobot1 = 0;
-		int yRobot1 = 0;
+		int xRobot1 = 20;
+		int yRobot1 = 10;
 		int xRobot2 = 10;
 		int yRobot2 = 11;
 		int xRobot3 = 0;
 		int yRobot3 = 1;
 		// int xRobot4 = 10;
 		// int yRobot4 = 10;
-=
 
 		_Sequence sequence = new Tree(random, explore, explore);
-		_Sequence sequence2 = new Tree(random, m1, m1);
+		_Sequence sequence2 = new Tree(random, rm1, rm1);
 		// _Sequence sequence2 = new Tree(b, ack, ack);
 		Player playerRouge = new Player(new Base(Team.ROUGE), my_map);
 		Player playerBleu = new Player(new Base(Team.BLEU), my_map);
 		Robot robot1 = new Robot(new Base(Team.ROUGE), my_map, sequence, playerBleu);
 		Robot robot2 = new Robot(new Base(Team.ROUGE), my_map, sequence2, playerBleu);
 		Robot robot3 = new Robot(new Base(Team.BLEU), my_map, sequence2, playerBleu);
-
 
 		// 10, 9, my_map, new Besace(), Direction.SOUTH, 10, 1, 1, 1, 1, 1, 1,
 		// Team.ROUGE,1, new Base(21, 8, Team.ROUGE)
@@ -101,12 +99,8 @@ public class Test {
 		// my_map.getCell(0, 1).setEntity(new Obstacle(0, 1, my_map));
 		// my_map.getCell(33, 5).setEntity(new Obstacle(5, 13, my_map));
 		// my_map.getCell(33, 7).setEntity(new Obstacle(5, 13, my_map));
-<<<<<<< HEAD
 		my_map.setEntity(new Obstacle(11, 10, my_map));
 		listRobot.add(robot1);// new Robot(2, 4, ma_map, new Besace(),
-=======
-		// listRobot.add(robot1);// new Robot(2, 4, ma_map, new Besace(),
->>>>>>> automate_dev
 		// listRobot.add(robot2); // Direction.SOUTH, 1, 1, 1, 1, 10, 1, 1,
 		// Team.ROUGE,
 
@@ -126,6 +120,7 @@ public class Test {
 			// System.out.println("Avant life R4: " + robot4.getLife());
 			try {
 				sequence.execute(robot1);
+				robot1.setMovePoints(5);
 				// sequence.execute(robot);
 			} catch (NotDoableException e) {
 				System.out.println("\"ERROR\"");
