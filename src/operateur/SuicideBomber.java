@@ -12,7 +12,8 @@ import pickable.PickSuicideBomber;
 
 public class SuicideBomber extends Attack {
 
-	private int lastLife; // Life of the robot before it suicides
+	// Life of the robot before it suicides
+	private int lastLife;
 
 	@Override
 	public boolean isDoable(Robot r) {
@@ -49,11 +50,12 @@ public class SuicideBomber extends Attack {
 		if (!isDoable(r)) {
 			throw new NotDoableException("Il n'y a personne à tuer");
 		} else {
+			// The list in which the targets will be put
 			List<Cell> targets = new ArrayList<Cell>();
 			int x = r.getX();
 			int y = r.getY();
 			Map myMap = r.getEntityMap();
-
+			// if there is a robot on the cell, the cell is put in the list
 			if (x + 1 < r.getEntityMap().mapWidth() && myMap.getCell(x + 1, y).robotHere()) {
 				targets.add(myMap.getCell(x + 1, y));
 			}
@@ -67,9 +69,9 @@ public class SuicideBomber extends Attack {
 
 				targets.add(myMap.getCell(x, y + 1));
 			}
-
 			r.suicideBomber(targets);
-			this.lastLife = r.getLife();
+			// implemented in order to cancel
+			// this.lastLife = r.getLife();
 		}
 	}
 

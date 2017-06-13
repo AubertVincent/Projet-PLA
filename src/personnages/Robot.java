@@ -122,13 +122,17 @@ public class Robot extends Character {
 	 * Suicide a robot and kill the robots around it
 	 */
 	public void suicideBomber(List<Cell> listCell) {
-
+		// Run through the list of targets
 		for (Iterator<Cell> cellIterator = listCell.iterator(); cellIterator.hasNext();) {
 			Cell testCell = cellIterator.next();
+			// The list in which are all the entities present on the cell
+			// targeted
 			List<Entity> testEntityList = testCell.getListEntity();
 			// int i = 0;
+			// Run through the list of entities
 			for (Iterator<Entity> entityIterator = testEntityList.iterator(); entityIterator.hasNext();) {
 				Entity eCourant = entityIterator.next();
+				// If the entity is a robot, kill it
 				if (eCourant instanceof Robot) {
 					// this.targetsLife.put(new Pair<Direction,
 					// Integer>(Direction.NORTH, i),
@@ -139,6 +143,7 @@ public class Robot extends Character {
 				}
 			}
 		}
+		// Suicide the robot which is executing SuicideBomber
 		this.setLife(0);
 
 	}
