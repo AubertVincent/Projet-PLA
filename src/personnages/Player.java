@@ -62,6 +62,14 @@ public class Player extends Character {
 		robotList = new RobotList();
 	}
 
+	// For test delete when it's over
+	public Player(int x, int y, carte.Map entityMap, Besace besace, Direction direction, int life, int vision,
+			int attack, int range, int movePoints, int recall, int attackPoints, Team team, Base base) {
+		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
+				base);
+		robotList = new RobotList();
+	}
+
 	public void addRobot(Object obj, Robot robot) {
 		robotList.add(obj, robot);
 	}

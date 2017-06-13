@@ -19,13 +19,6 @@ public class Map {
 		}
 	}
 
-	// Used for test delete when it's over
-	// public void init(Test test) {
-	// map[5][10].setEntity(test.getRobot(Team.ROUGE));
-	// map[5][11].setEntity(test.getRobot(Team.BLEU));
-	// map[5][12].setEntity(new Obstacle(5, 5, this));
-	// }
-
 	public void init(GUI userInterface, Engine engine) {
 		map[engine.getPlayer(Team.ROUGE).getX()][engine.getPlayer(Team.ROUGE).getY()]
 				.setEntity(engine.getPlayer(Team.ROUGE));
