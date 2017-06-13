@@ -95,31 +95,23 @@ public class ClassicAck extends Attack {
 			Map myMap = r.getEntityMap();
 
 			Direction d;
-			Cell testEast = myMap.getCell(x + 1, y);
-			Cell testSouth = myMap.getCell(x, y + 1);
-			Cell testNorth = myMap.getCell(x, y - 1);
-			Cell testWest = myMap.getCell(x - 1, y);
 			Cell target = null;
-			boolean opponentNorth = testNorth.opponentHere(team);
-			boolean opponentSouth = testSouth.opponentHere(team);
-			boolean opponentEast = testEast.opponentHere(team);
-			boolean opponentWest = testWest.opponentHere(team);
-			if (opponentEast) {
+			if (x + 1 < myMap.mapWidth() && myMap.getCell(x + 1, y).opponentHere(team)) {
 				d = Direction.EAST;
 				r.setDirection(d);
-				target = testEast;
-			} else if (opponentNorth) {
+				target = myMap.getCell(x + 1, y);
+			} else if (y - 1 >= 0 && myMap.getCell(x, y - 1).opponentHere(team)) {
 				d = Direction.NORTH;
 				r.setDirection(d);
-				target = testNorth;
-			} else if (opponentWest) {
+				target = myMap.getCell(x, y - 1);
+			} else if (x - 1 >= 0 && myMap.getCell(x - 1, y).opponentHere(team)) {
 				d = Direction.WEST;
 				r.setDirection(d);
-				target = testWest;
-			} else if (opponentSouth) {
+				target = myMap.getCell(x - 1, y);
+			} else if (y + 1 < myMap.mapWidth() && myMap.getCell(x, y + 1).opponentHere(team)) {
 				d = Direction.SOUTH;
 				r.setDirection(d);
-				target = testSouth;
+				target = myMap.getCell(x, y + 1);
 			}
 			r.classicAtk(target);
 
