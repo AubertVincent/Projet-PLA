@@ -354,7 +354,12 @@ public abstract class Character extends Entity {
 	}
 
 	private void dropPickables() {
-		// TODO Auto-generated method stub
+		for (Iterator<Action> iterator = this.getActionList().iterator(); iterator.hasNext();) {
+			Action currentAction = iterator.next();
+			this.getMap().setEntity(this.getX(), this.getY(),
+					actionToPickAble(currentAction, this.getX(), this.getY(), this.getMap()));
+			actionList.remove(currentAction);
+		}
 
 	}
 
