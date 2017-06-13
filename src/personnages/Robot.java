@@ -25,9 +25,9 @@ public class Robot extends Character {
 		possibleActionsList.add(operateur.Recall.class);
 		possibleActionsList.add(operateur.Tunnel.class);
 		possibleActionsList.add(operateur.SuicideBomber.class);
+
 		// ClassicAttack-like animations
 		possibleActionsList.add(operateur.ClassicAck.class);
-
 	}
 
 	protected _Sequence myAutomaton;
