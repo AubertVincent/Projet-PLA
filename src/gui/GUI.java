@@ -88,6 +88,12 @@ public class GUI extends BasicGame {
 		map.render(0, 0, 1);
 		map.render(0, 0, 2);
 
+		for (Iterator<PickAble> itr = engine.getMap().getPickAbleList().iterator(); itr.hasNext();) {
+			PickAble currentPickable = itr.next();
+
+			currentPickable.getGUIPickAble().render();
+		}
+
 		for (Iterator<Player> itrPlayer = engine.getPlayerList().iterator(); itrPlayer.hasNext();) {
 			Player currentPlayer = itrPlayer.next();
 			GUIPlayer guiPlayer = currentPlayer.getMyselfGUI();
@@ -107,12 +113,6 @@ public class GUI extends BasicGame {
 				}
 			}
 
-		}
-
-		for (Iterator<PickAble> itr = engine.getMap().getPickAbleList().iterator(); itr.hasNext();) {
-			PickAble currentPickable = itr.next();
-
-			currentPickable.getGUIPickAble().render();
 		}
 
 		map.render(0, 0, 4);
@@ -254,28 +254,28 @@ public class GUI extends BasicGame {
 				case Input.KEY_D:
 					engine.goTo(engine.getPlayer(Team.BLEU), Direction.EAST);
 					break;
-				case Input.KEY_O:
+				case Input.KEY_F:
 					engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.NORTH);
 					break;
-				case Input.KEY_K:
+				case Input.KEY_C:
 					engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.WEST);
 					break;
-				case Input.KEY_L:
+				case Input.KEY_V:
 					engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.SOUTH);
 					break;
-				case Input.KEY_M:
+				case Input.KEY_B:
 					engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.EAST);
 					break;
-				case Input.KEY_F:
+				case Input.KEY_O:
 					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.NORTH);
 					break;
-				case Input.KEY_C:
+				case Input.KEY_K:
 					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.WEST);
 					break;
-				case Input.KEY_V:
+				case Input.KEY_L:
 					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.SOUTH);
 					break;
-				case Input.KEY_B:
+				case Input.KEY_M:
 					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.EAST);
 					break;
 				}

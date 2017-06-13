@@ -18,6 +18,7 @@ import gui.GUICharacter;
 import personnages.Character;
 import personnages.Player;
 import personnages.Robot;
+import personnages.State;
 import reader.Reader;
 import sequence._Sequence;
 
@@ -79,62 +80,74 @@ public class Engine {
 
 	// TODO : Handle with the pickup of pickable when pass on a cell
 	public void goTo(Character player, Direction dir) {
-		System.out.println("Position GUICharacter avant : " + player.getMyselfGUI().getCurrentX() + " ; "
-				+ player.getMyselfGUI().getCurrentY());
-		System.out.println("Position Character avant : " + player.getX() + " ; " + player.getY());
-		player.goTo(dir, 1);
-		System.out.println("Position GUICharacter apres : " + player.getMyselfGUI().getCurrentX() + " ; "
-				+ player.getMyselfGUI().getCurrentY());
-		System.out.println("Position Character avant : " + player.getX() + " ; " + player.getY());
+
+		if (player.getState().equals(State.Wait)) {
+			player.goTo(dir, 1);
+		} else {
+			System.out.println("Pas de panique t'as pas fini de bouger");
+		}
 	}
 
 	public void goTo(Character player, Direction dir, int lg) {
-		player.goTo(dir, lg);
+		if (player.getState().equals(State.Wait)) {
+			player.goTo(dir, lg);
+		} else {
+			System.out.println("Pas de panique t'as pas fini de bouger");
+		}
 	}
 
 	// TODO : Handle attackpoints and death is lifepoint is 0
 	public void classicAtk(Character character, Cell target) {
-		character.classicAtk(target);
+
+		if (character.getState().equals(State.Wait)) {
+			character.classicAtk(target);
+			character.getMyselfGUI().setActionRequest(true);
+		} else {
+			System.out.println("Pas de panique t'as pas fini d'attaquer");
+		}
 	}
 
 	public void classicAtk(Character character, Direction dir) throws NotDoableException {
-		Cell target = null;
-		switch (dir) {
-		case NORTH:
-			target = getMap().getCell(character.getX(), character.getY() - 1);
-			break;
-		case SOUTH:
-			target = getMap().getCell(character.getX(), character.getY() + 1);
-			break;
-		case EAST:
-			target = getMap().getCell(character.getX() + 1, character.getY());
-			break;
-		case WEST:
-			target = getMap().getCell(character.getX() - 1, character.getY());
-			break;
+		if (character.getState().equals(State.Wait)) {
+			Cell target = null;
+			switch (dir) {
+			case NORTH:
+				target = getMap().getCell(character.getX(), character.getY() - 1);
+				break;
+			case SOUTH:
+				target = getMap().getCell(character.getX(), character.getY() + 1);
+				break;
+			case EAST:
+				target = getMap().getCell(character.getX() + 1, character.getY());
+				break;
+			case WEST:
+				target = getMap().getCell(character.getX() - 1, character.getY());
+				break;
+			}
+
+			character.classicAtk(target);
+			character.getMyselfGUI().setActionRequest(true);
+		} else {
+			System.out.println("Pas de panique t'as pas fini d'attaquer");
 		}
-		character.classicAtk(target);
 
 	}
 
 	public void createRobot(GUI userInterface, Player player) {
-		// TODO : création d'un robot
-		int Xbase;
-		int Ybase;
-		Xbase = player.getBase().getX();
-		Ybase = player.getBase().getY();
-		if (!getMap().getCell(Xbase, Ybase).isReachable()) {
-			Cell freeCell = getMap().nearestFreeCell(Xbase, Ybase);
-			Xbase = freeCell.getX();
-			Ybase = freeCell.getY();
+		if (player.getState().equals(State.RobotCreation)) {
+			int Xbase;
+			int Ybase;
+			Xbase = player.getBase().getX();
+			Ybase = player.getBase().getY();
+			if (!getMap().getCell(Xbase, Ybase).isReachable()) {
+				Cell freeCell = getMap().nearestFreeCell(Xbase, Ybase);
+				Xbase = freeCell.getX();
+				Ybase = freeCell.getY();
 
-		}
-		Robot robot = new Robot(Xbase, Ybase, myMap, userInterface, Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player);
-		getMap().getCell(Xbase, Ybase).setEntity(robot);
-		try {
-			throw new Exception("NYI");
-		} catch (Exception e) {
-			e.printStackTrace();
+			}
+			new Robot(Xbase, Ybase, myMap, userInterface, Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player);
+		} else {
+			System.out.println("Pas la phase de création de robot");
 		}
 
 	}

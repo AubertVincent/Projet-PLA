@@ -50,6 +50,7 @@ public class Map {
 			for (int j = 0; j < height; j++) {
 				if (userInterface.isObstacle(i, j)) {
 					this.setEntity(new Obstacle(i, j, this));
+					System.out.println("Case : (" + i + ";" + j + ") => Obstacle");
 				}
 			}
 		}
@@ -153,6 +154,15 @@ public class Map {
 
 	public GUI getGUI() {
 		return this.userInterface;
+	}
+
+	public List<PickAble> getPickAbleList(Character character) {
+		// TODO Auto-generated method stub
+		return this.getCell(character.getX(), character.getY()).getPickAbleList();
+	}
+
+	public void removePickAble(Entity e) {
+		this.pickableList.remove(e);
 	}
 
 }

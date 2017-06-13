@@ -61,11 +61,11 @@ public class Cell {
 		listeEntites.clear();
 	}
 
-	public List<Entity> getPickAbleList() {
-		List<Entity> pickableList = new ArrayList<Entity>();
+	public List<PickAble> getPickAbleList() {
+		List<PickAble> pickableList = new ArrayList<PickAble>();
 		for (Entity e : listeEntites) {
 			if (e.isPickAble()) {
-				pickableList.add(e);
+				pickableList.add((PickAble) e);
 			}
 		}
 		return pickableList;

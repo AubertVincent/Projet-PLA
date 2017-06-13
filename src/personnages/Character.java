@@ -212,66 +212,93 @@ public abstract class Character extends Entity {
 
 	public void goTo(Direction dir, int lg) {
 		this.setState(State.ClassiqueMove);
+		this.setDirection(dir);
+		boolean moveSucces = false;
 		if (this instanceof Robot) {
 			for (int i = 0; i < lg; i++) {
 				switch (dir) {
 				case SOUTH:
 					this.setY((this.getY() + 1));
+					moveSucces = true;
 					break;
 				case NORTH:
 					this.setY(this.getY() - 1);
+					moveSucces = true;
 					break;
 				case WEST:
 					this.setX(this.getX() - 1);
+					moveSucces = true;
 					break;
 				case EAST:
 					this.setX(this.getX() + 1);
+					moveSucces = true;
 					break;
 				}
 			}
 		} else {
 			if (this.getMovePoints() > 0) {
+
 				switch (dir) {
 				case SOUTH:
 					if (getEntityMap().getCell(getX(), getY() + 1).isReachable()) {
 						this.setY((this.getY() + 1));
+						moveSucces = true;
 					}
 					break;
 				case NORTH:
 					if (getEntityMap().getCell(getX(), getY() - 1).isReachable()) {
 						this.setY((this.getY() - 1));
+						moveSucces = true;
 					}
 					break;
 				case WEST:
 					if (getEntityMap().getCell(getX() - 1, getY()).isReachable()) {
 						this.setX(this.getX() - 1);
+						moveSucces = true;
 					}
 					break;
 				case EAST:
-					if (getEntityMap().getCell(getX(), getY() + 1).isReachable()) {
+					if (getEntityMap().getCell(getX() + 1, getY()).isReachable()) {
 						this.setX(this.getX() + 1);
+						moveSucces = true;
 					}
 					break;
 				}
+
+			} else {
+				System.out.println("Plus de point de mouvement");
+			}
+
+		}
+		if (moveSucces) {
+			this.pickUp();
+			this.setMovePoints(this.getMovePoints() - 1);
+			if (this.getMovePoints() == 0) {
+				this.setState(State.Wait);
 			}
 		}
-		this.pickUp();
-		this.setMovePoints(this.getMovePoints() - 1);
-		if (this.getMovePoints() == 0) {
-			this.setState(State.RobotCreation);
-		}
+
 	}
 
 	public void pickUp() {
 		Besace PlayerBesace;
 		try {
 			PlayerBesace = this.getBesace();
-			for (Entity e : this.getEntityMap().getCell(this.getX(), this.getY()).getPickAbleList()) {
+			List<PickAble> pickableList = this.getPickAbleList();
+			for (Entity e : pickableList) {
 				PlayerBesace.add(((PickAble) e).getClass());
+				this.getEntityMap().removePickAble(e);
 			}
+			this.getPickAbleList().clear();
 		} catch (Exception e1) {
 			e1.getMessage();
 		}
+
+	}
+
+	private List<PickAble> getPickAbleList() {
+
+		return this.getEntityMap().getPickAbleList(this);
 
 	}
 

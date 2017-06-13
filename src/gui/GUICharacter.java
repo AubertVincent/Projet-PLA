@@ -215,11 +215,11 @@ public abstract class GUICharacter {
 	 *            The delay (in milliseconds) since the last call of this method
 	 */
 	public void update(GUI gui, int delta) {
-
+		setDirection(getMyself().getDirection());
 		switch (mySelf.getState()) {
 		case ClassiqueMove:
 			float nextXPx = getCurrentXPx(), nextYPx = getCurrentYPx();
-			setDirection(getMyself().getDirection());
+
 			if (getDirection() == Direction.WEST || getDirection() == Direction.EAST) {
 				nextXPx = getNextXPx(delta);
 			} else {
@@ -228,7 +228,8 @@ public abstract class GUICharacter {
 
 			if (isInPlace()) {
 				mySelf.setState(State.Wait);
-
+				setCurrentX(getTargetX());
+				setCurrentY(getTargetY());
 			} else {
 				int nextCellX = mainUserInterface.pixelToCellX(nextXPx);
 				int nextCellY = mainUserInterface.pixelToCellY(nextYPx);
@@ -258,7 +259,7 @@ public abstract class GUICharacter {
 				beginTimeAnimation = (int) System.currentTimeMillis();
 				actionRequest = false;
 			}
-			if ((beginTimeAnimation + animationDuration) <= (int) System.currentTimeMillis()) {
+			if ((beginTimeAnimation + this.animationDuration) <= (int) System.currentTimeMillis()) {
 				mySelf.setState(State.Wait);
 			}
 			break;
@@ -360,15 +361,15 @@ public abstract class GUICharacter {
 	}
 
 	private float getTargetXPx() {
-		// int xplayer = this.getMyself().getX();
-		// return mainUserInterface.cellToPixelX(xplayer);
-		return xPxTarget;
+		int xplayer = this.getMyself().getX();
+		return mainUserInterface.cellToPixelX(xplayer);
+		// return xPxTarget;
 	}
 
 	private float getTargetYPx() {
-		// int yplayer = this.getMyself().getY();
-		// return mainUserInterface.cellToPixelY(yplayer);
-		return yPxTarget;
+		int yplayer = this.getMyself().getY();
+		return mainUserInterface.cellToPixelY(yplayer);
+		// return yPxTarget;
 	}
 
 	public int getCurrentX() {
@@ -380,11 +381,11 @@ public abstract class GUICharacter {
 	}
 
 	private int getTargetX() {
-		return xCellTarget;
+		return mySelf.getX();
 	}
 
 	private int getTargetY() {
-		return yCellTarget;
+		return mySelf.getY();
 	}
 
 	private void setCurrentX(int x) {
@@ -415,4 +416,7 @@ public abstract class GUICharacter {
 
 	public abstract Character getMyself();
 
+	public void setActionRequest(boolean actionRequest) {
+		this.actionRequest = actionRequest;
+	}
 }
