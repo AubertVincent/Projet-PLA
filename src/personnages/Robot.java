@@ -26,8 +26,14 @@ public class Robot extends Character {
 		possibleActionsList.add(operateur.Tunnel.class);
 		possibleActionsList.add(operateur.SuicideBomber.class);
 
+<<<<<<< HEAD
 		// ClassicAttack-like animations
 		possibleActionsList.add(operateur.ClassicAck.class);
+=======
+		this.myAutomaton = myAutomaton;
+		this.explorationMap = entityMap;
+		this.explorationMap.getCell(this.x, this.y).setExplored(true);
+>>>>>>> automate_dev
 	}
 
 	protected _Sequence myAutomaton;
