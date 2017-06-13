@@ -52,6 +52,7 @@ public abstract class Action implements _Sequence, _IncompleteSequence {
 		return false;
 	}
 
+	// May become useful in the case of a game update
 	public abstract void cancel(Robot r) throws NotDoableException;
 
 	public abstract Class<? extends PickAble> getPickable();
@@ -60,6 +61,5 @@ public abstract class Action implements _Sequence, _IncompleteSequence {
 	public boolean isEmptyRootTree() {
 		return false;
 	}
-
 
 }
