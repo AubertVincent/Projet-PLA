@@ -6,18 +6,19 @@ import pickable.PickAble;
 import pickable.PickPickUp;
 
 public class PickUp extends Action {
+	// This action should never be called
 
 	@Override
 	protected boolean isDoable(Robot r) {
+		// Always doAble
 		return true;
 	}
 
 	@Override
 	public void execute(Robot robot) throws NotDoableException {
 		if (isDoable(robot)) {
-			throw new NotDoableException("Impossible de ramasser"); // Should
-																	// never
-																	// happen
+			// Should never happen
+			throw new NotDoableException("Impossible de ramasser");
 		} else {
 			robot.pickUp();
 
