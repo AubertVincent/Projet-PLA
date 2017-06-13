@@ -1,6 +1,7 @@
 package personnages;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -369,25 +370,25 @@ public abstract class Character extends Entity {
 
 	}
 
-	private PickAble actionToPickAble(Class<? extends Action> act, int x, int y, Map pickableMap) {
+	private PickAble actionToPickAble(Action action, int x, int y, Map pickableMap) {
 		PickAble pickAble;
-		if (act.getClass().equals(ClassicAck.class)) {
+		if (action.getClass().equals(ClassicAck.class)) {
 			pickAble = new PickClassicAck(x, y, pickableMap);
-		} else if (act.getClass().equals(MoveDir.class)) {
+		} else if (action.getClass().equals(MoveDir.class)) {
 			pickAble = new PickMoveDir(x, y, pickableMap);
-		} else if (act.getClass().equals(PickUp.class)) {
+		} else if (action.getClass().equals(PickUp.class)) {
 			pickAble = new PickPickUp(x, y, pickableMap);
-		} else if (act.getClass().equals(Priority.class)) {
+		} else if (action.getClass().equals(Priority.class)) {
 			pickAble = new PickPriority(x, y, pickableMap);
-		} else if (act.getClass().equals(RandomBar.class)) {
+		} else if (action.getClass().equals(RandomBar.class)) {
 			pickAble = new PickRandomBar(x, y, pickableMap);
-		} else if (act.getClass().equals(Recall.class)) {
+		} else if (action.getClass().equals(Recall.class)) {
 			pickAble = new PickRecall(x, y, pickableMap);
-		} else if (act.getClass().equals(Succession.class)) {
+		} else if (action.getClass().equals(Succession.class)) {
 			pickAble = new PickSuccession(x, y, pickableMap);
-		} else if (act.getClass().equals(SuicideBomber.class)) {
+		} else if (action.getClass().equals(SuicideBomber.class)) {
 			pickAble = new PickSuicideBomber(x, y, pickableMap);
-		} else if (act.getClass().equals(Tunnel.class)) {
+		} else if (action.getClass().equals(Tunnel.class)) {
 			pickAble = new PickTunnel(x, y, pickableMap);
 		} else {
 			pickAble = null;
