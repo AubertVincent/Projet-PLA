@@ -38,8 +38,12 @@ public class ClassicAck extends Attack {
 		Team team = r.getTeam();
 		Map myMap = r.getEntityMap();
 
+		// check if this robot is not in a corner
 		boolean isInCorner = ((x == 0 && y == 0) || (x == 0 && y == myMap.mapHeight() - 1)
 				|| (x == myMap.mapWidth() - 1 && y == 0) || (x == myMap.mapWidth() - 1 && y == myMap.mapHeight() - 1));
+		// All those tests if the robot is on the border of the map. We don't
+		// want to get a cell outside the map.
+		// And it checks if there is an opponent around the robot.
 		if (x == 0 && y == 0) {
 			return myMap.getCell(x, y + 1).opponentHere(team) || myMap.getCell(x + 1, y).opponentHere(team);
 		} else if (x == myMap.mapWidth() - 1 && y == 0) {
@@ -69,6 +73,8 @@ public class ClassicAck extends Attack {
 					|| myMap.getCell(x - 1, y).opponentHere(team);
 
 		} else {
+			// If we didn't return yet, we can get all the cell around this
+			// robot.
 			Cell testEast = myMap.getCell(x + 1, y);
 			Cell testSouth = myMap.getCell(x, y + 1);
 			Cell testNorth = myMap.getCell(x, y - 1);
@@ -96,6 +102,8 @@ public class ClassicAck extends Attack {
 
 			Direction d;
 			Cell target = null;
+			// The test "if" is here to check if we don't get a cell outside the
+			// map
 			if (x + 1 < myMap.mapWidth() && myMap.getCell(x + 1, y).opponentHere(team)) {
 				d = Direction.EAST;
 				r.setDirection(d);

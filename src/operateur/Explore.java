@@ -42,62 +42,6 @@ public class Explore extends Movement {
 		return false;
 	}
 
-	// int x = r.getX();
-	// int y = r.getY();
-	// Map myMap = r.getEntityMap();
-	// boolean isInCorner = ((x == 0 && y == 0) || (x == 0 && y ==
-	// myMap.mapHeight() - 1)
-	// || (x == myMap.mapWidth() - 1 && y == 0) || (x == myMap.mapWidth() - 1 &&
-	// y == myMap.mapHeight() - 1));
-	// if (x == 0 && y == 0 && !myMap.getCell(x, y + 1).isReachable() &&
-	// !myMap.getCell(x + 1, y).isReachable()) {
-	// return false;
-	// } else if (x == myMap.mapWidth() - 1 && y == 0 && !myMap.getCell(x, y +
-	// 1).isReachable()
-	// && !myMap.getCell(x - 1, y).isReachable()) {
-	// return false;
-	// } else if (x == myMap.mapWidth() - 1 && y == myMap.mapHeight() - 1 &&
-	// !myMap.getCell(x, y - 1).isReachable()
-	// && !myMap.getCell(x - 1, y).isReachable()) {
-	// return false;
-	// } else if (x == 0 && y == myMap.mapHeight() - 1 && !myMap.getCell(x, y -
-	// 1).isReachable()
-	// && !myMap.getCell(x + 1, y).isReachable()) {
-	// return false;
-	// } else if (!isInCorner && x == 0 && !myMap.getCell(x, y -
-	// 1).isReachable()
-	// && !myMap.getCell(x, y + 1).isReachable() && !myMap.getCell(x + 1,
-	// y).isReachable()) {
-	// return false;
-	// } else if (!isInCorner && y == 0 && !myMap.getCell(x + 1,
-	// y).isReachable()
-	// && !myMap.getCell(x, y + 1).isReachable() && !myMap.getCell(x - 1,
-	// y).isReachable()) {
-	// return false;
-	// } else if (!isInCorner && y == myMap.mapHeight() - 1 && !myMap.getCell(x
-	// + 1, y).isReachable()
-	// && !myMap.getCell(x, y - 1).isReachable() && !myMap.getCell(x - 1,
-	// y).isReachable()) {
-	// return false;
-	// } else if (!isInCorner && x == myMap.mapWidth() - 1 && !myMap.getCell(x,
-	// y - 1).isReachable()
-	// && !myMap.getCell(x, y + 1).isReachable() && !myMap.getCell(x - 1,
-	// y).isReachable()) {
-	// return false;
-	// } else {
-	// return true;
-	// }
-	// }
-
-	// if (!(r.getEntityMap().getCell(r.getX() + 1, r.getY()).isReachable())
-	// && !(r.getEntityMap().getCell(r.getX() - 1, r.getY()).isReachable())
-	// && !(r.getEntityMap().getCell(r.getX(), r.getY() + 1).isReachable())
-	// && !(r.getEntityMap().getCell(r.getX(), r.getY() - 1).isReachable())) {
-	// return false;
-	// }
-	// return true;
-	// }
-
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
 		// Useless with the current implementation
@@ -112,21 +56,27 @@ public class Explore extends Movement {
 		if (!isDoable(r)) {
 			throw new NotDoableException("Ce robot est entouré d'obstacles");
 		}
-		int range = r.getMovePoints();
+		int movepoints = r.getMovePoints();
 		int x;
 		int y;
 		int randomCpt = 0;
 		int myRandom = 0;
+		// List of the reachable cells
 		List<Cell> reachable = new ArrayList<Cell>();
-
-		while (range > 0) {
+		// Execution of this function is made step by step and depends of number
+		// of move points. We have to check if this action is doable on each
+		// iteration
+		while (movepoints > 0) {
 			x = r.getX();
 			y = r.getY();
 			if (!isDoable(r)) {
 				throw new NotDoableException("Ce robot est entouré d'obstacles");
 			}
 			reachable.clear();
+			// Used to get a random cell in the previous list
 			randomCpt = 0;
+			// Fill the previous list with the unexplored cells which are
+			// reachable
 			if (y - 1 >= 0 && r.getEntityMap().getCell(x, y - 1).isReachable()
 					&& !(r.getEntityMap().getCell(x, y - 1).isExplored())) {
 				reachable.add(r.getEntityMap().getCell(x, y - 1));
@@ -147,7 +97,9 @@ public class Explore extends Movement {
 				reachable.add(r.getEntityMap().getCell(x, y + 1));
 				randomCpt++;
 			}
+			// If any reachable cell is unexplored
 			if (randomCpt != 0) {
+				// Go to a random cell of the previous list
 				myRandom = (int) (Math.random() * randomCpt);
 				if (reachable.get(myRandom).getX() < x && reachable.get(myRandom).getY() == y) {
 					r.getExplorationMap().getCell(x - 1, y).setExplored(true);
@@ -162,6 +114,7 @@ public class Explore extends Movement {
 					r.getExplorationMap().getCell(x, y + 1).setExplored(true);
 					r.goTo(Direction.SOUTH, 1);
 				}
+				// Else, fill the list with the reachable cells
 			} else {
 				randomCpt = 0;
 				reachable.clear();
@@ -182,6 +135,7 @@ public class Explore extends Movement {
 					randomCpt++;
 				}
 				myRandom = (int) (Math.random() * randomCpt);
+				// Go to a random cell of the previous list
 				if (reachable.get(myRandom).getX() < x && reachable.get(myRandom).getY() == y) {
 					r.getExplorationMap().getCell(x - 1, y).setExplored(true);
 					r.goTo(Direction.WEST, 1);
@@ -196,7 +150,8 @@ public class Explore extends Movement {
 					r.goTo(Direction.SOUTH, 1);
 				}
 			}
-			range--;
+			// Use a move point
+			movepoints--;
 		}
 
 	}

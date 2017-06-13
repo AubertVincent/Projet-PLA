@@ -270,6 +270,7 @@ public abstract class Character extends Entity {
 
 			if (opponent != null && opponent.getLife() <= 0) {
 				try {
+					// NYI = Not yet implemented
 					throw new Exception("NYI");
 				} catch (Exception e) {
 					e.printStackTrace();
