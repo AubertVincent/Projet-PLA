@@ -22,7 +22,6 @@ import moteurDuJeu.PlayPhase;
 import personnages.Player;
 import personnages.Robot;
 import pickable.PickAble;
-import sequence._Sequence;
 
 public class GUI extends BasicGame {
 
@@ -42,7 +41,7 @@ public class GUI extends BasicGame {
 
 	private GUIBehaviorInput inputTextField;
 
-	protected boolean behaviorInputNeeded = false;
+	protected boolean behaviorInputNeeded;
 
 	private Engine engine;
 
@@ -63,6 +62,7 @@ public class GUI extends BasicGame {
 		WindowWidth = 1088;
 		cellHeight = 32;
 		cellWidth = 32;
+
 	}
 
 	@Override
@@ -75,6 +75,7 @@ public class GUI extends BasicGame {
 
 		engine = new Engine(this);
 
+		setBehaviorInputNeeded(false);
 		// TODO It's a backup, may be used in GUIBehviorInput.drawCorrectedList
 		// font = new Font("Verdana", Font.BOLD, 20);
 		// ttf = new TrueTypeFont(font, true);
@@ -164,7 +165,7 @@ public class GUI extends BasicGame {
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
 
-		if (engine.getPlayPhase() == PlayPhase.behaviorModification) {
+		if (behaviorInputNeeded) {
 			this.inputTextField.update(container, engine.getCurrentModifier());
 		}
 
@@ -176,6 +177,11 @@ public class GUI extends BasicGame {
 				guiCurrentRobot.update(this, delta);
 			}
 		}
+		if (inputTextField.getUpdateness()) {
+			inputTextField.setUpdateness(false);
+			setBehaviorInputNeeded(false);
+			engine.setRobotBehavior(this, inputTextField.getReceivedSequence());
+		}
 	}
 
 	@Override
@@ -184,22 +190,28 @@ public class GUI extends BasicGame {
 		int mouseYCell = pixelToCellY(y);
 		System.out.println("LeftClick on (" + mouseXCell + ", " + mouseYCell + ")");
 
-		GUICharacter guiPerso;
+		if (getEngine().getPlayPhase().equals(PlayPhase.behaviorModification)) {
 
-		guiPerso = engine.getGUICharactereFromMouse(mouseXCell, mouseYCell);
-		if (!guiPerso.equals(null)) {
+			GUICharacter guiPerso;
 
-			if (guiPerso instanceof GUIPlayer) {
-				engine.createRobot(this, (Player) guiPerso.getMyself());
-			} else {
-				try {
-					engine.behaviorModif(this, (Robot) guiPerso.getMyself());
-				} catch (Exception e) {
-					e.getMessage();
+			guiPerso = engine.getGUICharactereFromMouse(mouseXCell, mouseYCell);
+			try {
+				if (!guiPerso.equals(null)) {
+
+					if (guiPerso instanceof GUIPlayer) {
+						engine.behaviorCreation(this, (Player) guiPerso.getMyself());
+					} else {
+						try {
+							engine.behaviorModification(this, (Robot) guiPerso.getMyself());
+						} catch (Exception e) {
+							e.getMessage();
+						}
+					}
 				}
+			} catch (Exception e) {
+				;
 			}
 		}
-
 	}
 
 	public Engine getEngine() {
@@ -272,13 +284,6 @@ public class GUI extends BasicGame {
 				}
 			}
 
-			if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
-				if (key == Input.KEY_SPACE) {
-					engine.setPlayPhase(Input.KEY_SPACE);
-					engine.executeAutomaton(this);
-				}
-			}
-
 		} catch (NotDoableException e) {
 
 		}
@@ -288,14 +293,6 @@ public class GUI extends BasicGame {
 	public boolean closeRequested() {
 		System.exit(0);
 		return false;
-	}
-
-	public _Sequence inputRequest() {
-		inputTextField.requestUpdate();
-		while (!inputTextField.getUpdateness()) {
-			;
-		}
-		return inputTextField.getReceivedSequence();
 	}
 
 	// ↓ Getters and setters ↓
@@ -354,7 +351,11 @@ public class GUI extends BasicGame {
 		return WindowWidth;
 	}
 
-	public void setBehaviorInputNeeded(boolean behaviorInputNeeded) {
+	public void inputRequest() {
+		setBehaviorInputNeeded(true);
+	}
+
+	private void setBehaviorInputNeeded(boolean behaviorInputNeeded) {
 		this.behaviorInputNeeded = behaviorInputNeeded;
 
 	}

@@ -14,19 +14,19 @@ import test.SequenceCorrector;
 
 public class GUIBehaviorInput {
 
-	private static final String defaultInstructions = "(MC5N;AC) / (MC7N;AC))";
-	GUI userInterface;
-	TextField textField;
+	private static final String defaultInstructions = "AC";
+	private GUI userInterface;
+	private TextField textField;
 	int textFieldHeight;
 
-	String receivedString;
-	String sentString;
+	private String receivedString;
 
 	private _Sequence receivedSequence;
 	private SequenceCorrector corrector = new SequenceCorrector();
 
 	private boolean inputUpToDate;
 	private boolean inputCorrect;
+	private boolean setForCurrentRequest;
 
 	/**
 	 * 
@@ -52,10 +52,12 @@ public class GUIBehaviorInput {
 		inputUpToDate = false;
 		inputCorrect = false;
 		this.userInterface = userInterface;
+		inputCorrect = false;
+		setForCurrentRequest = false;
 	}
 
 	protected GUIBehaviorInput(GameContainer container, GUI userInterface, int WindowWidth, int WindowHeight) {
-		new GUIBehaviorInput(container, userInterface, WindowWidth, WindowHeight, defaultInstructions);
+		this(container, userInterface, WindowWidth, WindowHeight, defaultInstructions);
 	}
 
 	/**
@@ -64,13 +66,14 @@ public class GUIBehaviorInput {
 	 *            the context in which GUI components are created and rendered
 	 */
 	protected void update(GameContainer container, Player currentPlayer) {
-
 		// Check if user has to write its instructions
-		if (!inputUpToDate || !inputCorrect) {
+		if (!inputCorrect && !setForCurrentRequest) {
+			textField.setFocus(true);
 			// get sent behavior instructions on an enter_key press
 			if (this.textField.hasFocus()) {
 				if (container.getInput().isKeyDown(Input.KEY_ENTER)) {
 					receivedString = textField.getText();
+					setForCurrentRequest = true;
 					this.textField.setFocus(false);
 					System.out.println("> " + receivedString);
 					receivedSequence = Reader.parse(receivedString);
@@ -80,6 +83,8 @@ public class GUIBehaviorInput {
 			}
 			if (inputCorrect) {
 				inputUpToDate = true;
+				inputCorrect = false;
+				setForCurrentRequest = false;
 			}
 		}
 	}
@@ -104,16 +109,16 @@ public class GUIBehaviorInput {
 		}
 	}
 
-	public void requestUpdate() {
-		inputUpToDate = false;
-	}
-
 	public _Sequence getReceivedSequence() {
 		return receivedSequence;
 	}
 
 	public boolean getUpdateness() {
 		return inputUpToDate;
+	}
+
+	public void setUpdateness(boolean b) {
+		inputUpToDate = b;
 	}
 
 }

@@ -9,6 +9,7 @@ import carte.Base;
 import entite.Direction;
 import gui.GUI;
 import gui.GUIPlayer;
+import pickable.PickClassicAck;
 
 public class Player extends Character {
 
@@ -74,8 +75,8 @@ public class Player extends Character {
 		}
 		robotList = new RobotList();
 		this.besace = new Besace();
+		besace.add(PickClassicAck.class);
 		entityMap.setEntity(this);
-
 	}
 
 	public void addRobot(Object obj, Robot robot) {

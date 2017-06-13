@@ -3,6 +3,7 @@ package personnages;
 import java.util.Iterator;
 import java.util.List;
 
+import carte.Coordinates;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
@@ -42,7 +43,7 @@ public class Robot extends Character {
 		this.mySelfGUI = new GUIRobot(userInterface, x, y, Direction.SOUTH, 100, base.getBaseTeam(), this,
 				player.getMyselfGUI());
 		this.player = player;
-		this.player.addRobot(player, this);
+		this.player.addRobot(new Coordinates(x, y), this);
 		entityMap.setEntity(this);
 	}
 

@@ -1,9 +1,9 @@
 package util;
 
-public enum Correct {
+public enum Correctness {
 	CORRECT, INCORRECT;
 
-	private Correct() {
+	private Correctness() {
 	}
 
 	@Override

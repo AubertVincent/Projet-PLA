@@ -3,7 +3,6 @@ package moteurDuJeu;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import carte.Base;
@@ -19,7 +18,6 @@ import personnages.Character;
 import personnages.Player;
 import personnages.Robot;
 import personnages.State;
-import reader.Reader;
 import sequence._Sequence;
 
 public class Engine {
@@ -31,6 +29,12 @@ public class Engine {
 	private PlayPhase playPhase;
 
 	private Player currentModifier;
+
+	private Robot currentModified;
+
+	private boolean isCreating;
+
+	private boolean isModifying;
 
 	/**
 	 * Create an Engine Object An Engine has a map and a list of its players
@@ -48,7 +52,7 @@ public class Engine {
 			e.printStackTrace();
 		}
 		myMap.init(userInterface, this);
-		this.playPhase = PlayPhase.playerMovement;
+		this.playPhase = PlayPhase.behaviorModification;
 	}
 
 	/**
@@ -133,7 +137,7 @@ public class Engine {
 
 	}
 
-	public void createRobot(GUI userInterface, Player player) {
+	private void createRobot(GUI userInterface, Player player, _Sequence sequence) {
 		if (player.getState()
 				.equals(State.Wait)/*
 									 * && this.playPhase.equals(PlayPhase.
@@ -151,9 +155,9 @@ public class Engine {
 				Ybase = freeCell.getY();
 
 			}
-			Robot robot = new Robot(Xbase, Ybase, myMap, userInterface, Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"),
-					player);
-			player.getState().equals(State.Wait);
+			// TODO recode this method oklm
+			Robot robot = new Robot(Xbase, Ybase, myMap, userInterface, sequence, player);
+			player.setState(State.Wait);
 			robot.pickUp();
 		} else {
 			System.out.println("Pas la phase de création de robot");
@@ -161,31 +165,8 @@ public class Engine {
 
 	}
 
-	public Player getCurrentModifier() {
-		return this.currentModifier;
-	}
-
-	public void setCurrentModifier(Player currentPlayer) {
-		this.currentModifier = currentPlayer;
-	}
-
-	public void behaviorModif(GUI userInterface, Robot robot) {
-		Player player = robot.getPlayer();
-		// TODO : gestion du parseur
-		// pour reccuperer la nouveau sequence
-		_Sequence newAutomaton = Reader.parse("(MC2E)");
-		robot.setAutomaton(newAutomaton);
-	}
-
-	public void setPlayPhase(int key) {
-		if (getPlayer(Team.ROUGE).getMovePoints() == 0 && getPlayer(Team.BLEU).getMovePoints() == 0
-				&& this.playPhase == PlayPhase.playerMovement) {
-			this.playPhase = PlayPhase.behaviorModification;
-		} else if (key == Input.KEY_SPACE) {
-			// this.playPhase = PlayPhase.automatonExecution;
-			this.playPhase = PlayPhase.playerMovement;
-			playerList.get(0).setMovePoints(10);
-		}
+	public void setPlayPhase(PlayPhase playPhase) {
+		this.playPhase = playPhase;
 	}
 
 	public void executeAutomaton(GUI userInterface) {
@@ -206,5 +187,41 @@ public class Engine {
 			}
 		}
 		return null;
+	}
+
+	public void behaviorCreation(GUI userInterface, Player player) {
+		this.isModifying = false;
+		this.isCreating = true;
+		this.currentModifier = player;
+		userInterface.inputRequest();
+	}
+
+	public void behaviorModification(GUI userInterface, Robot robot) {
+		this.isModifying = true;
+		this.isCreating = false;
+		this.currentModified = robot;
+		this.currentModifier = robot.getPlayer();
+		userInterface.inputRequest();
+	}
+
+	public void setRobotBehavior(GUI userInterface, _Sequence sequence) {
+		if (isModifying && !isCreating) {
+			this.modifyRobot(currentModified, sequence);
+		} else if (!isModifying && isCreating) {
+			this.createRobot(userInterface, this.currentModifier, sequence);
+		}
+		currentModifier.getBesace().remove(sequence);
+		currentModified = null;
+		currentModifier = null;
+		this.isModifying = false;
+		this.isCreating = false;
+	}
+
+	private void modifyRobot(Robot currentModified, _Sequence sequence) {
+		currentModified.setAutomaton(sequence);
+	}
+
+	public Player getCurrentModifier() {
+		return this.currentModifier;
 	}
 }
