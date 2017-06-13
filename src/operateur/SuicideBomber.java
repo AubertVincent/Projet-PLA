@@ -45,7 +45,6 @@ public class SuicideBomber extends Attack {
 		} else {
 			r.suicideBomber();
 			this.lastLife = r.getLife();
-			r.setLife(0);
 		}
 	}
 

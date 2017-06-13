@@ -3,12 +3,10 @@ package carte;
 import java.util.ArrayList;
 import java.util.List;
 
-import entite.Entity;
 import entite.Team;
-import exceptions.GameException;
-import exceptions.NotDoableException;
 import gui.GUI;
 import moteurDuJeu.Engine;
+import moteurDuJeu.Test;
 import personnages.Character;
 import personnages.Robot;
 import pickable.PickAble;
@@ -33,6 +31,13 @@ public class Map {
 				map[i][j] = new Cell(i, j);
 			}
 		}
+	}
+
+	// Used for test delete when it's over
+	public void init(Test test) {
+		map[5][10].setEntity(test.getRobot(Team.ROUGE));
+		map[5][11].setEntity(test.getRobot(Team.BLEU));
+		map[5][12].setEntity(new Obstacle(5, 5, this));
 	}
 
 	public void init(GUI userInterface, Engine engine) {
@@ -85,116 +90,25 @@ public class Map {
 		return my_bool;
 	}
 
-	public void Free(int x, int y) {
-		map[x][y].FreeCell();
-	}
-
-	public void setEntity(int x, int y, Entity ent) {
-		map[x][y].setEntity(ent);
-	}
-
 	public Cell getCell(int x, int y) {
 		return map[x][y];
 	}
 
-	public boolean isFree(int x, int y) {
-		return map[x][y].isFree();
-	}
-
-	public List<Entity> getEntityOnCell(int x, int y) {
-		return map[x][y].getListEntity();
-	}
-
-	public List<Entity> getPickAbleListOnCell(int x, int y) {
-		return map[x][y].getPickAbleList();
-	}
-
-	/**
-	 * return the list of the entities present on the cell(x,y)
-	 * 
-	 * @param x
-	 *            x coordinate on the map
-	 * @param y
-	 *            y coordinate on the map
-	 * @return the list of the entities present on the cell
-	 */
-	public List<Entity> getListEntity(int x, int y) {
-		return map[x][y].getListEntity();
-	}
-
-	/**
-	 * return the class of an entity present on the cell
-	 * 
-	 * @param x
-	 *            x coordinate on the map
-	 * @param y
-	 *            y coordinate on the map
-	 * @return the class of the first pickAble object
-	 * @throws GameException
-	 */
-	@SuppressWarnings("unchecked")
-	public Class<PickAble> pickableEntity(int x, int y) throws NotDoableException {
-		List<Entity> l = map[x][y].getListEntity();
-		int i = 0;
-		while (i < l.size()) {
-			if (l.get(i).isPickAble()) {
-				return ((Class<PickAble>) l.get(i).getClass());
-			}
-		}
-		throw new NotDoableException("Rien à ramasser ici");
-	}
-
-	/**
-	 * Take out the object of the cell
-	 * 
-	 * @param ramasse
-	 * @param x
-	 *            x coordinate on the map
-	 * @param y
-	 *            y coordinate on the map
-	 */
-	public void freePick(Class<PickAble> ramasse, int x, int y) {
-		List<Entity> l = map[x][y].getListEntity();
-		int i = 0;
-		while (i < l.size()) {
-			if (l.get(i).getClass() == ramasse) {
-				l.remove(i);
-			}
-		}
-	}
-
-	public boolean isReachable(int x, int y) {
-		List<Entity> l = map[x][y].getListEntity();
-		int i = 0;
-		while (i < l.size()) {
-			if (l.get(i).isCharacter() || l.get(i).isObstacle()) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public boolean isPickAble(int x, int y) {
-		List<Entity> EntityList = map[x][y].getListEntity();
-		boolean allIsPickAble = true;
-		if (!EntityList.equals(null)) {
-			for (Entity e : EntityList) {
-				if (!e.isPickAble()) {
-					return false;
-				}
-			}
-		}
-		return allIsPickAble;
-	}
+	// public List<Action> pathExists(Robot r, int xa, int ya) {
+	// Cell destination = r.entityMap.getCell(xa, ya);
+	// //List<Action> path = Dijkstra.dijkstra(GraphMap.,destination);
+	//
+	// return null;
+	// }
 
 	public void moveCharacter(Character character, int newX, int newY) {
-		this.Free(character.getX(), character.getY());
-		this.setEntity(newX, newY, character);
+		this.getCell(character.getX(), character.getY()).isFree();
+		this.getCell(newX, newY).setEntity(character);
 	}
 
 	public void moveRobot(Robot player, int newX, int newY) {
-		this.Free(player.getX(), player.getY());
-		this.setEntity(newX, newY, player);
+		this.getCell(player.getX(), player.getY()).isFree();
+		this.getCell(newX, newY).setEntity(player);
 	}
 
 	public List<PickAble> getPickAbleList() {

@@ -35,9 +35,26 @@ public class Robot extends Character {
 	private GUIRobot mySelfGUI;
 
 	private Player player;
+	private Map explorationMap;
 
 	public Robot(Base base, Map entityMap, GUI userInterface, _Sequence myAutomaton, Player player) {
 		super(base.getX(), base.getY(), entityMap, base);
+		this.myAutomaton = myAutomaton;
+		this.player = player;
+		this.explorationMap = entityMap;
+		this.explorationMap.getCell(this.x, this.y).setExplored(true);
+
+		// // For test, delete when test is over
+		// public Robot(int x, int y, Map entityMap, Besace besace, Direction
+		// direction, int life, int vision, int attack,
+		// int range, int movePoints, int recall, Team team, int attackPoints,
+		// Base base, _Sequence myAutomaton) {
+		// super(x, y, entityMap, besace, direction, life, vision, attack,
+		// range, movePoints, recall, team, attackPoints,
+		// base);
+		//
+		// this.myAutomaton = myAutomaton;
+		// }
 
 		this.myAutomaton = myAutomaton;
 		this.mySelfGUI = new GUIRobot(userInterface, base.getX(), base.getY(), Direction.SOUTH, 100, base.getBaseTeam(),
@@ -50,6 +67,14 @@ public class Robot extends Character {
 
 	public static List<Class<?>> getPossibleActionsList() {
 		return possibleActionsList;
+	}
+
+	public Map getExplorationMap() {
+		return explorationMap;
+	}
+
+	public void setExplorationMap(Map explorationMap) {
+		this.explorationMap = explorationMap;
 	}
 
 	@Override
@@ -96,10 +121,10 @@ public class Robot extends Character {
 	public void suicideBomber() {
 		int x = this.getX();
 		int y = this.getY();
-		List<Entity> northEntityList = this.entityMap.getListEntity(x, y - 1);
-		List<Entity> southEntityList = this.entityMap.getListEntity(x, y + 1);
-		List<Entity> westEntityList = this.entityMap.getListEntity(x - 1, y);
-		List<Entity> eastEntityList = this.entityMap.getListEntity(x + 1, y);
+		List<Entity> northEntityList = this.entityMap.getCell(x, y - 1).getListEntity();
+		List<Entity> southEntityList = this.entityMap.getCell(x, y + 1).getListEntity();
+		List<Entity> westEntityList = this.entityMap.getCell(x - 1, y).getListEntity();
+		List<Entity> eastEntityList = this.entityMap.getCell(x + 1, y).getListEntity();
 
 		// Cell testN = this.entityMap.getCell(x, y-1);
 
@@ -151,10 +176,10 @@ public class Robot extends Character {
 	public void cancelSuicideBomber() {
 		int x = this.getX();
 		int y = this.getY();
-		List<Entity> northEntityList = this.entityMap.getListEntity(x, y - 1);
-		List<Entity> southEntityList = this.entityMap.getListEntity(x, y + 1);
-		List<Entity> westEntityList = this.entityMap.getListEntity(x - 1, y);
-		List<Entity> eastEntityList = this.entityMap.getListEntity(x + 1, y);
+		List<Entity> northEntityList = this.entityMap.getCell(x, y - 1).getListEntity();
+		List<Entity> southEntityList = this.entityMap.getCell(x, y + 1).getListEntity();
+		List<Entity> westEntityList = this.entityMap.getCell(x - 1, y).getListEntity();
+		List<Entity> eastEntityList = this.entityMap.getCell(x + 1, y).getListEntity();
 
 		int i = 0;
 		for (Iterator<Entity> entityIterator = northEntityList.iterator(); entityIterator.hasNext();) {
