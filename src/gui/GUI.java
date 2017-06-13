@@ -185,27 +185,6 @@ public class GUI extends BasicGame {
 		}
 	}
 
-	private GUICharacter getGUICharactereFromMouse(int x, int y) {
-		for (Player currentPlayer : engine.getPlayerList()) {
-			GUIPlayer guiCurrentPlayer = currentPlayer.getMyselfGUI();
-
-			if (guiCurrentPlayer.getCurrentX() == x && guiCurrentPlayer.getCurrentY() == y) {
-				return guiCurrentPlayer;
-			}
-			for (GUIRobot guiCurrentRobot : guiCurrentPlayer.getGuiRobotList()) {
-				if (guiCurrentRobot.getCurrentX() == x && guiCurrentRobot.getCurrentY() == y) {
-					return guiCurrentRobot;
-				}
-			}
-		}
-		try {
-			throw new NotDoableException("Pas de personnage sur cette case ou mauvaise phase de jeu");
-		} catch (NotDoableException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	@Override
 	public void mousePressed(int button, int x, int y) {
 		int mouseXCell = pixelToCellX(x);
@@ -214,7 +193,7 @@ public class GUI extends BasicGame {
 
 		GUICharacter guiPerso;
 		try {
-			guiPerso = getGUICharactereFromMouse(mouseXCell, mouseYCell);
+			guiPerso = engine.getGUICharactereFromMouse(mouseXCell, mouseYCell);
 			if (!guiPerso.equals(null)) {
 				if (guiPerso instanceof GUIPlayer) {
 					engine.createRobot(this, (Player) guiPerso.getMyself());

@@ -366,11 +366,11 @@ public abstract class GUICharacter {
 		return yPxTarget;
 	}
 
-	protected int getCurrentX() {
+	public int getCurrentX() {
 		return xCell;
 	}
 
-	protected int getCurrentY() {
+	public int getCurrentY() {
 		return yCell;
 	}
 

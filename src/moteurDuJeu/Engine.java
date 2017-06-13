@@ -10,9 +10,11 @@ import carte.Base;
 import carte.Cell;
 import carte.Map;
 import entite.Direction;
+import entite.Entity;
 import entite.Team;
 import exceptions.NotDoableException;
 import gui.GUI;
+import gui.GUICharacter;
 import personnages.Character;
 import personnages.Player;
 import personnages.Robot;
@@ -77,8 +79,11 @@ public class Engine {
 
 	// TODO : Handle with the pickup of pickable when pass on a cell
 	public void goTo(Character player, Direction dir) {
-
+		System.out.println("Position gu GUICharacter avant : " + player.getMyselfGUI().getCurrentX() + " ; "
+				+ player.getMyselfGUI().getCurrentY());
 		player.goTo(dir, 1);
+		System.out.println("Position GUICharacter apres : " + player.getMyselfGUI().getCurrentX() + " ; "
+				+ player.getMyselfGUI().getCurrentY());
 
 	}
 
@@ -117,19 +122,21 @@ public class Engine {
 		int Ybase;
 		Xbase = player.getBase().getX();
 		Ybase = player.getBase().getY();
-		if (getMap().isFree(Xbase, Ybase)) {
+		if (!getMap().getCell(Xbase, Ybase).isFree()) {
+			Cell freeCell = getMap().nearestFreeCell(Xbase, Ybase);
+			Xbase = freeCell.getX();
+			Ybase = freeCell.getY();
 
-			Robot robot = new Robot(player.getBase(), myMap, userInterface, Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"),
-					player);
-			getMap().setEntity(Xbase, Ybase, robot);
-		} else {
-			// TODO find the player's base nearest free cell
-			try {
-				throw new Exception("NYI");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		}
+		Robot robot = new Robot(player.getBase(), myMap, userInterface, Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"),
+				player);
+		getMap().getCell(Xbase, Ybase).setEntity(robot);
+		try {
+			throw new Exception("NYI");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public Player getCurrentModifier() {
@@ -167,5 +174,15 @@ public class Engine {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public GUICharacter getGUICharactereFromMouse(int x, int y) {
+
+		for (Entity currentEntity : this.getMap().getCell(x, y).getListEntity()) {
+			if (currentEntity instanceof Character) {
+				return ((Character) currentEntity).getMyselfGUI();
+			}
+		}
+		return null;
 	}
 }

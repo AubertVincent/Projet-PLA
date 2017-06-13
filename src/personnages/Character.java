@@ -30,7 +30,6 @@ public abstract class Character extends Entity {
 	protected static List<Class<?>> possibleActionsList = new LinkedList<Class<?>>();
 	protected Team team;
 	protected Base base;
-	private GUICharacter mySelfGUI;
 
 	private State state;
 
@@ -211,30 +210,52 @@ public abstract class Character extends Entity {
 		super.setY(y);
 	}
 
-	public void setGUICharacter(GUICharacter guiCharacter) {
-		this.mySelfGUI = guiCharacter;
-	}
-
 	public void goTo(Direction dir, int lg) {
-		for (int i = 0; i < lg; i++) {
-			switch (dir) {
-			case SOUTH:
-				this.setY((this.getY() + 1));
-				break;
-			case NORTH:
-				this.setY(this.getY() - 1);
-				break;
-			case WEST:
-				this.setX(this.getX() - 1);
-				break;
-			case EAST:
-				this.setX(this.getX() + 1);
-				break;
+		if (this instanceof Robot) {
+			for (int i = 0; i < lg; i++) {
+				switch (dir) {
+				case SOUTH:
+					this.setY((this.getY() + 1));
+					break;
+				case NORTH:
+					this.setY(this.getY() - 1);
+					break;
+				case WEST:
+					this.setX(this.getX() - 1);
+					break;
+				case EAST:
+					this.setX(this.getX() + 1);
+					break;
+				}
 			}
-
-			this.pickUp();
-			this.setMovePoints(this.getMovePoints() - 1);
+		} else {
+			if (this.getMovePoints() > 0) {
+				switch (dir) {
+				case SOUTH:
+					if (getEntityMap().getCell(getX(), getY() + 1).isFree()) {
+						this.setY((this.getY() + 1));
+					}
+					break;
+				case NORTH:
+					if (getEntityMap().getCell(getX(), getY() - 1).isFree()) {
+						this.setY((this.getY() - 1));
+					}
+					break;
+				case WEST:
+					if (getEntityMap().getCell(getX() - 1, getY()).isFree()) {
+						this.setX(this.getX() - 1);
+					}
+					break;
+				case EAST:
+					if (getEntityMap().getCell(getX(), getY() + 1).isFree()) {
+						this.setX(this.getX() + 1);
+					}
+					break;
+				}
+			}
 		}
+		this.pickUp();
+		this.setMovePoints(this.getMovePoints() - 1);
 	}
 
 	public void pickUp() {

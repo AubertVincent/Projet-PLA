@@ -118,22 +118,32 @@ public class Map {
 		pickableList.add(pickable);
 	}
 
-	// TODO find cell
-	public static void nearestFreeCell(int x, int y) {
-		// Cell freeCell = getCell(x, y);
-		int distance = 3;
-		for (int i = distance; i >= -distance; i--) {
-			if (i > 0) {
-				for (int j = -Math.abs(distance - i); j <= Math.abs(distance - i); j++) {
-					System.out.println("Je vise la case : " + i + " ;" + j);
-				}
-			} else {
-				for (int j = distance + i; j >= -(distance + i); j--) {
-					System.out.println("Je vise la case : " + i + " ;" + j);
+	public Cell nearestFreeCell(int x, int y) {
+		Cell freeCell = getCell(x, y);
+		int distance = 1;
+		while (!freeCell.isFree()) {
+			for (int i = distance; i >= -distance; i--) {
+				if (i > 0) {
+					for (int j = -Math.abs(distance - i); j <= Math.abs(distance - i); j++) {
+						if ((i >= 0 && i < mapWidth()) && (j >= 0 && j < mapHeight())) {
+							if (getCell(i, j).isReachable()) {
+								freeCell = getCell(i, j);
+							}
+						}
+					}
+				} else {
+					for (int j = distance + i; j >= -(distance + i); j--) {
+						if ((i >= 0 && i < mapWidth()) && (j >= 0 && j < mapHeight())) {
+							if (getCell(i, j).isReachable()) {
+								freeCell = getCell(i, j);
+							}
+						}
+					}
 				}
 			}
+			distance++;
 		}
-		// return freeCell;
+		return freeCell;
 	}
 
 	public GUI getGUI() {
