@@ -43,7 +43,7 @@ public abstract class Character extends Entity {
 			this.vision = 5;
 			this.damages = 3;
 			this.range = 3;
-			this.movePoints = 10;
+			this.movePoints = 100;
 			this.remainingAttacks = 5;
 			this.recall = 3;
 
@@ -212,7 +212,6 @@ public abstract class Character extends Entity {
 
 	public void goTo(Direction dir, int lg) {
 		this.setState(State.ClassiqueMove);
-		this.setDirection(dir);
 		boolean moveSucces = false;
 		if (this instanceof Robot) {
 			for (int i = 0; i < lg; i++) {
@@ -271,6 +270,7 @@ public abstract class Character extends Entity {
 
 		}
 		if (moveSucces) {
+			this.setDirection(dir);
 			this.pickUp();
 			this.setMovePoints(this.getMovePoints() - 1);
 			if (this.getMovePoints() == 0) {
