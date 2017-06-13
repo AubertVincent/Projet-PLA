@@ -22,10 +22,11 @@ public class GUIBehaviorInput {
 	String receivedString;
 	String sentString;
 
-	private boolean inputUpToDate;
 	private _Sequence receivedSequence;
-
 	private SequenceCorrector corrector = new SequenceCorrector();
+
+	private boolean inputUpToDate;
+	private boolean inputCorrect;
 
 	/**
 	 * 
@@ -48,6 +49,8 @@ public class GUIBehaviorInput {
 		textField = new TextField(container, defaultfont, 0, WindowHeight - textFieldHeight, WindowWidth,
 				textFieldHeight);
 		textField.setText(instructions);
+		inputUpToDate = false;
+		inputCorrect = false;
 		this.userInterface = userInterface;
 	}
 
@@ -61,29 +64,24 @@ public class GUIBehaviorInput {
 	 *            the context in which GUI components are created and rendered
 	 */
 	protected void update(GameContainer container, Player currentPlayer) {
-		// Check if you have write your instruction and press enter one time
-		if (!inputUpToDate) {
+
+		// Check if user has to write its instructions
+		if (!inputUpToDate || !inputCorrect) {
 			// get sent behavior instructions on an enter_key press
 			if (this.textField.hasFocus()) {
 				if (container.getInput().isKeyDown(Input.KEY_ENTER)) {
 					receivedString = textField.getText();
-					inputUpToDate = true;
-					userInterface.behaviorInputNeeded = false;
 					this.textField.setFocus(false);
 					System.out.println("> " + receivedString);
 					receivedSequence = Reader.parse(receivedString);
+					corrector.set(currentPlayer.getBesace(), receivedSequence);
+					inputCorrect = corrector.getCorrectness();
 				}
 			}
-			// If input was just updated, check if it is correct
-			if (inputUpToDate) {
-				corrector.set(currentPlayer.getBesace(), receivedSequence);
-
+			if (inputCorrect) {
+				inputUpToDate = true;
 			}
 		}
-	}
-
-	public void changeText(String s) {
-		textField.setText(s);
 	}
 
 	/**
@@ -101,9 +99,21 @@ public class GUIBehaviorInput {
 		this.textField.render(container, g);
 
 		// If the given behavior isn't correct, show the correction
-		if (!corrector.getCorrectness()) {
+		if (!inputCorrect) {
 			corrector.drawCorrectedList(g, userInterface.getWindowWidth(), userInterface.getWindowHeight());
 		}
+	}
+
+	public void requestUpdate() {
+		inputUpToDate = false;
+	}
+
+	public _Sequence getReceivedSequence() {
+		return receivedSequence;
+	}
+
+	public boolean getUpdateness() {
+		return inputUpToDate;
 	}
 
 }

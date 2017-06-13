@@ -14,8 +14,7 @@ import personnages.Robot;
 
 public class GUIRobot extends GUICharacter {
 
-	Robot mySelf;
-	GUIPlayer guiPlayer;
+	protected Robot mySelf;
 
 	// The Map<ActionClass, Integer> of the yet added class->number of sprites
 	// of its animation

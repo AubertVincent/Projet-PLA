@@ -19,10 +19,10 @@ import entite.Team;
 import exceptions.NotDoableException;
 import moteurDuJeu.Engine;
 import moteurDuJeu.PlayPhase;
-import personnages.Besace;
 import personnages.Player;
 import personnages.Robot;
 import pickable.PickAble;
+import sequence._Sequence;
 
 public class GUI extends BasicGame {
 
@@ -120,9 +120,6 @@ public class GUI extends BasicGame {
 
 		if (behaviorInputNeeded) {
 			this.rectBesace.render(container, g, engine.getCurrentModifier().getBesace());
-
-			Besace besace;
-			besace = engine.getPlayer(Team.ROUGE).getBesace();
 			this.inputTextField.render(container, g);
 		}
 
@@ -178,10 +175,6 @@ public class GUI extends BasicGame {
 				GUIRobot guiCurrentRobot = currentRobot.getMyselfGUI();
 				guiCurrentRobot.update(this, delta);
 			}
-		}
-		if (engine.getPlayPhase() == PlayPhase.behaviorModification) {
-			Player player = engine.getCurrentModifier();
-			this.inputTextField.update(container, player);
 		}
 	}
 
@@ -318,6 +311,14 @@ public class GUI extends BasicGame {
 	public boolean closeRequested() {
 		System.exit(0);
 		return false;
+	}
+
+	public _Sequence inputRequest() {
+		inputTextField.requestUpdate();
+		while (!inputTextField.getUpdateness()) {
+			;
+		}
+		return inputTextField.getReceivedSequence();
 	}
 
 	// ↓ Getters and setters ↓

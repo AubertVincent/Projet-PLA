@@ -7,8 +7,8 @@ import pickable.PickTunnel;
 
 public class Tunnel extends Movement {
 
-	protected Integer x;
-	protected Integer y;
+	private Integer x;
+	private Integer y;
 	private int lastX;
 	private int lastY;
 

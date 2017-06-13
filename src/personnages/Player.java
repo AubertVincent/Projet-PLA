@@ -31,7 +31,7 @@ public class Player extends Character {
 
 	private RobotList robotList;
 
-	private GUIPlayer mySelfGUI;
+	protected GUIPlayer mySelfGUI;
 
 	/**
 	 * Set a new Player
@@ -67,7 +67,6 @@ public class Player extends Character {
 		try {
 			this.mySelfGUI = new GUIPlayer(userInterface, getX(), getY(), Direction.SOUTH, 100, base.getBaseTeam(),
 					this);
-			super.setGUICharacter(this.mySelfGUI);
 		} catch (SlickException e) {
 			e.getMessage();
 		} catch (Exception e) {
@@ -83,7 +82,6 @@ public class Player extends Character {
 	}
 
 	public void removeRobot(Robot robot) {
-		this.mySelfGUI.removeGUIRobot(robot.getMyselfGUI());
 		robotList.remove(robot);
 	}
 

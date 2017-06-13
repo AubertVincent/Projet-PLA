@@ -31,6 +31,7 @@ public class Robot extends Character {
 	}
 
 	protected _Sequence myAutomaton;
+	// Used to cancel a SuicideBomber attack
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
 	private GUIRobot mySelfGUI;
 
@@ -44,8 +45,6 @@ public class Robot extends Character {
 				this, player.getMyselfGUI());
 		this.player = player;
 		this.player.addRobot(new Coordinates(base.getX(), base.getY()), this);
-		this.player.getMyselfGUI().addGUIRobot(this.mySelfGUI);
-		super.setGUICharacter(this.mySelfGUI);
 	}
 
 	public static List<Class<?>> getPossibleActionsList() {

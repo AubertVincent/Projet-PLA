@@ -51,7 +51,6 @@ public class Tree implements _Sequence {
 		try {
 			return op.getPickable();
 		} catch (Exception e) {
-			// Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

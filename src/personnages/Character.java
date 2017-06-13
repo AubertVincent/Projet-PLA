@@ -16,8 +16,6 @@ import pickable.PickAble;
 
 public abstract class Character extends Entity {
 
-	// protected Besace besace;
-
 	protected Direction direction = Direction.SOUTH;
 	protected int life;
 	protected int vision;
@@ -30,7 +28,6 @@ public abstract class Character extends Entity {
 	protected static List<Class<?>> possibleActionsList = new LinkedList<Class<?>>();
 	protected Team team;
 	protected Base base;
-	private GUICharacter mySelfGUI;
 
 	private State state;
 
@@ -191,10 +188,6 @@ public abstract class Character extends Entity {
 	public void setY(int y) {
 		this.getEntityMap().moveCharacter(this, this.getX(), y);
 		super.setY(y);
-	}
-
-	public void setGUICharacter(GUICharacter guiCharacter) {
-		this.mySelfGUI = guiCharacter;
 	}
 
 	public void goTo(Direction dir, int lg) {
