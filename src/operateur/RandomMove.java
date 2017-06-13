@@ -4,6 +4,8 @@ import carte.Map;
 import entite.Direction;
 import exceptions.NotDoableException;
 import personnages.Robot;
+import pickable.PickAble;
+import pickable.PickRandomMove;
 
 public class RandomMove extends Action implements _Random {
 
@@ -182,4 +184,15 @@ public class RandomMove extends Action implements _Random {
 			return true;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "RM";
+	}
+
+	@Override
+	public Class<? extends PickAble> getPickable() {
+		return PickRandomMove.class;
+	}
+
 }

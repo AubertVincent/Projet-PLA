@@ -3,6 +3,7 @@ package sequence;
 import exceptions.NotDoableException;
 import operateur.Behavior;
 import personnages.Robot;
+import pickable.PickAble;
 
 public class Tree implements _Sequence {
 
@@ -32,6 +33,28 @@ public class Tree implements _Sequence {
 	@Override
 	public String toString() {
 		return op.toString() + "[" + left.toString() + " , " + right.toString() + "]";
+	}
+
+	public Behavior getOp() {
+		return op;
+	}
+
+	public _Sequence getLeft() {
+		return left;
+	}
+
+	public _Sequence getRight() {
+		return right;
+	}
+
+	public Class<? extends PickAble> getOpPickable() {
+		try {
+			return op.getPickable();
+		} catch (Exception e) {
+			// Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

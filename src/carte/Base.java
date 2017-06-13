@@ -8,12 +8,24 @@ public class Base {
 	private int x;
 	private int y;
 	private Team baseTeam;
+	private static final int xBleu = 31;
+	private static final int yBleu = 15;
+	private static final int xRouge = 2;
+	private static final int yRouge = 4;
 
-	public Base(int x, int y, Team baseTeam) {
+	public Base(Team team) {
 		super();
-		this.x = x;
-		this.y = y;
-		this.baseTeam = baseTeam;
+		switch (team) {
+		case BLEU:
+			this.x = xBleu;
+			this.y = yBleu;
+			break;
+		case ROUGE:
+			this.x = xRouge;
+			this.y = yRouge;
+			break;
+		}
+		this.baseTeam = team;
 	}
 
 	public int getX() {

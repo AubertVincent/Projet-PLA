@@ -12,82 +12,83 @@ import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUICharacter;
-import operateur.Action;
 import pickable.PickAble;
-import pickable.Picked;
 
 public abstract class Character extends Entity {
 
-	protected Besace besace;
+	// protected Besace besace;
 
-	protected Direction direction;
+	protected Direction direction = Direction.SOUTH;
 	protected int life;
 	protected int vision;
-	protected int attack;
+	protected int damages;
 	protected int range;
 	protected int movePoints;
-	protected int attackPoints;
+	protected int remainingAttacks;
 	protected int recall;
-	protected int player;
 
-	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
+	protected static List<Class<?>> possibleActionsList = new LinkedList<Class<?>>();
 	protected Team team;
 	protected Base base;
-	private GUICharacter GUICharactere;
+	private GUICharacter mySelfGUI;
 
-	/**
-	 * Set a new character
-	 * 
-	 * @param x
-	 *            x coordinate on the map
-	 * @param y
-	 *            y coordinate on the map
-	 * @param direction
-	 *            Where the character is oriented
-	 * @param life
-	 *            Character's life
-	 * @param vision
-	 *            Character's vision range
-	 * @param attack
-	 *            Character's attack
-	 * @param range
-	 *            Character's range
-	 * @param movePoints
-	 *            Character's move points
-	 * @param recall
-	 *            Character's recall's time
-	 */
-	public Character(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
-			int range, int movePoints, int recall, Team team, int attackPoints, Base base, GUICharacter GUICharacter) {
+	private State state;
+
+	public Character(int x, int y, Map entityMap, Base base) {
+
 		super(x, y, entityMap);
-		this.direction = direction;
-		this.life = life;
-		this.vision = vision;
-		this.attack = attack;
-		this.range = range;
-		this.movePoints = movePoints;
-		this.recall = recall;
-		this.team = team;
-		this.attackPoints = attackPoints;
-		this.base = base;
-		this.GUICharactere = GUICharacter;
+		if (this instanceof Player) {
+
+			this.direction = Direction.SOUTH;
+			this.life = 10;
+			this.vision = 5;
+			this.damages = 3;
+			this.range = 3;
+			this.movePoints = 10;
+			this.remainingAttacks = 5;
+			this.recall = 3;
+
+			this.team = base.getBaseTeam();
+			this.base = base;
+			this.state = State.ClassiqueMove;
+		} else if (this instanceof Robot) {
+			this.direction = Direction.SOUTH;
+			this.life = 5;
+			this.vision = 1;
+			this.damages = 2;
+			this.range = 4;
+			this.movePoints = 5;
+			this.remainingAttacks = 3;
+			this.recall = 3;
+			this.team = base.getBaseTeam();
+			this.base = base;
+			this.state = State.ClassiqueMove;
+		} else {
+			try {
+				throw new Exception("Unimplemented subClass Character");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
-	// For test, delete when it's over
-	public Character(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
-			int range, int movePoints, int recall, Team team, int attackPoints, Base base) {
-		super(x, y, entityMap);
-		this.direction = direction;
-		this.life = life;
-		this.vision = vision;
-		this.attack = attack;
-		this.range = range;
-		this.movePoints = movePoints;
-		this.recall = recall;
-		this.team = team;
-		this.attackPoints = attackPoints;
-		this.base = base;
-	}
+	// // For test, delete when it's over
+	// public Character(int x, int y, Map entityMap, Besace besace, Direction
+	// direction, int life, int vision, int attack,
+	// int range, int movePoints, int recall, Team team, int attackPoints, Base
+	// base) {
+	// super(x, y, entityMap);
+	// this.direction = direction;
+	// this.life = life;
+	// this.vision = vision;
+	// this.attack = attack;
+	// this.range = range;
+	// this.movePoints = movePoints;
+	// this.recall = recall;
+	// this.team = team;
+	// this.attackPoints = attackPoints;
+	// this.base = base;
+	// }
 
 	public Base getBase() {
 		return base;
@@ -151,11 +152,11 @@ public abstract class Character extends Entity {
 	}
 
 	public int getAttack() {
-		return this.attack;
+		return this.damages;
 	}
 
 	public void setAttack(int attack) {
-		this.attack = attack;
+		this.damages = attack;
 	}
 
 	public int getRange() {
@@ -183,62 +184,115 @@ public abstract class Character extends Entity {
 	}
 
 	public int getAttackPoints() {
-		return this.attackPoints;
+		return this.remainingAttacks;
 	}
 
 	public void setAttackPoints(int aP) {
-		this.attackPoints = aP;
+		this.remainingAttacks = aP;
 	}
 
-	// public void resetBesace() {
-	// // FIXME adapt besace : implement clear for this class
-	// this.besace.clear();
-	// }
-
-	public void goTo(Direction dir, int lg) {
-
-		direction = dir;
-
-		switch (direction) {
-		case NORTH:
-			setY(getY() - lg);
-			break;
-		case SOUTH:
-			setY(getY() + lg);
-			break;
-		case EAST:
-			setX(getX() + lg);
-			break;
-		case WEST:
-			setX(getX() - lg);
-			break;
+	public Besace getBesace() throws Exception {
+		if (this instanceof Player) {
+			return this.getBesace();
+		} else {
+			throw new Exception("Pas de besace pour un robot");
 		}
 	}
 
+	@Override
+	public void setX(int x) {
+		this.getEntityMap().moveCharacter(this, x, this.getY());
+		super.setX(x);
+	}
+
+	@Override
+	public void setY(int y) {
+		this.getEntityMap().moveCharacter(this, this.getX(), y);
+		super.setY(y);
+	}
+
+	public void setGUICharacter(GUICharacter guiCharacter) {
+		this.mySelfGUI = guiCharacter;
+	}
+
+	public void goTo(Direction dir, int lg) {
+		for (int i = 0; i < lg; i++) {
+			switch (dir) {
+			case SOUTH:
+				this.setY((this.getY() + 1));
+				break;
+			case NORTH:
+				this.setY(this.getY() - 1);
+				break;
+			case WEST:
+				this.setX(this.getX() - 1);
+				break;
+			case EAST:
+				this.setX(this.getX() + 1);
+				break;
+			}
+
+			this.pickUp();
+			this.setMovePoints(this.getMovePoints() - 1);
+		}
+	}
+
+	public void pickUp() {
+		Besace PlayerBesace;
+		try {
+			PlayerBesace = this.getBesace();
+			for (Entity e : this.getEntityMap().getCell(this.getX(), this.getY()).getPickAbleList()) {
+				PlayerBesace.add(((PickAble) e).getClass());
+			}
+		} catch (Exception e1) {
+			e1.getMessage();
+		}
+
+	}
+
 	/**
-	 * Make an Entity attack an entity on the cell targeted
+	 * Make an Entity attack an entity on the targeted cell
 	 * 
 	 * @param target
 	 *            The cell targeted
 	 * @throws GameException
 	 */
-	public void classicAtk(Cell target) throws NotDoableException {
+	public void classicAtk(Cell target) {
+
+		Character opponent = null;
 		try {
-			Character opponent = target.getOpponent(this.team);
-			int lifeA = this.getLife();
-			int lifeE = opponent.getLife();
-			int atkA = this.getAttack();
-			int atkE = opponent.getAttack();
+			opponent = target.getOpponent(this.getTeam());
+			this.classicAtkTmp(target, opponent);
+			this.setAttackPoints(this.getAttackPoints() - 1);
 
-			lifeA = lifeA - atkE;
-			lifeE = lifeE - atkA;
-
-			this.setLife(lifeA);
-			opponent.setLife(lifeE);
-
+			if (opponent != null && opponent.getLife() <= 0) {
+				try {
+					throw new Exception("NYI");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		} catch (NotDoableException e) {
-			throw new NotDoableException("Personne à attaquer");
+			e.getMessage();
 		}
+
+		// FIXME
+		// If the opponent's hero dies => End of game
+		// opponent.dies();
+
+	}
+
+	private void classicAtkTmp(Cell target, Character opponent) {
+		int lifeA = this.getLife();
+		int lifeE = opponent.getLife();
+		int atkA = this.getAttack();
+		int atkE = opponent.getAttack();
+
+		lifeA = lifeA - atkE;
+		lifeE = lifeE - atkA;
+
+		this.setLife(lifeA);
+		opponent.setLife(lifeE);
 	}
 
 	public void cancelClassicAtk(Cell target) throws NotDoableException {
@@ -260,20 +314,6 @@ public abstract class Character extends Entity {
 		}
 	}
 
-	// TODO pas Terminer (=> a laisser dans le code)
-	// public void kill(Robot rob) {
-	// int x = rob.getX();
-	// int y = rob.getY();
-	// ArrayList<PickAble> listePickable;
-	// for (Class<? extends Action> r : rob.getPossibleActionsList()){
-	// listePickable.add(actionToPickAble(r));
-	// }
-	// }
-
-	public void kill(Player joueur) {
-
-	}
-
 	/**
 	 * Teleport an entity to the coordinates given
 	 * 
@@ -287,35 +327,7 @@ public abstract class Character extends Entity {
 	public void teleport(int x, int y) {
 		this.setX(x);
 		this.setY(y);
-	}
-
-	/**
-	 * Pick an entity ('picked' here) on the cell
-	 *
-	 * @throws GameException
-	 */
-	public void pickUp() throws NotDoableException {
-		List<Class<PickAble>> listPicked = null;
-		Picked picked = new Picked(listPicked);
-		Map myMap = this.getEntityMap();
-		boolean allPickedUp = false;
-		while (!allPickedUp) {
-			Class<PickAble> classPicked = myMap.getCell(this.getX(), this.getY()).pickableEntity();
-			if (classPicked != null) {
-				myMap.getCell(this.getX(), this.getY()).freePick(classPicked);
-				if (this.isRobot()) {
-					((Robot) this).getPlayer().getBesace().add(classPicked);
-				} else if (this.isPlayer()) {
-					((Player) this).getBesace().add(classPicked);
-				}
-				picked.add(classPicked);
-				// FIXME : this fonction take public void add(Class<PickAble>
-				// classPicked)
-				besace.add(picked);
-			} else {
-				allPickedUp = true;
-			}
-		}
+		this.pickUp();
 	}
 
 	public void placePickAble(int x, int y, Class<PickAble> picked, Map map) {
@@ -328,25 +340,14 @@ public abstract class Character extends Entity {
 		}
 	}
 
-	// FIXME : This fonction is obsolete beacause it didn't use a list anymore.
-	// We are not sure we need it
-	public void cancelPickUp() throws NotDoableException {
-		int x = this.getX();
-		int y = this.getY();
-		// TODO : implement size for the class Besace
-		Picked picked = besace.get(besace.size() - 1);
-		Map myMap = this.getEntityMap();
-		while (picked.size() > 0) {
-			Class<PickAble> classPicked = picked.get(0);
-			if (this.isRobot()) {
-				((Robot) this).getPlayer().getBesace().remove(classPicked);
-			} else if (this.isPlayer()) {
-				((Player) this).getBesace().remove(classPicked);
-			}
-			this.placePickAble(x, y, classPicked, myMap);
-			picked.remove(0);
-		}
-
+	public State getState() {
+		return state;
 	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
+	public abstract GUICharacter getMyselfGUI();
 
 }

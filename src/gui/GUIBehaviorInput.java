@@ -7,15 +7,25 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.gui.TextField;
 
+import personnages.Player;
 import reader.Reader;
+import sequence._Sequence;
+import test.SequenceCorrector;
 
 public class GUIBehaviorInput {
 
+	private static final String defaultInstructions = "(MC5N;AC) / (MC7N;AC))";
 	GUI userInterface;
 	TextField textField;
+	int textFieldHeight;
+
 	String receivedString;
 	String sentString;
+
 	private boolean inputUpToDate;
+	private _Sequence receivedSequence;
+
+	private SequenceCorrector corrector = new SequenceCorrector();
 
 	/**
 	 * 
@@ -32,12 +42,17 @@ public class GUIBehaviorInput {
 	 *            String with the example of instruction for the robots
 	 */
 	protected GUIBehaviorInput(GameContainer container, GUI userInterface, int WindowWidth, int WindowHeight,
-			int TextFieldHeight, String instructions) {
+			String instructions) {
 		Font defaultfont = container.getDefaultFont();
-		textField = new TextField(container, defaultfont, 0, WindowHeight - TextFieldHeight, WindowWidth,
-				TextFieldHeight);
+		textFieldHeight = 50;
+		textField = new TextField(container, defaultfont, 0, WindowHeight - textFieldHeight, WindowWidth,
+				textFieldHeight);
 		textField.setText(instructions);
 		this.userInterface = userInterface;
+	}
+
+	protected GUIBehaviorInput(GameContainer container, GUI userInterface, int WindowWidth, int WindowHeight) {
+		new GUIBehaviorInput(container, userInterface, WindowWidth, WindowHeight, defaultInstructions);
 	}
 
 	/**
@@ -45,7 +60,7 @@ public class GUIBehaviorInput {
 	 * @param container
 	 *            the context in which GUI components are created and rendered
 	 */
-	protected void update(GameContainer container) {
+	protected void update(GameContainer container, Player currentPlayer) {
 		// Check if you have write your instruction and press enter one time
 		if (!inputUpToDate) {
 			// get sent behavior instructions on an enter_key press
@@ -56,8 +71,13 @@ public class GUIBehaviorInput {
 					userInterface.behaviorInputNeeded = false;
 					this.textField.setFocus(false);
 					System.out.println("> " + receivedString);
-					Reader.parse(receivedString);
+					receivedSequence = Reader.parse(receivedString);
 				}
+			}
+			// If input was just updated, check if it is correct
+			if (inputUpToDate) {
+				corrector.set(currentPlayer.getBesace(), receivedSequence);
+
 			}
 		}
 	}
@@ -79,8 +99,11 @@ public class GUIBehaviorInput {
 		this.textField.setBackgroundColor(backgroundField);
 		this.textField.setBorderColor(backgroundField);
 		this.textField.render(container, g);
-		inputUpToDate = false;
-		// this.textField.setFocus(true);
+
+		// If the given behavior isn't correct, show the correction
+		if (!corrector.getCorrectness()) {
+			corrector.drawCorrectedList(g, userInterface.getWindowWidth(), userInterface.getWindowHeight());
+		}
 	}
 
 }

@@ -61,7 +61,17 @@ public class Cell {
 		listeEntites.clear();
 	}
 
-	public void FreeEntity() {
+	public List<Entity> getPickAbleList() {
+		List<Entity> pickableList = new ArrayList<Entity>();
+		for (Entity e : listeEntites) {
+			if (e.isPickAble()) {
+				pickableList.add(e);
+			}
+		}
+		return pickableList;
+	}
+
+	public void FreePickable() {
 		// TODO ne pas tout nettoyer
 	}
 
@@ -109,7 +119,8 @@ public class Cell {
 			// while (i < this.listeEntites.size()) {
 			if (this.listeEntites.get(i).isCharacter()) {
 				e = this.listeEntites.get(i);
-				if (((Character) e).getTeam() != team) {
+
+				if (!((Character) e).getTeam().equals(team)) {
 					return ((Character) e);
 				}
 			}

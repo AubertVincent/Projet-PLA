@@ -4,65 +4,74 @@ import java.util.Iterator;
 import java.util.List;
 
 import carte.Base;
+import carte.Coordinates;
 import carte.Map;
 import entite.Direction;
 import entite.Entity;
-import entite.Team;
 import exceptions.NotDoableException;
-import gui.GUICharacter;
-import operateur.Action;
-import operateur.ClassicAck;
-import operateur.MoveDir;
+import gui.GUI;
+import gui.GUIRobot;
 import sequence._Sequence;
 import util.Pair;
 
 public class Robot extends Character {
 
+	static {
+		// Move-like animations
+		possibleActionsList.add(operateur.MoveDir.class);
+		possibleActionsList.add(operateur.RandomMove.class);
+
+		// Teleport-like animations
+		possibleActionsList.add(operateur.Recall.class);
+		possibleActionsList.add(operateur.Tunnel.class);
+		possibleActionsList.add(operateur.SuicideBomber.class);
+
+<<<<<<< HEAD
+		// ClassicAttack-like animations
+		possibleActionsList.add(operateur.ClassicAck.class);
+=======
+		this.myAutomaton = myAutomaton;
+		this.explorationMap = entityMap;
+		this.explorationMap.getCell(this.x, this.y).setExplored(true);
+>>>>>>> automate_dev
+	}
+
 	protected _Sequence myAutomaton;
-	protected Player player;
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
+	private GUIRobot mySelfGUI;
+
+	private Player player;
 	private Map explorationMap;
 
-	// For test, delete when test is over
-	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
-			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton) {
-		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
-				base);
-
-		this.myAutomaton = myAutomaton;
-		this.explorationMap = entityMap;
-		this.explorationMap.getCell(this.x, this.y).setExplored(true);
-	}
-
-	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
-			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton,
-			Player player, java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife,
-			GUICharacter GUIPlayer) {
-		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
-				base, GUIPlayer);
+	public Robot(Base base, Map entityMap, GUI userInterface, _Sequence myAutomaton, Player player) {
+		super(base.getX(), base.getY(), entityMap, base);
 		this.myAutomaton = myAutomaton;
 		this.player = player;
 		this.explorationMap = entityMap;
 		this.explorationMap.getCell(this.x, this.y).setExplored(true);
-	}
 
-	public Robot(int x, int y, Map entityMap, Besace besace, Direction direction, int life, int vision, int attack,
-			int range, int movePoints, int recall, Team team, int attackPoints, Base base, _Sequence myAutomaton,
-			Player player, GUICharacter GUIPlayer) {
-		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
-				base, GUIPlayer);
+		// // For test, delete when test is over
+		// public Robot(int x, int y, Map entityMap, Besace besace, Direction
+		// direction, int life, int vision, int attack,
+		// int range, int movePoints, int recall, Team team, int attackPoints,
+		// Base base, _Sequence myAutomaton) {
+		// super(x, y, entityMap, besace, direction, life, vision, attack,
+		// range, movePoints, recall, team, attackPoints,
+		// base);
+		//
+		// this.myAutomaton = myAutomaton;
+		// }
+
 		this.myAutomaton = myAutomaton;
+		this.mySelfGUI = new GUIRobot(userInterface, base.getX(), base.getY(), Direction.SOUTH, 100, base.getBaseTeam(),
+				this, player.getMyselfGUI());
 		this.player = player;
+		this.player.addRobot(new Coordinates(base.getX(), base.getY()), this);
+		this.player.getMyselfGUI().addGUIRobot(this.mySelfGUI);
+		super.setGUICharacter(this.mySelfGUI);
 	}
 
-	static {
-		possibleActionsList.add(ClassicAck.class);
-		possibleActionsList.add(MoveDir.class);
-		// possibleActionsList.add(Tunnel.class);
-		// possibleActionsList.add(Recall.class);
-	}
-
-	public static List<Class<? extends Action>> getPossibleActionsList() {
+	public static List<Class<?>> getPossibleActionsList() {
 		return possibleActionsList;
 	}
 
@@ -89,16 +98,20 @@ public class Robot extends Character {
 		return false;
 	}
 
-	public Player getPlayer() {
-		return player;
-	}
-
 	public _Sequence getAutomaton() {
 		return this.myAutomaton;
 	}
 
 	public void setAutomaton(_Sequence automaton) {
 		this.myAutomaton = automaton;
+	}
+
+	public GUIRobot getMyselfGUI() {
+		return this.mySelfGUI;
+	}
+
+	public Player getPlayer() {
+		return this.player;
 	}
 
 	/**
@@ -222,5 +235,4 @@ public class Robot extends Character {
 	public void execute() throws NotDoableException {
 		myAutomaton.execute(this);
 	}
-
 }

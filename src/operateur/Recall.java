@@ -3,6 +3,8 @@ package operateur;
 import carte.Base;
 import exceptions.NotDoableException;
 import personnages.Robot;
+import pickable.PickAble;
+import pickable.PickRecall;
 
 public class Recall extends Movement {
 
@@ -76,7 +78,13 @@ public class Recall extends Movement {
 
 	@Override
 	public String toString() {
-		return super.toString() + "(" + time.toString() + ")";
+		return "MR" + time.toString();
 	}
+
+	@Override
+	public Class<? extends PickAble> getPickable() {
+		return PickRecall.class;
+	}
+
 
 }

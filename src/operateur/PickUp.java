@@ -2,6 +2,8 @@ package operateur;
 
 import exceptions.NotDoableException;
 import personnages.Robot;
+import pickable.PickAble;
+import pickable.PickPickUp;
 
 public class PickUp extends Action {
 
@@ -24,12 +26,19 @@ public class PickUp extends Action {
 
 	@Override
 	public void cancel(Robot robot) throws NotDoableException {
-		if (isDoable(robot)) {
-			throw new NotDoableException("Impossible de ramasser");
-		} else {
-			robot.cancelPickUp();
-		}
+		// never used
 
+		// if (isDoable(robot)) {
+		// throw new NotDoableException("Impossible de ramasser");
+		// } else {
+		// robot.cancelPickUp();
+		// }
+
+	}
+
+	@Override
+	public Class<? extends PickAble> getPickable() {
+		return PickPickUp.class;
 	}
 
 }

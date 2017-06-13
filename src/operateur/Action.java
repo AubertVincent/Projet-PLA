@@ -3,13 +3,20 @@ package operateur;
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import personnages.Robot;
+import pickable.PickAble;
+import sequence._IncompleteSequence;
 import sequence._Sequence;
 
-public abstract class Action implements _Sequence {
+public abstract class Action implements _Sequence, _IncompleteSequence {
 
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName();
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 
 	/**
@@ -37,10 +44,22 @@ public abstract class Action implements _Sequence {
 
 	@Override
 	public boolean isTree() {
+		return false;
+	}
 
+	@Override
+	public boolean isEmptyLeaf() {
 		return false;
 	}
 
 	public abstract void cancel(Robot r) throws NotDoableException;
+
+	public abstract Class<? extends PickAble> getPickable();
+
+	@Override
+	public boolean isEmptyRootTree() {
+		return false;
+	}
+
 
 }

@@ -2,6 +2,8 @@ package operateur;
 
 import exceptions.NotDoableException;
 import personnages.Robot;
+import pickable.PickAble;
+import pickable.PickTunnel;
 
 public class Tunnel extends Movement {
 
@@ -69,7 +71,12 @@ public class Tunnel extends Movement {
 
 	@Override
 	public String toString() {
-		return super.toString() + "(" + x.toString() + "," + y.toString() + ")";
+		return "MT" + x.toString() + "." + y.toString();
+	}
+
+	@Override
+	public Class<? extends PickAble> getPickable() {
+		return PickTunnel.class;
 	}
 
 }

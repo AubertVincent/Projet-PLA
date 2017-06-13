@@ -4,6 +4,8 @@ import carte.Map;
 import entite.Direction;
 import exceptions.NotDoableException;
 import personnages.Robot;
+import pickable.PickAble;
+import pickable.PickMoveDir;
 
 public class MoveDir extends Movement {
 
@@ -12,7 +14,7 @@ public class MoveDir extends Movement {
 
 	@Override
 	public String toString() {
-		return (super.toString() + "(" + dir.toString() + ", " + lg.toString() + ")");
+		return "MC" + lg.toString() + dir.toString();
 	}
 
 	/**
@@ -24,7 +26,6 @@ public class MoveDir extends Movement {
 	 *            Length of the move
 	 */
 	public MoveDir(Direction dir, int lg) {
-		super();
 		this.dir = dir;
 		this.lg = lg;
 	}
@@ -130,6 +131,11 @@ public class MoveDir extends Movement {
 			break;
 		}
 		r.goTo(dir, lg);
+	}
+
+	@Override
+	public Class<? extends PickAble> getPickable() {
+		return PickMoveDir.class;
 	}
 
 }

@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 .project
 doc/
-=======
 src/reader/
->>>>>>> moteur_dev
 .classpath
 .settings/
 doc/

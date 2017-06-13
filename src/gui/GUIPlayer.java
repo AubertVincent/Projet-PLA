@@ -11,34 +11,43 @@ import org.newdawn.slick.SlickException;
 
 import entite.Direction;
 import entite.Team;
-import operateur.Action;
 import operateur.ClassicAck;
 import operateur.MoveDir;
 import personnages.Player;
-import personnages.Robot;
 
 public class GUIPlayer extends GUICharacter {
 
 	private final List<GUIRobot> guiRobotlist;
 
-	private Player player;
+	Player mySelf;
 
 	// The Map<ActionClass, Integer> of the yet added class->number of sprites
 	// of its animation
-	private static Map<Class<? extends Action>, Integer> numberOfSprites = new HashMap<Class<? extends Action>, Integer>();
+	private static Map<Class<?>, Integer> numberOfSprites = new HashMap<Class<?>, Integer>();
 	static {
+		// Move-like animations
 		numberOfSprites.put(operateur.MoveDir.class, 9);
+		numberOfSprites.put(operateur.RandomMove.class, 9);
+
+		// Teleport-like animations
+		numberOfSprites.put(operateur.Recall.class, 7);
+		numberOfSprites.put(operateur.Tunnel.class, 7);
+		numberOfSprites.put(operateur.SuicideBomber.class, 7);
+		numberOfSprites.put(operateur.CreateRobot.class, 7);
+
+		// ClassicAttack-like animations
 		numberOfSprites.put(operateur.ClassicAck.class, 6);
+
 	}
 
 	// Given EVERY POSSIBLE doable action (by the Player), gives the paths to
 	// its animation and its number of sprites
-	protected static Map<Class<? extends Action>, String> actionSpritePath = new HashMap<Class<? extends Action>, String>();
-	protected static Map<Class<? extends Action>, Integer> actionSpriteNumberOfSprites = new HashMap<Class<? extends Action>, Integer>();
+	protected static Map<Class<?>, String> actionSpritePath = new HashMap<Class<?>, String>();
+	protected static Map<Class<?>, Integer> actionSpriteNumberOfSprites = new HashMap<Class<?>, Integer>();
 	static {
-		List<Class<? extends Action>> possibleActionList = Player.getPossibleActionsList();
-		for (Iterator<Class<? extends Action>> action = possibleActionList.iterator(); action.hasNext();) {
-			Class<? extends Action> currentAction = action.next();
+		List<Class<?>> possibleActionList = Player.getPossibleActionsList();
+		for (Iterator<Class<?>> action = possibleActionList.iterator(); action.hasNext();) {
+			Class<?> currentAction = action.next();
 			actionSpritePath.put(currentAction, "res/SpriteSheet" + currentAction.getSimpleName() + ".png");
 			actionSpriteNumberOfSprites.put(currentAction, numberOfSprites.get(currentAction));
 			System.out
@@ -50,37 +59,34 @@ public class GUIPlayer extends GUICharacter {
 	// TODO : bound to be dynamic when something is picked
 	List<Class<? extends operateur.Action>> animationsList = new LinkedList<Class<? extends operateur.Action>>();
 
-	public GUIPlayer(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team)
+	public GUIPlayer(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team, Player player)
 			throws SlickException, Exception {
-		super(userInterface, x, y, dir, animationDuration, team);
+		super(userInterface, x, y, dir, animationDuration, team, player);
 
 		guiRobotlist = new ArrayList<GUIRobot>();
 		animationsList.add(ClassicAck.class);
 		animationsList.add(MoveDir.class);
-		this.player = null;
+		this.mySelf = player;
 	}
 
 	public List<GUIRobot> getGuiRobotList() {
 		return this.guiRobotlist;
 	}
 
-	public void setPlayer(Player player) {
-		this.player = player;
+	public void setMySelf(Player player) {
+		this.mySelf = player;
 	}
 
-	public Player getPlayer() {
-		return this.player;
+	public Player getMyself() {
+		return this.mySelf;
 	}
 
-	public void createRobot(Robot robot, GUI userinterface) throws SlickException {
-		try {
-			GUIRobot tmp = new GUIRobot(userinterface, robot.getX(), robot.getY(), Direction.SOUTH, 100,
-					robot.getTeam());
+	public void addGUIRobot(GUIRobot guiRobot) {
+		guiRobotlist.add(guiRobot);
+	}
 
-			guiRobotlist.add(tmp);
-		} catch (Exception e) {
-			e.getMessage();
-		}
+	public void removeGUIRobot(GUIRobot guiRobot) {
+		guiRobotlist.remove(guiRobot);
 	}
 
 }

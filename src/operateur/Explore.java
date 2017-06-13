@@ -8,6 +8,8 @@ import carte.Map;
 import entite.Direction;
 import exceptions.NotDoableException;
 import personnages.Robot;
+import pickable.PickAble;
+import pickable.PickExplore;
 
 public class Explore extends Movement {
 
@@ -159,6 +161,13 @@ public class Explore extends Movement {
 		}
 
 	}
+
+	@Override
+	public Class<? extends PickAble> getPickable() {
+		return PickExplore.class;
+	}
+
+	// Future implementation of Dijkstra
 
 	// @Override
 	// public void execute(Robot r) throws NotDoableException {

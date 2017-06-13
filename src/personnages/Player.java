@@ -3,27 +3,35 @@ package personnages;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.newdawn.slick.SlickException;
+
 import carte.Base;
 import entite.Direction;
-import entite.Team;
-import gui.GUICharacter;
-import operateur.Action;
-import operateur.ClassicAck;
-import operateur.MoveDir;
+import gui.GUI;
+import gui.GUIPlayer;
 
 public class Player extends Character {
 
 	private Besace besace;
 
-	protected static List<Class<? extends Action>> possibleActionsList = new LinkedList<Class<? extends Action>>();
+	protected static List<Class<?>> possibleActionsList = new LinkedList<Class<?>>();
 	static {
-		possibleActionsList.add(ClassicAck.class);
-		possibleActionsList.add(MoveDir.class);
-		// possibleActionsList.add(Tunnel.class);
-		// possibleActionsList.add(Recall.class);
+		// Move-like animations
+		possibleActionsList.add(operateur.MoveDir.class);
+		possibleActionsList.add(operateur.RandomMove.class);
+
+		// Teleport-like animations
+		possibleActionsList.add(operateur.Recall.class);
+		possibleActionsList.add(operateur.Tunnel.class);
+		possibleActionsList.add(operateur.CreateRobot.class);
+
+		// ClassicAttack-like animations
+		possibleActionsList.add(operateur.ClassicAck.class);
 	}
 
 	private RobotList robotList;
+
+	private GUIPlayer mySelfGUI;
 
 	/**
 	 * Set a new Player
@@ -40,7 +48,7 @@ public class Player extends Character {
 	 *            Player's life
 	 * @param vision
 	 *            Player's vision range
-	 * @param attack
+	 * @param damages
 	 *            Player's attack
 	 * @param range
 	 *            Player's range
@@ -50,16 +58,24 @@ public class Player extends Character {
 	 *            Player's recall's time
 	 */
 
-	public static List<Class<? extends Action>> getPossibleActionsList() {
+	public static List<Class<?>> getPossibleActionsList() {
 		return possibleActionsList;
 	}
 
-	public Player(int x, int y, carte.Map entityMap, Besace besace, Direction direction, int life, int vision,
-			int attack, int range, int movePoints, int recall, int attackPoints, Team team, Base base,
-			GUICharacter GUIPlayer) {
-		super(x, y, entityMap, besace, direction, life, vision, attack, range, movePoints, recall, team, attackPoints,
-				base);
+	public Player(Base base, carte.Map entityMap, GUI userInterface) throws Exception {
+		super(base.getX(), base.getY(), entityMap, base);
+		try {
+			this.mySelfGUI = new GUIPlayer(userInterface, getX(), getY(), Direction.SOUTH, 100, base.getBaseTeam(),
+					this);
+			super.setGUICharacter(this.mySelfGUI);
+		} catch (SlickException e) {
+			e.getMessage();
+		} catch (Exception e) {
+			e.getMessage();
+		}
 		robotList = new RobotList();
+		this.besace = new Besace();
+
 	}
 
 	// For test delete when it's over
@@ -74,38 +90,9 @@ public class Player extends Character {
 		robotList.add(obj, robot);
 	}
 
-	// public void addOperator(Operator op) {
-	// Integer nbr = besace.get(op);
-	// if (nbr == null) {
-	// besace.put(op, 1);
-	// } else {
-	// besace.put(op, nbr + 1);
-	// }
-	// }
-	//
-	// public void removeOperator(Operator op) {
-	// Integer nbr = besace.get(op);
-	// if (nbr == 1) {
-	// besace.remove(op);
-	// } else {
-	// besace.put(op, nbr - 1);
-	// }
-	// }
-	//
-	// public boolean isInBesace(Operator op) {
-	// return besace.get(op) != null;
-	// }
-	//
-	// public int nbrInBesace(Operator op) {
-	// return besace.get(op);
-	// }
-
-	// TODO
-	public void CreateRobot() {
-	}
-
-	public RobotList getListRobot() {
-		return robotList;
+	public void removeRobot(Robot robot) {
+		this.mySelfGUI.removeGUIRobot(robot.getMyselfGUI());
+		robotList.remove(robot);
 	}
 
 	@Override
@@ -118,45 +105,9 @@ public class Player extends Character {
 		return false;
 	}
 
-	public void setX(int x) {
-		super.setX(x);
+	public GUIPlayer getMyselfGUI() {
+		return this.mySelfGUI;
 	}
-
-	public void setY(int y) {
-		super.setY(y);
-	}
-
-	public int getX() {
-		return super.getX();
-	}
-
-	public int getY() {
-		return super.getY();
-	}
-
-	// // Tests main
-	// public static void main(String[] args) {
-	// Player joueur = new Player(5, 12, Direction.NORTH, 1, 1, 1, 1, 5, 1);
-	//
-	// System.out.println("is player ? " + joueur.isPlayer());
-	// System.out.println("is Robot ? " + joueur.isRobot());
-	// joueur.addRobot(new Robot(0, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
-	// joueur.addRobot(new Robot(1, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
-	// joueur.addRobot(new Robot(2, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
-	// joueur.addRobot(new Robot(3, 0, Direction.EAST, 1, 0, 1, 1, 1, 1));
-	// System.out.println(joueur.getListRobot().size());
-	// System.out.println("Position avant : " + joueur.getX() + " " +
-	// joueur.getY());
-	// joueur.setX(10);
-	// joueur.setY(10);
-	// System.out.println("Position avant : " + joueur.getX() + " " +
-	// joueur.getY());
-	// ClassicAck test = new ClassicAck(4,5);
-	//// joueur.addOperator(test);
-	//// System.out.println("Is in the besace : ? " + joueur.isInBesace(test));
-	//
-	//
-	// }
 
 	@Override
 	public boolean isObstacle() {
@@ -164,7 +115,6 @@ public class Player extends Character {
 	}
 
 	public Besace getBesace() {
-
 		return besace;
 	}
 
@@ -177,4 +127,7 @@ public class Player extends Character {
 		return false;
 	}
 
+	public List<Robot> getRobotList() {
+		return robotList.getRobotList();
+	}
 }

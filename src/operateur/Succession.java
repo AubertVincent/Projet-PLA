@@ -2,9 +2,16 @@ package operateur;
 
 import exceptions.NotDoableException;
 import personnages.Robot;
+import pickable.PickAble;
+import pickable.PickSuccession;
 import sequence._Sequence;
 
 public class Succession extends Behavior {
+
+	@Override
+	public String toString() {
+		return ";";
+	}
 
 	/**
 	 * Set a new behavior by means of its 2 actions
@@ -29,6 +36,11 @@ public class Succession extends Behavior {
 		} catch (NotDoableException e) {
 			throw new NotDoableException("Action impossible");
 		}
+	}
+
+	@Override
+	public Class<? extends PickAble> getPickable() {
+		return PickSuccession.class;
 	}
 
 	/**
