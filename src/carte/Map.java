@@ -120,7 +120,7 @@ public class Map {
 	}
 
 	// TODO find cell
-	public static void nearestFreeCell(int x, int y) {
+	public Cell nearestFreeCell(int x, int y) {
 		// Cell freeCell = getCell(x, y);
 		int distance = 3;
 		for (int i = distance; i >= -distance; i--) {
@@ -135,6 +135,7 @@ public class Map {
 			}
 		}
 		// return freeCell;
+		return null;
 	}
 
 	public GUI getGUI() {
