@@ -81,7 +81,7 @@ public class Engine {
 	// TODO : Handle with the pickup of pickable when pass on a cell
 	public void goTo(Character player, Direction dir) {
 
-		if (player.getState().equals(State.Wait)) {
+		if (player.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.playerMovement)) {
 			player.goTo(dir, 1);
 		} else {
 			System.out.println("Pas de panique t'as pas fini de bouger");
@@ -108,7 +108,7 @@ public class Engine {
 	}
 
 	public void classicAtk(Character character, Direction dir) throws NotDoableException {
-		if (character.getState().equals(State.Wait)) {
+		if (character.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.playerMovement)) {
 			Cell target = null;
 			switch (dir) {
 			case NORTH:
@@ -134,7 +134,13 @@ public class Engine {
 	}
 
 	public void createRobot(GUI userInterface, Player player) {
-		if (player.getState().equals(State.RobotCreation)) {
+		if (player.getState()
+				.equals(State.Wait)/*
+									 * && this.playPhase.equals(PlayPhase.
+									 * behaviorModification)
+									 */) {
+			player.setState(State.RobotCreation);
+			player.getMyselfGUI().setActionRequest(true);
 			int Xbase;
 			int Ybase;
 			Xbase = player.getBase().getX();
@@ -145,7 +151,10 @@ public class Engine {
 				Ybase = freeCell.getY();
 
 			}
-			new Robot(Xbase, Ybase, myMap, userInterface, Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player);
+			Robot robot = new Robot(Xbase, Ybase, myMap, userInterface, Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"),
+					player);
+			player.getState().equals(State.Wait);
+			robot.pickUp();
 		} else {
 			System.out.println("Pas la phase de création de robot");
 		}

@@ -127,21 +127,21 @@ public class Map {
 	public Cell nearestFreeCell(int x, int y) {
 		Cell freeCell = getCell(x, y);
 		int distance = 1;
-		while (!freeCell.isFree()) {
-			for (int i = distance; i >= -distance; i--) {
+		while (!freeCell.isReachable()) {
+			for (int i = distance; i >= -distance && !freeCell.isReachable(); i--) {
 				if (i > 0) {
-					for (int j = -Math.abs(distance - i); j <= Math.abs(distance - i); j++) {
-						if ((i >= 0 && i < mapWidth()) && (j >= 0 && j < mapHeight())) {
-							if (getCell(i, j).isReachable()) {
-								freeCell = getCell(i, j);
+					for (int j = -Math.abs(distance - i); j <= Math.abs(distance - i) && !freeCell.isReachable(); j++) {
+						if ((x + i >= 0 && x + i < mapWidth()) && (y + j >= 0 && y + j < mapHeight())) {
+							if (getCell(x + i, y + j).isReachable()) {
+								freeCell = getCell(x + i, y + j);
 							}
 						}
 					}
 				} else {
-					for (int j = distance + i; j >= -(distance + i); j--) {
-						if ((i >= 0 && i < mapWidth()) && (j >= 0 && j < mapHeight())) {
-							if (getCell(i, j).isReachable()) {
-								freeCell = getCell(i, j);
+					for (int j = distance + i; j >= -(distance + i) && !freeCell.isReachable(); j--) {
+						if ((x + i >= 0 && x + i < mapWidth()) && (y + j >= 0 && y + j < mapHeight())) {
+							if (getCell(x + i, y + j).isReachable()) {
+								freeCell = getCell(x + i, y + j);
 							}
 						}
 					}

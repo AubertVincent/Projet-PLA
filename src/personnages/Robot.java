@@ -86,6 +86,7 @@ public class Robot extends Character {
 		return this.mySelfGUI;
 	}
 
+	@Override
 	public Player getPlayer() {
 		return this.player;
 	}

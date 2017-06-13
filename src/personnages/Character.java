@@ -281,15 +281,20 @@ public abstract class Character extends Entity {
 	}
 
 	public void pickUp() {
-		Besace PlayerBesace;
+		Besace besaceOfCurrentPlayer;
 		try {
-			PlayerBesace = this.getBesace();
+			if (this instanceof Player) {
+				besaceOfCurrentPlayer = this.getBesace();
+			} else {
+				besaceOfCurrentPlayer = this.getPlayer().getBesace();
+			}
 			List<PickAble> pickableList = this.getPickAbleList();
 			for (Entity e : pickableList) {
-				PlayerBesace.add(((PickAble) e).getClass());
+				besaceOfCurrentPlayer.add(((PickAble) e).getClass());
 				this.getEntityMap().removePickAble(e);
 			}
 			this.getPickAbleList().clear();
+
 		} catch (Exception e1) {
 			e1.getMessage();
 		}
@@ -402,4 +407,5 @@ public abstract class Character extends Entity {
 
 	public abstract GUICharacter getMyselfGUI();
 
+	public abstract Player getPlayer();
 }

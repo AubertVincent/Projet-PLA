@@ -121,4 +121,9 @@ public class Player extends Character {
 	public List<Robot> getRobotList() {
 		return robotList.getRobotList();
 	}
+
+	@Override
+	public Player getPlayer() {
+		return this;
+	}
 }

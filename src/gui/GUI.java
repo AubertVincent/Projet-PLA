@@ -192,21 +192,19 @@ public class GUI extends BasicGame {
 		System.out.println("LeftClick on (" + mouseXCell + ", " + mouseYCell + ")");
 
 		GUICharacter guiPerso;
-		try {
-			guiPerso = engine.getGUICharactereFromMouse(mouseXCell, mouseYCell);
-			if (!guiPerso.equals(null)) {
-				if (guiPerso instanceof GUIPlayer) {
-					engine.createRobot(this, (Player) guiPerso.getMyself());
-				} else {
-					try {
-						engine.behaviorModif(this, (Robot) guiPerso.getMyself());
-					} catch (Exception e) {
-						e.getMessage();
-					}
+
+		guiPerso = engine.getGUICharactereFromMouse(mouseXCell, mouseYCell);
+		if (!guiPerso.equals(null)) {
+
+			if (guiPerso instanceof GUIPlayer) {
+				engine.createRobot(this, (Player) guiPerso.getMyself());
+			} else {
+				try {
+					engine.behaviorModif(this, (Robot) guiPerso.getMyself());
+				} catch (Exception e) {
+					e.getMessage();
 				}
 			}
-		} catch (Exception e) {
-			e.getMessage();
 		}
 
 	}
