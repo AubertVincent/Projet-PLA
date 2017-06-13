@@ -143,7 +143,7 @@ public class Robot extends Character {
 
 	}
 
-	// TODO Update or delete if not needed
+	// Update or delete if not needed
 	public void cancelSuicideBomber() {
 		// int x = this.getX();
 		// int y = this.getY();
