@@ -3,7 +3,6 @@ package personnages;
 import java.util.Iterator;
 import java.util.List;
 
-import carte.Base;
 import carte.Coordinates;
 import carte.Map;
 import entite.Direction;
@@ -37,14 +36,15 @@ public class Robot extends Character {
 		possibleActionsList.add(operateur.ClassicAck.class);
 	}
 
-	public Robot(Base base, Map entityMap, GUI userInterface, _Sequence myAutomaton, Player player) {
-		super(base.getX(), base.getY(), entityMap, base);
+	public Robot(int x, int y, Map entityMap, GUI userInterface, _Sequence myAutomaton, Player player) {
+		super(x, y, entityMap, player.getBase());
 
 		this.myAutomaton = myAutomaton;
-		this.mySelfGUI = new GUIRobot(userInterface, getX(), getY(), Direction.SOUTH, 100, base.getBaseTeam(), this,
+		this.mySelfGUI = new GUIRobot(userInterface, x, y, Direction.SOUTH, 100, base.getBaseTeam(), this,
 				player.getMyselfGUI());
 		this.player = player;
-		this.player.addRobot(new Coordinates(base.getX(), base.getY()), this);
+		this.player.addRobot(new Coordinates(x, y), this);
+		entityMap.setEntity(this);
 	}
 
 	public static List<Class<?>> getPossibleActionsList() {

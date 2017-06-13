@@ -79,12 +79,13 @@ public class Engine {
 
 	// TODO : Handle with the pickup of pickable when pass on a cell
 	public void goTo(Character player, Direction dir) {
-		System.out.println("Position gu GUICharacter avant : " + player.getMyselfGUI().getCurrentX() + " ; "
+		System.out.println("Position GUICharacter avant : " + player.getMyselfGUI().getCurrentX() + " ; "
 				+ player.getMyselfGUI().getCurrentY());
+		System.out.println("Position Character avant : " + player.getX() + " ; " + player.getY());
 		player.goTo(dir, 1);
 		System.out.println("Position GUICharacter apres : " + player.getMyselfGUI().getCurrentX() + " ; "
 				+ player.getMyselfGUI().getCurrentY());
-
+		System.out.println("Position Character avant : " + player.getX() + " ; " + player.getY());
 	}
 
 	public void goTo(Character player, Direction dir, int lg) {
@@ -122,14 +123,13 @@ public class Engine {
 		int Ybase;
 		Xbase = player.getBase().getX();
 		Ybase = player.getBase().getY();
-		if (!getMap().getCell(Xbase, Ybase).isFree()) {
+		if (!getMap().getCell(Xbase, Ybase).isReachable()) {
 			Cell freeCell = getMap().nearestFreeCell(Xbase, Ybase);
 			Xbase = freeCell.getX();
 			Ybase = freeCell.getY();
 
 		}
-		Robot robot = new Robot(player.getBase(), myMap, userInterface, Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"),
-				player);
+		Robot robot = new Robot(Xbase, Ybase, myMap, userInterface, Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"), player);
 		getMap().getCell(Xbase, Ybase).setEntity(robot);
 		try {
 			throw new Exception("NYI");

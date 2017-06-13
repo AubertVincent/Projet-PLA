@@ -219,7 +219,7 @@ public abstract class GUICharacter {
 		switch (mySelf.getState()) {
 		case ClassiqueMove:
 			float nextXPx = getCurrentXPx(), nextYPx = getCurrentYPx();
-
+			setDirection(getMyself().getDirection());
 			if (getDirection() == Direction.WEST || getDirection() == Direction.EAST) {
 				nextXPx = getNextXPx(delta);
 			} else {
@@ -228,6 +228,7 @@ public abstract class GUICharacter {
 
 			if (isInPlace()) {
 				mySelf.setState(State.Wait);
+
 			} else {
 				int nextCellX = mainUserInterface.pixelToCellX(nextXPx);
 				int nextCellY = mainUserInterface.pixelToCellY(nextYPx);
@@ -359,10 +360,14 @@ public abstract class GUICharacter {
 	}
 
 	private float getTargetXPx() {
+		// int xplayer = this.getMyself().getX();
+		// return mainUserInterface.cellToPixelX(xplayer);
 		return xPxTarget;
 	}
 
 	private float getTargetYPx() {
+		// int yplayer = this.getMyself().getY();
+		// return mainUserInterface.cellToPixelY(yplayer);
 		return yPxTarget;
 	}
 

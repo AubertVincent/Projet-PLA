@@ -3,6 +3,7 @@ package carte;
 import java.util.ArrayList;
 import java.util.List;
 
+import entite.Entity;
 import entite.Team;
 import gui.GUI;
 import moteurDuJeu.Engine;
@@ -48,7 +49,7 @@ public class Map {
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				if (userInterface.isObstacle(i, j)) {
-					map[i][j].setEntity(new Obstacle(i, j, this));
+					this.setEntity(new Obstacle(i, j, this));
 				}
 			}
 		}
@@ -63,7 +64,7 @@ public class Map {
 				randomY = (int) (Math.random() * (height));
 			}
 			newPickAble = PickAble.randomPickable((int) ((int) 1 + (Math.random() * (9))), randomX, randomY, this);
-			map[randomX][randomY].setEntity(newPickAble);
+			this.setEntity(newPickAble);
 			this.addPickAble(newPickAble);
 			randomX = (int) (Math.random() * (width));
 			randomY = (int) (Math.random() * (height));
@@ -116,6 +117,10 @@ public class Map {
 
 	public void addPickAble(PickAble pickable) {
 		pickableList.add(pickable);
+	}
+
+	public void setEntity(Entity entity) {
+		this.getCell(entity.getX(), entity.getY()).setEntity(entity);
 	}
 
 	public Cell nearestFreeCell(int x, int y) {

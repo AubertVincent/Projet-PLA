@@ -49,7 +49,7 @@ public abstract class Character extends Entity {
 
 			this.team = base.getBaseTeam();
 			this.base = base;
-			this.state = State.ClassiqueMove;
+			this.state = State.Wait;
 		} else if (this instanceof Robot) {
 			this.direction = Direction.SOUTH;
 			this.life = 5;
@@ -61,7 +61,7 @@ public abstract class Character extends Entity {
 			this.recall = 3;
 			this.team = base.getBaseTeam();
 			this.base = base;
-			this.state = State.ClassiqueMove;
+			this.state = State.Wait;
 		} else {
 			try {
 				throw new Exception("Unimplemented subClass Character");
@@ -211,6 +211,7 @@ public abstract class Character extends Entity {
 	}
 
 	public void goTo(Direction dir, int lg) {
+		this.setState(State.ClassiqueMove);
 		if (this instanceof Robot) {
 			for (int i = 0; i < lg; i++) {
 				switch (dir) {
@@ -232,22 +233,22 @@ public abstract class Character extends Entity {
 			if (this.getMovePoints() > 0) {
 				switch (dir) {
 				case SOUTH:
-					if (getEntityMap().getCell(getX(), getY() + 1).isFree()) {
+					if (getEntityMap().getCell(getX(), getY() + 1).isReachable()) {
 						this.setY((this.getY() + 1));
 					}
 					break;
 				case NORTH:
-					if (getEntityMap().getCell(getX(), getY() - 1).isFree()) {
+					if (getEntityMap().getCell(getX(), getY() - 1).isReachable()) {
 						this.setY((this.getY() - 1));
 					}
 					break;
 				case WEST:
-					if (getEntityMap().getCell(getX() - 1, getY()).isFree()) {
+					if (getEntityMap().getCell(getX() - 1, getY()).isReachable()) {
 						this.setX(this.getX() - 1);
 					}
 					break;
 				case EAST:
-					if (getEntityMap().getCell(getX(), getY() + 1).isFree()) {
+					if (getEntityMap().getCell(getX(), getY() + 1).isReachable()) {
 						this.setX(this.getX() + 1);
 					}
 					break;
@@ -282,7 +283,7 @@ public abstract class Character extends Entity {
 	 * @throws GameException
 	 */
 	public void classicAtk(Cell target) {
-
+		this.setState(State.ClassicAttack);
 		Character opponent = null;
 		try {
 			opponent = target.getOpponent(this.getTeam());
