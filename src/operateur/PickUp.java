@@ -26,7 +26,7 @@ public class PickUp extends Action {
 
 	@Override
 	public void cancel(Robot robot) throws NotDoableException {
-		if (isDoable(r)) {
+		if (isDoable(robot)) {
 			throw new NotDoableException("Impossible de ramasser");
 		} else {
 			robot.cancelPickUp();
