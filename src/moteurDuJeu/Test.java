@@ -5,9 +5,11 @@ import java.util.List;
 
 import carte.Base;
 import carte.Map;
+import carte.Obstacle;
 import entite.Direction;
 import entite.Team;
 import exceptions.NotDoableException;
+import gui.GUI;
 import operateur.Behavior;
 import operateur.ClassicAck;
 import operateur.Explore;
@@ -19,7 +21,6 @@ import operateur.Recall;
 import operateur.Succession;
 import operateur.SuicideBomber;
 import operateur.Tunnel;
-import personnages.Besace;
 import personnages.Player;
 import personnages.Robot;
 import sequence.Tree;
@@ -27,10 +28,11 @@ import sequence._Sequence;
 
 public class Test {
 	private List<Robot> listRobot;
-	private Robot robot;
 
 	public Map my_map;
 	public Engine engine;
+
+	private Robot robot;
 	/*
 	 * public Robot(int x, int y, Map entityMap, Besace besace, Direction
 	 * direction, int life, int vision, int attack, int range, int movePoints,
@@ -39,12 +41,14 @@ public class Test {
 	 * Pair<Robot, Integer>> targetsLife, GUICharacter GUIPlayer)
 	 */
 
-	public Test() throws NotDoableException {
-		my_map = new Map();
+	public Test() throws Exception {
+		GUI gui = new GUI();
+		my_map = new Map(gui);
 		listRobot = new ArrayList<Robot>();
 		// x, y, entityMap, besace, direction, life, vision, attack, range,
 		// movePoints, recall, team, attackPoints,
 		// base
+		//
 		Behavior random = new RandomBar();
 		Behavior succession = new Succession();
 		Behavior priority = new Priority();
@@ -56,40 +60,47 @@ public class Test {
 		Tunnel t = new Tunnel(5, 9);
 		Explore explore = new Explore();
 		SuicideBomber bomb = new SuicideBomber();
-		int xRobot1 = 10;
-		int yRobot1 = 10;
+		int xRobot1 = 0;
+		int yRobot1 = 1;
 		int xRobot2 = 10;
-		int yRobot2 = 11;
-		int xRobot3 = 11;
-		int yRobot3 = 10;
-		// int xRobot4 = 10;
-		// int yRobot4 = 10;
+		int yRobot2 = 0;
+		int xRobot3 = 0;
+		int yRobot3 = 2;
+		int xRobot4 = 1;
+		int yRobot4 = 1;
 
-		_Sequence sequence = new Tree(random, bomb, bomb);
-		// _Sequence sequence2 = new Tree(b, t, t);
+		_Sequence sequence = new Tree(random, explore, explore);
+		_Sequence sequence2 = new Tree(random, m1, m1);
 		// _Sequence sequence2 = new Tree(b, ack, ack);
-		Robot robot1 = new Robot(xRobot1, yRobot1, my_map, new Besace(), Direction.SOUTH, 10, 1, 1, 1, 2, 1, Team.BLEU,
-				1, new Base(2, 4, Team.BLEU), sequence);
-		Robot robot2 = new Robot(xRobot2, yRobot2, my_map, new Besace(), Direction.SOUTH, 1, 1, 1, 1, 1, 1, Team.ROUGE,
-				1, new Base(21, 8, Team.ROUGE), sequence);
-		Robot robot3 = new Robot(xRobot3, yRobot3, my_map, new Besace(), Direction.SOUTH, 10, 1, 1, 1, 2, 1, Team.ROUGE,
-				1, new Base(21, 8, Team.ROUGE), sequence);
-		Player playerRouge = new Player(10, 9, my_map, new Besace(), Direction.SOUTH, 10, 1, 1, 1, 1, 1, 1, Team.ROUGE,
-				new Base(21, 8, Team.ROUGE));
+		Player playerRouge = new Player(new Base(Team.ROUGE), my_map);
+		Player playerBleu = new Player(new Base(Team.BLEU), my_map);
+		Robot robot1 = new Robot(new Base(Team.BLEU), my_map, sequence, playerRouge);
+		Robot robot2 = new Robot(new Base(Team.BLEU), my_map, sequence2, playerBleu);
+		Robot robot3 = new Robot(new Base(Team.BLEU), my_map, sequence2, playerBleu);
+		Robot robot4 = new Robot(new Base(Team.BLEU), my_map, sequence2, playerBleu);
+		my_map.setEntity(robot1);
+		my_map.setEntity(robot2);
+		my_map.setEntity(robot3);
+		my_map.setEntity(robot4);
+		robot1.teleport(xRobot1, yRobot1);
+		robot2.teleport(xRobot2, yRobot2);
+		robot3.teleport(xRobot3, yRobot3);
+		robot4.teleport(xRobot4, yRobot4);
+		robot1.getExplorationMap().getCell(0, 0).setExplored(true);
+		robot1.getExplorationMap().getCell(11, 10).setExplored(true);
+
 		// 10, 9, my_map, new Besace(), Direction.SOUTH, 10, 1, 1, 1, 1, 1, 1,
 		// Team.ROUGE,1, new Base(21, 8, Team.ROUGE)
 		// Robot robot4 = new Robot(xRobot4, yRobot4, my_map, new Besace(),
 		// Direction.SOUTH, 10, 1, 1, 1, 2, 1, Team.BLEU,
 		// 1, new Base(21, 8, Team.BLEU), sequence);
-		my_map.getCell(xRobot1, yRobot1).setEntity(robot);
-		my_map.getCell(xRobot2, yRobot2).setEntity(robot2);
-		my_map.getCell(xRobot3, yRobot3).setEntity(robot3);
-		my_map.getCell(10, 9).setEntity(playerRouge);
-		// my_map.getCell(1, 0).setEntity(new Obstacle(1, 0, my_map));
+		// my_map.getCell(10, 9).setEntity(playerRouge);
+		// my_map.getCell(17, 13).setEntity(playerBleu);
+		my_map.getCell(10, 9).setEntity(new Obstacle(1, 0, my_map));
 		// my_map.getCell(0, 1).setEntity(new Obstacle(0, 1, my_map));
 		// my_map.getCell(33, 5).setEntity(new Obstacle(5, 13, my_map));
 		// my_map.getCell(33, 7).setEntity(new Obstacle(5, 13, my_map));
-		listRobot.add(robot1);// new Robot(2, 4, ma_map, new Besace(),
+		// listRobot.add(robot1);// new Robot(2, 4, ma_map, new Besace(),
 		// listRobot.add(robot2); // Direction.SOUTH, 1, 1, 1, 1, 10, 1, 1,
 		// Team.ROUGE,
 
@@ -139,7 +150,7 @@ public class Test {
 		return robot;
 	}
 
-	public static void main(String[] args) throws NotDoableException {
+	public static void main(String[] args) throws Exception {
 		try {
 			new Test();
 		} catch (NotDoableException e) {

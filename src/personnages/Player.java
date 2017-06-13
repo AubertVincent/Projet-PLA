@@ -78,6 +78,14 @@ public class Player extends Character {
 
 	}
 
+	// delete when it's over
+	public Player(Base base, carte.Map entityMap) throws Exception {
+		super(base.getX(), base.getY(), entityMap, base);
+		robotList = new RobotList();
+		this.besace = new Besace();
+
+	}
+
 	public void addRobot(Object obj, Robot robot) {
 		robotList.add(obj, robot);
 	}
