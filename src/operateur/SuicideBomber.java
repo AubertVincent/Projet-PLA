@@ -40,12 +40,14 @@ public class SuicideBomber extends Attack {
 
 	@Override
 	public void execute(Robot r) throws NotDoableException {
+		// test
+		// System.out.println("J'execute suicide Bomber !");
+		// end test
 		if (!isDoable(r)) {
 			throw new NotDoableException("Il n'y a personne à tuer");
 		} else {
 			r.suicideBomber();
 			this.lastLife = r.getLife();
-			r.setLife(0);
 		}
 	}
 

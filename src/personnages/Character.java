@@ -41,13 +41,13 @@ public abstract class Character extends Entity {
 			this.vision = 5;
 			this.damages = 3;
 			this.range = 3;
-			this.movePoints = 10;
+			this.movePoints = 100;
 			this.remainingAttacks = 5;
 			this.recall = 3;
 
 			this.team = base.getBaseTeam();
 			this.base = base;
-			this.state = State.ClassiqueMove;
+			this.state = State.Wait;
 		} else if (this instanceof Robot) {
 			this.direction = Direction.SOUTH;
 			this.life = 5;
@@ -59,7 +59,7 @@ public abstract class Character extends Entity {
 			this.recall = 3;
 			this.team = base.getBaseTeam();
 			this.base = base;
-			this.state = State.ClassiqueMove;
+			this.state = State.Wait;
 		} else {
 			try {
 				throw new Exception("Unimplemented subClass Character");
@@ -68,6 +68,24 @@ public abstract class Character extends Entity {
 			}
 		}
 	}
+
+	// // For test, delete when it's over
+	// public Character(int x, int y, Map entityMap, Besace besace, Direction
+	// direction, int life, int vision, int attack,
+	// int range, int movePoints, int recall, Team team, int attackPoints, Base
+	// base) {
+	// super(x, y, entityMap);
+	// this.direction = direction;
+	// this.life = life;
+	// this.vision = vision;
+	// this.attack = attack;
+	// this.range = range;
+	// this.movePoints = movePoints;
+	// this.recall = recall;
+	// this.team = team;
+	// this.attackPoints = attackPoints;
+	// this.base = base;
+	// }
 
 	public Base getBase() {
 		return base;
@@ -191,37 +209,99 @@ public abstract class Character extends Entity {
 	}
 
 	public void goTo(Direction dir, int lg) {
-		for (int i = 0; i < lg; i++) {
-			switch (dir) {
-			case SOUTH:
-				this.setY((this.getY() + 1));
-				break;
-			case NORTH:
-				this.setY(this.getY() - 1);
-				break;
-			case WEST:
-				this.setX(this.getX() - 1);
-				break;
-			case EAST:
-				this.setX(this.getX() + 1);
-				break;
+		this.setState(State.ClassiqueMove);
+		boolean moveSucces = false;
+		if (this instanceof Robot) {
+			for (int i = 0; i < lg; i++) {
+				switch (dir) {
+				case SOUTH:
+					this.setY((this.getY() + 1));
+					moveSucces = true;
+					break;
+				case NORTH:
+					this.setY(this.getY() - 1);
+					moveSucces = true;
+					break;
+				case WEST:
+					this.setX(this.getX() - 1);
+					moveSucces = true;
+					break;
+				case EAST:
+					this.setX(this.getX() + 1);
+					moveSucces = true;
+					break;
+				}
+			}
+		} else {
+			if (this.getMovePoints() > 0) {
+
+				switch (dir) {
+				case SOUTH:
+					if (getEntityMap().getCell(getX(), getY() + 1).isReachable()) {
+						this.setY((this.getY() + 1));
+						moveSucces = true;
+					}
+					break;
+				case NORTH:
+					if (getEntityMap().getCell(getX(), getY() - 1).isReachable()) {
+						this.setY((this.getY() - 1));
+						moveSucces = true;
+					}
+					break;
+				case WEST:
+					if (getEntityMap().getCell(getX() - 1, getY()).isReachable()) {
+						this.setX(this.getX() - 1);
+						moveSucces = true;
+					}
+					break;
+				case EAST:
+					if (getEntityMap().getCell(getX() + 1, getY()).isReachable()) {
+						this.setX(this.getX() + 1);
+						moveSucces = true;
+					}
+					break;
+				}
+
+			} else {
+				System.out.println("Plus de point de mouvement");
 			}
 
+		}
+		if (moveSucces) {
+			this.setDirection(dir);
 			this.pickUp();
 			this.setMovePoints(this.getMovePoints() - 1);
+			if (this.getMovePoints() == 0) {
+				this.setState(State.Wait);
+			}
 		}
+
 	}
 
 	public void pickUp() {
-		Besace PlayerBesace;
+		Besace besaceOfCurrentPlayer;
 		try {
-			PlayerBesace = this.getBesace();
-			for (Entity e : this.getEntityMap().getPickAbleListOnCell(this.getX(), this.getY())) {
-				PlayerBesace.add(((PickAble) e).getClass());
+			if (this instanceof Player) {
+				besaceOfCurrentPlayer = this.getBesace();
+			} else {
+				besaceOfCurrentPlayer = this.getPlayer().getBesace();
 			}
+			List<PickAble> pickableList = this.getPickAbleList();
+			for (Entity e : pickableList) {
+				besaceOfCurrentPlayer.add(((PickAble) e).getClass());
+				this.getEntityMap().removePickAble(e);
+			}
+			this.getPickAbleList().clear();
+
 		} catch (Exception e1) {
 			e1.getMessage();
 		}
+
+	}
+
+	private List<PickAble> getPickAbleList() {
+
+		return this.getEntityMap().getPickAbleList(this);
 
 	}
 
@@ -233,7 +313,7 @@ public abstract class Character extends Entity {
 	 * @throws GameException
 	 */
 	public void classicAtk(Cell target) {
-
+		this.setState(State.ClassicAttack);
 		Character opponent = null;
 		try {
 			opponent = target.getOpponent(this.getTeam());
@@ -325,4 +405,5 @@ public abstract class Character extends Entity {
 
 	public abstract GUICharacter getMyselfGUI();
 
+	public abstract Player getPlayer();
 }

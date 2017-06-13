@@ -89,6 +89,9 @@ public class Besace {
 
 	}
 
+	/*
+	 * Return the entire besace
+	 */
 	public Map<Class<? extends PickAble>, Integer> get() {
 		return besace;
 	}
@@ -102,7 +105,6 @@ public class Besace {
 	}
 
 	public void remove(Class<? extends PickAble> myClass) {
-
 		besace.put(myClass, Math.max(0, besace.get(myClass) - 1));
 
 	}
@@ -148,6 +150,18 @@ public class Besace {
 			}
 		}
 		return resultingSequence;
+	}
+
+	public void clear() {
+		this.clear();
+	}
+
+	/*
+	 * Return the size of this besace
+	 */
+	// FIXME : It's not a list
+	public int size() {
+		return 0;
 	}
 
 }

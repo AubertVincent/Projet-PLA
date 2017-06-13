@@ -20,8 +20,19 @@ public class GUIRobot extends GUICharacter {
 	// of its animation
 	private static Map<Class<?>, Integer> numberOfSprites = new HashMap<Class<?>, Integer>();
 	static {
+		// Move-like animations
 		numberOfSprites.put(operateur.MoveDir.class, 9);
+		numberOfSprites.put(operateur.RandomMove.class, 9);
+
+		// Teleport-like animations
+		numberOfSprites.put(operateur.Recall.class, 7);
+		numberOfSprites.put(operateur.Tunnel.class, 7);
+		numberOfSprites.put(operateur.SuicideBomber.class, 7);
+		numberOfSprites.put(operateur.CreateRobot.class, 7);
+
+		// ClassicAttack-like animations
 		numberOfSprites.put(operateur.ClassicAck.class, 6);
+
 	}
 
 	// Given EVERY POSSIBLE doable action (by the Robot), gives the paths to
@@ -57,7 +68,6 @@ public class GUIRobot extends GUICharacter {
 			GUIPlayer guiPlayer) {
 		super(userInterface, x, y, dir, animationDuration, team, robot);
 
-		this.guiPlayer = guiPlayer;
 		animationsList.add(ClassicAck.class);
 		animationsList.add(MoveDir.class);
 		this.mySelf = robot;

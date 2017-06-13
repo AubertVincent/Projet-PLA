@@ -74,6 +74,7 @@ public class Player extends Character {
 		}
 		robotList = new RobotList();
 		this.besace = new Besace();
+		entityMap.setEntity(this);
 
 	}
 
@@ -119,5 +120,10 @@ public class Player extends Character {
 
 	public List<Robot> getRobotList() {
 		return robotList.getRobotList();
+	}
+
+	@Override
+	public Player getPlayer() {
+		return this;
 	}
 }

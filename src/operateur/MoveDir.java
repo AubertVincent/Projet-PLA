@@ -30,12 +30,6 @@ public class MoveDir extends Movement {
 		this.lg = lg;
 	}
 
-	public MoveDir(Direction dir, Integer lg) {
-		super();
-		this.dir = dir;
-		this.lg = lg;
-	}
-
 	/**
 	 * A move can be done if there is no obstacle
 	 */
@@ -45,38 +39,73 @@ public class MoveDir extends Movement {
 		int x = r.getX();
 		int y = r.getY();
 		Map myMap = r.getEntityMap();
+		// Test if there is enough move point and if it didn't go outside the
+		// map
+		if (r.getMovePoints() >= lg) {
+			for (int i = 1; i <= lg; i++) {
+				switch (dir) {
+				case NORTH:
+					if (y - i < 0 || y - i > myMap.mapHeight() || !myMap.getCell(x, y - i).isReachable()) {
+						return false;
+					}
+					break;
+				case EAST:
 
-		for (int i = 0; i < lg; i++) {
-			switch (dir) {
-			case NORTH:
-				if (!myMap.isReachable(x, y - i)) {
-					return false;
+					if (x + i < 0 || x + i > myMap.mapWidth() || !myMap.getCell(x + i, y).isReachable()) {
+						return false;
+					}
+					break;
+				case SOUTH:
+					if (y + i < 0 || y + i > myMap.mapHeight() || !myMap.getCell(x, y + i).isReachable()) {
+						return false;
+					}
+					break;
+				case WEST:
+
+					if (x - i < 0 || x - i > myMap.mapWidth() || !myMap.getCell(x - i, y).isReachable()) {
+						return false;
+
+					}
+					break;
 				}
-				break;
-			case EAST:
-				if (!myMap.isReachable(x + i, y)) {
-					return false;
-				}
-				break;
-			case SOUTH:
-				if (!myMap.isReachable(x, y + i)) {
-					return false;
-				}
-				break;
-			case WEST:
-				if (!myMap.isReachable(x - i, y)) {
-					return false;
-				}
-				break;
 			}
+		} else {
+			return false;
 		}
 		return true;
 	}
 
 	public void execute(Robot r) throws NotDoableException {
-
+		// test
+		// System.out.println("J'execute un mouvement !");
+		// end test
 		if (!isDoable(r)) {
-			throw new NotDoableException("Un obstacle est sur votre chemin");
+			// TODO Dissociates 2 cases : it's not doable because of movepoint
+			// or obstacle
+			throw new NotDoableException(
+					"Vous ne pouvez pas vous deplacer ici (Pas assez de points de mouvement ou case inateignable)");
+		}
+		switch (dir) {
+		case NORTH:
+			for (int i = 1; i <= lg; i++) {
+				r.getExplorationMap().getCell(r.getX(), r.getY() - i).setExplored(true);
+			}
+			break;
+		case EAST:
+			for (int i = 1; i <= lg; i++) {
+				r.getExplorationMap().getCell(r.getX() + 1, r.getY()).setExplored(true);
+			}
+			break;
+		case SOUTH:
+			for (int i = 1; i <= lg; i++) {
+				r.getExplorationMap().getCell(r.getX(), r.getY() + i).setExplored(true);
+			}
+			break;
+		case WEST:
+			for (int i = 1; i <= lg; i++) {
+				r.getExplorationMap().getCell(r.getX() - i, r.getY()).setExplored(true);
+			}
+			break;
 		}
 		r.goTo(dir, lg);
 
