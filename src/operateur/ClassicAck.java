@@ -36,19 +36,55 @@ public class ClassicAck extends Attack {
 		int y = r.getY();
 		boolean b;
 		Team team = r.getTeam();
-		Map map = r.getEntityMap();
-		Cell testEast = map.getCell(x + 1, y);
-		Cell testSouth = map.getCell(x, y + 1);
-		Cell testNorth = map.getCell(x, y - 1);
-		Cell testWest = map.getCell(x - 1, y);
-		b = !(!(testEast.opponentHere(team)) && !(testWest.opponentHere(team)) && !(testSouth.opponentHere(team))
-				&& !(testNorth.opponentHere(team)));
-		return b;
+		Map myMap = r.getEntityMap();
+
+		boolean isInCorner = ((x == 0 && y == 0) || (x == 0 && y == myMap.mapHeight() - 1)
+				|| (x == myMap.mapWidth() - 1 && y == 0) || (x == myMap.mapWidth() - 1 && y == myMap.mapHeight() - 1));
+		if (x == 0 && y == 0) {
+			return myMap.getCell(x, y + 1).opponentHere(team) || myMap.getCell(x + 1, y).opponentHere(team);
+		} else if (x == myMap.mapWidth() - 1 && y == 0) {
+
+			return myMap.getCell(x, y + 1).opponentHere(team) || myMap.getCell(x - 1, y).opponentHere(team);
+
+		} else if (x == myMap.mapWidth() - 1 && y == myMap.mapHeight() - 1) {
+			return myMap.getCell(x, y - 1).opponentHere(team) || myMap.getCell(x - 1, y).opponentHere(team);
+
+		} else if (x == 0 && y == myMap.mapHeight() - 1) {
+			return myMap.getCell(x, y - 1).opponentHere(team) || myMap.getCell(x + 1, y).opponentHere(team);
+
+		} else if (!isInCorner && x == 0) {
+			return myMap.getCell(x, y - 1).opponentHere(team) || myMap.getCell(x, y + 1).opponentHere(team)
+					|| myMap.getCell(x + 1, y).opponentHere(team);
+
+		} else if (!isInCorner && y == 0) {
+			return myMap.getCell(x + 1, y).opponentHere(team) || myMap.getCell(x, y + 1).opponentHere(team)
+					|| myMap.getCell(x - 1, y).opponentHere(team);
+
+		} else if (!isInCorner && y == myMap.mapHeight() - 1) {
+			return myMap.getCell(x + 1, y).opponentHere(team) || myMap.getCell(x, y - 1).opponentHere(team)
+					|| myMap.getCell(x - 1, y).opponentHere(team);
+
+		} else if (!isInCorner && x == myMap.mapWidth() - 1) {
+			return myMap.getCell(x, y - 1).opponentHere(team) || myMap.getCell(x, y + 1).opponentHere(team)
+					|| myMap.getCell(x - 1, y).opponentHere(team);
+
+		} else {
+			Cell testEast = myMap.getCell(x + 1, y);
+			Cell testSouth = myMap.getCell(x, y + 1);
+			Cell testNorth = myMap.getCell(x, y - 1);
+			Cell testWest = myMap.getCell(x - 1, y);
+			b = !(!(testEast.opponentHere(team)) && !(testWest.opponentHere(team)) && !(testSouth.opponentHere(team))
+					&& !(testNorth.opponentHere(team)));
+			return b;
+		}
 	}
 
 	@Override
 
 	public void execute(Robot r) throws NotDoableException {
+		// test
+		// System.out.println("J'execute une attaque classique !");
+		// end test
 		if (!isDoable(r)) {
 			throw new NotDoableException("Il n'y a personne à attaquer ou pas assez de point d'attaque");
 		} else {

@@ -1,6 +1,5 @@
 package operateur;
 
-import carte.Cell;
 import carte.Map;
 import exceptions.NotDoableException;
 import personnages.Robot;
@@ -19,20 +18,17 @@ public class SuicideBomber extends Attack {
 		int x = r.getX();
 		int y = r.getY();
 		Map m = r.getEntityMap();
-		Cell cellule = m.getCell(x + 1, y);
-		if (cellule.opponentHere(r.getTeam())) {
+
+		if (x < r.getEntityMap().mapWidth() && m.getCell(x + 1, y).opponentHere(r.getTeam())) {
 			return true;
 		}
-		cellule = m.getCell(x - 1, y);
-		if (cellule.opponentHere(r.getTeam())) {
+		if (x > 0 && m.getCell(x - 1, y).opponentHere(r.getTeam())) {
 			return true;
 		}
-		cellule = m.getCell(x, y - 1);
-		if (cellule.opponentHere(r.getTeam())) {
+		if (y > 0 && m.getCell(x, y - 1).opponentHere(r.getTeam())) {
 			return true;
 		}
-		cellule = m.getCell(x, y - 1);
-		if (cellule.opponentHere(r.getTeam())) {
+		if (y < r.getEntityMap().mapHeight() && m.getCell(x, y + 1).opponentHere(r.getTeam())) {
 			return true;
 		}
 		return false;
@@ -40,6 +36,9 @@ public class SuicideBomber extends Attack {
 
 	@Override
 	public void execute(Robot r) throws NotDoableException {
+		// test
+		// System.out.println("J'execute suicide Bomber !");
+		// end test
 		if (!isDoable(r)) {
 			throw new NotDoableException("Il n'y a personne à tuer");
 		} else {

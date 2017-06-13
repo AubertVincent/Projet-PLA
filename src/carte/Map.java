@@ -6,7 +6,6 @@ import java.util.List;
 import entite.Team;
 import gui.GUI;
 import moteurDuJeu.Engine;
-import moteurDuJeu.Test;
 import personnages.Character;
 import personnages.Robot;
 import pickable.PickAble;
@@ -31,13 +30,6 @@ public class Map {
 				map[i][j] = new Cell(i, j);
 			}
 		}
-	}
-
-	// Used for test delete when it's over
-	public void init(Test test) {
-		map[5][10].setEntity(test.getRobot(Team.ROUGE));
-		map[5][11].setEntity(test.getRobot(Team.BLEU));
-		map[5][12].setEntity(new Obstacle(5, 5, this));
 	}
 
 	public void init(GUI userInterface, Engine engine) {

@@ -36,13 +36,20 @@ public class Tunnel extends Movement {
 	 */
 	@Override
 	protected boolean isDoable(Robot r) {
-		return (r.getEntityMap().getCell(x, y).isReachable());
+		if (x < r.getEntityMap().mapWidth() && y < r.getEntityMap().mapHeight() && x > 0 && y > 0) {
+			return (r.getEntityMap().getCell(x, y).isReachable());
+		} else {
+			return false;
+		}
 	}
 
 	@Override
 	public void execute(Robot r) throws NotDoableException {
+		// test
+		// System.out.println("J'execute le tunnel !");
+		// endtest
 		if (!isDoable(r)) {
-			throw new NotDoableException("La case d'arrivée est occupée");
+			throw new NotDoableException("La case d'arrivée est inateignable");
 		}
 		this.lastX = x;
 		this.lastY = y;

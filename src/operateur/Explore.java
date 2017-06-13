@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import carte.Cell;
+import carte.Map;
 import entite.Direction;
 import exceptions.NotDoableException;
 import personnages.Robot;
@@ -18,14 +19,47 @@ public class Explore extends Movement {
 
 	@Override
 	protected boolean isDoable(Robot r) {
-		if (!(r.getEntityMap().getCell(r.getX() + 1, r.getY()).isReachable())
-				&& !(r.getEntityMap().getCell(r.getX() - 1, r.getY()).isReachable())
-				&& !(r.getEntityMap().getCell(r.getX(), r.getY() + 1).isReachable())
-				&& !(r.getEntityMap().getCell(r.getX(), r.getY() - 1).isReachable())) {
+		int x = r.getX();
+		int y = r.getY();
+		Map myMap = r.getEntityMap();
+		boolean isInCorner = ((x == 0 && y == 0) || (x == 0 && y == myMap.mapHeight() - 1)
+				|| (x == myMap.mapWidth() - 1 && y == 0) || (x == myMap.mapWidth() - 1 && y == myMap.mapHeight() - 1));
+		if (x == 0 && y == 0 && !myMap.getCell(x, y + 1).isReachable() && !myMap.getCell(x + 1, y).isReachable()) {
 			return false;
+		} else if (x == myMap.mapWidth() - 1 && y == 0 && !myMap.getCell(x, y + 1).isReachable()
+				&& !myMap.getCell(x - 1, y).isReachable()) {
+			return false;
+		} else if (x == myMap.mapWidth() - 1 && y == myMap.mapHeight() - 1 && !myMap.getCell(x, y - 1).isReachable()
+				&& !myMap.getCell(x - 1, y).isReachable()) {
+			return false;
+		} else if (x == 0 && y == myMap.mapHeight() - 1 && !myMap.getCell(x, y - 1).isReachable()
+				&& !myMap.getCell(x + 1, y).isReachable()) {
+			return false;
+		} else if (!isInCorner && x == 0 && !myMap.getCell(x, y - 1).isReachable()
+				&& !myMap.getCell(x, y + 1).isReachable() && !myMap.getCell(x + 1, y).isReachable()) {
+			return false;
+		} else if (!isInCorner && y == 0 && !myMap.getCell(x + 1, y).isReachable()
+				&& !myMap.getCell(x, y + 1).isReachable() && !myMap.getCell(x - 1, y).isReachable()) {
+			return false;
+		} else if (!isInCorner && y == myMap.mapHeight() - 1 && !myMap.getCell(x + 1, y).isReachable()
+				&& !myMap.getCell(x, y - 1).isReachable() && !myMap.getCell(x - 1, y).isReachable()) {
+			return false;
+		} else if (!isInCorner && x == myMap.mapWidth() - 1 && !myMap.getCell(x, y - 1).isReachable()
+				&& !myMap.getCell(x, y + 1).isReachable() && !myMap.getCell(x - 1, y).isReachable()) {
+			return false;
+		} else {
+			return true;
 		}
-		return true;
 	}
+
+	// if (!(r.getEntityMap().getCell(r.getX() + 1, r.getY()).isReachable())
+	// && !(r.getEntityMap().getCell(r.getX() - 1, r.getY()).isReachable())
+	// && !(r.getEntityMap().getCell(r.getX(), r.getY() + 1).isReachable())
+	// && !(r.getEntityMap().getCell(r.getX(), r.getY() - 1).isReachable())) {
+	// return false;
+	// }
+	// return true;
+	// }
 
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
@@ -35,6 +69,9 @@ public class Explore extends Movement {
 
 	@Override
 	public void execute(Robot r) throws NotDoableException {
+		// test
+		// System.out.println("J'execute le tunnel !");
+		// end test
 		if (!isDoable(r)) {
 			throw new NotDoableException("Ce robot est entouré d'obstacles");
 		}
@@ -43,10 +80,6 @@ public class Explore extends Movement {
 		int y = r.getY();
 		int randomCpt = 0;
 		int myRandom = 0;
-		Cell testNorth = r.getEntityMap().getCell(x, y - 1);
-		Cell testSouth = r.getEntityMap().getCell(x, y + 1);
-		Cell testEast = r.getEntityMap().getCell(x + 1, y);
-		Cell testWest = r.getEntityMap().getCell(x - 1, y);
 		List<Cell> reachable = new ArrayList<Cell>();
 
 		while (range > 0) {
@@ -55,54 +88,58 @@ public class Explore extends Movement {
 			}
 			reachable.clear();
 			randomCpt = 0;
-			if (testNorth.isReachable() && !(testNorth.isExplored())) {
-				reachable.add(testNorth);
+			if (y - 1 >= 0 && r.getEntityMap().getCell(x, y - 1).isReachable()
+					&& !(r.getEntityMap().getCell(x, y - 1).isExplored())) {
+				reachable.add(r.getEntityMap().getCell(x, y - 1));
 				randomCpt++;
 			}
-			if (testEast.isReachable() && !(testEast.isExplored())) {
-				reachable.add(testEast);
+			if (x + 1 < r.getEntityMap().mapWidth() && r.getEntityMap().getCell(x + 1, y).isReachable()
+					&& !(r.getEntityMap().getCell(x + 1, y).isExplored())) {
+				reachable.add(r.getEntityMap().getCell(x + 1, y));
 				randomCpt++;
 			}
-			if (testWest.isReachable() && !(testWest.isExplored())) {
-				reachable.add(testWest);
+			if (x - 1 >= 0 && r.getEntityMap().getCell(x - 1, y).isReachable()
+					&& !(r.getEntityMap().getCell(x - 1, y).isExplored())) {
+				reachable.add(r.getEntityMap().getCell(x - 1, y));
 				randomCpt++;
 			}
-			if (testSouth.isReachable() && !(testSouth.isExplored())) {
-				reachable.add(testSouth);
+			if (y + 1 < r.getEntityMap().mapHeight() && r.getEntityMap().getCell(x, y + 1).isReachable()
+					&& !(r.getEntityMap().getCell(x, y + 1).isExplored())) {
+				reachable.add(r.getEntityMap().getCell(x, y + 1));
 				randomCpt++;
 			}
 			if (randomCpt != 0) {
 				myRandom = (int) (Math.random() * randomCpt);
 				if (reachable.get(myRandom).getX() < x && reachable.get(myRandom).getY() == y) {
 					r.getExplorationMap().getCell(x - 1, y).setExplored(true);
-					r.goTo(Direction.NORTH, 1);
+					r.goTo(Direction.WEST, 1);
 				} else if (reachable.get(myRandom).getX() > x && reachable.get(myRandom).getY() == y) {
 					r.getExplorationMap().getCell(x + 1, y).setExplored(true);
-					r.goTo(Direction.SOUTH, 1);
+					r.goTo(Direction.EAST, 1);
 				} else if (reachable.get(myRandom).getX() == x && reachable.get(myRandom).getY() < y) {
 					r.getExplorationMap().getCell(x, y - 1).setExplored(true);
-					r.goTo(Direction.WEST, 1);
+					r.goTo(Direction.NORTH, 1);
 				} else if (reachable.get(myRandom).getX() == x && reachable.get(myRandom).getY() > y) {
 					r.getExplorationMap().getCell(x, y + 1).setExplored(true);
-					r.goTo(Direction.EAST, 1);
+					r.goTo(Direction.SOUTH, 1);
 				}
 			} else {
 				randomCpt = 0;
 				reachable.clear();
-				if (testNorth.isReachable()) {
-					reachable.add(testNorth);
+				if (y - 1 >= 0 && r.getEntityMap().getCell(x, y - 1).isReachable()) {
+					reachable.add(r.getEntityMap().getCell(x, y - 1));
 					randomCpt++;
 				}
-				if (testEast.isReachable()) {
-					reachable.add(testEast);
+				if (x + 1 < r.getEntityMap().mapWidth() && r.getEntityMap().getCell(x + 1, y).isReachable()) {
+					reachable.add(r.getEntityMap().getCell(x + 1, y));
 					randomCpt++;
 				}
-				if (testWest.isReachable()) {
-					reachable.add(testWest);
+				if (x - 1 >= 0 && r.getEntityMap().getCell(x - 1, y).isReachable()) {
+					reachable.add(r.getEntityMap().getCell(x - 1, y));
 					randomCpt++;
 				}
-				if (testSouth.isReachable()) {
-					reachable.add(testSouth);
+				if (y + 1 < r.getEntityMap().mapHeight() && r.getEntityMap().getCell(x, y + 1).isReachable()) {
+					reachable.add(r.getEntityMap().getCell(x, y + 1));
 					randomCpt++;
 				}
 				myRandom = (int) (Math.random() * randomCpt);
