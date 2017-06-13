@@ -256,6 +256,9 @@ public abstract class Character extends Entity {
 		}
 		this.pickUp();
 		this.setMovePoints(this.getMovePoints() - 1);
+		if (this.getMovePoints() == 0) {
+			this.setState(State.RobotCreation);
+		}
 	}
 
 	public void pickUp() {
