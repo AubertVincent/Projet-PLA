@@ -28,6 +28,9 @@ public class Succession extends Behavior {
 	@Override
 	public void execute(Robot r, _Sequence left, _Sequence right) throws NotDoableException {
 		try {
+			// test
+			// System.out.println("Une succession !");
+			// end test
 			left.execute(r);
 			right.execute(r);
 		} catch (NotDoableException e) {

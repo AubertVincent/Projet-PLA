@@ -15,7 +15,6 @@ public class Obstacle extends Entity {
 
 	@Override
 	public boolean isCharacter() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

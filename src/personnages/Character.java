@@ -52,7 +52,6 @@ public abstract class Character extends Entity {
 	protected static List<Class<?>> possibleActionsList = new LinkedList<Class<?>>();
 	protected Team team;
 	protected Base base;
-	private GUICharacter mySelfGUI;
 
 	private State state;
 
@@ -66,12 +65,13 @@ public abstract class Character extends Entity {
 			this.vision = 5;
 			this.damages = 3;
 			this.range = 3;
-			this.movePoints = 10;
+			this.movePoints = 100;
 			this.remainingAttacks = 5;
 			this.recall = 3;
 
 			this.team = base.getBaseTeam();
 			this.base = base;
+			this.state = State.Wait;
 		} else if (this instanceof Robot) {
 			this.direction = Direction.SOUTH;
 			this.life = 5;
@@ -83,6 +83,7 @@ public abstract class Character extends Entity {
 			this.recall = 3;
 			this.team = base.getBaseTeam();
 			this.base = base;
+			this.state = State.Wait;
 		} else {
 			try {
 				throw new Exception("Unimplemented subClass Character");
@@ -91,6 +92,24 @@ public abstract class Character extends Entity {
 			}
 		}
 	}
+
+	// // For test, delete when it's over
+	// public Character(int x, int y, Map entityMap, Besace besace, Direction
+	// direction, int life, int vision, int attack,
+	// int range, int movePoints, int recall, Team team, int attackPoints, Base
+	// base) {
+	// super(x, y, entityMap);
+	// this.direction = direction;
+	// this.life = life;
+	// this.vision = vision;
+	// this.attack = attack;
+	// this.range = range;
+	// this.movePoints = movePoints;
+	// this.recall = recall;
+	// this.team = team;
+	// this.attackPoints = attackPoints;
+	// this.base = base;
+	// }
 
 	public Base getBase() {
 		return base;
@@ -213,42 +232,100 @@ public abstract class Character extends Entity {
 		super.setY(y);
 	}
 
-	public void setGUICharacter(GUICharacter guiCharacter) {
-		this.mySelfGUI = guiCharacter;
-	}
-
 	public void goTo(Direction dir, int lg) {
-		for (int i = 0; i < lg; i++) {
-			switch (dir) {
-			case SOUTH:
-				this.setY((this.getY() + 1));
-				break;
-			case NORTH:
-				this.setY(this.getY() - 1);
-				break;
-			case WEST:
-				this.setX(this.getX() - 1);
-				break;
-			case EAST:
-				this.setX(this.getX() + 1);
-				break;
+		this.setState(State.ClassiqueMove);
+		boolean moveSucces = false;
+		if (this instanceof Robot) {
+			for (int i = 0; i < lg; i++) {
+				switch (dir) {
+				case SOUTH:
+					this.setY((this.getY() + 1));
+					moveSucces = true;
+					break;
+				case NORTH:
+					this.setY(this.getY() - 1);
+					moveSucces = true;
+					break;
+				case WEST:
+					this.setX(this.getX() - 1);
+					moveSucces = true;
+					break;
+				case EAST:
+					this.setX(this.getX() + 1);
+					moveSucces = true;
+					break;
+				}
+			}
+		} else {
+			if (this.getMovePoints() > 0) {
+
+				switch (dir) {
+				case SOUTH:
+					if (getMap().getCell(getX(), getY() + 1).isReachable()) {
+						this.setY((this.getY() + 1));
+						moveSucces = true;
+					}
+					break;
+				case NORTH:
+					if (getMap().getCell(getX(), getY() - 1).isReachable()) {
+						this.setY((this.getY() - 1));
+						moveSucces = true;
+					}
+					break;
+				case WEST:
+					if (getMap().getCell(getX() - 1, getY()).isReachable()) {
+						this.setX(this.getX() - 1);
+						moveSucces = true;
+					}
+					break;
+				case EAST:
+					if (getMap().getCell(getX() + 1, getY()).isReachable()) {
+						this.setX(this.getX() + 1);
+						moveSucces = true;
+					}
+					break;
+				}
+
+			} else {
+				System.out.println("Plus de point de mouvement");
 			}
 
+		}
+		if (moveSucces) {
+			this.setDirection(dir);
 			this.pickUp();
 			this.setMovePoints(this.getMovePoints() - 1);
+			if (this.getMovePoints() == 0) {
+				this.setState(State.Wait);
+			}
 		}
+
 	}
 
 	public void pickUp() {
-		Besace PlayerBesace;
+		Besace besaceOfCurrentPlayer;
 		try {
-			PlayerBesace = this.getBesace();
-			for (Entity e : this.getMap().getPickAbleListOnCell(this.getX(), this.getY())) {
-				PlayerBesace.add(((PickAble) e).getClass());
+			if (this instanceof Player) {
+				besaceOfCurrentPlayer = this.getBesace();
+			} else {
+				besaceOfCurrentPlayer = this.getPlayer().getBesace();
 			}
+			List<PickAble> pickableList = this.getPickAbleList();
+			for (Entity e : pickableList) {
+				besaceOfCurrentPlayer.add(((PickAble) e).getClass());
+				this.getMap().removePickAble(e);
+			}
+			this.getPickAbleList().clear();
+
 		} catch (Exception e1) {
 			e1.getMessage();
 		}
+
+	}
+
+	private List<PickAble> getPickAbleList() {
+
+		return this.getMap().getPickAbleList(this);
 
 	}
 
@@ -260,26 +337,28 @@ public abstract class Character extends Entity {
 	 * @throws GameException
 	 */
 	public void classicAtk(Cell target) {
-
+		this.setState(State.ClassicAttack);
 		Character opponent = null;
 		try {
 			opponent = target.getOpponent(this.getTeam());
+			this.classicAtkTmp(target, opponent);
+			this.setAttackPoints(this.getAttackPoints() - 1);
+
+			if (opponent != null && opponent.getLife() <= 0) {
+				try {
+					throw new Exception("NYI");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		} catch (NotDoableException e) {
 			e.getMessage();
 		}
-		this.classicAtkTmp(target, opponent);
-		this.setAttackPoints(this.getAttackPoints() - 1);
 
-		if (opponent != null && opponent.getLife() <= 0) {
-			try {
-				throw new Exception("NYI");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			// FIXME
-			// If the opponent's hero dies => End of game
-			// opponent.dies();
-		}
+		// FIXME
+		// If the opponent's hero dies => End of game
+		// opponent.dies();
+
 	}
 
 	private void classicAtkTmp(Cell target, Character opponent) {
@@ -363,8 +442,7 @@ public abstract class Character extends Entity {
 	private void dropPickables() {
 		for (Iterator<Action> iterator = this.getActionList().iterator(); iterator.hasNext();) {
 			Action currentAction = iterator.next();
-			this.getMap().setEntity(this.getX(), this.getY(),
-					actionToPickAble(currentAction, this.getX(), this.getY(), this.getMap()));
+			this.getMap().setEntity(actionToPickAble(currentAction, this.getX(), this.getY(), this.getMap()));
 			actionList.remove(currentAction);
 		}
 
@@ -395,4 +473,8 @@ public abstract class Character extends Entity {
 		}
 		return pickAble;
 	}
+
+	public abstract GUICharacter getMyselfGUI();
+
+	public abstract Player getPlayer();
 }

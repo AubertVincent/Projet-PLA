@@ -1,11 +1,10 @@
 package carte;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import entite.Entity;
 import entite.Team;
-import exceptions.GameException;
-import exceptions.NotDoableException;
 import gui.GUI;
 import moteurDuJeu.Engine;
 import personnages.Character;
@@ -22,13 +21,24 @@ public class Map {
 
 	private List<PickAble> pickableList;
 
-	public Map() {
+	private GUI userInterface;
+
+	public Map(GUI userInterface) {
+		this.pickableList = new ArrayList<PickAble>();
+		this.userInterface = userInterface;
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				map[i][j] = new Cell(i, j);
 			}
 		}
 	}
+
+	// Used for test delete when it's over
+	// public void init(Test test) {
+	// map[5][10].setEntity(test.getRobot(Team.ROUGE));
+	// map[5][11].setEntity(test.getRobot(Team.BLEU));
+	// map[5][12].setEntity(new Obstacle(5, 5, this));
+	// }
 
 	public void init(GUI userInterface, Engine engine) {
 		map[engine.getPlayer(Team.ROUGE).getX()][engine.getPlayer(Team.ROUGE).getY()]
@@ -39,7 +49,8 @@ public class Map {
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				if (userInterface.isObstacle(i, j)) {
-					map[i][j].setEntity(new Obstacle(i, j, this));
+					this.setEntity(new Obstacle(i, j, this));
+					System.out.println("Case : (" + i + ";" + j + ") => Obstacle");
 				}
 			}
 		}
@@ -54,7 +65,7 @@ public class Map {
 				randomY = (int) (Math.random() * (height));
 			}
 			newPickAble = PickAble.randomPickable((int) ((int) 1 + (Math.random() * (9))), randomX, randomY, this);
-			map[randomX][randomY].setEntity(newPickAble);
+			this.setEntity(newPickAble);
 			this.addPickAble(newPickAble);
 			randomX = (int) (Math.random() * (width));
 			randomY = (int) (Math.random() * (height));
@@ -80,116 +91,25 @@ public class Map {
 		return my_bool;
 	}
 
-	public void Free(int x, int y) {
-		map[x][y].FreeCell();
-	}
-
-	public void setEntity(int x, int y, Entity ent) {
-		map[x][y].setEntity(ent);
-	}
-
 	public Cell getCell(int x, int y) {
 		return map[x][y];
 	}
 
-	public boolean isFree(int x, int y) {
-		return map[x][y].isFree();
-	}
-
-	public List<Entity> getEntityOnCell(int x, int y) {
-		return map[x][y].getEntityList();
-	}
-
-	public List<Entity> getPickAbleListOnCell(int x, int y) {
-		return map[x][y].getPickAbleList();
-	}
-
-	/**
-	 * return the list of the entities present on the cell(x,y)
-	 * 
-	 * @param x
-	 *            x coordinate on the map
-	 * @param y
-	 *            y coordinate on the map
-	 * @return the list of the entities present on the cell
-	 */
-	public List<Entity> getListEntity(int x, int y) {
-		return map[x][y].getEntityList();
-	}
-
-	/**
-	 * return the class of an entity present on the cell
-	 * 
-	 * @param x
-	 *            x coordinate on the map
-	 * @param y
-	 *            y coordinate on the map
-	 * @return the class of the first pickAble object
-	 * @throws GameException
-	 */
-	@SuppressWarnings("unchecked")
-	public Class<PickAble> pickableEntity(int x, int y) throws NotDoableException {
-		List<Entity> l = map[x][y].getEntityList();
-		int i = 0;
-		while (i < l.size()) {
-			if (l.get(i).isPickAble()) {
-				return ((Class<PickAble>) l.get(i).getClass());
-			}
-		}
-		throw new NotDoableException("Rien à ramasser ici");
-	}
-
-	/**
-	 * Take out the object of the cell
-	 * 
-	 * @param ramasse
-	 * @param x
-	 *            x coordinate on the map
-	 * @param y
-	 *            y coordinate on the map
-	 */
-	public void freePick(Class<PickAble> ramasse, int x, int y) {
-		List<Entity> l = map[x][y].getEntityList();
-		int i = 0;
-		while (i < l.size()) {
-			if (l.get(i).getClass() == ramasse) {
-				l.remove(i);
-			}
-		}
-	}
-
-	public boolean isReachable(int x, int y) {
-		List<Entity> l = map[x][y].getEntityList();
-		int i = 0;
-		while (i < l.size()) {
-			if (l.get(i).isCharacter() || l.get(i).isObstacle()) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public boolean isPickAble(int x, int y) {
-		List<Entity> EntityList = map[x][y].getEntityList();
-		boolean allIsPickAble = true;
-		if (!EntityList.equals(null)) {
-			for (Entity e : EntityList) {
-				if (!e.isPickAble()) {
-					return false;
-				}
-			}
-		}
-		return allIsPickAble;
-	}
+	// public List<Action> pathExists(Robot r, int xa, int ya) {
+	// Cell destination = r.entityMap.getCell(xa, ya);
+	// //List<Action> path = Dijkstra.dijkstra(GraphMap.,destination);
+	//
+	// return null;
+	// }
 
 	public void moveCharacter(Character character, int newX, int newY) {
-		this.Free(character.getX(), character.getY());
-		this.setEntity(newX, newY, character);
+		this.getCell(character.getX(), character.getY()).FreeCell();
+		this.getCell(newX, newY).setEntity(character);
 	}
 
 	public void moveRobot(Robot player, int newX, int newY) {
-		this.Free(player.getX(), player.getY());
-		this.setEntity(newX, newY, player);
+		this.getCell(player.getX(), player.getY()).isFree();
+		this.getCell(newX, newY).setEntity(player);
 	}
 
 	public List<PickAble> getPickAbleList() {
@@ -200,22 +120,49 @@ public class Map {
 		pickableList.add(pickable);
 	}
 
-	// TODO find cell
-	public static void nearestFreeCell(int x, int y) {
-		// Cell freeCell = getCell(x, y);
-		int distance = 3;
-		for (int i = distance; i >= -distance; i--) {
-			if (i > 0) {
-				for (int j = -Math.abs(distance - i); j <= Math.abs(distance - i); j++) {
-					System.out.println("Je vise la case : " + i + " ;" + j);
-				}
-			} else {
-				for (int j = distance + i; j >= -(distance + i); j--) {
-					System.out.println("Je vise la case : " + i + " ;" + j);
+	public void setEntity(Entity entity) {
+		this.getCell(entity.getX(), entity.getY()).setEntity(entity);
+	}
+
+	public Cell nearestFreeCell(int x, int y) {
+		Cell freeCell = getCell(x, y);
+		int distance = 1;
+		while (!freeCell.isReachable()) {
+			for (int i = distance; i >= -distance && !freeCell.isReachable(); i--) {
+				if (i > 0) {
+					for (int j = -Math.abs(distance - i); j <= Math.abs(distance - i) && !freeCell.isReachable(); j++) {
+						if ((x + i >= 0 && x + i < mapWidth()) && (y + j >= 0 && y + j < mapHeight())) {
+							if (getCell(x + i, y + j).isReachable()) {
+								freeCell = getCell(x + i, y + j);
+							}
+						}
+					}
+				} else {
+					for (int j = distance + i; j >= -(distance + i) && !freeCell.isReachable(); j--) {
+						if ((x + i >= 0 && x + i < mapWidth()) && (y + j >= 0 && y + j < mapHeight())) {
+							if (getCell(x + i, y + j).isReachable()) {
+								freeCell = getCell(x + i, y + j);
+							}
+						}
+					}
 				}
 			}
+			distance++;
 		}
-		// return freeCell;
+		return freeCell;
+	}
+
+	public GUI getGUI() {
+		return this.userInterface;
+	}
+
+	public List<PickAble> getPickAbleList(Character character) {
+		// TODO Auto-generated method stub
+		return this.getCell(character.getX(), character.getY()).getPickAbleList();
+	}
+
+	public void removePickAble(Entity e) {
+		this.pickableList.remove(e);
 	}
 
 	public void remove(Entity entity) {

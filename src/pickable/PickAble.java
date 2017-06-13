@@ -29,7 +29,7 @@ public abstract class PickAble extends Entity {
 
 	public PickAble(int x, int y, Map entityMap) {
 		super(x, y, entityMap);
-		guiPickAble = new GUIPickAble(this);
+		guiPickAble = new GUIPickAble(this, entityMap.getGUI());
 	}
 
 	@Override
@@ -44,6 +44,10 @@ public abstract class PickAble extends Entity {
 	@Override
 	public boolean isObstacle() {
 		return false;
+	}
+
+	public GUIPickAble getGUIPickAble() {
+		return this.guiPickAble;
 	}
 
 	/**

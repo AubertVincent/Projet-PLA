@@ -3,7 +3,6 @@ package personnages;
 import java.util.Iterator;
 import java.util.List;
 
-import carte.Base;
 import carte.Coordinates;
 import carte.Map;
 import entite.Direction;
@@ -15,6 +14,13 @@ import sequence._Sequence;
 import util.Pair;
 
 public class Robot extends Character {
+
+	protected _Sequence myAutomaton;
+	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
+	private GUIRobot mySelfGUI;
+
+	private Player player;
+	private Map explorationMap;
 
 	static {
 		// Move-like animations
@@ -30,25 +36,27 @@ public class Robot extends Character {
 		possibleActionsList.add(operateur.ClassicAck.class);
 	}
 
-	protected _Sequence myAutomaton;
-	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
-	private GUIRobot mySelfGUI;
-
-	private Player player;
-
-	public Robot(Base base, Map entityMap, GUI userInterface, _Sequence myAutomaton, Player player) {
-		super(base.getX(), base.getY(), entityMap, base);
+	public Robot(int x, int y, Map entityMap, GUI userInterface, _Sequence myAutomaton, Player player) {
+		super(x, y, entityMap, player.getBase());
 
 		this.myAutomaton = myAutomaton;
-		this.mySelfGUI = new GUIRobot(userInterface, base.getX(), base.getY(), Direction.SOUTH, 100, base.getBaseTeam(),
-				this, player.getMyselfGUI());
+		this.mySelfGUI = new GUIRobot(userInterface, x, y, Direction.SOUTH, 100, base.getBaseTeam(), this,
+				player.getMyselfGUI());
 		this.player = player;
-		this.player.addRobot(new Coordinates(base.getX(), base.getY()), this);
-		super.setGUICharacter(this.mySelfGUI);
+		this.player.addRobot(new Coordinates(x, y), this);
+		entityMap.setEntity(this);
 	}
 
 	public static List<Class<?>> getPossibleActionsList() {
 		return possibleActionsList;
+	}
+
+	public Map getExplorationMap() {
+		return explorationMap;
+	}
+
+	public void setExplorationMap(Map explorationMap) {
+		this.explorationMap = explorationMap;
 	}
 
 	@Override
@@ -78,6 +86,7 @@ public class Robot extends Character {
 		return this.mySelfGUI;
 	}
 
+	@Override
 	public Player getPlayer() {
 		return this.player;
 	}
@@ -95,10 +104,10 @@ public class Robot extends Character {
 	public void suicideBomber() {
 		int x = this.getX();
 		int y = this.getY();
-		List<Entity> northEntityList = this.map.getListEntity(x, y - 1);
-		List<Entity> southEntityList = this.map.getListEntity(x, y + 1);
-		List<Entity> westEntityList = this.map.getListEntity(x - 1, y);
-		List<Entity> eastEntityList = this.map.getListEntity(x + 1, y);
+		List<Entity> northEntityList = this.map.getCell(x, y - 1).getEntityList();
+		List<Entity> southEntityList = this.map.getCell(x, y + 1).getEntityList();
+		List<Entity> westEntityList = this.map.getCell(x - 1, y).getEntityList();
+		List<Entity> eastEntityList = this.map.getCell(x + 1, y).getEntityList();
 
 		// Cell testN = this.entityMap.getCell(x, y-1);
 
@@ -150,10 +159,10 @@ public class Robot extends Character {
 	public void cancelSuicideBomber() {
 		int x = this.getX();
 		int y = this.getY();
-		List<Entity> northEntityList = this.map.getListEntity(x, y - 1);
-		List<Entity> southEntityList = this.map.getListEntity(x, y + 1);
-		List<Entity> westEntityList = this.map.getListEntity(x - 1, y);
-		List<Entity> eastEntityList = this.map.getListEntity(x + 1, y);
+		List<Entity> northEntityList = this.map.getCell(x, y - 1).getEntityList();
+		List<Entity> southEntityList = this.map.getCell(x, y + 1).getEntityList();
+		List<Entity> westEntityList = this.map.getCell(x - 1, y).getEntityList();
+		List<Entity> eastEntityList = this.map.getCell(x + 1, y).getEntityList();
 
 		int i = 0;
 		for (Iterator<Entity> entityIterator = northEntityList.iterator(); entityIterator.hasNext();) {

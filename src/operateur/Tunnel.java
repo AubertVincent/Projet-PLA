@@ -11,6 +11,7 @@ public class Tunnel extends Movement {
 	protected Integer y;
 	private int lastX;
 	private int lastY;
+	private boolean lastExploration = false;
 
 	/**
 	 * set a new Tunnel by means of its arrival coordinates
@@ -35,22 +36,37 @@ public class Tunnel extends Movement {
 	 */
 	@Override
 	protected boolean isDoable(Robot r) {
-		return (r.getMap().isReachable(x, y));
+		if (x < r.getMap().mapWidth() && y < r.getMap().mapHeight() && x > 0 && y > 0) {
+			return (r.getMap().getCell(x, y).isReachable());
+		} else {
+			return false;
+		}
 	}
 
 	@Override
 	public void execute(Robot r) throws NotDoableException {
+		// test
+		// System.out.println("J'execute le tunnel !");
+		// endtest
 		if (!isDoable(r)) {
-			throw new NotDoableException("La case d'arrivée est occupée");
+			throw new NotDoableException("La case d'arrivée est inateignable");
 		}
 		this.lastX = x;
 		this.lastY = y;
 		r.teleport(x, y);
+		if (r.getExplorationMap().getCell(x, y).isExplored()) {
+			lastExploration = true;
+		} else {
+			r.getExplorationMap().getCell(x, y).setExplored(true);
+		}
 	}
 
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
 		r.teleport(lastX, lastY);
+		if (lastExploration) {
+			r.getExplorationMap().getCell(x, y).setExplored(false);
+		}
 	}
 
 	@Override
