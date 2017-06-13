@@ -65,8 +65,8 @@ public class Player extends Character {
 	public Player(Base base, carte.Map entityMap, GUI userInterface) throws Exception {
 		super(base.getX(), base.getY(), entityMap, base);
 		try {
-			this.mySelfGUI = new GUIPlayer(userInterface, base.getX(), base.getY(), Direction.SOUTH, 100,
-					base.getBaseTeam(), this);
+			this.mySelfGUI = new GUIPlayer(userInterface, getX(), getY(), Direction.SOUTH, 100, base.getBaseTeam(),
+					this);
 			super.setGUICharacter(this.mySelfGUI);
 		} catch (SlickException e) {
 			e.getMessage();
