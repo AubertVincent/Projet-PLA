@@ -1,6 +1,5 @@
 package personnages;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import exceptions.NotDoableException;
 import gui.GUI;
 import gui.GUIRobot;
 import sequence._Sequence;
-import util.Pair;
 
 public class Robot extends Character {
 
@@ -33,7 +31,9 @@ public class Robot extends Character {
 	}
 
 	protected _Sequence myAutomaton;
-	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife = new HashMap<Pair<Direction, Integer>, Pair<Robot, Integer>>();
+	// private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>>
+	// targetsLife = new HashMap<Pair<Direction, Integer>, Pair<Robot,
+	// Integer>>();
 	private GUIRobot mySelfGUI;
 
 	private Player player;
@@ -126,14 +126,16 @@ public class Robot extends Character {
 		for (Iterator<Cell> cellIterator = listCell.iterator(); cellIterator.hasNext();) {
 			Cell testCell = cellIterator.next();
 			List<Entity> testEntityList = testCell.getListEntity();
-			int i = 0;
+			// int i = 0;
 			for (Iterator<Entity> entityIterator = testEntityList.iterator(); entityIterator.hasNext();) {
 				Entity eCourant = entityIterator.next();
 				if (eCourant instanceof Robot) {
-					this.targetsLife.put(new Pair<Direction, Integer>(Direction.NORTH, i),
-							new Pair<Robot, Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
+					// this.targetsLife.put(new Pair<Direction,
+					// Integer>(Direction.NORTH, i),
+					// new Pair<Robot, Integer>(((Robot) eCourant), ((Robot)
+					// eCourant).getLife()));
+					// i++;
 					((Robot) eCourant).setLife(0);
-					i++;
 				}
 			}
 		}
@@ -143,56 +145,68 @@ public class Robot extends Character {
 
 	// TODO Update or delete if not needed
 	public void cancelSuicideBomber() {
-		int x = this.getX();
-		int y = this.getY();
-		List<Entity> northEntityList = this.entityMap.getCell(x, y - 1).getListEntity();
-		List<Entity> southEntityList = this.entityMap.getCell(x, y + 1).getListEntity();
-		List<Entity> westEntityList = this.entityMap.getCell(x - 1, y).getListEntity();
-		List<Entity> eastEntityList = this.entityMap.getCell(x + 1, y).getListEntity();
-
-		int i = 0;
-		for (Iterator<Entity> entityIterator = northEntityList.iterator(); entityIterator.hasNext();) {
-			Entity eCourant = entityIterator.next();
-			if (eCourant instanceof Robot) {
-				Pair<Direction, Integer> key = new Pair<Direction, Integer>(Direction.NORTH, i);
-				Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
-				((Robot) eCourant).setLife(robotLife.getSecond());
-				i++;
-			}
-		}
-
-		i = 0;
-		for (Iterator<Entity> entityIterator = southEntityList.iterator(); entityIterator.hasNext();) {
-			Entity eCourant = entityIterator.next();
-			if (eCourant instanceof Robot) {
-				Pair<Direction, Integer> key = new Pair<Direction, Integer>(Direction.SOUTH, i);
-				Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
-				((Robot) eCourant).setLife(robotLife.getSecond());
-				i++;
-			}
-		}
-
-		i = 0;
-		for (Iterator<Entity> entityIterator = westEntityList.iterator(); entityIterator.hasNext();) {
-			Entity eCourant = entityIterator.next();
-			if (eCourant instanceof Robot) {
-				Pair<Direction, Integer> key = new Pair<Direction, Integer>(Direction.WEST, i);
-				Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
-				((Robot) eCourant).setLife(robotLife.getSecond());
-				i++;
-			}
-		}
-
-		i = 0;
-		for (Iterator<Entity> entityIterator = eastEntityList.iterator(); entityIterator.hasNext();) {
-			Entity eCourant = entityIterator.next();
-			if (eCourant instanceof Robot) {
-				Pair<Direction, Integer> key = new Pair<Direction, Integer>(Direction.EAST, i);
-				Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
-				((Robot) eCourant).setLife(robotLife.getSecond());
-				i++;
-			}
-		}
+		// int x = this.getX();
+		// int y = this.getY();
+		// List<Entity> northEntityList = this.entityMap.getCell(x, y -
+		// 1).getListEntity();
+		// List<Entity> southEntityList = this.entityMap.getCell(x, y +
+		// 1).getListEntity();
+		// List<Entity> westEntityList = this.entityMap.getCell(x - 1,
+		// y).getListEntity();
+		// List<Entity> eastEntityList = this.entityMap.getCell(x + 1,
+		// y).getListEntity();
+		//
+		// int i = 0;
+		// for (Iterator<Entity> entityIterator = northEntityList.iterator();
+		// entityIterator.hasNext();) {
+		// Entity eCourant = entityIterator.next();
+		// if (eCourant instanceof Robot) {
+		// Pair<Direction, Integer> key = new Pair<Direction,
+		// Integer>(Direction.NORTH, i);
+		// Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
+		// ((Robot) eCourant).setLife(robotLife.getSecond());
+		// i++;
+		// }
+		// }
+		//
+		// i = 0;
+		// for (Iterator<Entity> entityIterator = southEntityList.iterator();
+		// entityIterator.hasNext();) {
+		// Entity eCourant = entityIterator.next();
+		// if (eCourant instanceof Robot) {
+		// Pair<Direction, Integer> key = new Pair<Direction,
+		// Integer>(Direction.SOUTH, i);
+		// Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
+		// ((Robot) eCourant).setLife(robotLife.getSecond());
+		// i++;
+		// }
+		// }
+		//
+		// i = 0;
+		// for (Iterator<Entity> entityIterator = westEntityList.iterator();
+		// entityIterator.hasNext();) {
+		// Entity eCourant = entityIterator.next();
+		// if (eCourant instanceof Robot) {
+		// Pair<Direction, Integer> key = new Pair<Direction,
+		// Integer>(Direction.WEST, i);
+		// Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
+		// ((Robot) eCourant).setLife(robotLife.getSecond());
+		// i++;
+		// }
+		// }
+		//
+		// i = 0;
+		// for (Iterator<Entity> entityIterator = eastEntityList.iterator();
+		// entityIterator.hasNext();) {
+		// Entity eCourant = entityIterator.next();
+		// if (eCourant instanceof Robot) {
+		// Pair<Direction, Integer> key = new Pair<Direction,
+		// Integer>(Direction.EAST, i);
+		// Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
+		// ((Robot) eCourant).setLife(robotLife.getSecond());
+		// i++;
+		// }
+		// }
 	}
 
 	public void execute() throws NotDoableException {
