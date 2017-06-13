@@ -35,6 +35,7 @@ public class SuicideBomber extends Attack {
 		}
 		if (y + 1 < r.getEntityMap().mapHeight() && myMap.getCell(x, y + 1).robotHere()
 				&& myMap.getCell(x, y + 1).opponentHere(r.getTeam())) {
+
 			return true;
 		}
 		return false;
@@ -63,6 +64,7 @@ public class SuicideBomber extends Attack {
 				targets.add(myMap.getCell(x, y - 1));
 			}
 			if (y + 1 < r.getEntityMap().mapHeight() && myMap.getCell(x, y + 1).robotHere()) {
+
 				targets.add(myMap.getCell(x, y + 1));
 			}
 
