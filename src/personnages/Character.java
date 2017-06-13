@@ -317,6 +317,7 @@ public abstract class Character extends Entity {
 	public void teleport(int x, int y) {
 		this.setX(x);
 		this.setY(y);
+		// Pick all the pickables on the cell reached
 		this.pickUp();
 	}
 

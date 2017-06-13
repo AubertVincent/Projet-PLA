@@ -10,8 +10,9 @@ import pickable.PickRecall;
 public class Recall extends Movement {
 
 	protected Integer time;
-	private int lastX;
-	private int lastY;
+	// Used in the case of the need of the cancel method
+	// private int lastX;
+	// private int lastY;
 
 	/**
 	 * Set a new recall by means of its time
@@ -32,13 +33,8 @@ public class Recall extends Movement {
 	 */
 	@Override
 	protected boolean isDoable(Robot r) {
-		Base b = r.getBase();
-		int x = b.getX();
-		int y = b.getY();
-		if (r.getEntityMap().getCell(x, y).isReachable()) {
-			return true;
-		}
-		return false;
+		// Always doAble
+		return true;
 	}
 
 	@Override
@@ -49,19 +45,22 @@ public class Recall extends Movement {
 		if (!isDoable(r)) {
 			throw new NotDoableException("Impossible to execute this recall");
 		}
-		this.lastX = r.getX();
-		this.lastY = r.getY();
-		r.getEntityMap().getCell(r.getX(), r.getY()).setExplored(true);
+		// Used in the case of the need of the cancel method
+		// this.lastX = r.getX();
+		// this.lastY = r.getY();
+		// Look for the nearest reachable cell to the base
 		Cell baseNearestCell = r.getEntityMap().nearestFreeCell(x, y);
+		// Set the cell targeted to explored in the explorationMap of the robot
 		r.getExplorationMap().getCell(baseNearestCell.getX(), baseNearestCell.getY()).setExplored(true);
+		// Teleport to the nearest reachable cell to the base
 		r.teleport(baseNearestCell.getX(), baseNearestCell.getY());
 	}
 
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
 		// Call back this robot at his previous position
-		r.getEntityMap().getCell(r.getX(), r.getY()).setExplored(false);
-		r.teleport(this.lastX, this.lastY);
+		// r.getEntityMap().getCell(r.getX(), r.getY()).setExplored(false);
+		// r.teleport(this.lastX, this.lastY);
 	}
 
 	@Override
