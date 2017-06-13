@@ -97,7 +97,7 @@ public class Map {
 	}
 
 	public List<Entity> getEntityOnCell(int x, int y) {
-		return map[x][y].getListEntity();
+		return map[x][y].getEntityList();
 	}
 
 	public List<Entity> getPickAbleListOnCell(int x, int y) {
@@ -114,7 +114,7 @@ public class Map {
 	 * @return the list of the entities present on the cell
 	 */
 	public List<Entity> getListEntity(int x, int y) {
-		return map[x][y].getListEntity();
+		return map[x][y].getEntityList();
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class Map {
 	 */
 	@SuppressWarnings("unchecked")
 	public Class<PickAble> pickableEntity(int x, int y) throws NotDoableException {
-		List<Entity> l = map[x][y].getListEntity();
+		List<Entity> l = map[x][y].getEntityList();
 		int i = 0;
 		while (i < l.size()) {
 			if (l.get(i).isPickAble()) {
@@ -149,7 +149,7 @@ public class Map {
 	 *            y coordinate on the map
 	 */
 	public void freePick(Class<PickAble> ramasse, int x, int y) {
-		List<Entity> l = map[x][y].getListEntity();
+		List<Entity> l = map[x][y].getEntityList();
 		int i = 0;
 		while (i < l.size()) {
 			if (l.get(i).getClass() == ramasse) {
@@ -159,7 +159,7 @@ public class Map {
 	}
 
 	public boolean isReachable(int x, int y) {
-		List<Entity> l = map[x][y].getListEntity();
+		List<Entity> l = map[x][y].getEntityList();
 		int i = 0;
 		while (i < l.size()) {
 			if (l.get(i).isCharacter() || l.get(i).isObstacle()) {
@@ -170,7 +170,7 @@ public class Map {
 	}
 
 	public boolean isPickAble(int x, int y) {
-		List<Entity> EntityList = map[x][y].getListEntity();
+		List<Entity> EntityList = map[x][y].getEntityList();
 		boolean allIsPickAble = true;
 		if (!EntityList.equals(null)) {
 			for (Entity e : EntityList) {
@@ -216,6 +216,10 @@ public class Map {
 			}
 		}
 		// return freeCell;
+	}
+
+	public void remove(Entity entity) {
+		entity.getCell().remove(entity);
 	}
 
 }

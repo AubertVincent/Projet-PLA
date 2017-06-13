@@ -1,6 +1,5 @@
 package gui;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -16,8 +15,6 @@ import operateur.MoveDir;
 import personnages.Player;
 
 public class GUIPlayer extends GUICharacter {
-
-	private final List<GUIRobot> guiRobotlist;
 
 	Player mySelf;
 
@@ -63,14 +60,9 @@ public class GUIPlayer extends GUICharacter {
 			throws SlickException, Exception {
 		super(userInterface, x, y, dir, animationDuration, team, player);
 
-		guiRobotlist = new ArrayList<GUIRobot>();
 		animationsList.add(ClassicAck.class);
 		animationsList.add(MoveDir.class);
 		this.mySelf = player;
-	}
-
-	public List<GUIRobot> getGuiRobotList() {
-		return this.guiRobotlist;
 	}
 
 	public void setMySelf(Player player) {
@@ -79,14 +71,6 @@ public class GUIPlayer extends GUICharacter {
 
 	public Player getMyself() {
 		return this.mySelf;
-	}
-
-	public void addGUIRobot(GUIRobot guiRobot) {
-		guiRobotlist.add(guiRobot);
-	}
-
-	public void removeGUIRobot(GUIRobot guiRobot) {
-		guiRobotlist.remove(guiRobot);
 	}
 
 }

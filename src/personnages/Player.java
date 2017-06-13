@@ -1,5 +1,6 @@
 package personnages;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import carte.Base;
 import entite.Direction;
 import gui.GUI;
 import gui.GUIPlayer;
+import moteurDuJeu.Engine;
 
 public class Player extends Character {
 
@@ -42,7 +44,7 @@ public class Player extends Character {
 	 *            y coordinate on the map
 	 * @param direction
 	 *            Where the character is oriented
-	 * @param entityMap
+	 * @param map
 	 *            The map on which the entity is located
 	 * @param life
 	 *            Player's life
@@ -82,11 +84,6 @@ public class Player extends Character {
 		robotList.add(obj, robot);
 	}
 
-	public void removeRobot(Robot robot) {
-		this.mySelfGUI.removeGUIRobot(robot.getMyselfGUI());
-		robotList.remove(robot);
-	}
-
 	@Override
 	public boolean isPlayer() {
 		return true;
@@ -121,5 +118,26 @@ public class Player extends Character {
 
 	public List<Robot> getRobotList() {
 		return robotList.getRobotList();
+	}
+
+	public void removeFromRobotList(Robot robot) {
+		robotList.remove(robot);
+	}
+
+	public void die() {
+		this.getMap().remove(this);
+		this.getEngine().remove(this);
+		this.mySelfGUI.setMySelf(null);
+		this.mySelfGUI = null;
+
+		for (Iterator<Robot> iterator = getRobotList().iterator(); iterator.hasNext();) {
+			Robot currentRobot = iterator.next();
+			this.kill(currentRobot);
+			removeFromRobotList(currentRobot);
+		}
+	}
+
+	private Engine getEngine() {
+		return this.getMyselfGUI().getGUI().getEngine();
 	}
 }

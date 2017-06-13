@@ -12,26 +12,31 @@ public class Cell {
 	protected int x;
 	protected int y;
 
-	protected List<Entity> listeEntites;
+	protected List<Entity> entityList;
 	boolean isfree;
 
 	public Cell(int x, int y) {
 		this.x = x;
 		this.y = y;
-		listeEntites = new ArrayList<Entity>();
+		entityList = new ArrayList<Entity>();
 		isfree = true;
 	}
 
 	public Cell(int x, int y, Entity ent) {
 
 		this.y = y;
-		listeEntites = new ArrayList<Entity>();
+		entityList = new ArrayList<Entity>();
 		this.setEntity(ent);
 		isfree = false;
 	}
 
+	public void remove(Entity entity) {
+		entityList.remove(entity);
+		isfree = entityList.isEmpty();
+	}
+
 	public boolean isEmpty() {
-		return listeEntites.isEmpty();
+		return entityList.isEmpty();
 	}
 
 	public boolean isFree() {
@@ -39,18 +44,18 @@ public class Cell {
 	}
 
 	public void setEntity(Entity ent) {
-		listeEntites.add(ent);
+		entityList.add(ent);
 		this.isfree = false;
 	}
 
 	public void FreeCell() {
 		isfree = true;
-		listeEntites.clear();
+		entityList.clear();
 	}
 
 	public List<Entity> getPickAbleList() {
 		List<Entity> pickableList = new ArrayList<Entity>();
-		for (Entity e : listeEntites) {
+		for (Entity e : entityList) {
 			if (e.isPickAble()) {
 				pickableList.add(e);
 			}
@@ -62,16 +67,16 @@ public class Cell {
 		// TODO ne pas tout nettoyer
 	}
 
-	public List<Entity> getListEntity() {
-		return listeEntites;
+	public List<Entity> getEntityList() {
+		return entityList;
 	}
 
 	public Character getOpponent(Team team) throws NotDoableException {
 		int i = 0;
 		Entity e;
-		while (i < this.listeEntites.size()) {
-			if (this.listeEntites.get(i).isCharacter()) {
-				e = this.listeEntites.get(i);
+		while (i < this.entityList.size()) {
+			if (this.entityList.get(i).isCharacter()) {
+				e = this.entityList.get(i);
 
 				if (!((Character) e).getTeam().equals(team)) {
 					return ((Character) e);
@@ -85,9 +90,9 @@ public class Cell {
 	public boolean opponentHere(Team team) {
 		int i = 0;
 		Entity e;
-		while (i < this.listeEntites.size()) {
-			if (this.listeEntites.get(i).isCharacter()) {
-				e = this.listeEntites.get(i);
+		while (i < this.entityList.size()) {
+			if (this.entityList.get(i).isCharacter()) {
+				e = this.entityList.get(i);
 				if (((Character) e).getTeam() != team) {
 					return true;
 				}

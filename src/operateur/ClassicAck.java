@@ -53,7 +53,7 @@ public class ClassicAck extends Attack {
 			int x = r.getX();
 			int y = r.getY();
 			Team team = r.getTeam();
-			Map myMap = r.getEntityMap();
+			Map myMap = r.getMap();
 
 			Direction d;
 			Cell testEast = myMap.getCell(x + 1, y);
@@ -92,7 +92,7 @@ public class ClassicAck extends Attack {
 			int x = r.getX();
 			int y = r.getY();
 			Team team = r.getTeam();
-			Map myMap = r.getEntityMap();
+			Map myMap = r.getMap();
 
 			Direction d;
 			Cell testEast = myMap.getCell(x + 1, y);

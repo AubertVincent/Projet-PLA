@@ -44,7 +44,6 @@ public class Robot extends Character {
 				this, player.getMyselfGUI());
 		this.player = player;
 		this.player.addRobot(new Coordinates(base.getX(), base.getY()), this);
-		this.player.getMyselfGUI().addGUIRobot(this.mySelfGUI);
 		super.setGUICharacter(this.mySelfGUI);
 	}
 
@@ -96,10 +95,10 @@ public class Robot extends Character {
 	public void suicideBomber() {
 		int x = this.getX();
 		int y = this.getY();
-		List<Entity> northEntityList = this.entityMap.getListEntity(x, y - 1);
-		List<Entity> southEntityList = this.entityMap.getListEntity(x, y + 1);
-		List<Entity> westEntityList = this.entityMap.getListEntity(x - 1, y);
-		List<Entity> eastEntityList = this.entityMap.getListEntity(x + 1, y);
+		List<Entity> northEntityList = this.map.getListEntity(x, y - 1);
+		List<Entity> southEntityList = this.map.getListEntity(x, y + 1);
+		List<Entity> westEntityList = this.map.getListEntity(x - 1, y);
+		List<Entity> eastEntityList = this.map.getListEntity(x + 1, y);
 
 		// Cell testN = this.entityMap.getCell(x, y-1);
 
@@ -151,10 +150,10 @@ public class Robot extends Character {
 	public void cancelSuicideBomber() {
 		int x = this.getX();
 		int y = this.getY();
-		List<Entity> northEntityList = this.entityMap.getListEntity(x, y - 1);
-		List<Entity> southEntityList = this.entityMap.getListEntity(x, y + 1);
-		List<Entity> westEntityList = this.entityMap.getListEntity(x - 1, y);
-		List<Entity> eastEntityList = this.entityMap.getListEntity(x + 1, y);
+		List<Entity> northEntityList = this.map.getListEntity(x, y - 1);
+		List<Entity> southEntityList = this.map.getListEntity(x, y + 1);
+		List<Entity> westEntityList = this.map.getListEntity(x - 1, y);
+		List<Entity> eastEntityList = this.map.getListEntity(x + 1, y);
 
 		int i = 0;
 		for (Iterator<Entity> entityIterator = northEntityList.iterator(); entityIterator.hasNext();) {
@@ -203,5 +202,24 @@ public class Robot extends Character {
 
 	public void execute() throws NotDoableException {
 		myAutomaton.execute(this);
+	}
+
+	public void die() {
+
+		player.removeFromRobotList(this);
+
+		this.mySelfGUI.setMySelf(null);
+		this.mySelfGUI = null;
+
+		// Remove every occurrence of current robot in targetsLife
+		for (Iterator<Pair<Direction, Integer>> iterator = targetsLife.keySet().iterator(); iterator.hasNext();) {
+			Pair<Direction, Integer> currentPair = iterator.next();
+			Robot currentRobot = targetsLife.get(currentPair).getFirst();
+			if (currentRobot.equals(this)) {
+				targetsLife.remove(currentPair);
+			}
+		}
+
+		this.getMap().remove(this);
 	}
 }

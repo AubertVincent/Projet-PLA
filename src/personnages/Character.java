@@ -12,7 +12,26 @@ import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUICharacter;
+import operateur.Action;
+import operateur.ClassicAck;
+import operateur.MoveDir;
+import operateur.PickUp;
+import operateur.Priority;
+import operateur.RandomBar;
+import operateur.Recall;
+import operateur.Succession;
+import operateur.SuicideBomber;
+import operateur.Tunnel;
 import pickable.PickAble;
+import pickable.PickClassicAck;
+import pickable.PickMoveDir;
+import pickable.PickPickUp;
+import pickable.PickPriority;
+import pickable.PickRandomBar;
+import pickable.PickRecall;
+import pickable.PickSuccession;
+import pickable.PickSuicideBomber;
+import pickable.PickTunnel;
 
 public abstract class Character extends Entity {
 
@@ -181,13 +200,13 @@ public abstract class Character extends Entity {
 
 	@Override
 	public void setX(int x) {
-		this.getEntityMap().moveCharacter(this, x, this.getY());
+		this.getMap().moveCharacter(this, x, this.getY());
 		super.setX(x);
 	}
 
 	@Override
 	public void setY(int y) {
-		this.getEntityMap().moveCharacter(this, this.getX(), y);
+		this.getMap().moveCharacter(this, this.getX(), y);
 		super.setY(y);
 	}
 
@@ -221,7 +240,7 @@ public abstract class Character extends Entity {
 		Besace PlayerBesace;
 		try {
 			PlayerBesace = this.getBesace();
-			for (Entity e : this.getEntityMap().getPickAbleListOnCell(this.getX(), this.getY())) {
+			for (Entity e : this.getMap().getPickAbleListOnCell(this.getX(), this.getY())) {
 				PlayerBesace.add(((PickAble) e).getClass());
 			}
 		} catch (Exception e1) {
@@ -326,4 +345,42 @@ public abstract class Character extends Entity {
 		this.state = state;
 	}
 
+	public abstract void die();
+
+	public void kill(Character character) {
+
+		character.dropPickables();
+		character.setState(State.Dying);
+	}
+
+	private void dropPickables() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private PickAble actionToPickAble(Class<? extends Action> act, int x, int y, Map pickableMap) {
+		PickAble pickAble;
+		if (act.getClass().equals(ClassicAck.class)) {
+			pickAble = new PickClassicAck(x, y, pickableMap);
+		} else if (act.getClass().equals(MoveDir.class)) {
+			pickAble = new PickMoveDir(x, y, pickableMap);
+		} else if (act.getClass().equals(PickUp.class)) {
+			pickAble = new PickPickUp(x, y, pickableMap);
+		} else if (act.getClass().equals(Priority.class)) {
+			pickAble = new PickPriority(x, y, pickableMap);
+		} else if (act.getClass().equals(RandomBar.class)) {
+			pickAble = new PickRandomBar(x, y, pickableMap);
+		} else if (act.getClass().equals(Recall.class)) {
+			pickAble = new PickRecall(x, y, pickableMap);
+		} else if (act.getClass().equals(Succession.class)) {
+			pickAble = new PickSuccession(x, y, pickableMap);
+		} else if (act.getClass().equals(SuicideBomber.class)) {
+			pickAble = new PickSuicideBomber(x, y, pickableMap);
+		} else if (act.getClass().equals(Tunnel.class)) {
+			pickAble = new PickTunnel(x, y, pickableMap);
+		} else {
+			pickAble = null;
+		}
+		return pickAble;
+	}
 }

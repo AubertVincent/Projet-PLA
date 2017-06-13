@@ -166,4 +166,11 @@ public class Engine {
 			e.printStackTrace();
 		}
 	}
+
+	public void remove(Player player) {
+		this.playerList.remove(player);
+		if (currentModifier.equals(player)) {
+			currentModifier = null;
+		}
+	}
 }

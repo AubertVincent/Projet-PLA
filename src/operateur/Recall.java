@@ -32,10 +32,10 @@ public class Recall extends Movement {
 	 */
 	@Override
 	protected boolean isDoable(Robot r) {
-		if (r.getTeam() == Team.ROUGE && r.getEntityMap().isReachable(2, 4)) {
+		if (r.getTeam() == Team.ROUGE && r.getMap().isReachable(2, 4)) {
 			return true;
 		}
-		if (r.getTeam() == Team.BLEU && r.getEntityMap().isReachable(31, 15)) {
+		if (r.getTeam() == Team.BLEU && r.getMap().isReachable(31, 15)) {
 			return true;
 		}
 		return false;

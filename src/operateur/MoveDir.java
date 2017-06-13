@@ -44,7 +44,7 @@ public class MoveDir extends Movement {
 	protected boolean isDoable(Robot r) {
 		int x = r.getX();
 		int y = r.getY();
-		Map myMap = r.getEntityMap();
+		Map myMap = r.getMap();
 
 		for (int i = 0; i < lg; i++) {
 			switch (dir) {

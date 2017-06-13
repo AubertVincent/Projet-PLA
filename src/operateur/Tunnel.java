@@ -35,7 +35,7 @@ public class Tunnel extends Movement {
 	 */
 	@Override
 	protected boolean isDoable(Robot r) {
-		return (r.getEntityMap().isReachable(x, y));
+		return (r.getMap().isReachable(x, y));
 	}
 
 	@Override
