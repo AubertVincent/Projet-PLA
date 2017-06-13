@@ -1,5 +1,6 @@
 package personnages;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,6 +47,7 @@ public abstract class Character extends Entity {
 	protected int remainingAttacks;
 	protected int recall;
 
+	protected List<Action> actionList = new ArrayList<Action>();
 	protected static List<Class<?>> possibleActionsList = new LinkedList<Class<?>>();
 	protected Team team;
 	protected Base base;
@@ -343,6 +345,10 @@ public abstract class Character extends Entity {
 
 	public void setState(State state) {
 		this.state = state;
+	}
+
+	public List<Action> getActionList() {
+		return actionList;
 	}
 
 	public abstract void die();
