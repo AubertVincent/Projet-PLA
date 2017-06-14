@@ -1,5 +1,6 @@
 package personnages;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import entite.Entity;
 import exceptions.NotDoableException;
 import gui.GUI;
 import gui.GUIRobot;
+import operateur.Action;
 import sequence._Sequence;
 import util.Pair;
 
@@ -18,7 +20,7 @@ public class Robot extends Character {
 	protected _Sequence myAutomaton;
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
 	private GUIRobot mySelfGUI;
-
+	protected List<Action> actionList = new ArrayList<Action>();
 	private Player player;
 	private Map explorationMap;
 
@@ -89,6 +91,19 @@ public class Robot extends Character {
 	@Override
 	public Player getPlayer() {
 		return this.player;
+	}
+
+	public List<Action> getActionList() {
+		return actionList;
+	}
+
+	protected void dropPickables() {
+		for (Iterator<Action> iterator = this.getActionList().iterator(); iterator.hasNext();) {
+			Action currentAction = iterator.next();
+			this.getMap().setEntity(actionToPickAble(currentAction, this.getX(), this.getY(), this.getMap()));
+			actionList.remove(currentAction);
+		}
+
 	}
 
 	/**

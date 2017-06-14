@@ -1,6 +1,7 @@
 package moteurDuJeu;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.newdawn.slick.Input;
@@ -213,5 +214,29 @@ public class Engine {
 			}
 		}
 		return null;
+	}
+
+	public void executeAllRobot() {
+		int myRandom;
+		List<Robot> executionRobotList = new LinkedList<Robot>();
+		// get each players
+		for (Player player : playerList) {
+			executionRobotList.addAll(player.getRobotList());
+		}
+		// for (Iterator<Robot> iterator = executionRobotList.iterator();
+		// iterator.hasNext();) {
+		// for (int i =0 ; i < executionRobotList.size();i++){
+		while (executionRobotList.size() != 0) {
+			myRandom = (int) (Math.random() * executionRobotList.size());
+			// Robot currentRobot = iterator.next();
+			Robot currentRobot = executionRobotList.get(myRandom);
+			try {
+				currentRobot.execute();
+			} catch (NotDoableException e) {
+				// Do nothing if you can't execute this robot
+			}
+			executionRobotList.remove(currentRobot);
+		}
+		this.playPhase = PlayPhase.playerMovement;
 	}
 }

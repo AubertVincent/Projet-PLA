@@ -145,4 +145,9 @@ public class Player extends Character {
 	public Player getPlayer() {
 		return this;
 	}
+
+	// For this version of the game, Player haven't pickables to drop
+	protected void dropPickables() {
+
+	}
 }

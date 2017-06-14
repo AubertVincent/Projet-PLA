@@ -1,7 +1,5 @@
 package personnages;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -48,7 +46,6 @@ public abstract class Character extends Entity {
 	protected int remainingAttacks;
 	protected int recall;
 
-	protected List<Action> actionList = new ArrayList<Action>();
 	protected static List<Class<?>> possibleActionsList = new LinkedList<Class<?>>();
 	protected Team team;
 	protected Base base;
@@ -427,10 +424,6 @@ public abstract class Character extends Entity {
 		this.state = state;
 	}
 
-	public List<Action> getActionList() {
-		return actionList;
-	}
-
 	public abstract void die();
 
 	public void kill(Character character) {
@@ -439,14 +432,7 @@ public abstract class Character extends Entity {
 		character.setState(State.Dying);
 	}
 
-	private void dropPickables() {
-		for (Iterator<Action> iterator = this.getActionList().iterator(); iterator.hasNext();) {
-			Action currentAction = iterator.next();
-			this.getMap().setEntity(actionToPickAble(currentAction, this.getX(), this.getY(), this.getMap()));
-			actionList.remove(currentAction);
-		}
-
-	}
+	protected abstract void dropPickables();
 
 	private PickAble actionToPickAble(Action action, int x, int y, Map pickableMap) {
 		PickAble pickAble;
