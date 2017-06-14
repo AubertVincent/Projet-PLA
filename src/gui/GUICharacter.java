@@ -230,7 +230,6 @@ public abstract class GUICharacter {
 				mySelf.setState(State.Wait);
 				setCurrentX(getTargetX());
 				setCurrentY(getTargetY());
-				// mainUserInterface.getEngine().setNewPlayPhase();
 			} else {
 				int nextCellX = mainUserInterface.pixelToCellX(nextXPx);
 				int nextCellY = mainUserInterface.pixelToCellY(nextYPx);
@@ -260,6 +259,7 @@ public abstract class GUICharacter {
 				beginTimeAnimation = (int) System.currentTimeMillis();
 				actionRequest = false;
 			}
+			int test = (int) System.currentTimeMillis();
 			if ((beginTimeAnimation + this.animationDuration) <= (int) System.currentTimeMillis()) {
 				mySelf.setState(State.Wait);
 			}

@@ -91,24 +91,6 @@ public abstract class Character extends Entity {
 		}
 	}
 
-	// // For test, delete when it's over
-	// public Character(int x, int y, Map entityMap, Besace besace, Direction
-	// direction, int life, int vision, int attack,
-	// int range, int movePoints, int recall, Team team, int attackPoints, Base
-	// base) {
-	// super(x, y, entityMap);
-	// this.direction = direction;
-	// this.life = life;
-	// this.vision = vision;
-	// this.attack = attack;
-	// this.range = range;
-	// this.movePoints = movePoints;
-	// this.recall = recall;
-	// this.team = team;
-	// this.attackPoints = attackPoints;
-	// this.base = base;
-	// }
-
 	public Base getBase() {
 		return base;
 	}
@@ -335,6 +317,7 @@ public abstract class Character extends Entity {
 		Character opponent = null;
 		try {
 			if (this.getAttackPoints() > 0) {
+				this.getMyselfGUI().setActionRequest(true);
 				opponent = target.getOpponent(this.getTeam());
 				this.classicAtkTmp(target, opponent);
 				this.setAttackPoints(this.getAttackPoints() - 1);

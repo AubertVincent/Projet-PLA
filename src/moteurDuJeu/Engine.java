@@ -104,9 +104,8 @@ public class Engine {
 
 	public void classicAtk(Character character, Cell target) {
 
-		if (character.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.playerMovement)) {
+		if (character.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.automatonExecution)) {
 			character.classicAtk(target);
-			character.getMyselfGUI().setActionRequest(true);
 		} else {
 			System.out.println("Pas de panique t'as pas fini d'attaquer");
 		}
@@ -131,7 +130,7 @@ public class Engine {
 			}
 			character.setDirection(dir);
 			character.classicAtk(target);
-			character.getMyselfGUI().setActionRequest(true);
+
 		} else {
 			System.out.println("Pas de panique t'as pas fini d'attaquer");
 		}
@@ -152,7 +151,6 @@ public class Engine {
 			Ybase = freeCell.getY();
 
 		}
-		// TODO recode this method oklm
 		Robot robot = new Robot(Xbase, Ybase, myMap, userInterface, sequence, player);
 		player.setState(State.Wait);
 		robot.pickUp();
@@ -173,7 +171,7 @@ public class Engine {
 		if (movePointRemaining == false) {
 			setPlayPhase(PlayPhase.behaviorModification);
 			for (Player p : this.playerList) {
-				p.setMovePoints(2);
+				p.setMovePoints(20);
 			}
 		}
 	}
@@ -186,17 +184,13 @@ public class Engine {
 			for (Player player : playerList) {
 				executionRobotList.addAll(player.getRobotList());
 			}
-			// for (Iterator<Robot> iterator = executionRobotList.iterator();
-			// iterator.hasNext();) {
-			// for (int i =0 ; i < executionRobotList.size();i++){
 			while (executionRobotList.size() != 0) {
 				myRandom = (int) (Math.random() * executionRobotList.size());
-				// Robot currentRobot = iterator.next();
 				Robot currentRobot = executionRobotList.get(myRandom);
 				try {
 					currentRobot.execute();
 				} catch (NotDoableException e) {
-					// Do nothing if you can't execute this robot
+					e.getMessage();
 				}
 				executionRobotList.remove(currentRobot);
 			}
