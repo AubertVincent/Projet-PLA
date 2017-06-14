@@ -158,6 +158,7 @@ public class Map {
 			for (int j = 0; j < height; j++) {
 				if (userInterface.isObstacle(i, j)) {
 					this.setEntity(new Obstacle(i, j, this));
+					this.getCell(i, j).setExplored(true);
 				}
 			}
 		}

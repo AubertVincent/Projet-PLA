@@ -45,11 +45,11 @@ public class GUIPlayer extends GUICharacter {
 		List<Class<?>> possibleActionList = Player.getPossibleActionsList();
 		for (Iterator<Class<?>> action = possibleActionList.iterator(); action.hasNext();) {
 			Class<?> currentAction = action.next();
-			actionSpritePath.put(currentAction, "res/SpriteSheet" + currentAction.getSimpleName() + ".png");
+			actionSpritePath.put(currentAction, "res/Player/SpriteSheet" + currentAction.getSimpleName() + ".png");
 			actionSpriteNumberOfSprites.put(currentAction, numberOfSprites.get(currentAction));
 			System.out
 					.println("For " + currentAction.getSimpleName() + " will load " + numberOfSprites.get(currentAction)
-							+ " sprites from " + "res/SpriteSheet" + currentAction.getSimpleName() + ".png");
+							+ " sprites from " + "res/Player/SpriteSheet" + currentAction.getSimpleName() + ".png");
 		}
 	}
 

@@ -34,23 +34,19 @@ public class Priority extends Behavior {
 		// System.out.println("Voici une priorité !");
 		// end test
 		if (left instanceof Action && right instanceof Action) {
-			try {
-				left.execute(r);
-			} catch (NotDoableException e) {
-				try {
-					right.execute(r);
-				} catch (NotDoableException e2) {
-					throw new NotDoableException("impossible Action");
-				}
+			if (((Action) left).isDoable(r)) {
+				r.addActionToActionList((Action) left);
+			} else if (((Action) right).isDoable(r)) {
+				r.addActionToActionList((Action) right);
 			}
 		} else {
-			throw new NotDoableException("Succession only take 2 Action and not a Sequence");
+			throw new NotDoableException("Priority only takes 2 Action and not a Sequence");
 		}
 	}
 
 	@Override
 	public String toString() {
-		return ">";
+		return ">   ";
 	}
 
 	@Override

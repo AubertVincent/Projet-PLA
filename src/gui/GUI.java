@@ -21,6 +21,7 @@ import moteurDuJeu.Engine;
 import moteurDuJeu.PlayPhase;
 import personnages.Player;
 import personnages.Robot;
+import personnages.State;
 import pickable.PickAble;
 
 public class GUI extends BasicGame {
@@ -180,6 +181,26 @@ public class GUI extends BasicGame {
 			setBehaviorInputNeeded(false);
 			engine.setRobotBehavior(this, inputTextField.getReceivedSequence());
 		}
+
+		try {
+			if (everyoneWaiting() && engine.getPlayPhase().equals(PlayPhase.automatonExecution)) {
+				engine.step();
+			}
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+
+	private boolean everyoneWaiting() {
+		boolean allWaiting = true;
+		for (Player currentPlayer : engine.getPlayerList()) {
+			for (Robot currentRobot : currentPlayer.getRobotList()) {
+				if (!currentRobot.getState().equals(State.Wait)) {
+					allWaiting = false;
+				}
+			}
+		}
+		return allWaiting;
 	}
 
 	@Override
@@ -194,7 +215,7 @@ public class GUI extends BasicGame {
 
 			guiPerso = engine.getGUICharactereFromMouse(mouseXCell, mouseYCell);
 			try {
-				if (!guiPerso.equals(null)) {
+				if (guiPerso != null) {
 
 					if (guiPerso instanceof GUIPlayer) {
 						engine.behaviorCreation(this, (Player) guiPerso.getMyself());
@@ -281,14 +302,13 @@ public class GUI extends BasicGame {
 					break;
 				case Input.KEY_SPACE:
 					engine.setPlayPhase(PlayPhase.behaviorModification);
-					engine.executeAllRobot();
 					break;
 				}
 			} else if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
 				switch (key) {
 				case Input.KEY_SPACE:
 					engine.setPlayPhase(PlayPhase.automatonExecution);
-					engine.executeAllRobot();
+					engine.resetAllRobot();
 					break;
 				}
 			}

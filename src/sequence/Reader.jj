@@ -22,20 +22,17 @@ public class Reader
     try
     {
       resultingSequence = parser.SEQUENCE();
-
-      System.out.println(resultingSequence.toString());
       parser.ReInit(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
       return resultingSequence;
     }
     catch (Exception e)
     {
-      System.out.println("NOK");
-      System.out.println(e.getMessage());
+      System.out.println("Incorrect input, retry...");
       parser.ReInit(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
     }
     catch (Error e)
     {
-      System.out.println("Oops");
+      System.out.println("Incorrect input, retry...");
       System.out.println(e.getMessage());
       parser.ReInit(new ByteArrayInputStream(stringToParse.getBytes(StandardCharsets.UTF_8)));
     }
@@ -112,19 +109,20 @@ SKIP :
 
 TOKEN :
 {
-  < A : "A" >
-| < M : "M" >
-| < C : "C" >
-| < S : "S" >
-| < R : "R" >
-| < T : "T" >
-| < N : "N" >
-| < W : "W" >
-| < E : "E" >
+  < A : "A" | "a" >
+| < M : "M" | "m" >
+| < C : "C" | "c" >
+| < S : "S" | "s" >
+| < R : "R" | "r" >
+| < T : "T" | "t" >
+| < N : "N" | "n" >
+| < W : "W" | "w" >
+| < E : "E" | "e" >
   //| < LETTER : [ "a"-"z", "A"-"Z" ] >
 | < DIGIT : ([ "0"-"9" ])+ >
 | < LPAR : "(" >
 | < RPAR : ")" >
+| < SEP : "-" >
 | < RANDOMBAR : "/" >
 | < SEMICOLON : ";" >
 | < CHEVRON : ">" >
@@ -155,27 +153,51 @@ Behavior BEH() :
   {
     return new Succession();
   }
-| < CHEVRON >
+}
+
+Behavior PRIO() :
+{
+}
+{
+  < CHEVRON >
   {
     return new Priority();
   }
-  // TODO : Add other behaviors 
 }
 
 _Sequence SEQUENCE() :
 {
   Action act;
-  Behavior beh;
+  _Sequence seq;
+}
+{
+ act = ACTION() 
+  {
+    System.out.println("ACTION detected");
+    return act;
+  }
+ 
+|  seq = COMPO() 
+  {
+    System.out.println("SEQUENCE detected");
+    return seq;
+  }
+
+}
+
+_Sequence COMPO():
+{
+  Behavior beh ;
   _Sequence left, right;
 }
 {
-  < LPAR > left = SEQUENCE() beh = BEH() right = SEQUENCE() < RPAR >
+  < SEP > left = ACTION() beh = PRIO() right = ACTION() < SEP >
   {
     return new Tree(beh, left, right);
   }
-| act = ACTION()
+| < LPAR > left = SEQUENCE() beh = BEH() right = SEQUENCE() < RPAR >
   {
-    return act;
+    return new Tree(beh, left, right);
   }
 }
 
@@ -184,6 +206,7 @@ Action ACTION() :
   Movement mov;
   Attack att;
   Action rand;
+  Explore exp;
 }
 {
   < M > mov = MOVEMENT()
@@ -198,7 +221,10 @@ Action ACTION() :
   {
     return rand;
   }
-  // Add rest of grammar  
+| < E >
+{
+  return new Explore();
+}  
 }
 
 Attack ATT() :

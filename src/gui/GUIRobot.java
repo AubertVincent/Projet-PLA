@@ -45,11 +45,11 @@ public class GUIRobot extends GUICharacter {
 		List<Class<?>> possibleActionList = Robot.getPossibleActionsList();
 		for (Iterator<Class<?>> action = possibleActionList.iterator(); action.hasNext();) {
 			Class<?> currentAction = action.next();
-			actionSpritePath.put(currentAction, "res/Armure/SpriteSheet" + currentAction.getSimpleName() + ".png");
+			actionSpritePath.put(currentAction, "res/Robot/SpriteSheet" + currentAction.getSimpleName() + ".png");
 			actionSpriteNumberOfSprites.put(currentAction, numberOfSprites.get(currentAction));
 			System.out
 					.println("For " + currentAction.getSimpleName() + " will load " + numberOfSprites.get(currentAction)
-							+ " sprites from " + "res/Armure/SpriteSheet" + currentAction.getSimpleName() + ".png");
+							+ " sprites from " + "res/Robot/SpriteSheet" + currentAction.getSimpleName() + ".png");
 		}
 	}
 

@@ -63,7 +63,7 @@ public abstract class Character extends Entity {
 			this.vision = 5;
 			this.damages = 3;
 			this.range = 3;
-			this.movePoints = 2;
+			this.movePoints = 50;
 			this.remainingAttacks = 5;
 			this.recall = 3;
 
@@ -213,68 +213,73 @@ public abstract class Character extends Entity {
 	}
 
 	public void goTo(Direction dir, int lg) {
-		this.setState(State.ClassiqueMove);
-		boolean moveSucces = false;
-		if (this instanceof Robot) {
+		if (this.getState().equals(State.Wait)) {
+			this.setState(State.ClassiqueMove);
+			boolean moveSucces = false;
+			this.getMyselfGUI().setActionRequest(true);
 			for (int i = 0; i < lg; i++) {
-				switch (dir) {
-				case SOUTH:
-					this.setY((this.getY() + 1));
-					moveSucces = true;
-					break;
-				case NORTH:
-					this.setY(this.getY() - 1);
-					moveSucces = true;
-					break;
-				case WEST:
-					this.setX(this.getX() - 1);
-					moveSucces = true;
-					break;
-				case EAST:
-					this.setX(this.getX() + 1);
-					moveSucces = true;
-					break;
-				}
-			}
-		} else {
-			if (this.getMovePoints() > 0) {
+				if (this instanceof Robot) {
 
-				switch (dir) {
-				case SOUTH:
-					if (getMap().getCell(getX(), getY() + 1).isReachable()) {
+					switch (dir) {
+					case SOUTH:
 						this.setY((this.getY() + 1));
 						moveSucces = true;
-					}
-					break;
-				case NORTH:
-					if (getMap().getCell(getX(), getY() - 1).isReachable()) {
-						this.setY((this.getY() - 1));
+						break;
+					case NORTH:
+						this.setY(this.getY() - 1);
 						moveSucces = true;
-					}
-					break;
-				case WEST:
-					if (getMap().getCell(getX() - 1, getY()).isReachable()) {
+						break;
+					case WEST:
 						this.setX(this.getX() - 1);
 						moveSucces = true;
-					}
-					break;
-				case EAST:
-					if (getMap().getCell(getX() + 1, getY()).isReachable()) {
+						break;
+					case EAST:
 						this.setX(this.getX() + 1);
 						moveSucces = true;
+						break;
 					}
-					break;
+
+				} else {
+					if (this.getMovePoints() > 0) {
+
+						switch (dir) {
+						case SOUTH:
+							if (getMap().getCell(getX(), getY() + 1).isReachable()) {
+								this.setY((this.getY() + 1));
+								moveSucces = true;
+							}
+							break;
+						case NORTH:
+							if (getMap().getCell(getX(), getY() - 1).isReachable()) {
+								this.setY((this.getY() - 1));
+								moveSucces = true;
+							}
+							break;
+						case WEST:
+							if (getMap().getCell(getX() - 1, getY()).isReachable()) {
+								this.setX(this.getX() - 1);
+								moveSucces = true;
+							}
+							break;
+						case EAST:
+							if (getMap().getCell(getX() + 1, getY()).isReachable()) {
+								this.setX(this.getX() + 1);
+								moveSucces = true;
+							}
+							break;
+						}
+
+					} else {
+						System.out.println("Plus de point de mouvement");
+					}
+
 				}
-
-			} else {
-				System.out.println("Plus de point de mouvement");
+				if (moveSucces) {
+					this.setDirection(dir);
+					this.pickUp();
+					this.setMovePoints(this.getMovePoints() - 1);
+				}
 			}
-
-		}
-		if (moveSucces) {
-			this.setDirection(dir);
-			this.pickUp();
-			this.setMovePoints(this.getMovePoints() - 1);
 		}
 	}
 
@@ -316,15 +321,17 @@ public abstract class Character extends Entity {
 		this.setState(State.ClassicAttack);
 		Character opponent = null;
 		try {
-			if (this.getAttackPoints() > 0) {
-				this.getMyselfGUI().setActionRequest(true);
-				opponent = target.getOpponent(this.getTeam());
-				this.classicAtkTmp(target, opponent);
-				this.setAttackPoints(this.getAttackPoints() - 1);
 
-				if (opponent != null && opponent.getLife() <= 0) {
-					this.kill(opponent);
-				}
+			opponent = target.getOpponent(this.getTeam());
+			int lifeOpponent = opponent.getLife();
+			int atkRobot = this.getAttack();
+			lifeOpponent = lifeOpponent - atkRobot;
+			opponent.setLife(lifeOpponent);
+			this.setAttackPoints(this.getAttackPoints() - 1);
+
+			if (opponent != null && opponent.getLife() <= 0) {
+				this.kill(opponent);
+
 			}
 		}
 
@@ -332,19 +339,6 @@ public abstract class Character extends Entity {
 			e.getMessage();
 		}
 
-	}
-
-	private void classicAtkTmp(Cell target, Character opponent) {
-		int lifeA = this.getLife();
-		int lifeE = opponent.getLife();
-		int atkA = this.getAttack();
-		int atkE = opponent.getAttack();
-
-		lifeA = lifeA - atkE;
-		lifeE = lifeE - atkA;
-
-		this.setLife(lifeA);
-		opponent.setLife(lifeE);
 	}
 
 	public void cancelClassicAtk(Cell target) throws NotDoableException {

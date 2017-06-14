@@ -158,27 +158,27 @@ public class Engine {
 		this.playPhase = playPhase;
 	}
 
-	public void executeAllRobot() {
-		if (getPlayPhase().equals(PlayPhase.automatonExecution)) {
-			int myRandom;
-			List<Robot> executionRobotList = new LinkedList<Robot>();
-			// get each players
-			for (Player player : playerList) {
-				executionRobotList.addAll(player.getRobotList());
-			}
-			while (executionRobotList.size() != 0) {
-				myRandom = (int) (Math.random() * executionRobotList.size());
-				Robot currentRobot = executionRobotList.get(myRandom);
-				try {
-					currentRobot.execute();
-				} catch (NotDoableException e) {
-					e.getMessage();
-				}
-				executionRobotList.remove(currentRobot);
-			}
-			this.setPlayPhase(PlayPhase.playerMovement);
-		}
-	}
+	// public void executeAllRobot() {
+	// if (getPlayPhase().equals(PlayPhase.automatonExecution)) {
+	// int myRandom;
+	// List<Robot> executionRobotList = new LinkedList<Robot>();
+	// // get each players
+	// for (Player player : playerList) {
+	// executionRobotList.addAll(player.getRobotList());
+	// }
+	// while (executionRobotList.size() != 0) {
+	// myRandom = (int) (Math.random() * executionRobotList.size());
+	// Robot currentRobot = executionRobotList.get(myRandom);
+	// try {
+	// currentRobot.execute();
+	// } catch (NotDoableException e) {
+	// e.getMessage();
+	// }
+	// executionRobotList.remove(currentRobot);
+	// }
+	// this.setPlayPhase(PlayPhase.playerMovement);
+	// }
+	// }
 
 	public void remove(Player player) {
 		this.playerList.remove(player);
@@ -238,9 +238,62 @@ public class Engine {
 	private void modifyRobot(Robot currentModified, _Sequence sequence) {
 		currentModifier.setState(State.RobotCreation);
 		currentModified.setAutomaton(sequence);
+		try {
+			currentModified.getAutomatonInList().clear();
+			currentModified.fillActionList();
+		} catch (NotDoableException e) {
+			e.getMessage();
+		}
 	}
 
 	public Player getCurrentModifier() {
 		return this.currentModifier;
+	}
+
+	public void step() {
+		if (getPlayPhase().equals(PlayPhase.automatonExecution)) {
+			int randomIndex;
+			boolean allEmpty = true;
+			List<Robot> executedRobotList = new LinkedList<Robot>();
+			// get each players
+			for (Player player : playerList) {
+				executedRobotList.addAll(player.getRobotList());
+			}
+			while (executedRobotList.size() != 0) {
+
+				randomIndex = (int) (Math.random() * executedRobotList.size());
+				Robot currentRobot = executedRobotList.get(randomIndex);
+				try {
+					if (!currentRobot.getAutomatonInList().isEmpty()
+							&& currentRobot.getCurrentAction() < currentRobot.getAutomatonInList().size()) {
+						allEmpty = false;
+						currentRobot.getAutomatonInList().get(currentRobot.getCurrentAction()).execute(currentRobot);
+						currentRobot.setNextAction();
+					}
+				} catch (NotDoableException e) {
+					e.getMessage();
+				}
+				executedRobotList.remove(currentRobot);
+			}
+			if (allEmpty) {
+				this.setPlayPhase(PlayPhase.playerMovement);
+
+			}
+		}
+	}
+
+	public void resetAllRobot() {
+		for (Player player : playerList) {
+			for (Robot robot : player.getRobotList()) {
+				try {
+					robot.getAutomatonInList().clear();
+					robot.fillActionList();
+					robot.setFirstAction();
+				} catch (NotDoableException e) {
+					e.getMessage();
+				}
+			}
+		}
+
 	}
 }

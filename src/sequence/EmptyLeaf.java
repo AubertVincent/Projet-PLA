@@ -1,6 +1,4 @@
-package personnages;
-
-import sequence._IncompleteSequence;
+package sequence;
 
 public class EmptyLeaf implements _IncompleteSequence {
 

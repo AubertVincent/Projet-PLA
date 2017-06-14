@@ -7,11 +7,12 @@ import pickable.PickTunnel;
 
 public class Tunnel extends Movement {
 
-	private Integer x;
-	private Integer y;
-	private int lastX;
-	private int lastY;
-	private boolean lastExploration = false;
+	protected Integer x;
+	protected Integer y;
+	// Used in the case of the need of the cancel method
+	// private int lastX;
+	// private int lastY;
+	// private boolean lastExploration = false;
 
 	/**
 	 * set a new Tunnel by means of its arrival coordinates
@@ -36,6 +37,8 @@ public class Tunnel extends Movement {
 	 */
 	@Override
 	protected boolean isDoable(Robot r) {
+		// If the cell targeted by the Tunnel is on the map and is reachable,
+		// return true
 		if (x < r.getMap().mapWidth() && y < r.getMap().mapHeight() && x > 0 && y > 0) {
 			return (r.getMap().getCell(x, y).isReachable());
 		} else {
@@ -51,22 +54,29 @@ public class Tunnel extends Movement {
 		if (!isDoable(r)) {
 			throw new NotDoableException("La case d'arrivée est inateignable");
 		}
-		this.lastX = x;
-		this.lastY = y;
+		// Used in the case of the need of the cancel method
+		// this.lastX = x;
+		// this.lastY = y;
+		// Teleport the robot to the coordinates given
 		r.teleport(x, y);
-		if (r.getExplorationMap().getCell(x, y).isExplored()) {
-			lastExploration = true;
-		} else {
-			r.getExplorationMap().getCell(x, y).setExplored(true);
-		}
+		// Used in the case of the need of the cancel method
+		// if (r.getExplorationMap().getCell(x, y).isExplored()) {
+		// lastExploration = true;
+		// } else {
+		// Set the Cell reached to explored in the explorationMap of the
+		// robot.
+		r.getExplorationMap().getCell(x, y).setExplored(true);
+		// }
+
 	}
 
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
-		r.teleport(lastX, lastY);
-		if (lastExploration) {
-			r.getExplorationMap().getCell(x, y).setExplored(false);
-		}
+		// r.teleport(lastX, lastY);
+		// if (lastExploration) {
+		// r.getExplorationMap().getCell(x, y).setExplored(false);
+		// }
+
 	}
 
 	@Override

@@ -10,7 +10,7 @@ public class Succession extends Behavior {
 
 	@Override
 	public String toString() {
-		return ";";
+		return ";   ";
 	}
 
 	/**
@@ -31,10 +31,18 @@ public class Succession extends Behavior {
 			// test
 			// System.out.println("Une succession !");
 			// end test
-			left.execute(r);
-			right.execute(r);
+			if (left.isAction() && (((Action) left).isDoable(r))) {
+				r.addActionToActionList((Action) left);
+			} else {
+				left.addActionToActionList(r);
+			}
+			if (right.isAction() && (((Action) right).isDoable(r))) {
+				r.addActionToActionList((Action) right);
+			} else {
+				right.addActionToActionList(r);
+			}
 		} catch (NotDoableException e) {
-			throw new NotDoableException("Action impossible");
+			throw new NotDoableException("Undoable sequences");
 		}
 	}
 
@@ -44,7 +52,7 @@ public class Succession extends Behavior {
 	}
 
 	/**
-	 * check if the two actions is doable
+	 * check if the two actions are doable
 	 */
 	// @Override
 	// protected boolean isDoable(Entity e) {

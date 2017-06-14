@@ -2,7 +2,6 @@ package test;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.newdawn.slick.Color;
@@ -10,7 +9,7 @@ import org.newdawn.slick.Graphics;
 
 import operateur.Action;
 import personnages.Besace;
-import personnages.EmptyLeaf;
+import sequence.EmptyLeaf;
 import sequence.EmptyRootTree;
 import sequence.IncompleteTree;
 import sequence.Tree;
@@ -40,9 +39,6 @@ public class SequenceCorrector {
 		return produceIncompleteSequenceAux(besace, seq).getFirst();
 	}
 
-	// FIXME : see execution of Test class
-	// It produces an incorrect incSeq : at Emptyleaf & EmptyRootTree, it puts
-	// old leaf and tree
 	private static Pair<_IncompleteSequence, Besace> produceIncompleteSequenceAux(Besace besace, _Sequence seq)
 			throws CloneNotSupportedException {
 		// Will be used as a "current besace state" during tree exploration
@@ -92,7 +88,7 @@ public class SequenceCorrector {
 				Pair<_IncompleteSequence, Besace> rightResultingPair = produceIncompleteSequenceAux(besaceCopy,
 						tree.getRight());
 				besaceCopy = rightResultingPair.getSecond();
-				_IncompleteSequence rightSeqInc = leftResultingPair.getFirst();
+				_IncompleteSequence rightSeqInc = rightResultingPair.getFirst();
 
 				return new Pair<_IncompleteSequence, Besace>(new EmptyRootTree(leftSeqInc, rightSeqInc), besaceCopy);
 			}
@@ -158,27 +154,29 @@ public class SequenceCorrector {
 	}
 
 	public void drawCorrectedList(Graphics g, int x, int y) {
-		List<Pair<? extends _Sequence, Correctness>> list = correctedList = new LinkedList<Pair<? extends _Sequence, Correctness>>();
-		for (Iterator<Pair<? extends _Sequence, Correctness>> itr = list.iterator(); itr.hasNext();) {
-			Pair<? extends _Sequence, Correctness> currentPair = itr.next();
-			Correctness currentEltCorrectness = currentPair.getSecond();
-			_Sequence currentSeq = currentPair.getFirst();
-			switch (currentEltCorrectness) {
-			case CORRECT:
-				g.setColor(Color.green);
-				break;
-			case INCORRECT:
-				g.setColor(Color.red);
-				break;
+		if (correctedList != null) {
+			// = new LinkedList<Pair<? extends _Sequence, Correctness>>();
+			List<Pair<? extends _Sequence, Correctness>> list = correctedList;
+			for (Iterator<Pair<? extends _Sequence, Correctness>> itr = list.iterator(); itr.hasNext();) {
+				Pair<? extends _Sequence, Correctness> currentPair = itr.next();
+				Correctness currentEltCorrectness = currentPair.getSecond();
+				_Sequence currentSeq = currentPair.getFirst();
+				switch (currentEltCorrectness) {
+				case CORRECT:
+					g.setColor(Color.green);
+					break;
+				case INCORRECT:
+					g.setColor(Color.red);
+					break;
+				}
+				if (currentSeq instanceof Action) {
+					g.drawString(currentSeq.toString(), x, y);
+					x += 45;
+				} else if (currentSeq instanceof Tree) {
+					g.drawString(((Tree) currentSeq).getOp().toString(), x, y);
+					x += 10;
+				}
 			}
-			if (currentSeq instanceof Action) {
-				g.drawString(currentSeq.toString(), x, y);
-				x += 40;
-			} else if (currentSeq instanceof Tree) {
-				g.drawString(((Tree) currentSeq).getOp().toString(), x, y);
-				x += 10;
-			}
-
 		}
 	}
 

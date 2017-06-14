@@ -42,6 +42,7 @@ public abstract class GUICharacter {
 
 	// Tableau action -> animation[]
 	Map<Class<?>, Animation[]> animationsList = new HashMap<Class<?>, Animation[]>();
+	Animation[] deathAnimation;
 
 	// Pour l'instant : animation[]
 
@@ -114,12 +115,43 @@ public abstract class GUICharacter {
 			currentAnimation[6] = loadAnimation(currentSpriteSheet, 1, currentNumberOfSprites, 2, animationDuration);
 			currentAnimation[7] = loadAnimation(currentSpriteSheet, 1, currentNumberOfSprites, 3, animationDuration);
 
-			// System.out.println(this);
-			// System.out.println(currentAnimation.toString());
-			// System.out.println(currentAction.toString());
-
 			animationsList.put(currentAction, currentAnimation);
 
+		}
+
+		// Get death animation informations and then load it
+
+		int deathNumberOfSprites;
+		SpriteSheet deathtSpriteSheet;
+		if (this instanceof GUIPlayer) {
+			deathNumberOfSprites = 6;
+			try {
+				deathtSpriteSheet = new SpriteSheet("res/Player/SpriteSheetDeath.png", spriteSheetWidth,
+						spriteSheetHeight);
+				// Load death animation
+				deathAnimation = new Animation[1];
+				deathAnimation[0] = loadAnimation(deathtSpriteSheet, 0, deathNumberOfSprites, 0, animationDuration);
+
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		} else if (this instanceof GUIRobot) {
+			deathNumberOfSprites = 6;
+			try {
+				deathtSpriteSheet = new SpriteSheet("res/Player/SpriteSheetDeath.png", spriteSheetWidth,
+						spriteSheetHeight);
+				Animation[] deathAnimation = new Animation[1];
+				deathAnimation[0] = loadAnimation(deathtSpriteSheet, 0, deathNumberOfSprites, 0, animationDuration);
+
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				throw new Exception("Unimplemented GUICharacter subclass");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 	}
@@ -191,7 +223,7 @@ public abstract class GUICharacter {
 
 			break;
 		case Dying:
-			g.drawAnimation(animationsList.get(operateur.Dying.class)[dir.toInt() + 4], xAnim, yAnim);
+			g.drawAnimation(deathAnimation[0], xAnim, yAnim);
 
 			break;
 		case RobotCreation:

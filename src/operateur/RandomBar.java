@@ -24,25 +24,33 @@ public class RandomBar extends Behavior {
 
 	@Override
 	public void execute(Robot r, _Sequence left, _Sequence right) throws NotDoableException {
-		// test
-		// System.out.println(" Voici un random !");
-		// end test
-		Random random = new Random();
-		int n = random.nextInt(2);
 		try {
+			// test
+			// System.out.println(" Voici un random !");
+			// end test
+			Random random = new Random();
+			int n = random.nextInt(2);
 			if (n == 0) {
-				right.execute(r);
+				if (left.isAction() && (((Action) left).isDoable(r))) {
+					r.addActionToActionList((Action) left);
+				} else {
+					left.addActionToActionList(r);
+				}
 			} else {
-				left.execute(r);
+				if (right.isAction() && (((Action) right).isDoable(r))) {
+					r.addActionToActionList((Action) right);
+				} else {
+					right.addActionToActionList(r);
+				}
 			}
 		} catch (NotDoableException e) {
-			throw new NotDoableException("Action impossible");
+			throw new NotDoableException("Undoable sequences");
 		}
 	}
 
 	@Override
 	public String toString() {
-		return "/";
+		return "/   ";
 	}
 
 	@Override

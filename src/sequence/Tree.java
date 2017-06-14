@@ -26,7 +26,7 @@ public class Tree implements _Sequence {
 		return true;
 	}
 
-	public void execute(Robot r) throws NotDoableException {
+	public void addActionToActionList(Robot r) throws NotDoableException {
 		op.execute(r, left, right);
 	}
 
@@ -55,5 +55,4 @@ public class Tree implements _Sequence {
 		}
 		return null;
 	}
-
 }

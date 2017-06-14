@@ -118,13 +118,12 @@ public class Cell {
 	}
 
 	public Character getOpponent(Team team) throws NotDoableException {
-		Entity e;
+
 		for (Iterator<Entity> it = this.entityList.iterator(); it.hasNext();) {
 			Entity ent = it.next();
 			if (ent.isCharacter()) {
-				e = ent;
-				if (!((Character) e).getTeam().equals(team)) {
-					return ((Character) e);
+				if (!((Character) ent).getTeam().equals(team)) {
+					return ((Character) ent);
 				}
 			}
 		}
@@ -156,6 +155,17 @@ public class Cell {
 		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
 			Entity currentEntity = entityIterator.next();
 			if (currentEntity.isPickAble()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean robotHere() {
+		List<Entity> entityList = this.getEntityList();
+		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
+			Entity currentEntity = entityIterator.next();
+			if (currentEntity.isCharacter() && ((Character) currentEntity).isRobot()) {
 				return true;
 			}
 		}

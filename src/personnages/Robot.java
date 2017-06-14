@@ -1,8 +1,11 @@
 package personnages;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import carte.Base;
+import carte.Cell;
 import carte.Coordinates;
 import carte.Map;
 import entite.Direction;
@@ -10,6 +13,7 @@ import entite.Entity;
 import exceptions.NotDoableException;
 import gui.GUI;
 import gui.GUIRobot;
+import operateur.Action;
 import sequence._Sequence;
 import util.Pair;
 
@@ -23,6 +27,10 @@ public class Robot extends Character {
 	private Map explorationMap;
 
 	private boolean isVisible;
+
+	private List<Action> automatonInList;
+
+	private int currentAction;
 
 	static {
 		// Move-like animations
@@ -50,6 +58,26 @@ public class Robot extends Character {
 		this.explorationMap = new Map(userInterface);
 		this.explorationMap.initExploration(userInterface);
 		this.isVisible = true;
+		this.automatonInList = new ArrayList<Action>();
+		try {
+			this.fillActionList();
+			this.currentAction = 0;
+		} catch (NotDoableException e) {
+			e.getMessage();
+		}
+	}
+
+	// For test delete when it's over
+	public Robot(Base base, Map entityMap, _Sequence myAutomaton, Player player) {
+		super(base.getX(), base.getY(), entityMap, base);
+		this.myAutomaton = myAutomaton;
+		this.player = player;
+		this.explorationMap = entityMap;
+		this.explorationMap.getCell(this.x, this.y).setExplored(true);
+
+		this.myAutomaton = myAutomaton;
+		this.player = player;
+		this.player.addRobot(new Coordinates(base.getX(), base.getY()), this);
 	}
 
 	public static List<Class<?>> getPossibleActionsList() {
@@ -106,116 +134,109 @@ public class Robot extends Character {
 	/**
 	 * Suicide a robot and kill the robots around it
 	 */
-	public void suicideBomber() {
-		int x = this.getX();
-		int y = this.getY();
-		List<Entity> northEntityList = this.map.getCell(x, y - 1).getEntityList();
-		List<Entity> southEntityList = this.map.getCell(x, y + 1).getEntityList();
-		List<Entity> westEntityList = this.map.getCell(x - 1, y).getEntityList();
-		List<Entity> eastEntityList = this.map.getCell(x + 1, y).getEntityList();
-
-		// Cell testN = this.entityMap.getCell(x, y-1);
-
-		int i = 0;
-		for (Iterator<Entity> entityIterator = northEntityList.iterator(); entityIterator.hasNext();) {
-			Entity eCourant = entityIterator.next();
-			if (eCourant instanceof Robot) {
-				this.targetsLife.put(new Pair<Direction, Integer>(Direction.NORTH, i),
-						new Pair<Robot, Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
-				((Robot) eCourant).setLife(0);
-				i++;
+	public void suicideBomber(List<Cell> listCell) {
+		// Run through the list of targets
+		for (Iterator<Cell> cellIterator = listCell.iterator(); cellIterator.hasNext();) {
+			Cell testCell = cellIterator.next();
+			// The list in which are all the entities present on the cell
+			// targeted
+			List<Entity> testEntityList = testCell.getEntityList();
+			// int i = 0;
+			// Run through the list of entities
+			for (Iterator<Entity> entityIterator = testEntityList.iterator(); entityIterator.hasNext();) {
+				Entity eCourant = entityIterator.next();
+				// If the entity is a robot, kill it
+				if (eCourant instanceof Robot) {
+					// this.targetsLife.put(new Pair<Direction,
+					// Integer>(Direction.NORTH, i),
+					// new Pair<Robot, Integer>(((Robot) eCourant), ((Robot)
+					// eCourant).getLife()));
+					// i++;
+					((Robot) eCourant).setLife(0);
+				}
 			}
 		}
+		// Suicide the robot which is executing SuicideBomber
+		this.setLife(0);
 
-		i = 0;
-		for (Iterator<Entity> entityIterator = southEntityList.iterator(); entityIterator.hasNext();) {
-			Entity eCourant = entityIterator.next();
-			if (eCourant instanceof Robot) {
-				this.targetsLife.put(new Pair<Direction, Integer>(Direction.SOUTH, i),
-						new Pair<Robot, Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
-				((Robot) eCourant).setLife(0);
-				i++;
-			}
-		}
-
-		i = 0;
-		for (Iterator<Entity> entityIterator = westEntityList.iterator(); entityIterator.hasNext();) {
-			Entity eCourant = entityIterator.next();
-			if (eCourant instanceof Robot) {
-				this.targetsLife.put(new Pair<Direction, Integer>(Direction.WEST, i),
-						new Pair<Robot, Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
-				((Robot) eCourant).setLife(0);
-				i++;
-			}
-		}
-
-		i = 0;
-		for (Iterator<Entity> entityIterator = eastEntityList.iterator(); entityIterator.hasNext();) {
-			Entity eCourant = entityIterator.next();
-			if (eCourant instanceof Robot) {
-				this.targetsLife.put(new Pair<Direction, Integer>(Direction.EAST, i),
-						new Pair<Robot, Integer>(((Robot) eCourant), ((Robot) eCourant).getLife()));
-				((Robot) eCourant).setLife(0);
-				i++;
-			}
-		}
 	}
 
+	// FIXME or delete if not needed
 	public void cancelSuicideBomber() {
-		int x = this.getX();
-		int y = this.getY();
-		List<Entity> northEntityList = this.map.getCell(x, y - 1).getEntityList();
-		List<Entity> southEntityList = this.map.getCell(x, y + 1).getEntityList();
-		List<Entity> westEntityList = this.map.getCell(x - 1, y).getEntityList();
-		List<Entity> eastEntityList = this.map.getCell(x + 1, y).getEntityList();
-
-		int i = 0;
-		for (Iterator<Entity> entityIterator = northEntityList.iterator(); entityIterator.hasNext();) {
-			Entity eCourant = entityIterator.next();
-			if (eCourant instanceof Robot) {
-				Pair<Direction, Integer> key = new Pair<Direction, Integer>(Direction.NORTH, i);
-				Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
-				((Robot) eCourant).setLife(robotLife.getSecond());
-				i++;
-			}
-		}
-
-		i = 0;
-		for (Iterator<Entity> entityIterator = southEntityList.iterator(); entityIterator.hasNext();) {
-			Entity eCourant = entityIterator.next();
-			if (eCourant instanceof Robot) {
-				Pair<Direction, Integer> key = new Pair<Direction, Integer>(Direction.SOUTH, i);
-				Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
-				((Robot) eCourant).setLife(robotLife.getSecond());
-				i++;
-			}
-		}
-
-		i = 0;
-		for (Iterator<Entity> entityIterator = westEntityList.iterator(); entityIterator.hasNext();) {
-			Entity eCourant = entityIterator.next();
-			if (eCourant instanceof Robot) {
-				Pair<Direction, Integer> key = new Pair<Direction, Integer>(Direction.WEST, i);
-				Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
-				((Robot) eCourant).setLife(robotLife.getSecond());
-				i++;
-			}
-		}
-
-		i = 0;
-		for (Iterator<Entity> entityIterator = eastEntityList.iterator(); entityIterator.hasNext();) {
-			Entity eCourant = entityIterator.next();
-			if (eCourant instanceof Robot) {
-				Pair<Direction, Integer> key = new Pair<Direction, Integer>(Direction.EAST, i);
-				Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
-				((Robot) eCourant).setLife(robotLife.getSecond());
-				i++;
-			}
-		}
+		// int x = this.getX();
+		// int y = this.getY();
+		// List<Entity> northEntityList = this.entityMap.getCell(x, y -
+		// 1).getListEntity();
+		// List<Entity> southEntityList = this.entityMap.getCell(x, y +
+		// 1).getListEntity();
+		// List<Entity> westEntityList = this.entityMap.getCell(x - 1,
+		// y).getListEntity();
+		// List<Entity> eastEntityList = this.entityMap.getCell(x + 1,
+		// y).getListEntity();
+		//
+		// int i = 0;
+		// for (Iterator<Entity> entityIterator = northEntityList.iterator();
+		// entityIterator.hasNext();) {
+		// Entity eCourant = entityIterator.next();
+		// if (eCourant instanceof Robot) {
+		// Pair<Direction, Integer> key = new Pair<Direction,
+		// Integer>(Direction.NORTH, i);
+		// Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
+		// ((Robot) eCourant).setLife(robotLife.getSecond());
+		// i++;
+		// }
+		// }
+		//
+		// i = 0;
+		// for (Iterator<Entity> entityIterator = southEntityList.iterator();
+		// entityIterator.hasNext();) {
+		// Entity eCourant = entityIterator.next();
+		// if (eCourant instanceof Robot) {
+		// Pair<Direction, Integer> key = new Pair<Direction,
+		// Integer>(Direction.SOUTH, i);
+		// Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
+		// ((Robot) eCourant).setLife(robotLife.getSecond());
+		// i++;
+		// }
+		// }
+		//
+		// i = 0;
+		// for (Iterator<Entity> entityIterator = westEntityList.iterator();
+		// entityIterator.hasNext();) {
+		// Entity eCourant = entityIterator.next();
+		// if (eCourant instanceof Robot) {
+		// Pair<Direction, Integer> key = new Pair<Direction,
+		// Integer>(Direction.WEST, i);
+		// Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
+		// ((Robot) eCourant).setLife(robotLife.getSecond());
+		// i++;
+		// }
+		// }
+		//
+		// i = 0;
+		// for (Iterator<Entity> entityIterator = eastEntityList.iterator();
+		// entityIterator.hasNext();) {
+		// Entity eCourant = entityIterator.next();
+		// if (eCourant instanceof Robot) {
+		// Pair<Direction, Integer> key = new Pair<Direction,
+		// Integer>(Direction.EAST, i);
+		// Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
+		// ((Robot) eCourant).setLife(robotLife.getSecond());
+		// i++;
+		// }
+		// }
 	}
 
-	public void execute() throws NotDoableException {
-		myAutomaton.execute(this);
+	public void fillActionList() throws NotDoableException {
+		myAutomaton.addActionToActionList(this);
+	}
+
+	public void removeAnAction(Action action) {
+		this.automatonInList.remove(action);
+	}
+
+	public List<Action> getAutomatonInList() {
+		return this.automatonInList;
 	}
 
 	public void die() {
@@ -253,7 +274,9 @@ public class Robot extends Character {
 		this.pickUp();
 	}
 
-	public void recall(int xBase, int yBase, int time) {
+	public void recall(int time) {
+		// FIXME : calculer case d'apparition et mettre case d'arrivee en
+		// "explored" et gerer le non positionnement sur la map dans le modele
 		this.setX(x);
 		this.setY(y);
 		this.pickUp();
@@ -278,5 +301,21 @@ public class Robot extends Character {
 
 	public void setIsVisible(boolean isVisible) {
 		this.isVisible = isVisible;
+	}
+
+	public void addActionToActionList(Action action) {
+		this.automatonInList.add(action);
+	}
+
+	public int getCurrentAction() {
+		return currentAction;
+	}
+
+	public void setNextAction() {
+		this.currentAction++;
+	}
+
+	public void setFirstAction() {
+		this.currentAction = 0;
 	}
 }
