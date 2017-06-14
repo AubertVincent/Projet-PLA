@@ -1,12 +1,13 @@
 package entite;
 
+import carte.Cell;
 import carte.Map;
 
 public abstract class Entity {
 
 	protected int x;
 	protected int y;
-	public final Map entityMap;
+	public final Map map;
 
 	public abstract boolean isObstacle();
 
@@ -29,7 +30,7 @@ public abstract class Entity {
 		super();
 		this.x = x;
 		this.y = y;
-		this.entityMap = entityMap;
+		this.map = entityMap;
 	}
 
 	/**
@@ -75,8 +76,12 @@ public abstract class Entity {
 	 * 
 	 * @return the map
 	 */
-	public Map getEntityMap() {
-		return entityMap;
+	public Map getMap() {
+		return map;
+	}
+
+	public Cell getCell() {
+		return getMap().getCell(getX(), getY());
 	}
 
 }

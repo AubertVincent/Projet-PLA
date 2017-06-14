@@ -36,7 +36,7 @@ public class ClassicAck extends Attack {
 		int y = r.getY();
 		boolean b;
 		Team team = r.getTeam();
-		Map myMap = r.getEntityMap();
+		Map myMap = r.getMap();
 
 		boolean isInCorner = ((x == 0 && y == 0) || (x == 0 && y == myMap.mapHeight() - 1)
 				|| (x == myMap.mapWidth() - 1 && y == 0) || (x == myMap.mapWidth() - 1 && y == myMap.mapHeight() - 1));
@@ -92,7 +92,7 @@ public class ClassicAck extends Attack {
 			int x = r.getX();
 			int y = r.getY();
 			Team team = r.getTeam();
-			Map myMap = r.getEntityMap();
+			Map myMap = r.getMap();
 
 			Direction d;
 			Cell testEast = myMap.getCell(x + 1, y);
@@ -135,7 +135,7 @@ public class ClassicAck extends Attack {
 			int x = r.getX();
 			int y = r.getY();
 			Team team = r.getTeam();
-			Map myMap = r.getEntityMap();
+			Map myMap = r.getMap();
 
 			Direction d;
 			Cell testEast = myMap.getCell(x + 1, y);

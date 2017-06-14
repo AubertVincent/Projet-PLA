@@ -165,4 +165,8 @@ public class Map {
 		this.pickableList.remove(e);
 	}
 
+	public void remove(Entity entity) {
+		entity.getCell().remove(entity);
+	}
+
 }

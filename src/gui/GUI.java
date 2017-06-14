@@ -26,8 +26,8 @@ import pickable.PickAble;
 public class GUI extends BasicGame {
 
 	// Test
-	Font font;
-	TrueTypeFont ttf;
+	private Font font;
+	private TrueTypeFont ttf;
 	// End(Test)
 
 	private GameContainer container;
@@ -48,8 +48,6 @@ public class GUI extends BasicGame {
 	private GUIBesace rectBesace;
 	private int WidthRect = 32 * 20;
 	private int HeightRect = 300;
-
-	Character myself;
 
 	public static void main(String[] args) throws SlickException {
 		GUI mainUI = new GUI();

@@ -29,26 +29,22 @@ public class RandomMove extends Action implements _Random {
 			for (int i = 1; i <= lg; i++) {
 				switch (dir) {
 				case NORTH:
-					if (y - i < 0 || y - i > r.getEntityMap().mapHeight()
-							|| !(r.getEntityMap().getCell(x, y - 1).isReachable())) {
+					if (y - i < 0 || y - i > r.getMap().mapHeight() || !(r.getMap().getCell(x, y - 1).isReachable())) {
 						return false;
 					}
 					break;
 				case SOUTH:
-					if (y + i < 0 || y + i > r.getEntityMap().mapHeight()
-							|| !(r.getEntityMap().getCell(x, y + 1).isReachable())) {
+					if (y + i < 0 || y + i > r.getMap().mapHeight() || !(r.getMap().getCell(x, y + 1).isReachable())) {
 						return false;
 					}
 					break;
 				case EAST:
-					if (x + i < 0 || x + i > r.getEntityMap().mapWidth()
-							|| !(r.getEntityMap().getCell(x + 1, y).isReachable())) {
+					if (x + i < 0 || x + i > r.getMap().mapWidth() || !(r.getMap().getCell(x + 1, y).isReachable())) {
 						return false;
 					}
 					break;
 				case WEST:
-					if (x - i < 0 || x - i > r.getEntityMap().mapWidth()
-							|| !(r.getEntityMap().getCell(x - 1, y).isReachable())) {
+					if (x - i < 0 || x - i > r.getMap().mapWidth() || !(r.getMap().getCell(x - 1, y).isReachable())) {
 						return false;
 					}
 					break;
@@ -92,13 +88,13 @@ public class RandomMove extends Action implements _Random {
 				}
 				break;
 			case 2:
-				if (r.getY() < r.entityMap.mapHeight() - 1) {
+				if (r.getY() < r.map.mapHeight() - 1) {
 					isOnMap = true;
 					dir = Direction.SOUTH;
 				}
 				break;
 			case 3:
-				if (r.getX() < r.entityMap.mapWidth() - 1) {
+				if (r.getX() < r.map.mapWidth() - 1) {
 					isOnMap = true;
 					dir = Direction.EAST;
 				}
@@ -156,7 +152,7 @@ public class RandomMove extends Action implements _Random {
 	protected boolean isDoable(Robot r) {
 		int x = r.getX();
 		int y = r.getY();
-		Map myMap = r.getEntityMap();
+		Map myMap = r.getMap();
 		boolean isInCorner = ((x == 0 && y == 0) || (x == 0 && y == myMap.mapHeight() - 1)
 				|| (x == myMap.mapWidth() - 1 && y == 0) || (x == myMap.mapWidth() - 1 && y == myMap.mapHeight() - 1));
 		if (x == 0 && y == 0 && !myMap.getCell(x, y + 1).isReachable() && !myMap.getCell(x + 1, y).isReachable()) {

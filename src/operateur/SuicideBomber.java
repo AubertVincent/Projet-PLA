@@ -18,7 +18,7 @@ public class SuicideBomber extends Attack {
 		// (North, South, Est, West)
 		int x = r.getX();
 		int y = r.getY();
-		Map m = r.getEntityMap();
+		Map m = r.getMap();
 		Cell cellule = m.getCell(x + 1, y);
 		if (cellule.opponentHere(r.getTeam())) {
 			return true;

@@ -38,7 +38,8 @@ public class MoveDir extends Movement {
 	protected boolean isDoable(Robot r) {
 		int x = r.getX();
 		int y = r.getY();
-		Map myMap = r.getEntityMap();
+
+		Map myMap = r.getMap();
 		// Test if there is enough move point and if it didn't go outside the
 		// map
 		if (r.getMovePoints() >= lg) {

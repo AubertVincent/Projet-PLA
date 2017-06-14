@@ -14,14 +14,14 @@ public class Cell {
 	protected int x;
 	protected int y;
 
-	protected List<Entity> listeEntites;
+	protected List<Entity> entityList;
 	boolean isfree;
 	boolean isExplored;
 
 	public Cell(int x, int y) {
 		this.x = x;
 		this.y = y;
-		listeEntites = new ArrayList<Entity>();
+		entityList = new ArrayList<Entity>();
 		isfree = true;
 		isExplored = false;
 	}
@@ -29,14 +29,19 @@ public class Cell {
 	public Cell(int x, int y, Entity ent) {
 
 		this.y = y;
-		listeEntites = new ArrayList<Entity>();
+		entityList = new ArrayList<Entity>();
 		this.setEntity(ent);
 		isfree = false;
 		isExplored = false;
 	}
 
+	public void remove(Entity entity) {
+		entityList.remove(entity);
+		isfree = entityList.isEmpty();
+	}
+
 	public boolean isEmpty() {
-		return listeEntites.isEmpty();
+		return entityList.isEmpty();
 	}
 
 	public boolean isExplored() {
@@ -52,18 +57,18 @@ public class Cell {
 	}
 
 	public void setEntity(Entity ent) {
-		listeEntites.add(ent);
+		entityList.add(ent);
 		this.isfree = false;
 	}
 
 	public void FreeCell() {
 		isfree = true;
-		listeEntites.clear();
+		entityList.clear();
 	}
 
 	public List<PickAble> getPickAbleList() {
 		List<PickAble> pickableList = new ArrayList<PickAble>();
-		for (Entity e : listeEntites) {
+		for (Entity e : entityList) {
 			if (e.isPickAble()) {
 				pickableList.add((PickAble) e);
 			}
@@ -75,13 +80,13 @@ public class Cell {
 		// TODO ne pas tout nettoyer
 	}
 
-	public List<Entity> getListEntity() {
-		return listeEntites;
+	public List<Entity> getEntityList() {
+		return entityList;
 	}
 
 	@SuppressWarnings("unchecked")
 	public Class<PickAble> pickableEntity() {
-		List<Entity> entityList = this.getListEntity();
+		List<Entity> entityList = this.getEntityList();
 		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
 			Entity currentEntity = entityIterator.next();
 			if (currentEntity.isPickAble()) {
@@ -92,7 +97,7 @@ public class Cell {
 	}
 
 	public void freePick(Class<PickAble> ramasse) {
-		List<Entity> entityList = this.getListEntity();
+		List<Entity> entityList = this.getEntityList();
 		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
 			Entity currentEntity = entityIterator.next();
 			if (currentEntity.getClass() == ramasse) {
@@ -102,7 +107,7 @@ public class Cell {
 	}
 
 	public boolean isReachable() {
-		List<Entity> entityList = this.getListEntity();
+		List<Entity> entityList = this.getEntityList();
 		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
 			Entity currentEntity = entityIterator.next();
 			if (currentEntity.isCharacter() || currentEntity.isObstacle()) {
@@ -113,24 +118,21 @@ public class Cell {
 	}
 
 	public Character getOpponent(Team team) throws NotDoableException {
-		int i = 0;
 		Entity e;
-		for (Iterator<Entity> it = this.listeEntites.iterator(); it.hasNext();) {
+		for (Iterator<Entity> it = this.entityList.iterator(); it.hasNext();) {
 			Entity ent = it.next();
 			if (ent.isCharacter()) {
 				e = ent;
-
 				if (!((Character) e).getTeam().equals(team)) {
 					return ((Character) e);
 				}
 			}
-			i++;
 		}
 		throw new NotDoableException("Il est vrai j'ai trop d'adversaire ... mais pas là");
 	}
 
 	public boolean opponentHere(Team team) {
-		for (Iterator<Entity> it = this.listeEntites.iterator(); it.hasNext();) {
+		for (Iterator<Entity> it = this.entityList.iterator(); it.hasNext();) {
 			Entity currentEntity = it.next();
 			if (currentEntity.isCharacter()) {
 				if (((Character) currentEntity).getTeam() != team) {
@@ -150,7 +152,7 @@ public class Cell {
 	}
 
 	public boolean pickAbleHere() {
-		List<Entity> entityList = this.getListEntity();
+		List<Entity> entityList = this.getEntityList();
 		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
 			Entity currentEntity = entityIterator.next();
 			if (currentEntity.isPickAble()) {
@@ -158,10 +160,6 @@ public class Cell {
 			}
 		}
 		return false;
-	}
-
-	public List<Entity> getEntityList() {
-		return this.listeEntites;
 	}
 
 }

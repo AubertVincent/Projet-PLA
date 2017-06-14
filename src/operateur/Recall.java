@@ -34,7 +34,7 @@ public class Recall extends Movement {
 		Base b = r.getBase();
 		int x = b.getX();
 		int y = b.getY();
-		if (r.getEntityMap().getCell(x, y).isReachable()) {
+		if (r.getMap().getCell(x, y).isReachable()) {
 			return true;
 		}
 		return false;
@@ -59,7 +59,7 @@ public class Recall extends Movement {
 		if (this.isDoable(r)) {
 			this.lastX = r.getX();
 			this.lastY = r.getY();
-			r.getEntityMap().getCell(r.getX(), r.getY()).setExplored(true);
+			r.getMap().getCell(r.getX(), r.getY()).setExplored(true);
 			r.teleport(xBase, yBase);
 		} else {
 			throw new NotDoableException("Impossible to execute this recall");
@@ -71,7 +71,7 @@ public class Recall extends Movement {
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
 		// Call back this robot at his previous position
-		r.getEntityMap().getCell(r.getX(), r.getY()).setExplored(false);
+		r.getMap().getCell(r.getX(), r.getY()).setExplored(false);
 		r.teleport(this.lastX, this.lastY);
 		// r.cancelRecall();
 	}

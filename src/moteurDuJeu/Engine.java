@@ -52,7 +52,7 @@ public class Engine {
 			e.printStackTrace();
 		}
 		myMap.init(userInterface, this);
-		this.playPhase = PlayPhase.playerMovement;
+		this.playPhase = PlayPhase.behaviorModification;
 	}
 
 	/**
@@ -179,9 +179,16 @@ public class Engine {
 		}
 	}
 
+	public void remove(Player player) {
+		this.playerList.remove(player);
+		if (currentModifier.equals(player)) {
+			currentModifier = null;
+		}
+	}
+
 	public GUICharacter getGUICharactereFromMouse(int x, int y) {
 
-		for (Entity currentEntity : this.getMap().getCell(x, y).getListEntity()) {
+		for (Entity currentEntity : this.getMap().getCell(x, y).getEntityList()) {
 			if (currentEntity instanceof Character) {
 				return ((Character) currentEntity).getMyselfGUI();
 			}

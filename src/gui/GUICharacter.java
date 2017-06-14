@@ -25,7 +25,7 @@ public abstract class GUICharacter {
 	private static final int spriteSheetWidth = 64;
 	private static final int spriteSheetHeight = 64;
 
-	GUI mainUserInterface;
+	protected GUI mainUserInterface;
 
 	// Coordinates in pixels
 	private float xPx, yPx;
@@ -285,10 +285,8 @@ public abstract class GUICharacter {
 			// State dead means that dying animation is over means that the
 			// Character should be deleted
 			// It's achieved by calling Die and setting it to null
-
-			// TODO
-			// mySelf.Die();
-			// mySelf = null;
+			mySelf.die();
+			mySelf = null;
 			break;
 		case RobotCreation:
 			if (actionRequest) {
@@ -415,6 +413,10 @@ public abstract class GUICharacter {
 	}
 
 	public abstract Character getMyself();
+
+	public GUI getGUI() {
+		return mainUserInterface;
+	}
 
 	public void setActionRequest(boolean actionRequest) {
 		this.actionRequest = actionRequest;

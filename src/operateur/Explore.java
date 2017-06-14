@@ -9,7 +9,6 @@ import entite.Direction;
 import exceptions.NotDoableException;
 import personnages.Robot;
 import pickable.PickAble;
-import pickable.PickExplore;
 
 public class Explore extends Movement {
 
@@ -21,7 +20,7 @@ public class Explore extends Movement {
 	protected boolean isDoable(Robot r) {
 		int x = r.getX();
 		int y = r.getY();
-		Map myMap = r.getEntityMap();
+		Map myMap = r.getMap();
 		boolean isInCorner = ((x == 0 && y == 0) || (x == 0 && y == myMap.mapHeight() - 1)
 				|| (x == myMap.mapWidth() - 1 && y == 0) || (x == myMap.mapWidth() - 1 && y == myMap.mapHeight() - 1));
 		if (x == 0 && y == 0 && !myMap.getCell(x, y + 1).isReachable() && !myMap.getCell(x + 1, y).isReachable()) {
@@ -88,24 +87,24 @@ public class Explore extends Movement {
 			}
 			reachable.clear();
 			randomCpt = 0;
-			if (y - 1 >= 0 && r.getEntityMap().getCell(x, y - 1).isReachable()
-					&& !(r.getEntityMap().getCell(x, y - 1).isExplored())) {
-				reachable.add(r.getEntityMap().getCell(x, y - 1));
+			if (y - 1 >= 0 && r.getMap().getCell(x, y - 1).isReachable()
+					&& !(r.getMap().getCell(x, y - 1).isExplored())) {
+				reachable.add(r.getMap().getCell(x, y - 1));
 				randomCpt++;
 			}
-			if (x + 1 < r.getEntityMap().mapWidth() && r.getEntityMap().getCell(x + 1, y).isReachable()
-					&& !(r.getEntityMap().getCell(x + 1, y).isExplored())) {
-				reachable.add(r.getEntityMap().getCell(x + 1, y));
+			if (x + 1 < r.getMap().mapWidth() && r.getMap().getCell(x + 1, y).isReachable()
+					&& !(r.getMap().getCell(x + 1, y).isExplored())) {
+				reachable.add(r.getMap().getCell(x + 1, y));
 				randomCpt++;
 			}
-			if (x - 1 >= 0 && r.getEntityMap().getCell(x - 1, y).isReachable()
-					&& !(r.getEntityMap().getCell(x - 1, y).isExplored())) {
-				reachable.add(r.getEntityMap().getCell(x - 1, y));
+			if (x - 1 >= 0 && r.getMap().getCell(x - 1, y).isReachable()
+					&& !(r.getMap().getCell(x - 1, y).isExplored())) {
+				reachable.add(r.getMap().getCell(x - 1, y));
 				randomCpt++;
 			}
-			if (y + 1 < r.getEntityMap().mapHeight() && r.getEntityMap().getCell(x, y + 1).isReachable()
-					&& !(r.getEntityMap().getCell(x, y + 1).isExplored())) {
-				reachable.add(r.getEntityMap().getCell(x, y + 1));
+			if (y + 1 < r.getMap().mapHeight() && r.getMap().getCell(x, y + 1).isReachable()
+					&& !(r.getMap().getCell(x, y + 1).isExplored())) {
+				reachable.add(r.getMap().getCell(x, y + 1));
 				randomCpt++;
 			}
 			if (randomCpt != 0) {
@@ -126,20 +125,20 @@ public class Explore extends Movement {
 			} else {
 				randomCpt = 0;
 				reachable.clear();
-				if (y - 1 >= 0 && r.getEntityMap().getCell(x, y - 1).isReachable()) {
-					reachable.add(r.getEntityMap().getCell(x, y - 1));
+				if (y - 1 >= 0 && r.getMap().getCell(x, y - 1).isReachable()) {
+					reachable.add(r.getMap().getCell(x, y - 1));
 					randomCpt++;
 				}
-				if (x + 1 < r.getEntityMap().mapWidth() && r.getEntityMap().getCell(x + 1, y).isReachable()) {
-					reachable.add(r.getEntityMap().getCell(x + 1, y));
+				if (x + 1 < r.getMap().mapWidth() && r.getMap().getCell(x + 1, y).isReachable()) {
+					reachable.add(r.getMap().getCell(x + 1, y));
 					randomCpt++;
 				}
-				if (x - 1 >= 0 && r.getEntityMap().getCell(x - 1, y).isReachable()) {
-					reachable.add(r.getEntityMap().getCell(x - 1, y));
+				if (x - 1 >= 0 && r.getMap().getCell(x - 1, y).isReachable()) {
+					reachable.add(r.getMap().getCell(x - 1, y));
 					randomCpt++;
 				}
-				if (y + 1 < r.getEntityMap().mapHeight() && r.getEntityMap().getCell(x, y + 1).isReachable()) {
-					reachable.add(r.getEntityMap().getCell(x, y + 1));
+				if (y + 1 < r.getMap().mapHeight() && r.getMap().getCell(x, y + 1).isReachable()) {
+					reachable.add(r.getMap().getCell(x, y + 1));
 					randomCpt++;
 				}
 				myRandom = (int) (Math.random() * randomCpt);

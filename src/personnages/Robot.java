@@ -104,10 +104,10 @@ public class Robot extends Character {
 	public void suicideBomber() {
 		int x = this.getX();
 		int y = this.getY();
-		List<Entity> northEntityList = this.entityMap.getCell(x, y - 1).getListEntity();
-		List<Entity> southEntityList = this.entityMap.getCell(x, y + 1).getListEntity();
-		List<Entity> westEntityList = this.entityMap.getCell(x - 1, y).getListEntity();
-		List<Entity> eastEntityList = this.entityMap.getCell(x + 1, y).getListEntity();
+		List<Entity> northEntityList = this.map.getCell(x, y - 1).getEntityList();
+		List<Entity> southEntityList = this.map.getCell(x, y + 1).getEntityList();
+		List<Entity> westEntityList = this.map.getCell(x - 1, y).getEntityList();
+		List<Entity> eastEntityList = this.map.getCell(x + 1, y).getEntityList();
 
 		// Cell testN = this.entityMap.getCell(x, y-1);
 
@@ -159,10 +159,10 @@ public class Robot extends Character {
 	public void cancelSuicideBomber() {
 		int x = this.getX();
 		int y = this.getY();
-		List<Entity> northEntityList = this.entityMap.getCell(x, y - 1).getListEntity();
-		List<Entity> southEntityList = this.entityMap.getCell(x, y + 1).getListEntity();
-		List<Entity> westEntityList = this.entityMap.getCell(x - 1, y).getListEntity();
-		List<Entity> eastEntityList = this.entityMap.getCell(x + 1, y).getListEntity();
+		List<Entity> northEntityList = this.map.getCell(x, y - 1).getEntityList();
+		List<Entity> southEntityList = this.map.getCell(x, y + 1).getEntityList();
+		List<Entity> westEntityList = this.map.getCell(x - 1, y).getEntityList();
+		List<Entity> eastEntityList = this.map.getCell(x + 1, y).getEntityList();
 
 		int i = 0;
 		for (Iterator<Entity> entityIterator = northEntityList.iterator(); entityIterator.hasNext();) {
@@ -211,5 +211,24 @@ public class Robot extends Character {
 
 	public void execute() throws NotDoableException {
 		myAutomaton.execute(this);
+	}
+
+	public void die() {
+
+		player.removeFromRobotList(this);
+
+		this.mySelfGUI.setMySelf(null);
+		this.mySelfGUI = null;
+
+		// Remove every occurrence of current robot in targetsLife
+		for (Iterator<Pair<Direction, Integer>> iterator = targetsLife.keySet().iterator(); iterator.hasNext();) {
+			Pair<Direction, Integer> currentPair = iterator.next();
+			Robot currentRobot = targetsLife.get(currentPair).getFirst();
+			if (currentRobot.equals(this)) {
+				targetsLife.remove(currentPair);
+			}
+		}
+
+		this.getMap().remove(this);
 	}
 }

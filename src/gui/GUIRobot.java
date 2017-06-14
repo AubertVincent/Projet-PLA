@@ -53,8 +53,8 @@ public class GUIRobot extends GUICharacter {
 		}
 	}
 
-	public void setRobot(Robot robot) {
-		this.mySelf = robot;
+	public void setMySelf(Robot mySelf) {
+		this.mySelf = mySelf;
 	}
 
 	public Robot getMyself() {
