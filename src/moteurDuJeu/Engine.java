@@ -52,7 +52,7 @@ public class Engine {
 			e.printStackTrace();
 		}
 		myMap.init(userInterface, this);
-		this.playPhase = PlayPhase.behaviorModification;
+		this.playPhase = PlayPhase.playerMovement;
 	}
 
 	/**

@@ -165,22 +165,18 @@ public class Besace {
 	}
 
 	public void remove(_Sequence sequence) {
-		try {
-			throw new Exception("Unfinished implementation");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 		// Base case
-		// if (sequence.isAction()) {
-		// Action action = (Action) sequence;
-		// this.remove(action);
-		// } else if (sequence.isTree()) {
-		// // Recursive case
-		// Tree tree = (Tree) sequence;
-		// this.remove(tree.getOpPickable());
-		// this.remove(tree.getLeft());
-		// this.remove(tree.getRight());
-		// }
+		if (sequence.isAction()) {
+			Action action = (Action) sequence;
+			this.remove(action.getPickable());
+		} else if (sequence.isTree()) {
+			// Recursive case
+			Tree tree = (Tree) sequence;
+			this.remove(tree.getOpPickable());
+			this.remove(tree.getLeft());
+			this.remove(tree.getRight());
+		}
 
 	}
 
