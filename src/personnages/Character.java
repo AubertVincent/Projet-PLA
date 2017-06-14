@@ -42,7 +42,7 @@ public abstract class Character extends Entity {
 			this.vision = 5;
 			this.damages = 3;
 			this.range = 3;
-			this.movePoints = 100;
+			this.movePoints = 500;
 			this.remainingAttacks = 5;
 			this.recall = 3;
 
@@ -380,6 +380,7 @@ public abstract class Character extends Entity {
 
 		character.dropPickables();
 		character.setState(State.Dying);
+
 	}
 
 	protected abstract void dropPickables();

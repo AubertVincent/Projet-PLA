@@ -1,6 +1,5 @@
 package personnages;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -165,24 +164,19 @@ public class Player extends Character {
 			Class<? extends PickAble> currentPickAbleClass = iterator.next();
 			int numberOfCurrentPickAble = getBesace().get(currentPickAbleClass);
 			for (int i = 0; i < numberOfCurrentPickAble; i++) {
-				Constructor<? extends PickAble> pickAbleConstructor;
+
 				try {
-					pickAbleConstructor = currentPickAbleClass.getConstructor(Integer.class, Integer.class,
-							carte.Map.class);
-					PickAble pickAble;
-					try {
-						pickAble = pickAbleConstructor.newInstance(this.getX(), this.getY(), this.map);
-						this.getCell().setEntity(pickAble);
-						this.getBesace().remove(currentPickAbleClass);
-					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-							| InvocationTargetException e) {
-						e.printStackTrace();
-					}
-				} catch (NoSuchMethodException e) {
-					e.printStackTrace();
-				} catch (SecurityException e) {
+					PickAble pickable = currentPickAbleClass
+							.getConstructor(Integer.class, Integer.class, carte.Map.class)
+							.newInstance(getX(), getY(), this.getMap());
+					this.getCell().setEntity(pickable);
+					this.getBesace().remove(currentPickAbleClass);
+
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
 					e.printStackTrace();
 				}
+
 			}
 		}
 	}

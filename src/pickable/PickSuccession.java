@@ -4,7 +4,7 @@ import carte.Map;
 
 public class PickSuccession extends PickAble {
 
-	public PickSuccession(int x, int y, Map entityMap) {
+	public PickSuccession(Integer x, Integer y, Map entityMap) {
 		super(x, y, entityMap);
 	}
 

@@ -5,8 +5,8 @@ import carte.Map;
 
 public abstract class Entity {
 
-	protected int x;
-	protected int y;
+	protected Integer x;
+	protected Integer y;
 	public final Map map;
 
 	public abstract boolean isObstacle();
@@ -26,7 +26,7 @@ public abstract class Entity {
 	 * @param entityMap
 	 *            The map on which the entity is located
 	 */
-	public Entity(int x, int y, Map entityMap) {
+	public Entity(Integer x, Integer y, Map entityMap) {
 		super();
 		this.x = x;
 		this.y = y;
@@ -58,7 +58,7 @@ public abstract class Entity {
 	 * 
 	 * @return x coordinate on the map of the Entity
 	 */
-	public int getX() {
+	public Integer getX() {
 		return this.x;
 	}
 
@@ -67,7 +67,7 @@ public abstract class Entity {
 	 * 
 	 * @return y coordinate on the map of the Entity
 	 */
-	public int getY() {
+	public Integer getY() {
 		return this.y;
 	}
 
