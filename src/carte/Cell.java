@@ -113,18 +113,13 @@ public class Cell {
 	}
 
 	public Character getOpponent(Team team) throws NotDoableException {
-		int i = 0;
-		Entity e;
 		for (Iterator<Entity> it = this.listeEntites.iterator(); it.hasNext();) {
 			Entity ent = it.next();
 			if (ent.isCharacter()) {
-				e = ent;
-
-				if (!((Character) e).getTeam().equals(team)) {
-					return ((Character) e);
+				if (!((Character) ent).getTeam().equals(team)) {
+					return ((Character) ent);
 				}
 			}
-			i++;
 		}
 		throw new NotDoableException("Il est vrai j'ai trop d'adversaire ... mais pas là");
 	}
@@ -160,8 +155,15 @@ public class Cell {
 		return false;
 	}
 
-	public List<Entity> getEntityList() {
-		return this.listeEntites;
+	public boolean robotHere() {
+		List<Entity> entityList = this.getListEntity();
+		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
+			Entity currentEntity = entityIterator.next();
+			if (currentEntity.isCharacter() && ((Character) currentEntity).isRobot()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

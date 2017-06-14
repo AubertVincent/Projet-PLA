@@ -8,4 +8,9 @@ public class PickExplore extends PickAble {
 		super(x, y, entityMap);
 	}
 
+	@Override
+	public String toString() {
+		return "E : Explore";
+	}
+
 }

@@ -18,10 +18,6 @@ public class RandomMove extends Action implements _Random {
 		super();
 	}
 
-	// FIXME This function is going to check in all the direction but it need to
-	// check all the robot's path
-	// Or mabye we just need to check in one direction ? In this case, just
-	// replace 1 by i
 	protected boolean isReachable(Robot r, Direction dir, int lg) {
 		int x = r.getX();
 		int y = r.getY();
@@ -29,8 +25,10 @@ public class RandomMove extends Action implements _Random {
 			for (int i = 1; i <= lg; i++) {
 				switch (dir) {
 				case NORTH:
+					// check if we are not outside the map and then check if the
+					// cell is reachable
 					if (y - i < 0 || y - i > r.getEntityMap().mapHeight()
-							|| !(r.getEntityMap().getCell(x, y - 1).isReachable())) {
+							|| !(r.getEntityMap().getCell(x, y - i).isReachable())) {
 						return false;
 					}
 					break;
@@ -105,9 +103,14 @@ public class RandomMove extends Action implements _Random {
 				break;
 			}
 			r.setDirection(dir);
+			// if the cell we got is not on map or not reachable, we try to get
+			// another direction thanks to the random while we didn't get a one
+			// which is reachable or on the map
 		} while (!isOnMap || !isReachable(r, dir, lg));
 		this.direction = dir;
 		this.lg = lg;
+		// Set all the cell being explored to explored in the explorationMap of
+		// the robot
 		switch (dir) {
 		case NORTH:
 			for (int i = 1; i <= lg; i++) {
@@ -157,34 +160,22 @@ public class RandomMove extends Action implements _Random {
 		int x = r.getX();
 		int y = r.getY();
 		Map myMap = r.getEntityMap();
-		boolean isInCorner = ((x == 0 && y == 0) || (x == 0 && y == myMap.mapHeight() - 1)
-				|| (x == myMap.mapWidth() - 1 && y == 0) || (x == myMap.mapWidth() - 1 && y == myMap.mapHeight() - 1));
-		if (x == 0 && y == 0 && !myMap.getCell(x, y + 1).isReachable() && !myMap.getCell(x + 1, y).isReachable()) {
-			return false;
-		} else if (x == myMap.mapWidth() - 1 && y == 0 && !myMap.getCell(x, y + 1).isReachable()
-				&& !myMap.getCell(x - 1, y).isReachable()) {
-			return false;
-		} else if (x == myMap.mapWidth() - 1 && y == myMap.mapHeight() - 1 && !myMap.getCell(x, y - 1).isReachable()
-				&& !myMap.getCell(x - 1, y).isReachable()) {
-			return false;
-		} else if (x == 0 && y == myMap.mapHeight() - 1 && !myMap.getCell(x, y - 1).isReachable()
-				&& !myMap.getCell(x + 1, y).isReachable()) {
-			return false;
-		} else if (!isInCorner && x == 0 && !myMap.getCell(x, y - 1).isReachable()
-				&& !myMap.getCell(x, y + 1).isReachable() && !myMap.getCell(x + 1, y).isReachable()) {
-			return false;
-		} else if (!isInCorner && y == 0 && !myMap.getCell(x + 1, y).isReachable()
-				&& !myMap.getCell(x, y + 1).isReachable() && !myMap.getCell(x - 1, y).isReachable()) {
-			return false;
-		} else if (!isInCorner && y == myMap.mapHeight() - 1 && !myMap.getCell(x + 1, y).isReachable()
-				&& !myMap.getCell(x, y - 1).isReachable() && !myMap.getCell(x - 1, y).isReachable()) {
-			return false;
-		} else if (!isInCorner && x == myMap.mapWidth() - 1 && !myMap.getCell(x, y - 1).isReachable()
-				&& !myMap.getCell(x, y + 1).isReachable() && !myMap.getCell(x - 1, y).isReachable()) {
-			return false;
-		} else {
+		// We have to check if there is at least one reachable cell around this
+		// robot
+		// (North, South, Est, West)
+		if (x < r.getEntityMap().mapWidth() && myMap.getCell(x + 1, y).isReachable()) {
 			return true;
 		}
+		if (x > 0 && myMap.getCell(x - 1, y).isReachable()) {
+			return true;
+		}
+		if (y > 0 && myMap.getCell(x, y - 1).isReachable()) {
+			return true;
+		}
+		if (y < r.getEntityMap().mapHeight() && myMap.getCell(x, y + 1).isReachable()) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override
