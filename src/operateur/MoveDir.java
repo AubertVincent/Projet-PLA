@@ -9,8 +9,8 @@ import pickable.PickMoveDir;
 
 public class MoveDir extends Movement {
 
-	protected Direction dir;
-	protected Integer lg;
+	private Direction dir;
+	private Integer lg;
 
 	@Override
 	public String toString() {

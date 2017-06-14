@@ -19,7 +19,6 @@ import entite.Team;
 import exceptions.NotDoableException;
 import moteurDuJeu.Engine;
 import moteurDuJeu.PlayPhase;
-import personnages.Besace;
 import personnages.Player;
 import personnages.Robot;
 import pickable.PickAble;
@@ -42,7 +41,7 @@ public class GUI extends BasicGame {
 
 	private GUIBehaviorInput inputTextField;
 
-	protected boolean behaviorInputNeeded = false;
+	protected boolean behaviorInputNeeded;
 
 	private Engine engine;
 
@@ -61,6 +60,7 @@ public class GUI extends BasicGame {
 		WindowWidth = 1088;
 		cellHeight = 32;
 		cellWidth = 32;
+
 	}
 
 	@Override
@@ -73,6 +73,7 @@ public class GUI extends BasicGame {
 
 		engine = new Engine(this);
 
+		setBehaviorInputNeeded(false);
 		// TODO It's a backup, may be used in GUIBehviorInput.drawCorrectedList
 		// font = new Font("Verdana", Font.BOLD, 20);
 		// ttf = new TrueTypeFont(font, true);
@@ -118,9 +119,6 @@ public class GUI extends BasicGame {
 
 		if (behaviorInputNeeded) {
 			this.rectBesace.render(container, g, engine.getCurrentModifier().getBesace());
-
-			Besace besace;
-			besace = engine.getPlayer(Team.ROUGE).getBesace();
 			this.inputTextField.render(container, g);
 		}
 
@@ -165,7 +163,7 @@ public class GUI extends BasicGame {
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
 
-		if (engine.getPlayPhase() == PlayPhase.behaviorModification) {
+		if (behaviorInputNeeded) {
 			this.inputTextField.update(container, engine.getCurrentModifier());
 		}
 
@@ -177,9 +175,10 @@ public class GUI extends BasicGame {
 				guiCurrentRobot.update(this, delta);
 			}
 		}
-		if (engine.getPlayPhase() == PlayPhase.behaviorModification) {
-			Player player = engine.getCurrentModifier();
-			this.inputTextField.update(container, player);
+		if (inputTextField.getUpdateness()) {
+			inputTextField.setUpdateness(false);
+			setBehaviorInputNeeded(false);
+			engine.setRobotBehavior(this, inputTextField.getReceivedSequence());
 		}
 	}
 
@@ -189,22 +188,28 @@ public class GUI extends BasicGame {
 		int mouseYCell = pixelToCellY(y);
 		System.out.println("LeftClick on (" + mouseXCell + ", " + mouseYCell + ")");
 
-		GUICharacter guiPerso;
+		if (getEngine().getPlayPhase().equals(PlayPhase.behaviorModification)) {
 
-		guiPerso = engine.getGUICharactereFromMouse(mouseXCell, mouseYCell);
-		if (!guiPerso.equals(null)) {
+			GUICharacter guiPerso;
 
-			if (guiPerso instanceof GUIPlayer) {
-				engine.createRobot(this, (Player) guiPerso.getMyself());
-			} else {
-				try {
-					engine.behaviorModif(this, (Robot) guiPerso.getMyself());
-				} catch (Exception e) {
-					e.getMessage();
+			guiPerso = engine.getGUICharactereFromMouse(mouseXCell, mouseYCell);
+			try {
+				if (!guiPerso.equals(null)) {
+
+					if (guiPerso instanceof GUIPlayer) {
+						engine.behaviorCreation(this, (Player) guiPerso.getMyself());
+					} else {
+						try {
+							engine.behaviorModification(this, (Robot) guiPerso.getMyself());
+						} catch (Exception e) {
+							e.getMessage();
+						}
+					}
 				}
+			} catch (Exception e) {
+				;
 			}
 		}
-
 	}
 
 	public Engine getEngine() {
@@ -275,12 +280,12 @@ public class GUI extends BasicGame {
 					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.EAST);
 					break;
 				}
-			}
-
-			if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
-				if (key == Input.KEY_SPACE) {
-					engine.setPlayPhase(Input.KEY_SPACE);
-					engine.executeAutomaton(this);
+			} else if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
+				switch (key) {
+				case Input.KEY_SPACE:
+					engine.setPlayPhase(PlayPhase.automatonExecution);
+					engine.executeAllRobot();
+					break;
 				}
 			}
 
@@ -351,7 +356,11 @@ public class GUI extends BasicGame {
 		return WindowWidth;
 	}
 
-	public void setBehaviorInputNeeded(boolean behaviorInputNeeded) {
+	public void inputRequest() {
+		setBehaviorInputNeeded(true);
+	}
+
+	private void setBehaviorInputNeeded(boolean behaviorInputNeeded) {
 		this.behaviorInputNeeded = behaviorInputNeeded;
 
 	}

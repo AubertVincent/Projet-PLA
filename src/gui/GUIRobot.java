@@ -14,8 +14,7 @@ import personnages.Robot;
 
 public class GUIRobot extends GUICharacter {
 
-	Robot mySelf;
-	GUIPlayer guiPlayer;
+	protected Robot mySelf;
 
 	// The Map<ActionClass, Integer> of the yet added class->number of sprites
 	// of its animation
@@ -69,7 +68,6 @@ public class GUIRobot extends GUICharacter {
 			GUIPlayer guiPlayer) {
 		super(userInterface, x, y, dir, animationDuration, team, robot);
 
-		this.guiPlayer = guiPlayer;
 		animationsList.add(ClassicAck.class);
 		animationsList.add(MoveDir.class);
 		this.mySelf = robot;

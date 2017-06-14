@@ -9,8 +9,10 @@ import pickable.PickRandomMove;
 
 public class RandomMove extends Action implements _Random {
 
-	private int lg; // Length of the movement
-	private Direction direction; // Direction of the movement
+	// Length of the movement
+	private int lg;
+	// Direction of the movement
+	private Direction direction;
 
 	public RandomMove() {
 		super();

@@ -16,8 +16,6 @@ import pickable.PickAble;
 
 public abstract class Character extends Entity {
 
-	// protected Besace besace;
-
 	protected Direction direction = Direction.SOUTH;
 	protected int life;
 	protected int vision;
@@ -43,7 +41,7 @@ public abstract class Character extends Entity {
 			this.vision = 5;
 			this.damages = 3;
 			this.range = 3;
-			this.movePoints = 100;
+			this.movePoints = 2;
 			this.remainingAttacks = 5;
 			this.recall = 3;
 
@@ -70,24 +68,6 @@ public abstract class Character extends Entity {
 			}
 		}
 	}
-
-	// // For test, delete when it's over
-	// public Character(int x, int y, Map entityMap, Besace besace, Direction
-	// direction, int life, int vision, int attack,
-	// int range, int movePoints, int recall, Team team, int attackPoints, Base
-	// base) {
-	// super(x, y, entityMap);
-	// this.direction = direction;
-	// this.life = life;
-	// this.vision = vision;
-	// this.attack = attack;
-	// this.range = range;
-	// this.movePoints = movePoints;
-	// this.recall = recall;
-	// this.team = team;
-	// this.attackPoints = attackPoints;
-	// this.base = base;
-	// }
 
 	public Base getBase() {
 		return base;
@@ -273,11 +253,7 @@ public abstract class Character extends Entity {
 			this.setDirection(dir);
 			this.pickUp();
 			this.setMovePoints(this.getMovePoints() - 1);
-			if (this.getMovePoints() == 0) {
-				this.setState(State.Wait);
-			}
 		}
-
 	}
 
 	public void pickUp() {
@@ -318,24 +294,21 @@ public abstract class Character extends Entity {
 		this.setState(State.ClassicAttack);
 		Character opponent = null;
 		try {
-			opponent = target.getOpponent(this.getTeam());
-			this.classicAtkTmp(target, opponent);
-			this.setAttackPoints(this.getAttackPoints() - 1);
+			if (this.getAttackPoints() > 0) {
+				this.getMyselfGUI().setActionRequest(true);
+				opponent = target.getOpponent(this.getTeam());
+				this.classicAtkTmp(target, opponent);
+				this.setAttackPoints(this.getAttackPoints() - 1);
 
-			if (opponent != null && opponent.getLife() <= 0) {
-				try {
-					throw new Exception("NYI");
-				} catch (Exception e) {
-					e.printStackTrace();
+				if (opponent != null && opponent.getLife() <= 0) {
+					this.kill(opponent);
 				}
 			}
-		} catch (NotDoableException e) {
-			e.getMessage();
 		}
 
-		// FIXME
-		// If the opponent's hero dies => End of game
-		// opponent.dies();
+		catch (NotDoableException e) {
+			e.getMessage();
+		}
 
 	}
 

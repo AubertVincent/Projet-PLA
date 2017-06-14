@@ -14,6 +14,7 @@ import gui.GUI;
 import gui.GUIPlayer;
 import moteurDuJeu.Engine;
 import pickable.PickAble;
+import pickable.PickClassicAck;
 
 public class Player extends Character {
 
@@ -36,7 +37,7 @@ public class Player extends Character {
 
 	private RobotList robotList;
 
-	private GUIPlayer mySelfGUI;
+	protected GUIPlayer mySelfGUI;
 
 	/**
 	 * Set a new Player
@@ -79,8 +80,8 @@ public class Player extends Character {
 		}
 		robotList = new RobotList();
 		this.besace = new Besace();
+		besace.add(PickClassicAck.class);
 		entityMap.setEntity(this);
-
 	}
 
 	public void addRobot(Object obj, Robot robot) {
@@ -149,7 +150,7 @@ public class Player extends Character {
 		return this;
 	}
 
-	// For this version of the game, Player haven't pickables to drop
+	// For this version of the game, Player have just to drop his besace
 	protected void dropPickables() {
 		for (Iterator<Class<? extends PickAble>> iterator = getBesace().get().keySet().iterator(); iterator
 				.hasNext();) {

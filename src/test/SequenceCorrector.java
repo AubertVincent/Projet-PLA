@@ -2,6 +2,7 @@ package test;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.newdawn.slick.Color;
@@ -15,15 +16,15 @@ import sequence.IncompleteTree;
 import sequence.Tree;
 import sequence._IncompleteSequence;
 import sequence._Sequence;
-import util.Correct;
+import util.Correctness;
 import util.Pair;
 
 public class SequenceCorrector {
 
-	List<Pair<? extends _Sequence, Correct>> correctedList;
+	List<Pair<? extends _Sequence, Correctness>> correctedList;
 	boolean correct;
 
-	public static List<Pair<? extends _Sequence, Correct>> correct(Besace besace, _Sequence seq) {
+	public static List<Pair<? extends _Sequence, Correctness>> correct(Besace besace, _Sequence seq) {
 		_IncompleteSequence incSeq;
 		try {
 			incSeq = produceIncompleteSequence(besace, seq);
@@ -107,24 +108,24 @@ public class SequenceCorrector {
 		return null;
 	}
 
-	private static List<Pair<? extends _Sequence, Correct>> sequencesToCorrectedList(_Sequence seq,
+	private static List<Pair<? extends _Sequence, Correctness>> sequencesToCorrectedList(_Sequence seq,
 			_IncompleteSequence incSeq) {
-		List<Pair<? extends _Sequence, Correct>> resultingList = new ArrayList<Pair<? extends _Sequence, Correct>>();
+		List<Pair<? extends _Sequence, Correctness>> resultingList = new ArrayList<Pair<? extends _Sequence, Correctness>>();
 		resultingList = treeToCorrectedListAux(resultingList, seq, incSeq);
 		return resultingList;
 	}
 
-	private static List<Pair<? extends _Sequence, Correct>> treeToCorrectedListAux(
-			List<Pair<? extends _Sequence, Correct>> list, _Sequence seq, _IncompleteSequence incSeq) {
+	private static List<Pair<? extends _Sequence, Correctness>> treeToCorrectedListAux(
+			List<Pair<? extends _Sequence, Correctness>> list, _Sequence seq, _IncompleteSequence incSeq) {
 		// Base case
 		if (seq.isAction()) {
 			// Unavailable leaf case
 			if (incSeq.isEmptyLeaf()) {
-				list.add(new Pair<_Sequence, Correct>(seq, Correct.INCORRECT));
+				list.add(new Pair<_Sequence, Correctness>(seq, Correctness.INCORRECT));
 			}
 			// Normal leaf case
 			else {
-				list.add(new Pair<_Sequence, Correct>(seq, Correct.CORRECT));
+				list.add(new Pair<_Sequence, Correctness>(seq, Correctness.CORRECT));
 			}
 		}
 		// Recursive case
@@ -134,14 +135,14 @@ public class SequenceCorrector {
 			if (incSeq.isEmptyRootTree()) {
 				EmptyRootTree incTree = (EmptyRootTree) incSeq;
 				list = treeToCorrectedListAux(list, tree.getLeft(), incTree.getLeft());
-				list.add(new Pair<_Sequence, Correct>(seq, Correct.INCORRECT));
+				list.add(new Pair<_Sequence, Correctness>(seq, Correctness.INCORRECT));
 				list = treeToCorrectedListAux(list, tree.getRight(), incTree.getRight());
 			}
 			// Normal root case
 			else {
 				IncompleteTree incTree = (IncompleteTree) incSeq;
 				list = treeToCorrectedListAux(list, tree.getLeft(), incTree.getLeft());
-				list.add(new Pair<_Sequence, Correct>(seq, Correct.CORRECT));
+				list.add(new Pair<_Sequence, Correctness>(seq, Correctness.CORRECT));
 				list = treeToCorrectedListAux(list, tree.getRight(), incTree.getRight());
 			}
 		}
@@ -157,10 +158,10 @@ public class SequenceCorrector {
 	}
 
 	public void drawCorrectedList(Graphics g, int x, int y) {
-		List<Pair<? extends _Sequence, Correct>> list = correctedList;
-		for (Iterator<Pair<? extends _Sequence, Correct>> itr = list.iterator(); itr.hasNext();) {
-			Pair<? extends _Sequence, Correct> currentPair = itr.next();
-			Correct currentEltCorrectness = currentPair.getSecond();
+		List<Pair<? extends _Sequence, Correctness>> list = correctedList = new LinkedList<Pair<? extends _Sequence, Correctness>>();
+		for (Iterator<Pair<? extends _Sequence, Correctness>> itr = list.iterator(); itr.hasNext();) {
+			Pair<? extends _Sequence, Correctness> currentPair = itr.next();
+			Correctness currentEltCorrectness = currentPair.getSecond();
 			_Sequence currentSeq = currentPair.getFirst();
 			switch (currentEltCorrectness) {
 			case CORRECT:
@@ -188,12 +189,12 @@ public class SequenceCorrector {
 		correct = isCorrect(correctedList);
 	}
 
-	private static boolean isCorrect(List<Pair<? extends _Sequence, Correct>> correctedList2) {
-		for (Iterator<Pair<? extends _Sequence, Correct>> itr = correctedList2.iterator(); itr.hasNext();) {
-			Pair<? extends _Sequence, Correct> currentPair = itr.next();
+	private static boolean isCorrect(List<Pair<? extends _Sequence, Correctness>> correctedList2) {
+		for (Iterator<Pair<? extends _Sequence, Correctness>> itr = correctedList2.iterator(); itr.hasNext();) {
+			Pair<? extends _Sequence, Correctness> currentPair = itr.next();
 			// The sequence isn't correct if one of the correctnesses in the
 			// list is INCORRECT
-			if (currentPair.getSecond() == Correct.INCORRECT) {
+			if (currentPair.getSecond().equals(Correctness.INCORRECT)) {
 				return false;
 			}
 		}

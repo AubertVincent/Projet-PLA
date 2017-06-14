@@ -68,7 +68,7 @@ public class Besace {
 		for (Iterator<Class<? extends PickAble>> mapIter = possiblePickAbleList.iterator(); mapIter.hasNext();) {
 			Class<? extends PickAble> currentClass;
 			currentClass = mapIter.next();
-			besace.put(currentClass, 0);
+			besace.put(currentClass, 10);
 		}
 
 	}
@@ -165,6 +165,37 @@ public class Besace {
 
 		}
 		return numberOfElement;
+	}
+
+	public void remove(_Sequence sequence) {
+
+		// Base case
+		if (sequence.isAction()) {
+			Action action = (Action) sequence;
+			this.remove(action.getPickable());
+		} else if (sequence.isTree()) {
+			// Recursive case
+			Tree tree = (Tree) sequence;
+			this.remove(tree.getOpPickable());
+			this.remove(tree.getLeft());
+			this.remove(tree.getRight());
+		}
+
+	}
+
+	public void add(_Sequence sequence) {
+		// Base case
+		if (sequence.isAction()) {
+			Action action = (Action) sequence;
+			this.add(action.getPickable());
+		} else if (sequence.isTree()) {
+			// Recursive case
+			Tree tree = (Tree) sequence;
+			this.add(tree.getOpPickable());
+			this.add(tree.getLeft());
+			this.add(tree.getRight());
+		}
+
 	}
 
 }

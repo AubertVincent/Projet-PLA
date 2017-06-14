@@ -14,7 +14,7 @@ import pickable.PickMoveDir;
 import pickable.PickRandomBar;
 import pickable.PickSuccession;
 import test.SequenceCorrector;
-import util.Correct;
+import util.Correctness;
 import util.Pair;
 
 public class Test {
@@ -39,31 +39,31 @@ public class Test {
 		System.out.println(besace.toString());
 		System.out.println(seq.toString());
 
-		List<Pair<? extends _Sequence, Correct>> maListos = SequenceCorrector.correct(besace, seq);
+		List<Pair<? extends _Sequence, Correctness>> maListos = SequenceCorrector.correct(besace, seq);
 		System.out.println(maListos);
 
 	}
 
-	private static List<Pair<? extends _Sequence, Correct>> treeToCorrectedList(_Sequence seq,
+	private static List<Pair<? extends _Sequence, Correctness>> treeToCorrectedList(_Sequence seq,
 			_IncompleteSequence incSeq) {
-		List<Pair<? extends _Sequence, Correct>> resultingList = new ArrayList<Pair<? extends _Sequence, Correct>>();
+		List<Pair<? extends _Sequence, Correctness>> resultingList = new ArrayList<Pair<? extends _Sequence, Correctness>>();
 		resultingList = treeToCorrectedListAux(resultingList, seq, incSeq);
 		return resultingList;
 	}
 
-	private static List<Pair<? extends _Sequence, Correct>> treeToCorrectedListAux(
-			List<Pair<? extends _Sequence, Correct>> list, _Sequence seq, _IncompleteSequence incSeq) {
+	private static List<Pair<? extends _Sequence, Correctness>> treeToCorrectedListAux(
+			List<Pair<? extends _Sequence, Correctness>> list, _Sequence seq, _IncompleteSequence incSeq) {
 
 		// Base case
 		if (seq.isAction()) {
 			// Unavailable leaf case
 			if (incSeq.isEmptyLeaf()) {
-				list.add(new Pair<_Sequence, Correct>(seq, Correct.INCORRECT));
+				list.add(new Pair<_Sequence, Correctness>(seq, Correctness.INCORRECT));
 				// return "RED" + seq.toString() + "End(RED)";
 			}
 			// Normal leaf case
 			else {
-				list.add(new Pair<_Sequence, Correct>(seq, Correct.CORRECT));
+				list.add(new Pair<_Sequence, Correctness>(seq, Correctness.CORRECT));
 				// return seq.toString();
 			}
 		}
@@ -74,7 +74,7 @@ public class Test {
 			if (incSeq.isEmptyRootTree()) {
 				EmptyRootTree incTree = (EmptyRootTree) incSeq;
 				list = treeToCorrectedListAux(list, tree.getLeft(), incTree.getLeft());
-				list.add(new Pair<_Sequence, Correct>(seq, Correct.INCORRECT));
+				list.add(new Pair<_Sequence, Correctness>(seq, Correctness.INCORRECT));
 				list = treeToCorrectedListAux(list, tree.getRight(), incTree.getRight());
 				// return "RED" + tree.getOp().toString() + "End(RED)" + "["
 				// + toStringCorrected(tree.getLeft(), incTree.getLeft()) + ","
@@ -85,7 +85,7 @@ public class Test {
 			else {
 				IncompleteTree incTree = (IncompleteTree) incSeq;
 				list = treeToCorrectedListAux(list, tree.getLeft(), incTree.getLeft());
-				list.add(new Pair<_Sequence, Correct>(seq, Correct.CORRECT));
+				list.add(new Pair<_Sequence, Correctness>(seq, Correctness.CORRECT));
 				list = treeToCorrectedListAux(list, tree.getRight(), incTree.getRight());
 				// return tree.getOp().toString() + "[" +
 				// toStringCorrected(tree.getLeft(), incTree.getLeft()) + ","

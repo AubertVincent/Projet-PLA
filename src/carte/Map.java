@@ -33,13 +33,6 @@ public class Map {
 		}
 	}
 
-	// Used for test delete when it's over
-	// public void init(Test test) {
-	// map[5][10].setEntity(test.getRobot(Team.ROUGE));
-	// map[5][11].setEntity(test.getRobot(Team.BLEU));
-	// map[5][12].setEntity(new Obstacle(5, 5, this));
-	// }
-
 	public void init(GUI userInterface, Engine engine) {
 		map[engine.getPlayer(Team.ROUGE).getX()][engine.getPlayer(Team.ROUGE).getY()]
 				.setEntity(engine.getPlayer(Team.ROUGE));
@@ -50,7 +43,6 @@ public class Map {
 			for (int j = 0; j < height; j++) {
 				if (userInterface.isObstacle(i, j)) {
 					this.setEntity(new Obstacle(i, j, this));
-					System.out.println("Case : (" + i + ";" + j + ") => Obstacle");
 				}
 			}
 		}
@@ -167,6 +159,17 @@ public class Map {
 
 	public void remove(Entity entity) {
 		entity.getCell().remove(entity);
+	}
+
+	public void initExploration(GUI userInterface2) {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				if (userInterface.isObstacle(i, j)) {
+					this.setEntity(new Obstacle(i, j, this));
+				}
+			}
+		}
+
 	}
 
 }

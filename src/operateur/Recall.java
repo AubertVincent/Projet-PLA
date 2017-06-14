@@ -8,7 +8,7 @@ import pickable.PickRecall;
 
 public class Recall extends Movement {
 
-	protected Integer time;
+	private Integer time;
 	private int lastX;
 	private int lastY;
 

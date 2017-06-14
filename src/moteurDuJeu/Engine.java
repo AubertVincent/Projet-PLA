@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import carte.Base;
@@ -20,7 +19,6 @@ import personnages.Character;
 import personnages.Player;
 import personnages.Robot;
 import personnages.State;
-import reader.Reader;
 import sequence._Sequence;
 
 public class Engine {
@@ -32,6 +30,12 @@ public class Engine {
 	private PlayPhase playPhase;
 
 	private Player currentModifier;
+
+	private Robot currentModified;
+
+	private boolean isCreating;
+
+	private boolean isModifying;
 
 	/**
 	 * Create an Engine Object An Engine has a map and a list of its players
@@ -79,7 +83,6 @@ public class Engine {
 		return this.myMap;
 	}
 
-	// TODO : Handle with the pickup of pickable when pass on a cell
 	public void goTo(Character player, Direction dir) {
 
 		if (player.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.playerMovement)) {
@@ -87,22 +90,22 @@ public class Engine {
 		} else {
 			System.out.println("Pas de panique t'as pas fini de bouger");
 		}
+		setNewPlayPhase();
 	}
 
 	public void goTo(Character player, Direction dir, int lg) {
-		if (player.getState().equals(State.Wait)) {
+		if (player.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.playerMovement)) {
 			player.goTo(dir, lg);
 		} else {
 			System.out.println("Pas de panique t'as pas fini de bouger");
 		}
+		setNewPlayPhase();
 	}
 
-	// TODO : Handle attackpoints and death is lifepoint is 0
 	public void classicAtk(Character character, Cell target) {
 
-		if (character.getState().equals(State.Wait)) {
+		if (character.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.automatonExecution)) {
 			character.classicAtk(target);
-			character.getMyselfGUI().setActionRequest(true);
 		} else {
 			System.out.println("Pas de panique t'as pas fini d'attaquer");
 		}
@@ -125,77 +128,73 @@ public class Engine {
 				target = getMap().getCell(character.getX() - 1, character.getY());
 				break;
 			}
-
+			character.setDirection(dir);
 			character.classicAtk(target);
-			character.getMyselfGUI().setActionRequest(true);
+
 		} else {
 			System.out.println("Pas de panique t'as pas fini d'attaquer");
 		}
 
 	}
 
-	public void createRobot(GUI userInterface, Player player) {
-		if (player.getState()
-				.equals(State.Wait)/*
-									 * && this.playPhase.equals(PlayPhase.
-									 * behaviorModification)
-									 */) {
-			player.setState(State.RobotCreation);
-			player.getMyselfGUI().setActionRequest(true);
-			int Xbase;
-			int Ybase;
-			Xbase = player.getBase().getX();
-			Ybase = player.getBase().getY();
-			if (!getMap().getCell(Xbase, Ybase).isReachable()) {
-				Cell freeCell = getMap().nearestFreeCell(Xbase, Ybase);
-				Xbase = freeCell.getX();
-				Ybase = freeCell.getY();
+	private void createRobot(GUI userInterface, Player player, _Sequence sequence) {
 
+		player.setState(State.RobotCreation);
+		player.getMyselfGUI().setActionRequest(true);
+		int Xbase;
+		int Ybase;
+		Xbase = player.getBase().getX();
+		Ybase = player.getBase().getY();
+		if (!getMap().getCell(Xbase, Ybase).isReachable()) {
+			Cell freeCell = getMap().nearestFreeCell(Xbase, Ybase);
+			Xbase = freeCell.getX();
+			Ybase = freeCell.getY();
+
+		}
+		Robot robot = new Robot(Xbase, Ybase, myMap, userInterface, sequence, player);
+		player.setState(State.Wait);
+		robot.pickUp();
+	}
+
+	public void setPlayPhase(PlayPhase playPhase) {
+		this.playPhase = playPhase;
+	}
+
+	public void setNewPlayPhase() {
+		boolean movePointRemaining = true;
+		for (Player p : this.playerList) {
+			movePointRemaining = true;
+			if (p.getMovePoints() <= 0) {
+				movePointRemaining = false;
 			}
-			Robot robot = new Robot(Xbase, Ybase, myMap, userInterface, Reader.parse("(MC2E | (AC;(MC3N>MT8.3)))"),
-					player);
-			player.getState().equals(State.Wait);
-			robot.pickUp();
-		} else {
-			System.out.println("Pas la phase de création de robot");
 		}
-
-	}
-
-	public Player getCurrentModifier() {
-		return this.currentModifier;
-	}
-
-	public void setCurrentModifier(Player currentPlayer) {
-		this.currentModifier = currentPlayer;
-	}
-
-	public void behaviorModif(GUI userInterface, Robot robot) {
-		Player player = robot.getPlayer();
-		// TODO : gestion du parseur
-		// pour reccuperer la nouveau sequence
-		_Sequence newAutomaton = Reader.parse("(MC2E)");
-		robot.setAutomaton(newAutomaton);
-	}
-
-	public void setPlayPhase(int key) {
-		if (getPlayer(Team.ROUGE).getMovePoints() == 0 && getPlayer(Team.BLEU).getMovePoints() == 0
-				&& this.playPhase == PlayPhase.playerMovement) {
-			this.playPhase = PlayPhase.behaviorModification;
-		} else if (key == Input.KEY_SPACE) {
-			// this.playPhase = PlayPhase.automatonExecution;
-			this.playPhase = PlayPhase.playerMovement;
-			playerList.get(0).setMovePoints(10);
+		if (movePointRemaining == false) {
+			setPlayPhase(PlayPhase.behaviorModification);
+			for (Player p : this.playerList) {
+				p.setMovePoints(20);
+			}
 		}
 	}
 
-	public void executeAutomaton(GUI userInterface) {
-		// TODO : executer pour tout les robots des deux persoannges, ne pas
-		// oublier le render a chaque mouvement afin d'éviter téléportation
-		try {
-			throw new Exception("NYI");
-		} catch (Exception e) {
-			e.printStackTrace();
+	public void executeAllRobot() {
+		if (getPlayPhase().equals(PlayPhase.automatonExecution)) {
+			int myRandom;
+			List<Robot> executionRobotList = new LinkedList<Robot>();
+			// get each players
+			for (Player player : playerList) {
+				executionRobotList.addAll(player.getRobotList());
+			}
+			while (executionRobotList.size() != 0) {
+				myRandom = (int) (Math.random() * executionRobotList.size());
+				Robot currentRobot = executionRobotList.get(myRandom);
+				try {
+					currentRobot.execute();
+				} catch (NotDoableException e) {
+					e.getMessage();
+				}
+				executionRobotList.remove(currentRobot);
+			}
+			this.setPlayPhase(PlayPhase.playerMovement);
 		}
 	}
 
@@ -216,27 +215,50 @@ public class Engine {
 		return null;
 	}
 
-	public void executeAllRobot() {
-		int myRandom;
-		List<Robot> executionRobotList = new LinkedList<Robot>();
-		// get each players
-		for (Player player : playerList) {
-			executionRobotList.addAll(player.getRobotList());
+	public void behaviorCreation(GUI userInterface, Player player) {
+		if (player.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.behaviorModification)) {
+			this.isModifying = false;
+			this.isCreating = true;
+			this.currentModifier = player;
+			userInterface.inputRequest();
+		} else {
+			System.out.println("Pas la phase de création de robot");
 		}
-		// for (Iterator<Robot> iterator = executionRobotList.iterator();
-		// iterator.hasNext();) {
-		// for (int i =0 ; i < executionRobotList.size();i++){
-		while (executionRobotList.size() != 0) {
-			myRandom = (int) (Math.random() * executionRobotList.size());
-			// Robot currentRobot = iterator.next();
-			Robot currentRobot = executionRobotList.get(myRandom);
-			try {
-				currentRobot.execute();
-			} catch (NotDoableException e) {
-				// Do nothing if you can't execute this robot
-			}
-			executionRobotList.remove(currentRobot);
+	}
+
+	public void behaviorModification(GUI userInterface, Robot robot) {
+		if (robot.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.behaviorModification)) {
+			this.isModifying = true;
+			this.isCreating = false;
+			this.currentModified = robot;
+			// Put the robot's sequence in the besace before the change
+			robot.getPlayer().getBesace().add(robot.getAutomaton());
+			this.currentModifier = robot.getPlayer();
+			userInterface.inputRequest();
+		} else {
+			System.out.println("Pas la phase de création de robot");
 		}
-		this.playPhase = PlayPhase.playerMovement;
+	}
+
+	public void setRobotBehavior(GUI userInterface, _Sequence sequence) {
+		if (isModifying && !isCreating) {
+			this.modifyRobot(currentModified, sequence);
+		} else if (!isModifying && isCreating) {
+			this.createRobot(userInterface, this.currentModifier, sequence);
+		}
+		currentModifier.getBesace().remove(sequence);
+		currentModified = null;
+		currentModifier = null;
+		this.isModifying = false;
+		this.isCreating = false;
+	}
+
+	private void modifyRobot(Robot currentModified, _Sequence sequence) {
+		currentModifier.setState(State.RobotCreation);
+		currentModified.setAutomaton(sequence);
+	}
+
+	public Player getCurrentModifier() {
+		return this.currentModifier;
 	}
 }

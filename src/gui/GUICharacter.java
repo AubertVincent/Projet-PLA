@@ -259,6 +259,7 @@ public abstract class GUICharacter {
 				beginTimeAnimation = (int) System.currentTimeMillis();
 				actionRequest = false;
 			}
+			int test = (int) System.currentTimeMillis();
 			if ((beginTimeAnimation + this.animationDuration) <= (int) System.currentTimeMillis()) {
 				mySelf.setState(State.Wait);
 			}
