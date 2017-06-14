@@ -56,7 +56,7 @@ public class Map {
 				randomX = (int) (Math.random() * (width));
 				randomY = (int) (Math.random() * (height));
 			}
-			newPickAble = PickAble.randomPickable((int) ((int) 1 + (Math.random() * (9))), randomX, randomY, this);
+			newPickAble = PickAble.randomPickable(randomX, randomY, this);
 			this.setEntity(newPickAble);
 			this.addPickAble(newPickAble);
 			randomX = (int) (Math.random() * (width));
@@ -86,13 +86,6 @@ public class Map {
 	public Cell getCell(int x, int y) {
 		return map[x][y];
 	}
-
-	// public List<Action> pathExists(Robot r, int xa, int ya) {
-	// Cell destination = r.entityMap.getCell(xa, ya);
-	// //List<Action> path = Dijkstra.dijkstra(GraphMap.,destination);
-	//
-	// return null;
-	// }
 
 	public void moveCharacter(Character character, int newX, int newY) {
 		this.getCell(character.getX(), character.getY()).FreeCell();
@@ -149,7 +142,6 @@ public class Map {
 	}
 
 	public List<PickAble> getPickAbleList(Character character) {
-		// TODO Auto-generated method stub
 		return this.getCell(character.getX(), character.getY()).getPickAbleList();
 	}
 

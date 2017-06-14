@@ -91,9 +91,10 @@ public abstract class PickAble extends Entity {
 		return toString;
 	}
 
-	public static PickAble randomPickable(int Pickable, int x, int y, Map myMap) {
+	public static PickAble randomPickable(int x, int y, Map myMap) {
 		PickAble newOperator = null;
-		switch (Pickable) {
+		int pickable = (int) ((int) 1 + (Math.random() * (9)));
+		switch (pickable) {
 		case 1:
 			newOperator = new PickMoveDir(x, y, myMap);
 
