@@ -90,7 +90,6 @@ public class Engine {
 		} else {
 			System.out.println("Pas de panique t'as pas fini de bouger");
 		}
-		setNewPlayPhase();
 	}
 
 	public void goTo(Character player, Direction dir, int lg) {
@@ -99,7 +98,6 @@ public class Engine {
 		} else {
 			System.out.println("Pas de panique t'as pas fini de bouger");
 		}
-		setNewPlayPhase();
 	}
 
 	public void classicAtk(Character character, Cell target) {
@@ -158,22 +156,6 @@ public class Engine {
 
 	public void setPlayPhase(PlayPhase playPhase) {
 		this.playPhase = playPhase;
-	}
-
-	public void setNewPlayPhase() {
-		boolean movePointRemaining = true;
-		for (Player p : this.playerList) {
-			movePointRemaining = true;
-			if (p.getMovePoints() <= 0) {
-				movePointRemaining = false;
-			}
-		}
-		if (movePointRemaining == false) {
-			setPlayPhase(PlayPhase.behaviorModification);
-			for (Player p : this.playerList) {
-				p.setMovePoints(20);
-			}
-		}
 	}
 
 	public void executeAllRobot() {

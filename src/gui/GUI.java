@@ -279,6 +279,10 @@ public class GUI extends BasicGame {
 				case Input.KEY_M:
 					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.EAST);
 					break;
+				case Input.KEY_SPACE:
+					engine.setPlayPhase(PlayPhase.behaviorModification);
+					engine.executeAllRobot();
+					break;
 				}
 			} else if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
 				switch (key) {

@@ -60,7 +60,7 @@ public class Recall extends Movement {
 			this.lastX = r.getX();
 			this.lastY = r.getY();
 			r.getMap().getCell(r.getX(), r.getY()).setExplored(true);
-			r.teleport(xBase, yBase);
+			r.recall(xBase, yBase, time);
 		} else {
 			throw new NotDoableException("Impossible to execute this recall");
 		}

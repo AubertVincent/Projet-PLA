@@ -22,6 +22,8 @@ public class Robot extends Character {
 	private Player player;
 	private Map explorationMap;
 
+	private boolean isVisible;
+
 	static {
 		// Move-like animations
 		possibleActionsList.add(operateur.MoveDir.class);
@@ -47,6 +49,7 @@ public class Robot extends Character {
 		entityMap.setEntity(this);
 		this.explorationMap = new Map(userInterface);
 		this.explorationMap.initExploration(userInterface);
+		this.isVisible = true;
 	}
 
 	public static List<Class<?>> getPossibleActionsList() {
@@ -232,5 +235,48 @@ public class Robot extends Character {
 		}
 
 		this.getMap().remove(this);
+	}
+
+	/**
+	 * Teleport an entity to the coordinates given
+	 * 
+	 * @param e
+	 *            the entity
+	 * @param x
+	 *            x coordinate on the map
+	 * @param y
+	 *            y coordinate on the map
+	 */
+	public void teleport(int x, int y) {
+		this.setX(x);
+		this.setY(y);
+		this.pickUp();
+	}
+
+	public void recall(int xBase, int yBase, int time) {
+		this.setX(x);
+		this.setY(y);
+		this.pickUp();
+		// First execution of recall, this robot is now not display on the map
+		if ((this.recall == 3) && (isVisible == true)) {
+			this.recall = this.recall - time;
+			setIsVisible(false);
+		} else {
+			this.recall++;
+		}
+		// When the robot has spend recall-time round in the base, it's now
+		// visible
+		if (isVisible == false && this.recall == 3) {
+			this.setIsVisible(true);
+		}
+
+	}
+
+	public boolean getIsVisible() {
+		return this.isVisible;
+	}
+
+	public void setIsVisible(boolean isVisible) {
+		this.isVisible = isVisible;
 	}
 }

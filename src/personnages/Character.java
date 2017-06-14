@@ -76,7 +76,7 @@ public abstract class Character extends Entity {
 			this.vision = 1;
 			this.damages = 2;
 			this.range = 4;
-			this.movePoints = 5;
+			this.movePoints = 32;
 			this.remainingAttacks = 3;
 			this.recall = 3;
 			this.team = base.getBaseTeam();
@@ -364,22 +364,6 @@ public abstract class Character extends Entity {
 		} catch (NotDoableException e) {
 			throw new NotDoableException("Personne à attaquer");
 		}
-	}
-
-	/**
-	 * Teleport an entity to the coordinates given
-	 * 
-	 * @param e
-	 *            the entity
-	 * @param x
-	 *            x coordinate on the map
-	 * @param y
-	 *            y coordinate on the map
-	 */
-	public void teleport(int x, int y) {
-		this.setX(x);
-		this.setY(y);
-		this.pickUp();
 	}
 
 	public void placePickAble(int x, int y, Class<PickAble> picked, Map map) {
