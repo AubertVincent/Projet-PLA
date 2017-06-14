@@ -1,6 +1,5 @@
 package personnages;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,7 +10,7 @@ import entite.Entity;
 import exceptions.NotDoableException;
 import gui.GUI;
 import gui.GUIRobot;
-import operateur.Action;
+import pickable.PickAble;
 import sequence._Sequence;
 import util.Pair;
 
@@ -20,7 +19,7 @@ public class Robot extends Character {
 	protected _Sequence myAutomaton;
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
 	private GUIRobot mySelfGUI;
-	protected List<Action> actionList = new ArrayList<Action>();
+	protected List<PickAble> pickAbleList;
 	private Player player;
 	private Map explorationMap;
 
@@ -38,15 +37,16 @@ public class Robot extends Character {
 		possibleActionsList.add(operateur.ClassicAck.class);
 	}
 
-	public Robot(int x, int y, Map entityMap, GUI userInterface, _Sequence myAutomaton, Player player) {
-		super(x, y, entityMap, player.getBase());
+	public Robot(int x, int y, Map map, GUI userInterface, _Sequence myAutomaton, Player player) {
+		super(x, y, map, player.getBase());
 
+		this.pickAbleList = myAutomaton.sequenceToPickAbleList(x, y, map);
 		this.myAutomaton = myAutomaton;
 		this.mySelfGUI = new GUIRobot(userInterface, x, y, Direction.SOUTH, 100, base.getBaseTeam(), this,
 				player.getMyselfGUI());
 		this.player = player;
 		this.player.addRobot(new Coordinates(x, y), this);
-		entityMap.setEntity(this);
+		map.setEntity(this);
 	}
 
 	public static List<Class<?>> getPossibleActionsList() {
@@ -93,15 +93,17 @@ public class Robot extends Character {
 		return this.player;
 	}
 
-	public List<Action> getActionList() {
-		return actionList;
+	public List<PickAble> getPickAbleList() {
+		return pickAbleList;
 	}
 
 	protected void dropPickables() {
-		for (Iterator<Action> iterator = this.getActionList().iterator(); iterator.hasNext();) {
-			Action currentAction = iterator.next();
-			this.getMap().setEntity(actionToPickAble(currentAction, this.getX(), this.getY(), this.getMap()));
-			actionList.remove(currentAction);
+		for (Iterator<PickAble> iterator = this.getPickAbleList().iterator(); iterator.hasNext();) {
+			PickAble currentPickAble = iterator.next();
+			currentPickAble.setX(this.getX());
+			currentPickAble.setY(this.getY());
+			this.getMap().setEntity(currentPickAble);
+			pickAbleList.remove(currentPickAble);
 		}
 
 	}

@@ -1,5 +1,6 @@
 package operateur;
 
+import carte.Map;
 import exceptions.NotDoableException;
 import personnages.Robot;
 import pickable.PickAble;
@@ -56,6 +57,11 @@ public class Priority extends Behavior {
 	@Override
 	public Class<? extends PickAble> getPickable() {
 		return PickPriority.class;
+	}
+
+	@Override
+	public PickAble behaviorToPickAble(int x, int y, Map map) {
+		return new PickPriority(x, y, map);
 	}
 
 	// @Override

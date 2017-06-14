@@ -1,5 +1,9 @@
 package sequence;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import carte.Map;
 import exceptions.NotDoableException;
 import operateur.Behavior;
 import personnages.Robot;
@@ -55,6 +59,16 @@ public class Tree implements _Sequence {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public List<PickAble> sequenceToPickAbleList(int x, int y, Map map) {
+		List<PickAble> pickAbleList = new LinkedList<PickAble>();
+		Behavior behavior = this.getOp();
+		pickAbleList.add(behavior.behaviorToPickAble(x, y, map));
+		pickAbleList.addAll(getLeft().sequenceToPickAbleList(x, y, map));
+		pickAbleList.addAll(getRight().sequenceToPickAbleList(x, y, map));
+		return pickAbleList;
 	}
 
 }

@@ -12,26 +12,7 @@ import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUICharacter;
-import operateur.Action;
-import operateur.ClassicAck;
-import operateur.MoveDir;
-import operateur.PickUp;
-import operateur.Priority;
-import operateur.RandomBar;
-import operateur.Recall;
-import operateur.Succession;
-import operateur.SuicideBomber;
-import operateur.Tunnel;
 import pickable.PickAble;
-import pickable.PickClassicAck;
-import pickable.PickMoveDir;
-import pickable.PickPickUp;
-import pickable.PickPriority;
-import pickable.PickRandomBar;
-import pickable.PickRecall;
-import pickable.PickSuccession;
-import pickable.PickSuicideBomber;
-import pickable.PickTunnel;
 
 public abstract class Character extends Entity {
 
@@ -433,32 +414,6 @@ public abstract class Character extends Entity {
 	}
 
 	protected abstract void dropPickables();
-
-	private PickAble actionToPickAble(Action action, int x, int y, Map pickableMap) {
-		PickAble pickAble;
-		if (action.getClass().equals(ClassicAck.class)) {
-			pickAble = new PickClassicAck(x, y, pickableMap);
-		} else if (action.getClass().equals(MoveDir.class)) {
-			pickAble = new PickMoveDir(x, y, pickableMap);
-		} else if (action.getClass().equals(PickUp.class)) {
-			pickAble = new PickPickUp(x, y, pickableMap);
-		} else if (action.getClass().equals(Priority.class)) {
-			pickAble = new PickPriority(x, y, pickableMap);
-		} else if (action.getClass().equals(RandomBar.class)) {
-			pickAble = new PickRandomBar(x, y, pickableMap);
-		} else if (action.getClass().equals(Recall.class)) {
-			pickAble = new PickRecall(x, y, pickableMap);
-		} else if (action.getClass().equals(Succession.class)) {
-			pickAble = new PickSuccession(x, y, pickableMap);
-		} else if (action.getClass().equals(SuicideBomber.class)) {
-			pickAble = new PickSuicideBomber(x, y, pickableMap);
-		} else if (action.getClass().equals(Tunnel.class)) {
-			pickAble = new PickTunnel(x, y, pickableMap);
-		} else {
-			pickAble = null;
-		}
-		return pickAble;
-	}
 
 	public abstract GUICharacter getMyselfGUI();
 

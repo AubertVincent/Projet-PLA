@@ -152,16 +152,19 @@ public class Besace {
 		return resultingSequence;
 	}
 
-	public void clear() {
-		this.clear();
-	}
+	// // FIXME : It isn't used
+	// public void clear() {
+	// this.clear();
+	// }
 
-	/*
-	 * Return the size of this besace
-	 */
-	// FIXME : It's not a list
-	public int size() {
-		return 0;
+	public int numberOfElement() {
+		int numberOfElement = 0;
+		for (Iterator<Class<? extends PickAble>> iterator = this.get().keySet().iterator(); iterator.hasNext();) {
+			Class<? extends PickAble> currentPickable = iterator.next();
+			numberOfElement = numberOfElement + (besace.get(currentPickable));
+
+		}
+		return numberOfElement;
 	}
 
 }

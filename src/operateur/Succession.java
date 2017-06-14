@@ -1,5 +1,6 @@
 package operateur;
 
+import carte.Map;
 import exceptions.NotDoableException;
 import personnages.Robot;
 import pickable.PickAble;
@@ -41,6 +42,10 @@ public class Succession extends Behavior {
 	@Override
 	public Class<? extends PickAble> getPickable() {
 		return PickSuccession.class;
+	}
+
+	public PickAble behaviorToPickAble(int x, int y, Map map) {
+		return new PickSuccession(x, y, map);
 	}
 
 	/**
