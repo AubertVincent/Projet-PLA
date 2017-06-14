@@ -199,7 +199,7 @@ public class GUI extends BasicGame {
 
 			guiPerso = engine.getGUICharactereFromMouse(mouseXCell, mouseYCell);
 			try {
-				if (!guiPerso.equals(null)) {
+				if (guiPerso != null) {
 
 					if (guiPerso instanceof GUIPlayer) {
 						engine.behaviorCreation(this, (Player) guiPerso.getMyself());

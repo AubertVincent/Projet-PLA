@@ -18,6 +18,7 @@ import pickable.PickRecall;
 import pickable.PickSuccession;
 import pickable.PickSuicideBomber;
 import pickable.PickTunnel;
+import sequence.EmptyLeaf;
 import sequence.EmptyRootTree;
 import sequence.IncompleteTree;
 import sequence.Tree;
@@ -168,7 +169,6 @@ public class Besace {
 	}
 
 	public void remove(_Sequence sequence) {
-
 		// Base case
 		if (sequence.isAction()) {
 			Action action = (Action) sequence;

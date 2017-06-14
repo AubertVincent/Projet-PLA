@@ -86,13 +86,6 @@ public class Map {
 		return map[x][y];
 	}
 
-	// public List<Action> pathExists(Robot r, int xa, int ya) {
-	// Cell destination = r.entityMap.getCell(xa, ya);
-	// //List<Action> path = Dijkstra.dijkstra(GraphMap.,destination);
-	//
-	// return null;
-	// }
-
 	public void moveCharacter(Character character, int newX, int newY) {
 		this.getCell(character.getX(), character.getY()).FreeCell();
 		this.getCell(newX, newY).setEntity(character);

@@ -298,17 +298,19 @@ public abstract class Character extends Entity {
 	 */
 	public void classicAtk(Cell target) {
 		this.setState(State.ClassicAttack);
+		this.getMyselfGUI().setActionRequest(true);
 		Character opponent = null;
 		try {
-			if (this.getAttackPoints() > 0) {
-				this.getMyselfGUI().setActionRequest(true);
-				opponent = target.getOpponent(this.getTeam());
-				this.classicAtkTmp(target, opponent);
-				this.setAttackPoints(this.getAttackPoints() - 1);
 
-				if (opponent != null && opponent.getLife() <= 0) {
-					this.kill(opponent);
-				}
+			opponent = target.getOpponent(this.getTeam());
+			int lifeOpponent = opponent.getLife();
+			int atkRobot = this.getAttack();
+			lifeOpponent = lifeOpponent - atkRobot;
+			opponent.setLife(lifeOpponent);
+			this.setAttackPoints(this.getAttackPoints() - 1);
+
+			if (opponent != null && opponent.getLife() <= 0) {
+				this.kill(opponent);
 			}
 		}
 
@@ -316,19 +318,6 @@ public abstract class Character extends Entity {
 			e.getMessage();
 		}
 
-	}
-
-	private void classicAtkTmp(Cell target, Character opponent) {
-		int lifeA = this.getLife();
-		int lifeE = opponent.getLife();
-		int atkA = this.getAttack();
-		int atkE = opponent.getAttack();
-
-		lifeA = lifeA - atkE;
-		lifeE = lifeE - atkA;
-
-		this.setLife(lifeA);
-		opponent.setLife(lifeE);
 	}
 
 	public void cancelClassicAtk(Cell target) throws NotDoableException {
@@ -363,6 +352,7 @@ public abstract class Character extends Entity {
 	public void teleport(int x, int y) {
 		this.setX(x);
 		this.setY(y);
+		// Pick all the pickables on the cell reached
 		this.pickUp();
 	}
 

@@ -11,7 +11,7 @@ public class Succession extends Behavior {
 
 	@Override
 	public String toString() {
-		return ";";
+		return ";   ";
 	}
 
 	/**

@@ -42,7 +42,10 @@ public class MoveDir extends Movement {
 		Map myMap = r.getMap();
 		// Test if there is enough move point and if it didn't go outside the
 		// map
+		// Check if we got enough move point for this movement
 		if (r.getMovePoints() >= lg) {
+			// Check all the cell on the path and return false if one of
+			// it is unreachable
 			for (int i = 1; i <= lg; i++) {
 				switch (dir) {
 				case NORTH:
@@ -87,6 +90,8 @@ public class MoveDir extends Movement {
 					"Vous ne pouvez pas vous deplacer ici (Pas assez de points de mouvement ou case inateignable)");
 		}
 		switch (dir) {
+		// For the function explore : put explored on every cell this robot went
+		// through
 		case NORTH:
 			for (int i = 1; i <= lg; i++) {
 				r.getExplorationMap().getCell(r.getX(), r.getY() - i).setExplored(true);
