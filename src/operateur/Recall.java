@@ -78,7 +78,7 @@ public class Recall extends Movement {
 
 	@Override
 	public String toString() {
-		return "MR" + time.toString();
+		return " MR" + time.toString();
 	}
 
 	@Override

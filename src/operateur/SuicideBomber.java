@@ -68,7 +68,7 @@ public class SuicideBomber extends Attack {
 
 	@Override
 	public String toString() {
-		return "AS";
+		return " AS ";
 	}
 
 

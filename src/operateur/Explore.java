@@ -18,6 +18,11 @@ public class Explore extends Movement {
 	}
 
 	@Override
+	public String toString() {
+		return "E";
+	}
+
+	@Override
 	protected boolean isDoable(Robot r) {
 		int x = r.getX();
 		int y = r.getY();

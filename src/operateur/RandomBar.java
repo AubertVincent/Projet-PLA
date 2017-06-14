@@ -42,7 +42,7 @@ public class RandomBar extends Behavior {
 
 	@Override
 	public String toString() {
-		return "/";
+		return "/   ";
 	}
 
 	@Override

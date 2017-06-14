@@ -50,7 +50,7 @@ public class Priority extends Behavior {
 
 	@Override
 	public String toString() {
-		return ">";
+		return ">   ";
 	}
 
 	@Override

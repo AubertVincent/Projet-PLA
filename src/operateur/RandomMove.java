@@ -189,7 +189,7 @@ public class RandomMove extends Action implements _Random {
 
 	@Override
 	public String toString() {
-		return "RM";
+		return " RM ";
 	}
 
 	@Override

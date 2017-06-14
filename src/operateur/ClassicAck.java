@@ -172,7 +172,7 @@ public class ClassicAck extends Attack {
 
 	@Override
 	public String toString() {
-		return "AC";
+		return " AC ";
 	}
 
 }

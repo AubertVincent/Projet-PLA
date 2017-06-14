@@ -14,10 +14,12 @@ import test.SequenceCorrector;
 
 public class GUIBehaviorInput {
 
-	private static final String defaultInstructions = "AC";
+	private static final String defaultInstructions = "(AC;MT3.8)";
 	private GUI userInterface;
 	private TextField textField;
 	int textFieldHeight;
+
+	private Color backgroundFieldColor = new Color(0f, 0f, 0f, 0.7f);
 
 	private String receivedString;
 
@@ -67,24 +69,27 @@ public class GUIBehaviorInput {
 	 */
 	protected void update(GameContainer container, Player currentPlayer) {
 		// Check if user has to write its instructions
-		if (!inputCorrect && !setForCurrentRequest) {
+		if (!inputCorrect) {
 			textField.setFocus(true);
 			// get sent behavior instructions on an enter_key press
 			if (this.textField.hasFocus()) {
-				if (container.getInput().isKeyDown(Input.KEY_ENTER)) {
+				if (container.getInput().isKeyPressed(Input.KEY_ENTER)) {
 					receivedString = textField.getText();
-					setForCurrentRequest = true;
-					this.textField.setFocus(false);
 					System.out.println("> " + receivedString);
 					receivedSequence = Reader.parse(receivedString);
-					corrector.set(currentPlayer.getBesace(), receivedSequence);
-					inputCorrect = corrector.getCorrectness();
+					if (receivedSequence != null) {
+						System.out.println("Received : " + receivedSequence.toString());
+						corrector.set(currentPlayer.getBesace(), receivedSequence);
+						inputCorrect = corrector.getCorrectness();
+					}
 				}
 			}
 			if (inputCorrect) {
 				inputUpToDate = true;
 				inputCorrect = false;
 				setForCurrentRequest = false;
+				this.textField.setFocus(false);
+
 			}
 		}
 	}
@@ -98,14 +103,14 @@ public class GUIBehaviorInput {
 	 */
 	protected void render(GameContainer container, Graphics g) {
 		g.setColor(Color.white);
-		Color backgroundField = new Color(0f, 0f, 0f, 0.7f);
-		this.textField.setBackgroundColor(backgroundField);
-		this.textField.setBorderColor(backgroundField);
+		this.textField.setBackgroundColor(backgroundFieldColor);
+		this.textField.setBorderColor(backgroundFieldColor);
 		this.textField.render(container, g);
 
 		// If the given behavior isn't correct, show the correction
 		if (!inputCorrect) {
-			corrector.drawCorrectedList(g, userInterface.getWindowWidth(), userInterface.getWindowHeight());
+			corrector.drawCorrectedList(g, 10, userInterface.getWindowHeight() - (textFieldHeight - 20));
+			// corrector.drawCorrectedList(g, 0, 0);
 		}
 	}
 
