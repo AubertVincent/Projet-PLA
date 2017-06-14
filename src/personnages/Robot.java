@@ -45,6 +45,8 @@ public class Robot extends Character {
 		this.player = player;
 		this.player.addRobot(new Coordinates(x, y), this);
 		entityMap.setEntity(this);
+		this.explorationMap = new Map(userInterface);
+		this.explorationMap.initExploration(userInterface);
 	}
 
 	public static List<Class<?>> getPossibleActionsList() {

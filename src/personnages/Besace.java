@@ -180,4 +180,19 @@ public class Besace {
 
 	}
 
+	public void add(_Sequence sequence) {
+		// Base case
+		if (sequence.isAction()) {
+			Action action = (Action) sequence;
+			this.add(action.getPickable());
+		} else if (sequence.isTree()) {
+			// Recursive case
+			Tree tree = (Tree) sequence;
+			this.add(tree.getOpPickable());
+			this.add(tree.getLeft());
+			this.add(tree.getRight());
+		}
+
+	}
+
 }

@@ -161,4 +161,15 @@ public class Map {
 		entity.getCell().remove(entity);
 	}
 
+	public void initExploration(GUI userInterface2) {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				if (userInterface.isObstacle(i, j)) {
+					this.setEntity(new Obstacle(i, j, this));
+				}
+			}
+		}
+
+	}
+
 }

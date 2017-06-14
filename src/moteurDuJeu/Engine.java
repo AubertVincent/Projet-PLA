@@ -173,7 +173,7 @@ public class Engine {
 		if (movePointRemaining == false) {
 			setPlayPhase(PlayPhase.behaviorModification);
 			for (Player p : this.playerList) {
-				p.setMovePoints(25);
+				p.setMovePoints(2);
 			}
 		}
 	}
@@ -237,6 +237,8 @@ public class Engine {
 			this.isModifying = true;
 			this.isCreating = false;
 			this.currentModified = robot;
+			// Put the robot's sequence in the besace before the change
+			robot.getPlayer().getBesace().add(robot.getAutomaton());
 			this.currentModifier = robot.getPlayer();
 			userInterface.inputRequest();
 		} else {
