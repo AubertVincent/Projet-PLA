@@ -280,6 +280,13 @@ public class GUI extends BasicGame {
 					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.EAST);
 					break;
 				}
+			} else if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
+				switch (key) {
+				case Input.KEY_SPACE:
+					engine.setPlayPhase(PlayPhase.automatonExecution);
+					engine.executeAllRobot();
+					break;
+				}
 			}
 
 		} catch (NotDoableException e) {

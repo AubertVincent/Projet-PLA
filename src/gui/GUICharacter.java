@@ -230,6 +230,7 @@ public abstract class GUICharacter {
 				mySelf.setState(State.Wait);
 				setCurrentX(getTargetX());
 				setCurrentY(getTargetY());
+				// mainUserInterface.getEngine().setNewPlayPhase();
 			} else {
 				int nextCellX = mainUserInterface.pixelToCellX(nextXPx);
 				int nextCellY = mainUserInterface.pixelToCellY(nextYPx);

@@ -1,6 +1,7 @@
 package moteurDuJeu;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.newdawn.slick.SlickException;
@@ -52,7 +53,7 @@ public class Engine {
 			e.printStackTrace();
 		}
 		myMap.init(userInterface, this);
-		this.playPhase = PlayPhase.behaviorModification;
+		this.playPhase = PlayPhase.playerMovement;
 	}
 
 	/**
@@ -82,7 +83,6 @@ public class Engine {
 		return this.myMap;
 	}
 
-	// TODO : Handle with the pickup of pickable when pass on a cell
 	public void goTo(Character player, Direction dir) {
 
 		if (player.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.playerMovement)) {
@@ -90,20 +90,21 @@ public class Engine {
 		} else {
 			System.out.println("Pas de panique t'as pas fini de bouger");
 		}
+		setNewPlayPhase();
 	}
 
 	public void goTo(Character player, Direction dir, int lg) {
-		if (player.getState().equals(State.Wait)) {
+		if (player.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.playerMovement)) {
 			player.goTo(dir, lg);
 		} else {
 			System.out.println("Pas de panique t'as pas fini de bouger");
 		}
+		setNewPlayPhase();
 	}
 
-	// TODO : Handle attackpoints and death is lifepoint is 0
 	public void classicAtk(Character character, Cell target) {
 
-		if (character.getState().equals(State.Wait)) {
+		if (character.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.playerMovement)) {
 			character.classicAtk(target);
 			character.getMyselfGUI().setActionRequest(true);
 		} else {
@@ -128,7 +129,7 @@ public class Engine {
 				target = getMap().getCell(character.getX() - 1, character.getY());
 				break;
 			}
-
+			character.setDirection(dir);
 			character.classicAtk(target);
 			character.getMyselfGUI().setActionRequest(true);
 		} else {
@@ -138,44 +139,68 @@ public class Engine {
 	}
 
 	private void createRobot(GUI userInterface, Player player, _Sequence sequence) {
-		if (player.getState()
-				.equals(State.Wait)/*
-									 * && this.playPhase.equals(PlayPhase.
-									 * behaviorModification)
-									 */) {
-			player.setState(State.RobotCreation);
-			player.getMyselfGUI().setActionRequest(true);
-			int Xbase;
-			int Ybase;
-			Xbase = player.getBase().getX();
-			Ybase = player.getBase().getY();
-			if (!getMap().getCell(Xbase, Ybase).isReachable()) {
-				Cell freeCell = getMap().nearestFreeCell(Xbase, Ybase);
-				Xbase = freeCell.getX();
-				Ybase = freeCell.getY();
 
-			}
-			// TODO recode this method oklm
-			Robot robot = new Robot(Xbase, Ybase, myMap, userInterface, sequence, player);
-			player.setState(State.Wait);
-			robot.pickUp();
-		} else {
-			System.out.println("Pas la phase de création de robot");
+		player.setState(State.RobotCreation);
+		player.getMyselfGUI().setActionRequest(true);
+		int Xbase;
+		int Ybase;
+		Xbase = player.getBase().getX();
+		Ybase = player.getBase().getY();
+		if (!getMap().getCell(Xbase, Ybase).isReachable()) {
+			Cell freeCell = getMap().nearestFreeCell(Xbase, Ybase);
+			Xbase = freeCell.getX();
+			Ybase = freeCell.getY();
+
 		}
-
+		// TODO recode this method oklm
+		Robot robot = new Robot(Xbase, Ybase, myMap, userInterface, sequence, player);
+		player.setState(State.Wait);
+		robot.pickUp();
 	}
 
 	public void setPlayPhase(PlayPhase playPhase) {
 		this.playPhase = playPhase;
 	}
 
-	public void executeAutomaton(GUI userInterface) {
-		// TODO : executer pour tout les robots des deux persoannges, ne pas
-		// oublier le render a chaque mouvement afin d'éviter téléportation
-		try {
-			throw new Exception("NYI");
-		} catch (Exception e) {
-			e.printStackTrace();
+	public void setNewPlayPhase() {
+		boolean movePointRemaining = true;
+		for (Player p : this.playerList) {
+			movePointRemaining = true;
+			if (p.getMovePoints() <= 0) {
+				movePointRemaining = false;
+			}
+		}
+		if (movePointRemaining == false) {
+			setPlayPhase(PlayPhase.behaviorModification);
+			for (Player p : this.playerList) {
+				p.setMovePoints(25);
+			}
+		}
+	}
+
+	public void executeAllRobot() {
+		if (getPlayPhase().equals(PlayPhase.automatonExecution)) {
+			int myRandom;
+			List<Robot> executionRobotList = new LinkedList<Robot>();
+			// get each players
+			for (Player player : playerList) {
+				executionRobotList.addAll(player.getRobotList());
+			}
+			// for (Iterator<Robot> iterator = executionRobotList.iterator();
+			// iterator.hasNext();) {
+			// for (int i =0 ; i < executionRobotList.size();i++){
+			while (executionRobotList.size() != 0) {
+				myRandom = (int) (Math.random() * executionRobotList.size());
+				// Robot currentRobot = iterator.next();
+				Robot currentRobot = executionRobotList.get(myRandom);
+				try {
+					currentRobot.execute();
+				} catch (NotDoableException e) {
+					// Do nothing if you can't execute this robot
+				}
+				executionRobotList.remove(currentRobot);
+			}
+			this.setPlayPhase(PlayPhase.playerMovement);
 		}
 	}
 
@@ -197,18 +222,26 @@ public class Engine {
 	}
 
 	public void behaviorCreation(GUI userInterface, Player player) {
-		this.isModifying = false;
-		this.isCreating = true;
-		this.currentModifier = player;
-		userInterface.inputRequest();
+		if (player.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.behaviorModification)) {
+			this.isModifying = false;
+			this.isCreating = true;
+			this.currentModifier = player;
+			userInterface.inputRequest();
+		} else {
+			System.out.println("Pas la phase de création de robot");
+		}
 	}
 
 	public void behaviorModification(GUI userInterface, Robot robot) {
-		this.isModifying = true;
-		this.isCreating = false;
-		this.currentModified = robot;
-		this.currentModifier = robot.getPlayer();
-		userInterface.inputRequest();
+		if (robot.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.behaviorModification)) {
+			this.isModifying = true;
+			this.isCreating = false;
+			this.currentModified = robot;
+			this.currentModifier = robot.getPlayer();
+			userInterface.inputRequest();
+		} else {
+			System.out.println("Pas la phase de création de robot");
+		}
 	}
 
 	public void setRobotBehavior(GUI userInterface, _Sequence sequence) {
@@ -225,6 +258,7 @@ public class Engine {
 	}
 
 	private void modifyRobot(Robot currentModified, _Sequence sequence) {
+		currentModifier.setState(State.RobotCreation);
 		currentModified.setAutomaton(sequence);
 	}
 
