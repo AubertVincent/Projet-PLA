@@ -19,7 +19,7 @@ public class Robot extends Character {
 	protected _Sequence myAutomaton;
 	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
 	private GUIRobot mySelfGUI;
-	protected List<PickAble> pickAbleList;
+	protected List<PickAble> dropAblePickAbleList;
 	private Player player;
 	private Map explorationMap;
 
@@ -40,7 +40,7 @@ public class Robot extends Character {
 	public Robot(int x, int y, Map map, GUI userInterface, _Sequence myAutomaton, Player player) {
 		super(x, y, map, player.getBase());
 
-		this.pickAbleList = myAutomaton.sequenceToPickAbleList(x, y, map);
+		this.dropAblePickAbleList = myAutomaton.sequenceToPickAbleList(x, y, map);
 		this.myAutomaton = myAutomaton;
 		this.mySelfGUI = new GUIRobot(userInterface, x, y, Direction.SOUTH, 100, base.getBaseTeam(), this,
 				player.getMyselfGUI());
@@ -95,17 +95,17 @@ public class Robot extends Character {
 		return this.player;
 	}
 
-	public List<PickAble> getPickAbleList() {
-		return pickAbleList;
+	public List<PickAble> getDropAblePickAbleList() {
+		return dropAblePickAbleList;
 	}
 
 	protected void dropPickables() {
-		for (Iterator<PickAble> iterator = this.getPickAbleList().iterator(); iterator.hasNext();) {
+		for (Iterator<PickAble> iterator = this.getDropAblePickAbleList().iterator(); iterator.hasNext();) {
 			PickAble currentPickAble = iterator.next();
 			currentPickAble.setX(this.getX());
 			currentPickAble.setY(this.getY());
 			this.getMap().setEntity(currentPickAble);
-			pickAbleList.remove(currentPickAble);
+			dropAblePickAbleList.remove(currentPickAble);
 		}
 
 	}

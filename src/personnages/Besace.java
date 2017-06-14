@@ -68,7 +68,7 @@ public class Besace {
 		for (Iterator<Class<? extends PickAble>> mapIter = possiblePickAbleList.iterator(); mapIter.hasNext();) {
 			Class<? extends PickAble> currentClass;
 			currentClass = mapIter.next();
-			besace.put(currentClass, 10);
+			besace.put(currentClass, 0);
 		}
 
 	}

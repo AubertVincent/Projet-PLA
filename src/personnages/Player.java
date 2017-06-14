@@ -14,7 +14,6 @@ import gui.GUI;
 import gui.GUIPlayer;
 import moteurDuJeu.Engine;
 import pickable.PickAble;
-import pickable.PickClassicAck;
 
 public class Player extends Character {
 
@@ -80,7 +79,8 @@ public class Player extends Character {
 		}
 		robotList = new RobotList();
 		this.besace = new Besace();
-		besace.add(PickClassicAck.class);
+		// comment for test
+		// besace.add(PickClassicAck.class);
 		entityMap.setEntity(this);
 	}
 
@@ -177,5 +177,20 @@ public class Player extends Character {
 				}
 			}
 		}
+	}
+
+	/**
+	 * This function return number of element owned by this player, it means
+	 * number of operator in robots' player on the map and number of operator in
+	 * his besace
+	 * 
+	 * @return
+	 */
+	public int numberOfOwnedPickAble() {
+		int possession = this.getBesace().numberOfElement();
+		for (Robot robot : this.getRobotList()) {
+			possession += robot.getDropAblePickAbleList().size();
+		}
+		return possession;
 	}
 }

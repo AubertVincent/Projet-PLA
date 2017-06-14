@@ -12,6 +12,7 @@ import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUICharacter;
+import moteurDuJeu.PlayPhase;
 import pickable.PickAble;
 
 public abstract class Character extends Entity {
@@ -41,7 +42,7 @@ public abstract class Character extends Entity {
 			this.vision = 5;
 			this.damages = 3;
 			this.range = 3;
-			this.movePoints = 2;
+			this.movePoints = 100;
 			this.remainingAttacks = 5;
 			this.recall = 3;
 
@@ -270,6 +271,11 @@ public abstract class Character extends Entity {
 				this.getMap().removePickAble(e);
 			}
 			this.getPickAbleList().clear();
+			boolean test = this.getMyselfGUI().getGUI().getEngine().isEndOfGame();
+			System.out.println(test);
+			if (this.getMyselfGUI().getGUI().getEngine().isEndOfGame()) {
+				this.getMyselfGUI().getGUI().setPlayPhase(PlayPhase.endOfGame);
+			}
 
 		} catch (Exception e1) {
 			e1.getMessage();

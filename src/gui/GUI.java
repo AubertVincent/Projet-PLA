@@ -180,6 +180,11 @@ public class GUI extends BasicGame {
 			setBehaviorInputNeeded(false);
 			engine.setRobotBehavior(this, inputTextField.getReceivedSequence());
 		}
+
+		// // TEST
+		// if (engine.getPlayPhase().equals(PlayPhase.endOfGame)) {
+		// System.out.println("fin du jeu");
+		// }
 	}
 
 	@Override
@@ -362,6 +367,11 @@ public class GUI extends BasicGame {
 
 	private void setBehaviorInputNeeded(boolean behaviorInputNeeded) {
 		this.behaviorInputNeeded = behaviorInputNeeded;
+
+	}
+
+	public void setPlayPhase(PlayPhase endofgame) {
+		engine.setPlayPhase(PlayPhase.endOfGame);
 
 	}
 

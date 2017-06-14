@@ -103,7 +103,9 @@ public abstract class Action implements _Sequence, _IncompleteSequence {
 	@Override
 	public List<PickAble> sequenceToPickAbleList(int x, int y, Map pickableMap) {
 		List<PickAble> pickAbleList = new LinkedList<PickAble>();
-		pickAbleList.add(this.actionToPickAble(x, y, pickableMap));
+		if (!(this instanceof Explore)) {
+			pickAbleList.add(this.actionToPickAble(x, y, pickableMap));
+		}
 		return pickAbleList;
 	}
 
