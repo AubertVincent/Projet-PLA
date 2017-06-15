@@ -1,7 +1,5 @@
 package personnages;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,26 +12,8 @@ import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUICharacter;
-import operateur.Action;
-import operateur.ClassicAck;
-import operateur.MoveDir;
-import operateur.PickUp;
-import operateur.Priority;
-import operateur.RandomBar;
-import operateur.Recall;
-import operateur.Succession;
-import operateur.SuicideBomber;
-import operateur.Tunnel;
+import moteurDuJeu.PlayPhase;
 import pickable.PickAble;
-import pickable.PickClassicAck;
-import pickable.PickMoveDir;
-import pickable.PickPickUp;
-import pickable.PickPriority;
-import pickable.PickRandomBar;
-import pickable.PickRecall;
-import pickable.PickSuccession;
-import pickable.PickSuicideBomber;
-import pickable.PickTunnel;
 
 public abstract class Character extends Entity {
 
@@ -46,7 +26,6 @@ public abstract class Character extends Entity {
 	protected int remainingAttacks;
 	protected int recall;
 
-	protected List<Action> actionList = new ArrayList<Action>();
 	protected static List<Class<?>> possibleActionsList = new LinkedList<Class<?>>();
 	protected Team team;
 	protected Base base;
@@ -63,7 +42,7 @@ public abstract class Character extends Entity {
 			this.vision = 5;
 			this.damages = 3;
 			this.range = 3;
-			this.movePoints = 50;
+			this.movePoints = 100;
 			this.remainingAttacks = 5;
 			this.recall = 3;
 
@@ -76,7 +55,7 @@ public abstract class Character extends Entity {
 			this.vision = 1;
 			this.damages = 2;
 			this.range = 4;
-			this.movePoints = 32;
+			this.movePoints = 20;
 			this.remainingAttacks = 3;
 			this.recall = 3;
 			this.team = base.getBaseTeam();
@@ -200,6 +179,11 @@ public abstract class Character extends Entity {
 		}
 	}
 
+	public void newPosition(int x, int y) {
+		super.x = x;
+		super.y = y;
+	}
+
 	@Override
 	public void setX(int x) {
 		this.getMap().moveCharacter(this, x, this.getY());
@@ -218,7 +202,7 @@ public abstract class Character extends Entity {
 			boolean moveSucces = false;
 			this.getMyselfGUI().setActionRequest(true);
 			for (int i = 0; i < lg; i++) {
-				if (this instanceof Robot) {
+				if (this instanceof Robot && ((Robot) this).getIsVisible()) {
 
 					switch (dir) {
 					case SOUTH:
@@ -239,7 +223,7 @@ public abstract class Character extends Entity {
 						break;
 					}
 
-				} else {
+				} else if (this instanceof Player) {
 					if (this.getMovePoints() > 0) {
 
 						switch (dir) {
@@ -297,6 +281,13 @@ public abstract class Character extends Entity {
 				this.getMap().removePickAble(e);
 			}
 			this.getPickAbleList().clear();
+			// TEST
+			// boolean test =
+			// this.getMyselfGUI().getGUI().getEngine().isEndOfGame();
+			// System.out.println(test);
+			if (this.getMyselfGUI().getGUI().getEngine().isEndOfGame()) {
+				this.getMyselfGUI().getGUI().setPlayPhase(PlayPhase.endOfGame);
+			}
 
 		} catch (Exception e1) {
 			e1.getMessage();
@@ -319,6 +310,7 @@ public abstract class Character extends Entity {
 	 */
 	public void classicAtk(Cell target) {
 		this.setState(State.ClassicAttack);
+		this.getMyselfGUI().setActionRequest(true);
 		Character opponent = null;
 		try {
 
@@ -331,7 +323,6 @@ public abstract class Character extends Entity {
 
 			if (opponent != null && opponent.getLife() <= 0) {
 				this.kill(opponent);
-
 			}
 		}
 
@@ -378,52 +369,20 @@ public abstract class Character extends Entity {
 		this.state = state;
 	}
 
-	public List<Action> getActionList() {
-		return actionList;
-	}
-
 	public abstract void die();
 
 	public void kill(Character character) {
 
-		character.dropPickables();
+		try {
+			character.dropPickables();
+		} catch (NotDoableException e) {
+			// Should never append
+		}
 		character.setState(State.Dying);
-	}
-
-	private void dropPickables() {
-		for (Iterator<Action> iterator = this.getActionList().iterator(); iterator.hasNext();) {
-			Action currentAction = iterator.next();
-			this.getMap().setEntity(actionToPickAble(currentAction, this.getX(), this.getY(), this.getMap()));
-			actionList.remove(currentAction);
-		}
 
 	}
 
-	private PickAble actionToPickAble(Action action, int x, int y, Map pickableMap) {
-		PickAble pickAble;
-		if (action.getClass().equals(ClassicAck.class)) {
-			pickAble = new PickClassicAck(x, y, pickableMap);
-		} else if (action.getClass().equals(MoveDir.class)) {
-			pickAble = new PickMoveDir(x, y, pickableMap);
-		} else if (action.getClass().equals(PickUp.class)) {
-			pickAble = new PickPickUp(x, y, pickableMap);
-		} else if (action.getClass().equals(Priority.class)) {
-			pickAble = new PickPriority(x, y, pickableMap);
-		} else if (action.getClass().equals(RandomBar.class)) {
-			pickAble = new PickRandomBar(x, y, pickableMap);
-		} else if (action.getClass().equals(Recall.class)) {
-			pickAble = new PickRecall(x, y, pickableMap);
-		} else if (action.getClass().equals(Succession.class)) {
-			pickAble = new PickSuccession(x, y, pickableMap);
-		} else if (action.getClass().equals(SuicideBomber.class)) {
-			pickAble = new PickSuicideBomber(x, y, pickableMap);
-		} else if (action.getClass().equals(Tunnel.class)) {
-			pickAble = new PickTunnel(x, y, pickableMap);
-		} else {
-			pickAble = null;
-		}
-		return pickAble;
-	}
+	protected abstract void dropPickables() throws NotDoableException;
 
 	public abstract GUICharacter getMyselfGUI();
 

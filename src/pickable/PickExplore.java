@@ -4,7 +4,7 @@ import carte.Map;
 
 public class PickExplore extends PickAble {
 
-	public PickExplore(int x, int y, Map entityMap) {
+	public PickExplore(Integer x, Integer y, Map entityMap) {
 		super(x, y, entityMap);
 	}
 

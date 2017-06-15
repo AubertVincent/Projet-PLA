@@ -37,7 +37,6 @@ public class Recall extends Movement {
 
 	@Override
 	public void execute(Robot r) throws NotDoableException {
-
 		if (!isDoable(r)) {
 			throw new NotDoableException("Impossible to execute this recall");
 		}

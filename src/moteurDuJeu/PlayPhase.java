@@ -2,7 +2,7 @@ package moteurDuJeu;
 
 public enum PlayPhase {
 
-	playerMovement(0), behaviorModification(1), automatonExecution(2);
+	playerMovement(0), behaviorModification(1), automatonExecution(2), endOfGame(3);
 
 	private final int value;
 

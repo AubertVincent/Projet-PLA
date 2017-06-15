@@ -8,21 +8,24 @@ import carte.Base;
 import carte.Cell;
 import carte.Coordinates;
 import carte.Map;
+import carte.Obstacle;
 import entite.Direction;
 import entite.Entity;
 import exceptions.NotDoableException;
 import gui.GUI;
 import gui.GUIRobot;
 import operateur.Action;
+import pickable.PickAble;
 import sequence._Sequence;
-import util.Pair;
 
 public class Robot extends Character {
 
 	protected _Sequence myAutomaton;
-	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
+	// Used to be used in Cancel
+	// private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>>
+	// targetsLife;
 	private GUIRobot mySelfGUI;
-
+	protected List<PickAble> dropAblePickAbleList;
 	private Player player;
 	private Map explorationMap;
 
@@ -46,15 +49,16 @@ public class Robot extends Character {
 		possibleActionsList.add(operateur.ClassicAck.class);
 	}
 
-	public Robot(int x, int y, Map entityMap, GUI userInterface, _Sequence myAutomaton, Player player) {
-		super(x, y, entityMap, player.getBase());
+	public Robot(int x, int y, Map map, GUI userInterface, _Sequence myAutomaton, Player player) {
+		super(x, y, map, player.getBase());
 
+		this.dropAblePickAbleList = myAutomaton.sequenceToPickAbleList(x, y, map);
 		this.myAutomaton = myAutomaton;
 		this.mySelfGUI = new GUIRobot(userInterface, x, y, Direction.SOUTH, 100, base.getBaseTeam(), this,
 				player.getMyselfGUI());
 		this.player = player;
 		this.player.addRobot(new Coordinates(x, y), this);
-		entityMap.setEntity(this);
+		map.setEntity(this);
 		this.explorationMap = new Map(userInterface);
 		this.explorationMap.initExploration(userInterface);
 		this.isVisible = true;
@@ -124,6 +128,21 @@ public class Robot extends Character {
 		return this.player;
 	}
 
+	public List<PickAble> getDropAblePickAbleList() {
+		return dropAblePickAbleList;
+	}
+
+	protected void dropPickables() {
+		for (Iterator<PickAble> iterator = this.getDropAblePickAbleList().listIterator(); iterator.hasNext();) {
+			PickAble currentPickAble = iterator.next();
+			currentPickAble.setX(this.getX());
+			currentPickAble.setY(this.getY());
+			this.getMap().setEntity(currentPickAble);
+			// dropAblePickAbleList.remove(currentPickAble);
+		}
+		dropAblePickAbleList.clear();
+	}
+
 	/**
 	 * Suicide a Robot and kill the Robots next to it
 	 * 
@@ -136,33 +155,34 @@ public class Robot extends Character {
 	 */
 	public void suicideBomber(List<Cell> listCell) {
 		// Run through the list of targets
-		for (Iterator<Cell> cellIterator = listCell.iterator(); cellIterator.hasNext();) {
-			Cell testCell = cellIterator.next();
-			// The list in which are all the entities present on the cell
-			// targeted
-			List<Entity> testEntityList = testCell.getEntityList();
-			// int i = 0;
-			// Run through the list of entities
-			for (Iterator<Entity> entityIterator = testEntityList.iterator(); entityIterator.hasNext();) {
-				Entity eCourant = entityIterator.next();
-				// If the entity is a robot, kill it
-				if (eCourant instanceof Robot) {
-					// this.targetsLife.put(new Pair<Direction,
-					// Integer>(Direction.NORTH, i),
-					// new Pair<Robot, Integer>(((Robot) eCourant), ((Robot)
-					// eCourant).getLife()));
-					// i++;
-					((Robot) eCourant).setLife(0);
+		if (this.getState().equals(State.Wait)) {
+			this.setState(State.SuicideBomberAttack);
+			this.getMyselfGUI().setActionRequest(true);
+			for (Iterator<Cell> cellIterator = listCell.iterator(); cellIterator.hasNext();) {
+				Cell testCell = cellIterator.next();
+				// The list in which are all the entities present on the cell
+				// targeted
+				List<Entity> testEntityList = testCell.getEntityList();
+				// int i = 0;
+				// Run through the list of entities
+				for (Iterator<Entity> entityIterator = testEntityList.iterator(); entityIterator.hasNext();) {
+					Entity eCourant = entityIterator.next();
+					// If the entity is a robot, kill it
+					if (eCourant instanceof Robot) {
+
+						((Robot) eCourant).setLife(0);
+					}
 				}
 			}
+			// Suicide the robot which is executing SuicideBomber
+			this.setLife(0);
 		}
-		// Suicide the robot which is executing SuicideBomber
-		this.setLife(0);
 
 	}
 
 	// FIXME or delete if not needed
 	public void cancelSuicideBomber() {
+
 		// int x = this.getX();
 		// int y = this.getY();
 		// List<Entity> northEntityList = this.entityMap.getCell(x, y -
@@ -247,13 +267,14 @@ public class Robot extends Character {
 		this.mySelfGUI = null;
 
 		// Remove every occurrence of current robot in targetsLife
-		for (Iterator<Pair<Direction, Integer>> iterator = targetsLife.keySet().iterator(); iterator.hasNext();) {
-			Pair<Direction, Integer> currentPair = iterator.next();
-			Robot currentRobot = targetsLife.get(currentPair).getFirst();
-			if (currentRobot.equals(this)) {
-				targetsLife.remove(currentPair);
-			}
-		}
+		// for (Iterator<Pair<Direction, Integer>> iterator =
+		// targetsLife.keySet().iterator(); iterator.hasNext();) {
+		// Pair<Direction, Integer> currentPair = iterator.next();
+		// Robot currentRobot = targetsLife.get(currentPair).getFirst();
+		// if (currentRobot.equals(this)) {
+		// targetsLife.remove(currentPair);
+		// }
+		// }
 
 		this.getMap().remove(this);
 	}
@@ -272,32 +293,49 @@ public class Robot extends Character {
 		if (this.getState().equals(State.Wait)) {
 			this.setState(State.TeleportMove);
 			this.getMyselfGUI().setActionRequest(true);
-			this.setX(x);
-			this.setY(y);
+			this.setXY(x, y);
 
 			this.pickUp();
 		}
 	}
 
 	public void recall(int time) {
-		// FIXME : calculer case d'apparition et mettre case d'arrivee en
-		// "explored" et gerer le non positionnement sur la map dans le modele
-		this.setX(x);
-		this.setY(y);
-		this.pickUp();
-		// First execution of recall, this robot is now not display on the map
-		if ((this.recall == 3) && (isVisible == true)) {
-			this.recall = this.recall - time;
-			setIsVisible(false);
-		} else {
-			this.recall++;
-		}
-		// When the robot has spend recall-time round in the base, it's now
-		// visible
-		if (isVisible == false && this.recall == 3) {
-			this.setIsVisible(true);
+		if (this.getState().equals(State.Wait)) {
+
+			// First execution of recall, this robot is now not display on the
+			// map
+			if ((this.recall >= 3) && (isVisible == true)) {
+				this.setState(State.TeleportMove);
+				this.getMyselfGUI().setActionRequest(true);
+				this.recall = this.recall - this.recall + time;
+				setIsVisible(false);
+				this.setXY(this.getBase().getX() - 1, this.getBase().getY());
+				this.getExplorationMap().getCell(getX(), getY()).setExplored(true);
+			} else {
+				this.recall++;
+			}
+			// When the robot has spend recall-time round in the base, it's now
+			// visible
+			if (isVisible == false && this.recall >= 3) {
+				// Place the robot at the base's nearest free cell
+				this.setState(State.TeleportMove);
+				this.recall = 3;
+				this.getMyselfGUI().setActionRequest(true);
+				Cell tmp = this.getMap().nearestFreeCell(this.getBase().getX(), this.getBase().getY());
+				this.setXY(tmp.getX(), tmp.getY());
+				this.getMap().setEntity(new Obstacle(this.getBase().getX() - 1, this.getBase().getY(), this.getMap()));
+				this.getExplorationMap().getCell(getX(), getY()).setExplored(true);
+				this.setIsVisible(true);
+				// this.pickUp();
+			}
 		}
 
+	}
+
+	public void setXY(int x, int y) {
+		this.getMap().moveCharacter(this, x, y);
+		super.x = x;
+		super.y = y;
 	}
 
 	public boolean getIsVisible() {
@@ -322,5 +360,9 @@ public class Robot extends Character {
 
 	public void setFirstAction() {
 		this.currentAction = 0;
+	}
+
+	public void resetAttributes() {
+		this.movePoints = 10;
 	}
 }

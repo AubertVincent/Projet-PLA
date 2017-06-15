@@ -25,7 +25,6 @@ public class RandomMove extends Action implements _Random {
 			for (int i = 1; i <= lg; i++) {
 				switch (dir) {
 				case NORTH:
-
 					// check if we are not outside the map and then check if the
 					// cell is reachable
 					if (y - i < 0 || y - i > r.getMap().mapHeight() || !(r.getMap().getCell(x, y - i).isReachable())) {

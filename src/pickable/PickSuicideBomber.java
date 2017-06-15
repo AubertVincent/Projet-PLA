@@ -4,7 +4,7 @@ import carte.Map;
 
 public class PickSuicideBomber extends PickAble {
 
-	public PickSuicideBomber(int x, int y, Map entityMap) {
+	public PickSuicideBomber(Integer x, Integer y, Map entityMap) {
 		super(x, y, entityMap);
 	}
 

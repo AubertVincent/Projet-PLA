@@ -8,10 +8,21 @@ import org.newdawn.slick.SlickException;
 
 import carte.Base;
 import entite.Direction;
+import exceptions.NotDoableException;
 import gui.GUI;
 import gui.GUIPlayer;
 import moteurDuJeu.Engine;
+import pickable.PickAble;
 import pickable.PickClassicAck;
+import pickable.PickMoveDir;
+import pickable.PickPickUp;
+import pickable.PickPriority;
+import pickable.PickRandomBar;
+import pickable.PickRandomMove;
+import pickable.PickRecall;
+import pickable.PickSuccession;
+import pickable.PickSuicideBomber;
+import pickable.PickTunnel;
 
 public class Player extends Character {
 
@@ -77,7 +88,8 @@ public class Player extends Character {
 		}
 		robotList = new RobotList();
 		this.besace = new Besace();
-		besace.add(PickClassicAck.class);
+		// comment for test
+		// besace.add(PickClassicAck.class);
 		entityMap.setEntity(this);
 	}
 
@@ -153,5 +165,122 @@ public class Player extends Character {
 	@Override
 	public Player getPlayer() {
 		return this;
+	}
+
+	// For this version of the game, Player have just to drop his besace
+	protected void dropPickables() throws NotDoableException {
+		for (Iterator<Class<? extends PickAble>> iterator = getBesace().get().keySet().iterator(); iterator
+				.hasNext();) {
+			Class<? extends PickAble> currentPickAbleClass = iterator.next();
+			int numberOfCurrentPickAble = getBesace().get(currentPickAbleClass);
+
+			if (currentPickAbleClass.equals(pickable.PickPriority.class)) {
+				for (int i = 0; i < numberOfCurrentPickAble; i++) {
+					PickAble pickableToDrop = new PickPriority(getX(), getY(), this.getMap());
+					this.getCell().setEntity(pickableToDrop);
+					this.getBesace().remove(currentPickAbleClass);
+				}
+
+			} else if (currentPickAbleClass.equals(pickable.PickRandomBar.class)) {
+				for (int i = 0; i < numberOfCurrentPickAble; i++) {
+					PickAble pickableToDrop = new PickRandomBar(getX(), getY(), this.getMap());
+					this.getCell().setEntity(pickableToDrop);
+					this.getBesace().remove(currentPickAbleClass);
+				}
+
+			} else if (currentPickAbleClass.equals(pickable.PickSuccession.class)) {
+				for (int i = 0; i < numberOfCurrentPickAble; i++) {
+					PickAble pickableToDrop = new PickSuccession(getX(), getY(), this.getMap());
+					this.getCell().setEntity(pickableToDrop);
+					this.getBesace().remove(currentPickAbleClass);
+				}
+
+			} else if (currentPickAbleClass.equals(pickable.PickClassicAck.class)) {
+				for (int i = 0; i < numberOfCurrentPickAble; i++) {
+					PickAble pickableToDrop = new PickClassicAck(getX(), getY(), this.getMap());
+					this.getCell().setEntity(pickableToDrop);
+					this.getBesace().remove(currentPickAbleClass);
+				}
+
+			} else if (currentPickAbleClass.equals(pickable.PickMoveDir.class)) {
+				for (int i = 0; i < numberOfCurrentPickAble; i++) {
+					PickAble pickableToDrop = new PickMoveDir(getX(), getY(), this.getMap());
+					this.getCell().setEntity(pickableToDrop);
+					this.getBesace().remove(currentPickAbleClass);
+				}
+
+			} else if (currentPickAbleClass.equals(pickable.PickPickUp.class)) {
+				for (int i = 0; i < numberOfCurrentPickAble; i++) {
+					PickAble pickableToDrop = new PickPickUp(getX(), getY(), this.getMap());
+					this.getCell().setEntity(pickableToDrop);
+					this.getBesace().remove(currentPickAbleClass);
+				}
+
+			} else if (currentPickAbleClass.equals(pickable.PickRandomMove.class)) {
+				for (int i = 0; i < numberOfCurrentPickAble; i++) {
+					PickAble pickableToDrop = new PickRandomMove(getX(), getY(), this.getMap());
+					this.getCell().setEntity(pickableToDrop);
+					this.getBesace().remove(currentPickAbleClass);
+				}
+
+			} else if (currentPickAbleClass.equals(pickable.PickRecall.class)) {
+				for (int i = 0; i < numberOfCurrentPickAble; i++) {
+					PickAble pickableToDrop = new PickRecall(getX(), getY(), this.getMap());
+					this.getCell().setEntity(pickableToDrop);
+					this.getBesace().remove(currentPickAbleClass);
+				}
+
+			} else if (currentPickAbleClass.equals(pickable.PickSuicideBomber.class)) {
+				for (int i = 0; i < numberOfCurrentPickAble; i++) {
+					PickAble pickableToDrop = new PickSuicideBomber(getX(), getY(), this.getMap());
+					this.getCell().setEntity(pickableToDrop);
+					this.getBesace().remove(currentPickAbleClass);
+				}
+
+			} else if (currentPickAbleClass.equals(pickable.PickTunnel.class)) {
+				for (int i = 0; i < numberOfCurrentPickAble; i++) {
+					PickAble pickableToDrop = new PickTunnel(getX(), getY(), this.getMap());
+					this.getCell().setEntity(pickableToDrop);
+					this.getBesace().remove(currentPickAbleClass);
+				}
+
+			} else if (currentPickAbleClass.equals(pickable.PickExplore.class)) {
+				// Not needed given the current implementation
+				throw new NotDoableException("Impossible to drop explore");
+			}
+
+			// We tried to use reflection but got stuck with a
+			// 'java.lang.reflect.InvocationTargetException'
+			// try {
+			// PickAble pickable = currentPickAbleClass
+			// .getConstructor(Integer.class, Integer.class,
+			// carte.Map.class)
+			// .newInstance(getX(), getY(), this.getMap());
+			// this.getCell().setEntity(pickable);
+			// this.getBesace().remove(currentPickAbleClass);
+			//
+			// } catch (InstantiationException | IllegalAccessException |
+			// IllegalArgumentException
+			// | InvocationTargetException | NoSuchMethodException |
+			// SecurityException e) {
+			// e.printStackTrace();
+			// }
+
+		}
+	}
+
+	/**
+	 * This function return number of element owned by this player, it means
+	 * number of operator in robots' player on the map and number of operator in
+	 * his besace
+	 * 
+	 * @return
+	 */
+	public int numberOfOwnedPickAble() {
+		int possession = this.getBesace().numberOfElement();
+		for (Robot robot : this.getRobotList()) {
+			possession += robot.getDropAblePickAbleList().size();
+		}
+		return possession;
 	}
 }

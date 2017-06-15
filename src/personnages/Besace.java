@@ -10,7 +10,6 @@ import operateur.Action;
 import pickable.PickAble;
 import pickable.PickClassicAck;
 import pickable.PickMoveDir;
-import pickable.PickPickUp;
 import pickable.PickPriority;
 import pickable.PickRandomBar;
 import pickable.PickRandomMove;
@@ -57,7 +56,7 @@ public class Besace {
 		possiblePickAbleList.add(PickTunnel.class);
 		possiblePickAbleList.add(PickMoveDir.class);
 		possiblePickAbleList.add(PickRecall.class);
-		possiblePickAbleList.add(PickPickUp.class);
+		// possiblePickAbleList.add(PickPickUp.class);
 		possiblePickAbleList.add(PickSuccession.class);
 		possiblePickAbleList.add(PickRandomBar.class);
 		possiblePickAbleList.add(PickPriority.class);
@@ -153,16 +152,19 @@ public class Besace {
 		return resultingSequence;
 	}
 
-	public void clear() {
-		this.clear();
-	}
+	// // FIXME : It isn't used
+	// public void clear() {
+	// this.clear();
+	// }
 
-	/*
-	 * Return the size of this besace
-	 */
-	// FIXME : It's not a list
-	public int size() {
-		return 0;
+	public int numberOfElement() {
+		int numberOfElement = 0;
+		for (Iterator<Class<? extends PickAble>> iterator = this.get().keySet().iterator(); iterator.hasNext();) {
+			Class<? extends PickAble> currentPickable = iterator.next();
+			numberOfElement = numberOfElement + (besace.get(currentPickable));
+
+		}
+		return numberOfElement;
 	}
 
 	public void add(_Sequence sequence) {
