@@ -37,7 +37,7 @@ public class Engine {
 
 	private boolean isModifying;
 
-	private int nbrOperatorInitOnMap = 1;
+	private int nbrOperatorInitOnMap = 2;
 	private int nbrOperatorInGame = nbrOperatorInitOnMap;
 
 	private Team winners = null;
@@ -296,12 +296,13 @@ public class Engine {
 		boolean isAllPickedByOnePlayer = false;
 
 		for (Player player : playerList) {
-			isAllPickedByOnePlayer = isAllPickedByOnePlayer || player.numberOfOwnedPickAble() == nbrOperatorInGame;
+			System.out.println("Jen ai autant que ca :" + player.numberOfOwnedPickAble());
+			isAllPickedByOnePlayer = isAllPickedByOnePlayer || (player.numberOfOwnedPickAble() >= nbrOperatorInGame);
 		}
 
 		if (isAllPickedByOnePlayer) {
 			for (Player player : playerList) {
-				if (player.numberOfOwnedPickAble() == nbrOperatorInGame) {
+				if (player.numberOfOwnedPickAble() >= nbrOperatorInGame) {
 					this.setPlayPhase(PlayPhase.endOfGame);
 					this.winners = player.getTeam();
 				}
