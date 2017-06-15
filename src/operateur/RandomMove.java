@@ -67,44 +67,32 @@ public class RandomMove extends Action implements _Random {
 		int d = 0;
 		int lg = 0;
 		// To verify if this the direction we got is not outside the map
-		boolean isOnMap = false;
 		Direction dir = null;
 		do {
 			lg = (int) (Math.random() * r.getMovePoints()) + 1;
 			d = (int) (Math.random() * 4);
 			switch (d) {
 			case 0:
-				if (r.getY() > 0) {
-					isOnMap = true;
-					dir = Direction.NORTH;
-				}
+				dir = Direction.NORTH;
 				break;
 			case 1:
-				if (r.getX() > 0) {
-					isOnMap = true;
-					dir = Direction.WEST;
-				}
+				dir = Direction.WEST;
 				break;
 			case 2:
-				if (r.getY() < r.map.mapHeight() - 1) {
-					isOnMap = true;
-					dir = Direction.SOUTH;
-				}
+				dir = Direction.SOUTH;
 				break;
 			case 3:
-				if (r.getX() < r.map.mapWidth() - 1) {
-					isOnMap = true;
-					dir = Direction.EAST;
-				}
+				dir = Direction.EAST;
 				break;
 			}
-			r.setDirection(dir);
 			// if the cell we got is not on map or not reachable, we try to get
 			// another direction thanks to the random while we didn't get a one
 			// which is reachable or on the map
-		} while (!isOnMap || !isReachable(r, dir, lg));
+		} while (!isReachable(r, dir, lg));
 		this.direction = dir;
 		this.lg = lg;
+		r.setDirection(dir);
+
 		// Set all the cell being explored to explored in the explorationMap of
 		// the robot
 		switch (dir) {

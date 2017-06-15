@@ -16,7 +16,7 @@ public class Cell {
 
 	protected List<Entity> entityList;
 	boolean isfree;
-	boolean isExplored;
+	private boolean isExplored;
 
 	public Cell(int x, int y) {
 		this.x = x;
