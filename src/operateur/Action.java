@@ -58,6 +58,11 @@ public abstract class Action implements _Sequence, _IncompleteSequence {
 		return false;
 	}
 
+	/**
+	 * Give the class of the pickable of the action
+	 * 
+	 * @return Returns a class which is the picakble of this action
+	 */
 	public abstract Class<? extends PickAble> getPickable();
 
 	@Override
