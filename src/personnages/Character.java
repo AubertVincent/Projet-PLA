@@ -367,16 +367,13 @@ public abstract class Character extends Entity {
 
 	public void kill(Character character) {
 
-		try {
-			character.dropPickables();
-		} catch (NotDoableException e) {
-			// Should never append
-		}
+		character.dropPickables();
+
 		character.setState(State.Dying);
 
 	}
 
-	protected abstract void dropPickables() throws NotDoableException;
+	protected abstract void dropPickables();
 
 	public abstract GUICharacter getMyselfGUI();
 

@@ -22,6 +22,8 @@ public enum PlayPhase {
 			return "Phase de Modification et création";
 		case automatonExecution:
 			return "Phase de mouvement des unités";
+		case endOfGame:
+			return "Fin du Jeu";
 		}
 		return null;
 	}
