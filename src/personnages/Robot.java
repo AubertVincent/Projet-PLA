@@ -326,7 +326,7 @@ public class Robot extends Character {
 				this.getMap().setEntity(new Obstacle(this.getBase().getX() - 1, this.getBase().getY(), this.getMap()));
 				this.getExplorationMap().getCell(getX(), getY()).setExplored(true);
 				this.setIsVisible(true);
-				// this.pickUp();
+				this.life = 3;
 			}
 		}
 

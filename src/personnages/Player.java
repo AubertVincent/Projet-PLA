@@ -284,4 +284,9 @@ public class Player extends Character {
 		}
 		return possession;
 	}
+
+	public void resetAttributes() {
+		this.movePoints = 100;
+		this.remainingAttacks = 5;
+	}
 }

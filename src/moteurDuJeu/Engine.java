@@ -37,7 +37,7 @@ public class Engine {
 
 	private boolean isModifying;
 
-	private int nbrOperatorInitOnMap = 1;
+	private int nbrOperatorInitOnMap = 128;
 	private int nbrOperatorInGame = nbrOperatorInitOnMap;
 
 	/**
@@ -267,13 +267,15 @@ public class Engine {
 			}
 			if (allEmpty) {
 				this.setPlayPhase(PlayPhase.playerMovement);
+				this.resetAllCharacter();
 
 			}
 		}
 	}
 
-	public void resetAllRobot() {
+	public void resetAllCharacter() {
 		for (Player player : playerList) {
+			player.resetAttributes();
 			for (Robot robot : player.getRobotList()) {
 				try {
 					robot.getAutomatonInList().clear();
