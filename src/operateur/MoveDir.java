@@ -85,8 +85,6 @@ public class MoveDir extends Movement {
 		// System.out.println("J'execute un mouvement !");
 		// end test
 		if (!isDoable(r)) {
-			// TODO Dissociates 2 cases : it's not doable because of movepoint
-			// or obstacle
 			throw new NotDoableException("You can't go there (Not enough move points or unreachable cell)");
 		}
 		switch (dir) {

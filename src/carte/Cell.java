@@ -76,10 +76,6 @@ public class Cell {
 		return pickableList;
 	}
 
-	public void FreePickable() {
-		// TODO ne pas tout nettoyer
-	}
-
 	public List<Entity> getEntityList() {
 		return entityList;
 	}

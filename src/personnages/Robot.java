@@ -180,7 +180,6 @@ public class Robot extends Character {
 
 	}
 
-	// FIXME or delete if not needed
 	public void cancelSuicideBomber() {
 
 		// int x = this.getX();

@@ -152,11 +152,6 @@ public class Besace {
 		return resultingSequence;
 	}
 
-	// // FIXME : It isn't used
-	// public void clear() {
-	// this.clear();
-	// }
-
 	public int numberOfElement() {
 		int numberOfElement = 0;
 		for (Iterator<Class<? extends PickAble>> iterator = this.get().keySet().iterator(); iterator.hasNext();) {
