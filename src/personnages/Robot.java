@@ -135,6 +135,7 @@ public class Robot extends Character {
 	 * Suicide a robot and kill the robots around it
 	 */
 	public void suicideBomber(List<Cell> listCell) {
+		this.getMyselfGUI().setActionRequest(true);
 		// Run through the list of targets
 		for (Iterator<Cell> cellIterator = listCell.iterator(); cellIterator.hasNext();) {
 			Cell testCell = cellIterator.next();
@@ -285,6 +286,7 @@ public class Robot extends Character {
 		this.setX(x);
 		this.setY(y);
 		this.pickUp();
+		this.getMyselfGUI().setActionRequest(true);
 		// First execution of recall, this robot is now not display on the map
 		if ((this.recall == 3) && (isVisible == true)) {
 			this.recall = this.recall - time;

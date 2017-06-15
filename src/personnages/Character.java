@@ -319,6 +319,7 @@ public abstract class Character extends Entity {
 	 */
 	public void classicAtk(Cell target) {
 		this.setState(State.ClassicAttack);
+		this.getMyselfGUI().setActionRequest(true);
 		Character opponent = null;
 		try {
 
@@ -331,11 +332,8 @@ public abstract class Character extends Entity {
 
 			if (opponent != null && opponent.getLife() <= 0) {
 				this.kill(opponent);
-
 			}
-		}
-
-		catch (NotDoableException e) {
+		} catch (NotDoableException e) {
 			e.getMessage();
 		}
 

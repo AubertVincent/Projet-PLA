@@ -150,7 +150,7 @@ public class Engine {
 
 		}
 		Robot robot = new Robot(Xbase, Ybase, myMap, userInterface, sequence, player);
-		player.setState(State.Wait);
+		// player.setState(State.Wait);
 		robot.pickUp();
 	}
 
