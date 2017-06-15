@@ -59,7 +59,7 @@ public class Explore extends Movement {
 		// System.out.println("J'execute le tunnel !");
 		// end test
 		if (!isDoable(r)) {
-			throw new NotDoableException("Ce robot est entouré d'obstacles");
+			throw new NotDoableException("This robot is surround by obstacle");
 		}
 		int movepoints = r.getMovePoints();
 		int x;
@@ -75,7 +75,7 @@ public class Explore extends Movement {
 			x = r.getX();
 			y = r.getY();
 			if (!isDoable(r)) {
-				throw new NotDoableException("Ce robot est entouré d'obstacles");
+				throw new NotDoableException("This robot is surround by obstacle");
 			}
 			reachable.clear();
 			// Used to get a random cell in the previous list

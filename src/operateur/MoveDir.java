@@ -87,8 +87,7 @@ public class MoveDir extends Movement {
 		if (!isDoable(r)) {
 			// TODO Dissociates 2 cases : it's not doable because of movepoint
 			// or obstacle
-			throw new NotDoableException(
-					"Vous ne pouvez pas vous deplacer ici (Pas assez de points de mouvement ou case inateignable)");
+			throw new NotDoableException("You can't go there (Not enough move points or unreachable cell)");
 		}
 		switch (dir) {
 		// For the function explore : put explored on every cell this robot went
@@ -122,7 +121,7 @@ public class MoveDir extends Movement {
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
 		if (!isDoable(r)) {
-			throw new NotDoableException("Un obstacle est sur votre chemin");
+			throw new NotDoableException("An obstacle is on his path");
 		}
 		switch (dir) {
 		case NORTH:

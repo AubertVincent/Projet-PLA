@@ -92,7 +92,7 @@ public class ClassicAck extends Attack {
 		// System.out.println("J'execute une attaque classique !");
 		// end test
 		if (!isDoable(r)) {
-			throw new NotDoableException("Il n'y a personne à attaquer ou pas assez de point d'attaque");
+			throw new NotDoableException("There is anobody to attack or you didn't have enough attack points");
 		} else {
 
 			int x = r.getX();
@@ -129,7 +129,7 @@ public class ClassicAck extends Attack {
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
 		if (!isDoable(r)) {
-			throw new NotDoableException("Il n'y a personne à attaquer");
+			throw new NotDoableException("There is anybody to attack");
 		} else {
 
 			int x = r.getX();

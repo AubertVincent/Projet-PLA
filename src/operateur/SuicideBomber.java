@@ -49,7 +49,7 @@ public class SuicideBomber extends Attack {
 		// System.out.println("J'execute suicide Bomber !");
 		// end test
 		if (!isDoable(r)) {
-			throw new NotDoableException("Il n'y a personne à tuer");
+			throw new NotDoableException("There is anybody to kill");
 		} else {
 			// The list in which the targets will be put
 			List<Cell> targets = new ArrayList<Cell>();
@@ -79,7 +79,7 @@ public class SuicideBomber extends Attack {
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
 		if (!isDoable(r)) {
-			throw new NotDoableException("Il n'y a personne à ressusciter");
+			throw new NotDoableException("There is anybody to ressurect");
 		} else {
 			r.setLife(this.lastLife);
 			r.cancelSuicideBomber();

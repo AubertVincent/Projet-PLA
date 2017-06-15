@@ -18,7 +18,7 @@ public class PickUp extends Action {
 	public void execute(Robot robot) throws NotDoableException {
 		if (isDoable(robot)) {
 			// Should never happen
-			throw new NotDoableException("Impossible de ramasser");
+			throw new NotDoableException("Impossible to pick");
 		} else {
 			robot.pickUp();
 

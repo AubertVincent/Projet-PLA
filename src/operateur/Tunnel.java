@@ -52,7 +52,7 @@ public class Tunnel extends Movement {
 		// System.out.println("J'execute le tunnel !");
 		// endtest
 		if (!isDoable(r)) {
-			throw new NotDoableException("La case d'arrivée est inateignable");
+			throw new NotDoableException("This cell is unreachable");
 		}
 		// Used in the case of the need of the cancel method
 		// this.lastX = x;
