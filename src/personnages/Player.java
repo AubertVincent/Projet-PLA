@@ -8,7 +8,6 @@ import org.newdawn.slick.SlickException;
 
 import carte.Base;
 import entite.Direction;
-import exceptions.NotDoableException;
 import gui.GUI;
 import gui.GUIPlayer;
 import moteurDuJeu.Engine;
@@ -169,7 +168,7 @@ public class Player extends Character {
 	}
 
 	// For this version of the game, Player have just to drop his besace
-	protected void dropPickables() throws NotDoableException {
+	protected void dropPickables() {
 		for (Iterator<Class<? extends PickAble>> iterator = getBesace().get().keySet().iterator(); iterator
 				.hasNext();) {
 			Class<? extends PickAble> currentPickAbleClass = iterator.next();
@@ -257,7 +256,7 @@ public class Player extends Character {
 
 			} else if (currentPickAbleClass.equals(pickable.PickExplore.class)) {
 				// Not needed given the current implementation
-				throw new NotDoableException("Impossible to drop explore");
+				;
 			}
 
 			// We tried to use reflection but got stuck with a

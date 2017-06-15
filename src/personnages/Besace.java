@@ -70,9 +70,9 @@ public class Besace {
 			Class<? extends PickAble> currentClass;
 			currentClass = mapIter.next();
 			if (currentClass.equals(PickExplore.class)) {
-				besace.put(currentClass, 3);
+				besace.put(currentClass, 1);
 			} else {
-				besace.put(currentClass, 10);
+				besace.put(currentClass, 1);
 			}
 		}
 
