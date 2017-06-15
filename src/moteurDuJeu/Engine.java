@@ -295,7 +295,9 @@ public class Engine {
 		boolean isAllPickedByOnePlayer = false;
 
 		for (Player player : playerList) {
-			System.out.println("num = " + player.numberOfOwnedPickAble() + " in game = " + nbrOperatorInGame);
+			// TEST
+			// System.out.println("num = " + player.numberOfOwnedPickAble() + "
+			// in game = " + nbrOperatorInGame);
 			isAllPickedByOnePlayer = isAllPickedByOnePlayer || player.numberOfOwnedPickAble() == nbrOperatorInGame;
 		}
 
