@@ -40,6 +40,8 @@ public class Engine {
 	private int nbrOperatorInitOnMap = 128;
 	private int nbrOperatorInGame = nbrOperatorInitOnMap;
 
+	private Team winners = null;
+
 	/**
 	 * Create an Engine Object An Engine has a map and a list of its players
 	 * 
@@ -291,10 +293,24 @@ public class Engine {
 
 	public boolean isEndOfGame() {
 		boolean isAllPickedByOnePlayer = false;
+
 		for (Player player : playerList) {
 			isAllPickedByOnePlayer = isAllPickedByOnePlayer || player.numberOfOwnedPickAble() == nbrOperatorInGame;
 		}
 
+		if (isAllPickedByOnePlayer) {
+			for (Player player : playerList) {
+				if (player.numberOfOwnedPickAble() == nbrOperatorInGame) {
+					this.setPlayPhase(PlayPhase.endOfGame);
+					this.winners = player.getTeam();
+				}
+			}
+		}
 		return isAllPickedByOnePlayer;
 	}
+
+	public Team getWinningTeam() {
+		return winners;
+	}
+
 }
