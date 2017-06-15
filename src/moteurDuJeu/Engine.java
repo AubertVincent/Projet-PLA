@@ -228,6 +228,7 @@ public class Engine {
 
 	private void modifyRobot(Robot currentModified, _Sequence sequence) {
 		currentModifier.setState(State.RobotCreation);
+		currentModifier.getMyselfGUI().setActionRequest(true);
 		currentModified.setAutomaton(sequence);
 		try {
 			currentModified.getAutomatonInList().clear();
@@ -295,8 +296,6 @@ public class Engine {
 		boolean isAllPickedByOnePlayer = false;
 
 		for (Player player : playerList) {
-			// TEST
-			System.out.println("num = " + player.numberOfOwnedPickAble() + " in game = " + nbrOperatorInGame);
 			isAllPickedByOnePlayer = isAllPickedByOnePlayer || player.numberOfOwnedPickAble() == nbrOperatorInGame;
 		}
 
