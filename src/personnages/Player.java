@@ -288,7 +288,7 @@ public class Player extends Character {
 	 * @return
 	 */
 	public int numberOfOwnedPickAble() {
-		int possession = this.getBesace().numberOfElement();
+		int possession = this.getBesace().numberOfElementPickAble();
 		for (Robot robot : this.getRobotList()) {
 			possession += robot.getDropAblePickAbleList().size();
 		}
