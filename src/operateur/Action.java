@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import carte.Map;
-import exceptions.GameException;
 import exceptions.NotDoableException;
 import personnages.Robot;
 import pickable.PickAble;
@@ -22,10 +21,7 @@ import sequence._Sequence;
 
 public abstract class Action implements _Sequence, _IncompleteSequence {
 
-	@Override
-	public String toString() {
-		return this.getClass().getSimpleName();
-	}
+	// ↓ Miscellaneous methods ↓
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
@@ -33,7 +29,7 @@ public abstract class Action implements _Sequence, _IncompleteSequence {
 	}
 
 	/**
-	 * Check is an entity is able to execute an action
+	 * Check if a robot is able to execute an action
 	 * 
 	 * @param r
 	 *            : Looks if the action is feasible for this robot
@@ -45,13 +41,6 @@ public abstract class Action implements _Sequence, _IncompleteSequence {
 	 */
 	protected abstract boolean isDoable(Robot r);
 
-	/**
-	 * execute an operator on an Entity
-	 * 
-	 * @param e
-	 *            The Entity which will execute the action
-	 * @throws GameException
-	 */
 	// protected abstract void execute(Robot r) throws NotDoableException;
 
 	@Override
@@ -76,12 +65,29 @@ public abstract class Action implements _Sequence, _IncompleteSequence {
 		return false;
 	}
 
+	/**
+	 * Execute robot's action
+	 * 
+	 * @param r
+	 *            : The robot which will execute the action
+	 * @throws NotDoableException
+	 */
 	public abstract void execute(Robot r) throws NotDoableException;
 
 	public void addActionToActionList(Robot r) {
 		r.addActionToActionList(this);
 	}
 
+	/**
+	 * 
+	 * @param x
+	 *            : X coordinate of the robot which have this action
+	 * @param y
+	 *            : Y coordinate of the robot which have this action
+	 * @param map
+	 *            : Map of the game
+	 * @return Returns the pickable of the action
+	 */
 	protected PickAble actionToPickAble(int x, int y, Map pickableMap) {
 		PickAble pickAble;
 		if (this.getClass().equals(ClassicAck.class)) {
@@ -117,4 +123,11 @@ public abstract class Action implements _Sequence, _IncompleteSequence {
 		return pickAbleList;
 
 	}
+
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
+
+	// End(Miscellaneous methods)
 }
