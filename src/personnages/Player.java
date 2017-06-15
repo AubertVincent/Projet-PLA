@@ -296,7 +296,16 @@ public class Player extends Character {
 	}
 
 	public void resetAttributes() {
-		this.movePoints = 100;
+		this.movePoints = 20;
 		this.remainingAttacks = 5;
 	}
+
+	public boolean isDie() {
+		if (this.getState().equals(State.Dead)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }

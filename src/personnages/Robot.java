@@ -365,5 +365,6 @@ public class Robot extends Character {
 
 	public void resetAttributes() {
 		this.movePoints = 10;
+		this.remainingAttacks = 1;
 	}
 }

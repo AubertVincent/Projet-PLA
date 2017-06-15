@@ -314,4 +314,15 @@ public class Engine {
 		return winners;
 	}
 
+	public boolean everyoneWaiting() {
+		boolean allWaiting = true;
+		for (Player currentPlayer : this.getPlayerList()) {
+			for (Robot currentRobot : currentPlayer.getRobotList()) {
+				if (!currentRobot.getState().equals(State.Wait)) {
+					allWaiting = false;
+				}
+			}
+		}
+		return allWaiting;
+	}
 }
