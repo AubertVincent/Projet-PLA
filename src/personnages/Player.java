@@ -4,10 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.newdawn.slick.SlickException;
-
 import carte.Base;
-import entite.Direction;
 import exceptions.NotDoableException;
 import gui.GUI;
 import gui.GUIPlayer;
@@ -76,16 +73,9 @@ public class Player extends Character {
 		return possibleActionsList;
 	}
 
-	public Player(Base base, carte.Map entityMap, GUI userInterface) throws Exception {
+	public Player(Base base, carte.Map entityMap, GUI userInterface) {
 		super(base.getX(), base.getY(), entityMap, base);
-		try {
-			this.mySelfGUI = new GUIPlayer(userInterface, getX(), getY(), Direction.SOUTH, 100, base.getBaseTeam(),
-					this);
-		} catch (SlickException e) {
-			e.getMessage();
-		} catch (Exception e) {
-			e.getMessage();
-		}
+		this.mySelfGUI = new GUIPlayer(userInterface, 100, this);
 		robotList = new RobotList();
 		this.besace = new Besace();
 		// comment for test
@@ -94,7 +84,7 @@ public class Player extends Character {
 	}
 
 	// delete when it's over
-	public Player(Base base, carte.Map entityMap) throws Exception {
+	public Player(Base base, carte.Map entityMap) {
 		super(base.getX(), base.getY(), entityMap, base);
 		robotList = new RobotList();
 		this.besace = new Besace();

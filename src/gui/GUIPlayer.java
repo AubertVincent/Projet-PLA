@@ -6,10 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.newdawn.slick.SlickException;
-
-import entite.Direction;
-import entite.Team;
 import operateur.ClassicAck;
 import operateur.MoveDir;
 import personnages.Player;
@@ -56,21 +52,44 @@ public class GUIPlayer extends GUICharacter {
 	// TODO : bound to be dynamic when something is picked
 	List<Class<? extends operateur.Action>> animationsList = new LinkedList<Class<? extends operateur.Action>>();
 
-	public GUIPlayer(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team, Player player)
-			throws SlickException, Exception {
-		super(userInterface, x, y, dir, animationDuration, team, player);
+	// ↓ Constructor ↓
+
+	/**
+	 * 
+	 * @param userInterface
+	 *            The game window in wich the GuiPickAble should be placed
+	 * @param animationDuration
+	 *            Duration duration of the animation
+	 * @param player
+	 *            The player that is linked to its graphical representation
+	 */
+	public GUIPlayer(GUI userInterface, int animationDuration, Player player) {
+		super(userInterface, animationDuration, player);
 
 		animationsList.add(ClassicAck.class);
 		animationsList.add(MoveDir.class);
 		this.mySelf = player;
 	}
 
+	// End(Constructor)
+
+	// ↓ Getters and setters ↓
+
+	/**
+	 * 
+	 * @param player
+	 *            The player that is linked to its graphical representation
+	 */
 	public void setMySelf(Player player) {
 		this.mySelf = player;
 	}
 
+	/**
+	 * For To recover the player
+	 */
 	public Player getMyself() {
 		return this.mySelf;
 	}
 
+	// End(Getters and setters)
 }

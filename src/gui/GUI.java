@@ -132,10 +132,10 @@ public class GUI extends BasicGame {
 		if (engine.getPlayPhase().equals(PlayPhase.endOfGame)) {
 			if (engine.getWinningTeam().equals(Team.ROUGE)) {
 				image = new Image("res/RedWinning.png");
-				image.draw(50, 50);
+				image.draw(0, 0);
 			} else if (engine.getWinningTeam().equals(Team.BLEU)) {
 				image = new Image("res/BlueWinning.png");
-				image.draw(50, 50);
+				image.draw(0, 0);
 			}
 		}
 	}

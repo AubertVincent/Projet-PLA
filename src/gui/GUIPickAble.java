@@ -28,6 +28,15 @@ public class GUIPickAble {
 		}
 	}
 
+	// ↓ Constructor and render ↓
+
+	/**
+	 * 
+	 * @param pickAble
+	 *            Operator that the player can retrieve
+	 * @param userInterface
+	 *            The game window in wich the GuiPickAble should be placed
+	 */
 	public GUIPickAble(PickAble pickAble, GUI userInterface) {
 		if (!pickAble.getClass().equals(PickPickUp.class)) {
 			String pathToImage = pickPath.get(pickAble.getClass());
@@ -42,6 +51,10 @@ public class GUIPickAble {
 		this.mainUserInterface = userInterface;
 	}
 
+	/**
+	 * Displays the graphical representation of the pickable displayed on the
+	 * map
+	 */
 	public void render() {
 		int x = pick.getX();
 		int y = pick.getY();
@@ -49,5 +62,6 @@ public class GUIPickAble {
 		float yPx = mainUserInterface.cellToPixelY(y);
 		image.draw(xPx - 16, yPx - 20);
 	}
+	// End(Constructor and render)
 
 }
