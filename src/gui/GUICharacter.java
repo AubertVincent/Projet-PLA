@@ -138,9 +138,10 @@ public abstract class GUICharacter {
 		} else if (this instanceof GUIRobot) {
 			deathNumberOfSprites = 6;
 			try {
-				deathtSpriteSheet = new SpriteSheet("res/Player/SpriteSheetDeath.png", spriteSheetWidth,
+				deathtSpriteSheet = new SpriteSheet("res/Robot/SpriteSheetDeath.png", spriteSheetWidth,
 						spriteSheetHeight);
-				Animation[] deathAnimation = new Animation[1];
+				// Load death animation
+				deathAnimation = new Animation[1];
 				deathAnimation[0] = loadAnimation(deathtSpriteSheet, 0, deathNumberOfSprites, 0, animationDuration);
 
 			} catch (SlickException e) {

@@ -9,6 +9,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import pickable.PickAble;
+import pickable.PickPickUp;
 
 public class GUIPickAble {
 
@@ -28,12 +29,14 @@ public class GUIPickAble {
 	}
 
 	public GUIPickAble(PickAble pickAble, GUI userInterface) {
-		String pathToImage = pickPath.get(pickAble.getClass());
-		try {
-			image = new Image(pathToImage);
-		} catch (SlickException e) {
-			System.out.println("Couldn't load pickable sprite");
-			e.printStackTrace();
+		if (!pickAble.getClass().equals(PickPickUp.class)) {
+			String pathToImage = pickPath.get(pickAble.getClass());
+			try {
+				image = new Image(pathToImage);
+			} catch (SlickException e) {
+				System.out.println("Couldn't load pickable sprite");
+				e.printStackTrace();
+			}
 		}
 		pick = pickAble;
 		this.mainUserInterface = userInterface;

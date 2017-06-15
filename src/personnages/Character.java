@@ -42,7 +42,7 @@ public abstract class Character extends Entity {
 			this.vision = 5;
 			this.damages = 3;
 			this.range = 3;
-			this.movePoints = 50;
+			this.movePoints = 100;
 			this.remainingAttacks = 5;
 			this.recall = 3;
 
@@ -276,8 +276,10 @@ public abstract class Character extends Entity {
 				this.getMap().removePickAble(e);
 			}
 			this.getPickAbleList().clear();
-			boolean test = this.getMyselfGUI().getGUI().getEngine().isEndOfGame();
-			System.out.println(test);
+			// TEST
+			// boolean test =
+			// this.getMyselfGUI().getGUI().getEngine().isEndOfGame();
+			// System.out.println(test);
 			if (this.getMyselfGUI().getGUI().getEngine().isEndOfGame()) {
 				this.getMyselfGUI().getGUI().setPlayPhase(PlayPhase.endOfGame);
 			}
@@ -366,12 +368,16 @@ public abstract class Character extends Entity {
 
 	public void kill(Character character) {
 
-		character.dropPickables();
+		try {
+			character.dropPickables();
+		} catch (NotDoableException e) {
+			// Should never append
+		}
 		character.setState(State.Dying);
 
 	}
 
-	protected abstract void dropPickables();
+	protected abstract void dropPickables() throws NotDoableException;
 
 	public abstract GUICharacter getMyselfGUI();
 

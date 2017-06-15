@@ -16,13 +16,13 @@ import gui.GUIRobot;
 import operateur.Action;
 import pickable.PickAble;
 import sequence._Sequence;
-import util.Pair;
 
 public class Robot extends Character {
 
 	protected _Sequence myAutomaton;
 	// Used to be used in Cancel
-	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
+	// private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>>
+	// targetsLife;
 	private GUIRobot mySelfGUI;
 	protected List<PickAble> dropAblePickAbleList;
 	private Player player;
@@ -132,14 +132,14 @@ public class Robot extends Character {
 	}
 
 	protected void dropPickables() {
-		for (Iterator<PickAble> iterator = this.getDropAblePickAbleList().iterator(); iterator.hasNext();) {
+		for (Iterator<PickAble> iterator = this.getDropAblePickAbleList().listIterator(); iterator.hasNext();) {
 			PickAble currentPickAble = iterator.next();
 			currentPickAble.setX(this.getX());
 			currentPickAble.setY(this.getY());
 			this.getMap().setEntity(currentPickAble);
-			dropAblePickAbleList.remove(currentPickAble);
+			// dropAblePickAbleList.remove(currentPickAble);
 		}
-
+		dropAblePickAbleList.clear();
 	}
 
 	/**
@@ -266,13 +266,14 @@ public class Robot extends Character {
 		this.mySelfGUI = null;
 
 		// Remove every occurrence of current robot in targetsLife
-		for (Iterator<Pair<Direction, Integer>> iterator = targetsLife.keySet().iterator(); iterator.hasNext();) {
-			Pair<Direction, Integer> currentPair = iterator.next();
-			Robot currentRobot = targetsLife.get(currentPair).getFirst();
-			if (currentRobot.equals(this)) {
-				targetsLife.remove(currentPair);
-			}
-		}
+		// for (Iterator<Pair<Direction, Integer>> iterator =
+		// targetsLife.keySet().iterator(); iterator.hasNext();) {
+		// Pair<Direction, Integer> currentPair = iterator.next();
+		// Robot currentRobot = targetsLife.get(currentPair).getFirst();
+		// if (currentRobot.equals(this)) {
+		// targetsLife.remove(currentPair);
+		// }
+		// }
 
 		this.getMap().remove(this);
 	}
