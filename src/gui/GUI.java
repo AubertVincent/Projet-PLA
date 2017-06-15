@@ -1,8 +1,6 @@
 package gui;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
@@ -36,7 +34,7 @@ public class GUI extends BasicGame {
 
 	private GUIBehaviorInput inputTextField;
 
-	protected boolean behaviorInputNeeded;
+	private boolean behaviorInputNeeded;
 
 	private Engine engine;
 
@@ -47,11 +45,24 @@ public class GUI extends BasicGame {
 	private String guiphase;
 	private Image image;
 
+	/**
+	 * The method used to launch the game
+	 * 
+	 * @param args
+	 * @throws SlickException
+	 */
 	public static void main(String[] args) throws SlickException {
 		GUI mainUI = new GUI();
 		new AppGameContainer(new GUI(), mainUI.WindowWidth, mainUI.WindowHeight, false).start();
 	}
 
+	// ↓ Constructor, update and render ↓
+
+	/**
+	 * Creates the game window with firmed height and width
+	 * 
+	 * @throws SlickException
+	 */
 	public GUI() throws SlickException {
 		super("STAR Wars");
 		WindowHeight = 576;
@@ -61,23 +72,41 @@ public class GUI extends BasicGame {
 
 	}
 
+	/**
+	 * Updates the whole GUI. Is responsible for calling every update method
+	 * located in gui package
+	 */
 	@Override
-	public void init(GameContainer container) throws SlickException {
+	public void update(GameContainer container, int delta) throws SlickException {
 
-		this.container = container;
-		map = new TiledMap("res/map_final.tmx");
-		inputTextField = new GUIBehaviorInput(container, this, WindowWidth, WindowHeight);
-		rectBesace = new GUIBesace(container, WindowHeight, WidthRect, HeightRect, cellWidth);
+		if (behaviorInputNeeded) {
+			this.inputTextField.update(container, engine.getCurrentModifier());
+		}
 
-		engine = new Engine(this);
+		for (Player currentPlayer : engine.getPlayerList()) {
+			GUIPlayer guiCurrentPlayer = currentPlayer.getMyselfGUI();
+			guiCurrentPlayer.update(this, delta);
+			for (Robot currentRobot : currentPlayer.getRobotList()) {
+				GUIRobot guiCurrentRobot = currentRobot.getMyselfGUI();
+				guiCurrentRobot.update(this, delta);
+			}
+		}
+		if (inputTextField.getUpdateness()) {
+			inputTextField.setUpdateness(false);
+			setBehaviorInputNeeded(false);
+			engine.setRobotBehavior(this, inputTextField.getReceivedSequence());
+		}
 
-		setBehaviorInputNeeded(false);
-		// TODO It's a backup, may be used in GUIBehviorInput.drawCorrectedList
-		// font = new Font("Verdana", Font.BOLD, 20);
-		// ttf = new TrueTypeFont(font, true);
+		if (engine.everyoneWaiting() && engine.getPlayPhase().equals(PlayPhase.automatonExecution)) {
+			engine.step();
+		}
 
 	}
 
+	/**
+	 * Renders the whole GUI. Is responsible for calling every render method
+	 * located in gui package
+	 */
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
 		map.render(0, 0, 0);
@@ -140,12 +169,37 @@ public class GUI extends BasicGame {
 		}
 	}
 
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
+
 	/**
-	 * Equivalent to isObstacle if the obstacle is another Character
+	 * Initialiser of the game window, automatically called, loads the map and
+	 * the engine
+	 */
+	@Override
+	public void init(GameContainer container) throws SlickException {
+
+		this.container = container;
+		map = new TiledMap("res/map.tmx");
+		inputTextField = new GUIBehaviorInput(container, this);
+		rectBesace = new GUIBesace(container, WindowHeight, WidthRect, HeightRect, cellWidth);
+
+		engine = new Engine(this);
+
+		setBehaviorInputNeeded(false);
+
+	}
+
+	/**
+	 * Returns true if there is another Character on the given cell of the GUI
 	 * 
 	 * @param x
+	 *            x coordinate of the cell
 	 * @param y
-	 * @return
+	 *            y coordinate of the cell
+	 * @return true if there is another Character on the given cell of the GUI,
+	 *         false otherwise
 	 */
 	public boolean isCollision(float x, float y) {
 		int tileW = map.getTileWidth();
@@ -167,7 +221,8 @@ public class GUI extends BasicGame {
 	 *            x coordinate of the cell
 	 * @param y
 	 *            y coordinate of the cell
-	 * @return
+	 * @return true if there is an obstacle on the given cell of the GUI, false
+	 *         otherwise
 	 */
 	public boolean isObstacle(int x, int y) {
 		int logicLayer = map.getLayerIndex("obstacles");
@@ -176,41 +231,17 @@ public class GUI extends BasicGame {
 		return collision;
 	}
 
-	@Override
-	public void update(GameContainer container, int delta) throws SlickException {
-
-		if (behaviorInputNeeded) {
-			this.inputTextField.update(container, engine.getCurrentModifier());
-		}
-
-		List<Player> playerListCopy = new ArrayList<Player>(engine.getPlayerList());
-		for (Iterator<Player> playerIterator = playerListCopy.listIterator(); playerIterator.hasNext();) {
-			Player currentPlayer = playerIterator.next();
-			GUIPlayer guiCurrentPlayer = currentPlayer.getMyselfGUI();
-			guiCurrentPlayer.update(this, delta);
-
-			for (Iterator<Robot> robotIterator = currentPlayer.getRobotList().listIterator(); robotIterator
-					.hasNext();) {
-				Robot currentRobot = robotIterator.next();
-				GUIRobot guiCurrentRobot = currentRobot.getMyselfGUI();
-				guiCurrentRobot.update(this, delta);
-			}
-		}
-		if (inputTextField.getUpdateness()) {
-			inputTextField.setUpdateness(false);
-			setBehaviorInputNeeded(false);
-			engine.setRobotBehavior(this, inputTextField.getReceivedSequence());
-		}
-
-		try {
-			if (engine.everyoneWaiting() && engine.getPlayPhase().equals(PlayPhase.automatonExecution)) {
-				engine.step();
-			}
-		} catch (Exception e) {
-			e.getMessage();
-		}
-	}
-
+	/**
+	 * Called whenever a button of the mouse is pressed, used to launch a robot
+	 * creation/behavior modification
+	 * 
+	 * @param button
+	 *            Refers to the pressed button
+	 * @param x
+	 *            x coordinate of the mouse at the moment of the click
+	 * @param y
+	 *            y coordinate of the mouse at the moment of the click
+	 */
 	@Override
 	public void mousePressed(int button, int x, int y) {
 		int mouseXCell = pixelToCellX(x);
@@ -241,10 +272,15 @@ public class GUI extends BasicGame {
 		}
 	}
 
-	public Engine getEngine() {
-		return this.engine;
-	}
-
+	/**
+	 * Called whenever a key is released, used to exit the game at any moment
+	 * with escape
+	 * 
+	 * @param key
+	 *            Pressed key
+	 * @param c
+	 *            The character of pressed key
+	 */
 	@Override
 	public void keyReleased(int key, char c) {
 		if (Input.KEY_ESCAPE == key) {
@@ -252,6 +288,15 @@ public class GUI extends BasicGame {
 		}
 	}
 
+	/**
+	 * Called whenever a key is pressed, used to control players and skip to
+	 * next game phase
+	 * 
+	 * @param key
+	 *            Pressed key
+	 * @param c
+	 *            The character of pressed key
+	 */
 	@Override
 	public void keyPressed(int key, char c) {
 		System.out.println("Phase de jeu : " + engine.getPlayPhase().toString());
@@ -352,13 +397,29 @@ public class GUI extends BasicGame {
 		}
 	}
 
+	/**
+	 * Is called whenever the game window is closed, is used to quit the game
+	 * 
+	 * @return false
+	 */
 	@Override
 	public boolean closeRequested() {
-		System.exit(0);
+		this.container.exit();
 		return false;
 	}
 
+	// End(Miscellaneous methods)
+
 	// ↓ Getters and setters ↓
+
+	/**
+	 * Returns the game engine
+	 * 
+	 * @return The game engine
+	 */
+	public Engine getEngine() {
+		return this.engine;
+	}
 
 	/**
 	 * Returns a cell x coordinate given a pixel x coordinate
@@ -406,18 +467,37 @@ public class GUI extends BasicGame {
 		return (y + 0.5f) * cellHeight;
 	}
 
+	/**
+	 * Returns the game window's height
+	 * 
+	 * @return The game window's height
+	 */
 	public int getWindowHeight() {
 		return WindowHeight;
 	}
 
+	/**
+	 * Returns the game window's width
+	 * 
+	 * @return The game window's width
+	 */
 	public int getWindowWidth() {
 		return WindowWidth;
 	}
 
+	/**
+	 * Asks the gui to launch its input interface
+	 */
 	public void inputRequest() {
 		setBehaviorInputNeeded(true);
 	}
 
+	/**
+	 * Sets the behaviorInputNeeded boolean
+	 * 
+	 * @param behaviorInputNeeded
+	 *            The value at which the boolean should be set
+	 */
 	private void setBehaviorInputNeeded(boolean behaviorInputNeeded) {
 		this.behaviorInputNeeded = behaviorInputNeeded;
 
@@ -427,5 +507,6 @@ public class GUI extends BasicGame {
 		engine.setPlayPhase(PlayPhase.endOfGame);
 
 	}
+	// End(Getters and setters)
 
 }

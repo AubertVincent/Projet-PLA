@@ -16,6 +16,8 @@ public class GUIBesace {
 	private Rectangle frame;
 	private int x, y;
 
+	// ↓ Constructor and render ↓
+
 	/**
 	 * 
 	 * @param container
@@ -25,9 +27,9 @@ public class GUIBesace {
 	 * @param WidthRect
 	 *            Width of the game window
 	 * @param HeightRect
-	 *            Height of the rectangle wich corresponds to the bag
+	 *            Height of the displayed rectangle
 	 * @param cellWidth
-	 *            Width of the map cell
+	 *            Width of a map cell
 	 */
 	protected GUIBesace(GameContainer container, int WindowHeight, int WidthRect, int HeightRect, int cellWidth) {
 
@@ -41,11 +43,11 @@ public class GUIBesace {
 	/**
 	 * 
 	 * @param container
-	 *            The context in which GUI components are created and rendered
+	 *            The context in which GUI components are rendered
 	 * @param g
-	 *            A Graphics to represent the GUICharacter in
+	 *            A graphics context used to render primitives
 	 * @param besace
-	 *            Contents of the player's bag
+	 *            The Besace to be displayed
 	 */
 	protected void render(GameContainer container, Graphics g, Besace besace) {
 		Color backgroundField = new Color(0f, 0f, 0f, 0.8f);
@@ -55,12 +57,18 @@ public class GUIBesace {
 		displayBesace(g, besace);
 	}
 
+	// End(Constructor and render)
+
+	// ↓ Miscellaneous methods ↓
+
 	/**
+	 * Displays the content of the given besace as strings of the format
+	 * "'Pickable' : 'Quantity'"
 	 * 
 	 * @param g
-	 *            A Graphics to represent the GUICharacter in
+	 *            A graphics context used to render primitives
 	 * @param besace
-	 *            Contents of the player's bag
+	 *            The Besace to be displayed
 	 */
 	private void displayBesace(Graphics g, Besace besace) {
 		int interligne;
@@ -75,4 +83,6 @@ public class GUIBesace {
 			g.drawString(PickAble.classToString(key) + " : " + mapentry.getValue(), this.x + 17, interligne += 27);
 		}
 	}
+
+	// End(Miscellaneous methods)
 }
