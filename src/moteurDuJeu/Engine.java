@@ -44,7 +44,8 @@ public class Engine {
 	private Team winners = null;
 
 	/**
-	 * Create an Engine Object An Engine has a map and a list of its players
+	 * Create the model of the game, with the creation of the players (2 here)
+	 * Initialize the map witch is the memory representation of the game
 	 * 
 	 * @throws SlickException
 	 */
@@ -80,22 +81,50 @@ public class Engine {
 		return null;
 	}
 
+	/**
+	 * Used to get the playerList of the game
+	 * 
+	 * @return the playerList
+	 */
 	public List<Player> getPlayerList() {
 		return playerList;
 	}
 
+	/**
+	 * Used to get the current playPhase of the game
+	 * 
+	 * @return the current playPhase
+	 */
 	public PlayPhase getPlayPhase() {
 		return this.playPhase;
 	}
 
+	/**
+	 * Used to get the game's memory representation
+	 * 
+	 * @return the game's memory representation
+	 */
 	public Map getMap() {
 		return this.myMap;
 	}
 
+	/**
+	 * Used to get the initial number of Operator on the game
+	 * 
+	 * @return the initial number of operator
+	 */
 	public int getNbrOperatorInitOnMap() {
 		return nbrOperatorInitOnMap;
 	}
 
+	/**
+	 * Used to move a player, use the direction of the movement
+	 * 
+	 * @param player
+	 *            the player to move
+	 * @param dir
+	 *            the direction where the player will be moved
+	 */
 	public void goTo(Character player, Direction dir) {
 
 		if (player.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.playerMovement)) {
@@ -105,6 +134,18 @@ public class Engine {
 		}
 	}
 
+	/**
+	 * Used to move a player, use the direction of the movement and the length
+	 * of the movement
+	 * 
+	 * @param player
+	 *            the player to move
+	 * @param dir
+	 *            the direction where the player will be moved
+	 * @param lg
+	 *            the length of the movement
+	 * 
+	 */
 	public void goTo(Character player, Direction dir, int lg) {
 		if (player.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.playerMovement)) {
 			player.goTo(dir, lg);
@@ -113,6 +154,14 @@ public class Engine {
 		}
 	}
 
+	/**
+	 * Used to do a classic attack to the target cell
+	 * 
+	 * @param character
+	 *            the character who's gonna attack
+	 * @param target
+	 *            the attack's target
+	 */
 	public void classicAtk(Character character, Cell target) {
 
 		if (character.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.automatonExecution)) {
@@ -122,6 +171,14 @@ public class Engine {
 		}
 	}
 
+	/**
+	 * Used to do a classic attack to the direction give
+	 * 
+	 * @param character
+	 *            the character who's gonna attack
+	 * @param dir
+	 *            the target of the attack
+	 */
 	public void classicAtk(Character character, Direction dir) {
 		if (character.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.playerMovement)) {
 			Cell target = null;
@@ -149,6 +206,16 @@ public class Engine {
 
 	}
 
+	/**
+	 * Used to create a new robot, initial it and put him in memory
+	 * 
+	 * @param userInterface
+	 *            the GUI interface
+	 * @param player
+	 *            the player who create a new robot
+	 * @param sequence
+	 *            the robot's automaton
+	 */
 	private void createRobot(GUI userInterface, Player player, _Sequence sequence) {
 
 		if (currentModifier.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.behaviorModification)) {
@@ -169,15 +236,36 @@ public class Engine {
 		}
 	}
 
+	/**
+	 * used to set a new playPhase during the game
+	 * 
+	 * @param playPhase
+	 *            the new playPhase of the game
+	 */
 	public void setPlayPhase(PlayPhase playPhase) {
 		this.playPhase = playPhase;
 	}
 
+	/**
+	 * Used to remove a player of the game's playerList
+	 * 
+	 * @param player
+	 *            the player to remove
+	 */
 	public void remove(Player player) {
 		this.playerList.remove(player);
 
 	}
 
+	/**
+	 * Used to get the character on the cell which has been clicked
+	 * 
+	 * @param x
+	 *            the X coordinates of the cell
+	 * @param y
+	 *            the Y coordinates of the cell
+	 * @return the character clicked
+	 */
 	public GUICharacter getGUICharactereFromMouse(int x, int y) {
 
 		for (Entity currentEntity : this.getMap().getCell(x, y).getEntityList()) {
@@ -188,6 +276,15 @@ public class Engine {
 		return null;
 	}
 
+	/**
+	 * Used to decide if the player want to create a robot or modify its
+	 * behavior
+	 * 
+	 * @param userInterface
+	 *            the GUI interface
+	 * @param player
+	 *            the player who want to create a robot
+	 */
 	public void behaviorCreation(GUI userInterface, Player player) {
 		if (player.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.behaviorModification)) {
 			this.isModifying = false;
@@ -199,6 +296,15 @@ public class Engine {
 		}
 	}
 
+	/**
+	 * Used to decide if the player want to create a robot or modify its
+	 * behavior
+	 * 
+	 * @param userInterface
+	 *            the GUI interface
+	 * @param robot
+	 *            the robot whose its behavior gonna be modified
+	 */
 	public void behaviorModification(GUI userInterface, Robot robot) {
 		if (robot.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.behaviorModification)) {
 			this.isModifying = true;
@@ -213,6 +319,15 @@ public class Engine {
 		}
 	}
 
+	/**
+	 * Do either a robot creation or a robot modification
+	 * 
+	 * @param userInterface
+	 *            the GUI interface
+	 * @param sequence
+	 *            the Automaton which is gonna be given to either the new robot
+	 *            or the existing robot
+	 */
 	public void setRobotBehavior(GUI userInterface, _Sequence sequence) {
 
 		if (isModifying && !isCreating) {
@@ -227,6 +342,14 @@ public class Engine {
 		this.isCreating = false;
 	}
 
+	/**
+	 * Used to set a new behavior to an already existing robot
+	 * 
+	 * @param currentModified
+	 *            the robot who's gonna be modified
+	 * @param sequence
+	 *            the new robot's automaton
+	 */
 	private void modifyRobot(Robot currentModified, _Sequence sequence) {
 		currentModifier.setState(State.RobotCreation);
 		currentModifier.getMyselfGUI().setActionRequest(true);
@@ -239,24 +362,36 @@ public class Engine {
 		}
 	}
 
+	/**
+	 * Used to get the current player who modify his robot behavior
+	 * 
+	 * @return the current player
+	 */
 	public Player getCurrentModifier() {
 		return this.currentModifier;
 	}
 
+	/**
+	 * Used to do a step in the robots automaton execution, called while at
+	 * least one robot has an action to do
+	 */
 	public void step() {
 		if (getPlayPhase().equals(PlayPhase.automatonExecution)) {
 			int randomIndex;
 			boolean allEmpty = true;
+			// Temporary list to do the execution
 			List<Robot> executedRobotList = new LinkedList<Robot>();
 			// get each players
+			// add each player robotList to the temporary list
 			for (Player player : playerList) {
 				executedRobotList.addAll(player.getRobotList());
 			}
 			while (executedRobotList.size() != 0) {
-
+				// Get a robot robot in the temporary list
 				randomIndex = (int) (Math.random() * executedRobotList.size());
 				Robot currentRobot = executedRobotList.get(randomIndex);
 				try {
+					// If the current robot still have action to do
 					if (!currentRobot.getAutomatonInList().isEmpty()
 							&& currentRobot.getCurrentAction() < currentRobot.getAutomatonInList().size()) {
 						allEmpty = false;
@@ -266,6 +401,7 @@ public class Engine {
 					currentRobot.getAutomatonInList().clear();
 					e.getMessage();
 				}
+				// In order to execute the next action at the next step
 				currentRobot.setNextAction();
 				executedRobotList.remove(currentRobot);
 			}
@@ -277,6 +413,9 @@ public class Engine {
 		}
 	}
 
+	/**
+	 * Used to reset all character attributes, call at each new round
+	 */
 	public void resetAllCharacter() {
 		for (Player player : playerList) {
 			player.resetAttributes();
@@ -293,11 +432,17 @@ public class Engine {
 		}
 	}
 
+	/**
+	 * Used to check if the game is either over or not A game is finish if one
+	 * of the player has collected all the game's operator
+	 * 
+	 * @return current state == End of game
+	 */
 	public boolean isEndOfGame() {
 		boolean isAllPickedByOnePlayer = false;
 
 		for (Player player : playerList) {
-			System.out.println("Jen ai autant que ca :" + player.numberOfOwnedPickAble());
+			// check if a platyer has all the operator
 			isAllPickedByOnePlayer = isAllPickedByOnePlayer || (player.numberOfOwnedPickAble() >= nbrOperatorInGame);
 		}
 
@@ -305,6 +450,7 @@ public class Engine {
 			for (Player player : playerList) {
 				if (player.numberOfOwnedPickAble() >= nbrOperatorInGame) {
 					this.setPlayPhase(PlayPhase.endOfGame);
+					// give the winning team
 					this.winners = player.getTeam();
 				}
 			}
@@ -312,10 +458,21 @@ public class Engine {
 		return isAllPickedByOnePlayer;
 	}
 
+	/**
+	 * used to get the winning team
+	 * 
+	 * @return the winning team
+	 */
 	public Team getWinningTeam() {
 		return winners;
 	}
 
+	/**
+	 * Used to get if all the character of the map are in their own waiting
+	 * state
+	 * 
+	 * @return true if all the characters are waiting
+	 */
 	public boolean everyoneWaiting() {
 		boolean allWaiting = true;
 		for (Player currentPlayer : this.getPlayerList()) {
@@ -326,10 +483,5 @@ public class Engine {
 			}
 		}
 		return allWaiting;
-	}
-
-	public void setPlayPhaseEndOfGame() {
-		setPlayPhase(PlayPhase.endOfGame);
-
 	}
 }

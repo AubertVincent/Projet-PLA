@@ -2,6 +2,7 @@ package moteurDuJeu;
 
 public enum PlayPhase {
 
+	// All the game's state possible
 	playerMovement(0), behaviorModification(1), automatonExecution(2), endOfGame(3);
 
 	private final int value;
@@ -14,6 +15,13 @@ public enum PlayPhase {
 		return value;
 	}
 
+	/**
+	 * USed to get the current playphase in french
+	 * 
+	 * @param phase
+	 *            the current playphase
+	 * @return the current playphase in french
+	 */
 	public static String toString(PlayPhase phase) {
 		switch (phase) {
 		case playerMovement:

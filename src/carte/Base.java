@@ -13,6 +13,12 @@ public class Base {
 	private static final int xRouge = 2;
 	private static final int yRouge = 4;
 
+	/**
+	 * Created a new base, based on the player team
+	 * 
+	 * @param team
+	 *            the team of the current player
+	 */
 	public Base(Team team) {
 		super();
 		switch (team) {
@@ -28,28 +34,30 @@ public class Base {
 		this.baseTeam = team;
 	}
 
+	/**
+	 * Used to get the base's X coordinate
+	 * 
+	 * @return
+	 */
 	public int getX() {
 		return x;
 	}
 
+	/**
+	 * Used to get the base's Y coordinate
+	 * 
+	 * @return
+	 */
 	public int getY() {
 		return y;
 	}
 
+	/**
+	 * Used get the base's team
+	 * 
+	 * @return
+	 */
 	public Team getBaseTeam() {
 		return baseTeam;
 	}
-
-	public void setBaseTeam(Team baseTeam) {
-		this.baseTeam = baseTeam;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
 }
