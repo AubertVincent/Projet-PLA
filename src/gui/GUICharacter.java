@@ -187,7 +187,6 @@ public abstract class GUICharacter {
 		this.dir = dir;
 		initAnimations(animationDuration);
 
-		// TODO If animation is longer than animationDuration, set it here
 		this.animationDuration = animationDuration * 6;
 
 		this.team = team;

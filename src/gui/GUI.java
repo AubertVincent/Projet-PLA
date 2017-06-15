@@ -70,9 +70,6 @@ public class GUI extends BasicGame {
 		engine = new Engine(this);
 
 		setBehaviorInputNeeded(false);
-		// TODO It's a backup, may be used in GUIBehviorInput.drawCorrectedList
-		// font = new Font("Verdana", Font.BOLD, 20);
-		// ttf = new TrueTypeFont(font, true);
 
 	}
 

@@ -61,7 +61,6 @@ public class GUIRobot extends GUICharacter {
 		return this.mySelf;
 	}
 
-	// TODO : bound to be dynamic when something is picked
 	List<Class<? extends operateur.Action>> animationsList = new LinkedList<Class<? extends operateur.Action>>();
 
 	public GUIRobot(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team, Robot robot,
