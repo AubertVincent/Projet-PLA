@@ -58,7 +58,7 @@ public class GUIPlayer extends GUICharacter {
 
 	public GUIPlayer(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team, Player player)
 			throws Exception {
-		super(userInterface, x, y, dir, animationDuration, team, player);
+		super(userInterface, animationDuration, player);
 
 		animationsList.add(ClassicAck.class);
 		animationsList.add(MoveDir.class);

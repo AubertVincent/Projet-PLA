@@ -29,26 +29,22 @@ public class GUIBehaviorInput {
 	private boolean inputUpToDate;
 	private boolean inputCorrect;
 
+	// ↓ Constructor, update and render ↓
+
 	/**
 	 * 
 	 * @param container
-	 *            the context in which GUI components are created and rendered
-	 * @param WindowWidth
-	 *            width the windows container
-	 * @param WindowHeight
-	 *            height of the windows container
-	 * @param TextFieldHeight
-	 *            height of the Textfield where you write your instruction for
-	 *            the robots
+	 *            The context in which GUI components are created and rendered
+	 * @param userInterface
+	 *            The GUI from which components are retrieved
 	 * @param instructions
-	 *            String with the example of instruction for the robots
+	 *            Robot's instruction example
 	 */
-	protected GUIBehaviorInput(GameContainer container, GUI userInterface, int WindowWidth, int WindowHeight,
-			String instructions) {
+	protected GUIBehaviorInput(GameContainer container, GUI userInterface, String instructions) {
 		Font defaultfont = container.getDefaultFont();
 		textFieldHeight = 50;
-		textField = new TextField(container, defaultfont, 0, WindowHeight - textFieldHeight, WindowWidth,
-				textFieldHeight);
+		textField = new TextField(container, defaultfont, 0, userInterface.getWindowHeight() - textFieldHeight,
+				userInterface.getWindowWidth(), textFieldHeight);
 		textField.setText(instructions);
 		inputUpToDate = false;
 		inputCorrect = false;
@@ -56,14 +52,25 @@ public class GUIBehaviorInput {
 		inputCorrect = false;
 	}
 
-	protected GUIBehaviorInput(GameContainer container, GUI userInterface, int WindowWidth, int WindowHeight) {
-		this(container, userInterface, WindowWidth, WindowHeight, defaultInstructions);
+	/**
+	 * Creates a behavior input user interface with default instructions
+	 * 
+	 * @param container
+	 *            The context in which GUI components are created and rendered
+	 * @param userInterface
+	 *            The GUI from which components are retrieved
+	 */
+	protected GUIBehaviorInput(GameContainer container, GUI userInterface) {
+		this(container, userInterface, defaultInstructions);
 	}
 
 	/**
+	 * Updates the state of the behavior input
 	 * 
 	 * @param container
-	 *            the context in which GUI components are created and rendered
+	 *            The context in which GUI components are updated
+	 * @param currentPlayer
+	 *            The owner of the robot of which behavior should be updated
 	 */
 	protected void update(GameContainer container, Player currentPlayer) {
 		// Check if user has to write its instructions
@@ -92,11 +99,12 @@ public class GUIBehaviorInput {
 	}
 
 	/**
+	 * Renders the behavior input interface in the given container
 	 * 
 	 * @param container
-	 *            the context in which GUI components are created and rendered
+	 *            The context in which GUI components are rendered
 	 * @param g
-	 *            a graphics context that can be used to render primitives
+	 *            A graphics context used to render primitives
 	 */
 	protected void render(GameContainer container, Graphics g) {
 		g.setColor(Color.white);
@@ -111,16 +119,42 @@ public class GUIBehaviorInput {
 		}
 	}
 
+	// End(Constructor, update and render)
+
+	// ↓ Getters and setters ↓
+
+	/**
+	 * Returns the _Sequence given by the user via the behavior input
+	 * 
+	 * @return The _Sequence given by the user via the behavior input
+	 */
 	public _Sequence getReceivedSequence() {
 		return receivedSequence;
 	}
 
+	/**
+	 * Returns the updateness of the _Sequence retrieved via
+	 * {@link gui.GUIBehaviorInput#getReceivedSequence()}
+	 * 
+	 * @return The updateness of the _Sequence retrieved via
+	 *         {@link gui.GUIBehaviorInput#getReceivedSequence()}
+	 */
 	public boolean getUpdateness() {
 		return inputUpToDate;
 	}
 
+	/**
+	 * Sets the updateness of the _Sequence retrieved via
+	 * {@link gui.GUIBehaviorInput#getReceivedSequence()} to the given boolean
+	 * 
+	 * @param b
+	 *            The value at which the updateness of the _Sequence retrieved
+	 *            via {@link gui.GUIBehaviorInput#getReceivedSequence()} should
+	 *            be set
+	 */
 	public void setUpdateness(boolean b) {
 		inputUpToDate = b;
 	}
 
+	// End(Getters and setters)
 }

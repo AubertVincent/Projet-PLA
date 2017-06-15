@@ -36,11 +36,8 @@ public abstract class GUICharacter {
 
 	private Team team;
 
-	// Tableau action -> animation[]
 	Map<Class<?>, Animation[]> animationsList = new HashMap<Class<?>, Animation[]>();
 	Animation[] deathAnimation;
-
-	// Pour l'instant : animation[]
 
 	private boolean actionRequest;
 	private int animationDuration;
@@ -48,7 +45,200 @@ public abstract class GUICharacter {
 
 	private Character mySelf;
 
-	protected Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y, int animationDuration) {
+	// ↓ Constructor, update and render ↓
+
+	/**
+	 * Creates the GUICharacter corresponding to a character, its graphical
+	 * representation.
+	 * 
+	 * @param userInterface
+	 *            The game window in which the GUICharacter should be placed
+	 * @param animationDuration
+	 *            Atomic duration of an animation (in milliseconds)
+	 * @param character
+	 *            The Character with which the GUICharacter should be linked
+	 */
+	public GUICharacter(GUI userInterface, int animationDuration, Character character) {
+		super();
+		this.mySelf = character;
+		this.mainUserInterface = userInterface;
+		this.xCell = character.getX();
+		this.yCell = character.getY();
+		this.xPx = mainUserInterface.cellToPixelX(getCurrentX());
+		this.yPx = mainUserInterface.cellToPixelY(getCurrentY());
+		this.dir = character.getDirection();
+
+		this.team = mySelf.getTeam();
+
+		initAnimations(animationDuration);
+
+		this.animationDuration = animationDuration * 6;
+
+	}
+
+	/**
+	 * Updates the GUICharacter relying on the delta delay elapsed since last
+	 * call to this method.
+	 *
+	 * @param gui
+	 *            The GUI which the GUICharacters lives in
+	 * @param delta
+	 *            The delay (in milliseconds) since the last call of this method
+	 */
+	public void update(GUI gui, int delta) {
+		setDirection(getMyself().getDirection());
+		switch (mySelf.getState()) {
+		case ClassiqueMove:
+			float nextXPx = getCurrentXPx(), nextYPx = getCurrentYPx();
+
+			if (getDirection() == Direction.WEST || getDirection() == Direction.EAST) {
+				nextXPx = getNextXPx(delta);
+			} else {
+				nextYPx = getNextYPx(delta);
+			}
+
+			if (isInPlace()) {
+				mySelf.setState(State.Wait);
+				setCurrentX(getTargetX());
+				setCurrentY(getTargetY());
+			} else {
+				int nextCellX = mainUserInterface.pixelToCellX(nextXPx);
+				int nextCellY = mainUserInterface.pixelToCellY(nextYPx);
+				if (gui.isObstacle(nextCellX, nextCellY)) {
+					mySelf.setState(State.Wait);
+				} else {
+					this.xPx = nextXPx;
+					setCurrentX(nextCellX);
+					this.yPx = nextYPx;
+					setCurrentY(nextCellY);
+				}
+			}
+			break;
+		case TeleportMove:
+			if (actionRequest) {
+				beginTimeAnimation = (int) System.currentTimeMillis();
+				actionRequest = false;
+			}
+			if ((beginTimeAnimation + animationDuration) <= (int) System.currentTimeMillis()) {
+				setCurrentX(mySelf.getX());
+				setCurrentY(mySelf.getY());
+				mySelf.setState(State.Wait);
+			}
+			break;
+		case ClassicAttack:
+			if (actionRequest) {
+				beginTimeAnimation = (int) System.currentTimeMillis();
+				actionRequest = false;
+			}
+			if ((beginTimeAnimation + this.animationDuration) <= (int) System.currentTimeMillis()) {
+				mySelf.setState(State.Wait);
+			}
+			break;
+		case SuicideBomberAttack:
+			if (actionRequest) {
+				beginTimeAnimation = (int) System.currentTimeMillis();
+				actionRequest = false;
+			}
+			if ((beginTimeAnimation + animationDuration) <= (int) System.currentTimeMillis()) {
+				mySelf.setState(State.Dying);
+			}
+			break;
+		case Dying:
+			if (actionRequest) {
+				beginTimeAnimation = (int) System.currentTimeMillis();
+				actionRequest = false;
+			}
+			if ((beginTimeAnimation + animationDuration) <= (int) System.currentTimeMillis()) {
+				mySelf.setState(State.Dead);
+			}
+			break;
+		case Dead:
+			// State dead means that dying animation is over means that the
+			// Character should be deleted
+			// It's achieved by calling Die and setting it to null
+			mySelf.die();
+			mySelf = null;
+			break;
+		case RobotCreation:
+			if (actionRequest) {
+				beginTimeAnimation = (int) System.currentTimeMillis();
+				actionRequest = false;
+			}
+			if ((beginTimeAnimation + animationDuration) <= (int) System.currentTimeMillis()) {
+				mySelf.setState(State.Wait);
+			}
+			break;
+		case Wait:
+			break;
+		}
+
+	}
+
+	/**
+	 * Renders the GUICharacters relying on the given Graphics
+	 * 
+	 * @param g
+	 *            A graphics context used to render primitives
+	 * @throws Exception
+	 */
+	public void render(Graphics g) throws Exception {
+		g.setColor(new Color(0, 0, 0, .5f));
+		g.fillOval((int) xPx - 16, (int) yPx - 8, 32, 16);
+		// -32 et -60 to center in cell
+
+		int xAnim = (int) xPx - 32;
+		int yAnim = (int) yPx - 60;
+
+		switch (mySelf.getState()) {
+		case ClassiqueMove:
+			g.drawAnimation(animationsList.get(operateur.MoveDir.class)[dir.toInt() + 4], xAnim, yAnim);
+			break;
+		case TeleportMove:
+
+			break;
+		case ClassicAttack:
+			g.drawAnimation(animationsList.get(operateur.ClassicAck.class)[dir.toInt() + 4], xAnim, yAnim);
+			break;
+		case SuicideBomberAttack:
+			g.drawAnimation(animationsList.get(operateur.SuicideBomber.class)[dir.toInt() + 4], xAnim, yAnim);
+
+			break;
+		case Dying:
+			g.drawAnimation(deathAnimation[0], xAnim, yAnim);
+
+			break;
+		case RobotCreation:
+			g.drawAnimation(animationsList.get(operateur.CreateRobot.class)[dir.toInt() + 4], xAnim, yAnim);
+			break;
+		case Wait:
+			g.drawAnimation(animationsList.get(operateur.MoveDir.class)[dir.toInt()], xAnim, yAnim);
+			break;
+		case Dead:
+			throw new Exception("Trying to render a dead character");
+		}
+	}
+
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
+
+	/**
+	 * Returns the animation lasting animationDuration milliseconds, created
+	 * from the sprite sheet starting at (startX, y) and ending at (endX, y)
+	 * 
+	 * @param spriteSheet
+	 *            The source sprite sheet
+	 * @param startX
+	 *            x coordinate of the first sprite in the sheet
+	 * @param endX
+	 *            x coordinate of the last sprite in the sheet
+	 * @param y
+	 *            y coordinate of the sprites in the sheet
+	 * @param animationDuration
+	 *            Resulting duration of the animation
+	 * @return The created animation given the parameters
+	 */
+	private Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y, int animationDuration) {
 		Animation animation = new Animation();
 		for (int x = startX; x < endX; x++) {
 			animation.addFrame(spriteSheet.getSprite(x, y), animationDuration);
@@ -56,6 +246,12 @@ public abstract class GUICharacter {
 		return animation;
 	}
 
+	/**
+	 * Loads GUICharacter's animation, lasting animationDuration milliseconds
+	 * 
+	 * @param animationDuration
+	 *            Duration of the initialized animations, in milliseconds
+	 */
 	protected void initAnimations(int animationDuration) {
 
 		// Get possibleActionList of the current Character
@@ -201,188 +397,11 @@ public abstract class GUICharacter {
 	}
 
 	/**
-	 * Creates the GUICharacter corresponding to a character, its graphical
-	 * representation.
+	 * Returns true if GUIChararcter is in its target cell
 	 * 
-	 * @param x
-	 *            x coordinate in the map grid
-	 * @param y
-	 *            y coordinate in the map grid
-	 * @param dir
-	 *            Direction of the character
-	 * @param animationDuration
-	 *            Atomic duration of an animation (in milliseconds)
-	 * @throws SlickException
-	 *             Indicates a failure of the loading of a sprite sheet
+	 * @return Returns true if GUIChararcter is in its target cell, false
+	 *         otherwise
 	 */
-
-	public GUICharacter(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team,
-			Character character) {
-
-		super();
-		this.mainUserInterface = userInterface;
-		this.xCell = x;
-		this.yCell = y;
-		this.xPx = mainUserInterface.cellToPixelX(getCurrentX());
-		this.yPx = mainUserInterface.cellToPixelY(getCurrentY());
-		this.dir = dir;
-
-		this.team = team;
-		this.mySelf = character;
-
-		initAnimations(animationDuration);
-
-		this.animationDuration = animationDuration * 6;
-
-	}
-
-	/**
-	 * Renders the GUICharacters in the given Graphics
-	 * 
-	 * @param g
-	 *            A Graphics to represent the GUICharacter in
-	 * @throws Exception
-	 */
-	public void render(Graphics g) throws Exception {
-		g.setColor(new Color(0, 0, 0, .5f));
-		g.fillOval((int) xPx - 16, (int) yPx - 8, 32, 16);
-		// -32 et -60 to center in cell
-
-		int xAnim = (int) xPx - 32;
-		int yAnim = (int) yPx - 60;
-
-		switch (mySelf.getState()) {
-		case ClassiqueMove:
-			g.drawAnimation(animationsList.get(operateur.MoveDir.class)[dir.toInt() + 4], xAnim, yAnim);
-			break;
-		case TeleportMove:
-
-			break;
-		case ClassicAttack:
-			g.drawAnimation(animationsList.get(operateur.ClassicAck.class)[dir.toInt() + 4], xAnim, yAnim);
-			break;
-		case SuicideBomberAttack:
-			g.drawAnimation(animationsList.get(operateur.SuicideBomber.class)[dir.toInt() + 4], xAnim, yAnim);
-
-			break;
-		case Dying:
-			g.drawAnimation(deathAnimation[0], xAnim, yAnim);
-
-			break;
-		case RobotCreation:
-			g.drawAnimation(animationsList.get(operateur.CreateRobot.class)[dir.toInt() + 4], xAnim, yAnim);
-			break;
-		case Wait:
-			g.drawAnimation(animationsList.get(operateur.MoveDir.class)[dir.toInt()], xAnim, yAnim);
-			break;
-		case Dead:
-			throw new Exception("Trying to render a dead character");
-		}
-	}
-
-	/**
-	 * Updates the GUICharacter relying on the delta delay elapsed since last
-	 * call to this method.
-	 *
-	 * @param gui
-	 *            The GUI which the GUICharacters lives in
-	 * @param delta
-	 *            The delay (in milliseconds) since the last call of this method
-	 */
-	public void update(GUI gui, int delta) {
-		setDirection(getMyself().getDirection());
-		switch (mySelf.getState()) {
-		case ClassiqueMove:
-			float nextXPx = getCurrentXPx(), nextYPx = getCurrentYPx();
-
-			if (getDirection() == Direction.WEST || getDirection() == Direction.EAST) {
-				nextXPx = getNextXPx(delta);
-			} else {
-				nextYPx = getNextYPx(delta);
-			}
-
-			if (isInPlace()) {
-				mySelf.setState(State.Wait);
-				setCurrentX(getTargetX());
-				setCurrentY(getTargetY());
-			} else {
-				int nextCellX = mainUserInterface.pixelToCellX(nextXPx);
-				int nextCellY = mainUserInterface.pixelToCellY(nextYPx);
-				if (gui.isObstacle(nextCellX, nextCellY)) {
-					mySelf.setState(State.Wait);
-				} else {
-					this.xPx = nextXPx;
-					setCurrentX(nextCellX);
-					this.yPx = nextYPx;
-					setCurrentY(nextCellY);
-				}
-			}
-			break;
-		case TeleportMove:
-			if (actionRequest) {
-				beginTimeAnimation = (int) System.currentTimeMillis();
-				actionRequest = false;
-			}
-			if ((beginTimeAnimation + animationDuration) <= (int) System.currentTimeMillis()) {
-				setCurrentX(mySelf.getX());
-				setCurrentY(mySelf.getY());
-				mySelf.setState(State.Wait);
-			}
-			break;
-		case ClassicAttack:
-			if (actionRequest) {
-				beginTimeAnimation = (int) System.currentTimeMillis();
-				actionRequest = false;
-			}
-			if ((beginTimeAnimation + this.animationDuration) <= (int) System.currentTimeMillis()) {
-				mySelf.setState(State.Wait);
-			}
-			break;
-		case SuicideBomberAttack:
-			if (actionRequest) {
-				beginTimeAnimation = (int) System.currentTimeMillis();
-				actionRequest = false;
-			}
-			if ((beginTimeAnimation + animationDuration) <= (int) System.currentTimeMillis()) {
-				mySelf.setState(State.Dying);
-			}
-			break;
-		case Dying:
-			if (actionRequest) {
-				beginTimeAnimation = (int) System.currentTimeMillis();
-				actionRequest = false;
-			}
-			if ((beginTimeAnimation + animationDuration) <= (int) System.currentTimeMillis()) {
-				mySelf.setState(State.Dead);
-			}
-			break;
-		case Dead:
-			// State dead means that dying animation is over means that the
-			// Character should be deleted
-			// It's achieved by calling Die and setting it to null
-			mySelf.die();
-			mySelf = null;
-			break;
-		case RobotCreation:
-			if (actionRequest) {
-				beginTimeAnimation = (int) System.currentTimeMillis();
-				actionRequest = false;
-			}
-			if ((beginTimeAnimation + animationDuration) <= (int) System.currentTimeMillis()) {
-				mySelf.setState(State.Wait);
-			}
-			break;
-		case Wait:
-			break;
-		}
-
-	}
-
-	public Team getTeam() {
-		return this.team;
-	}
-
-	// returns true if GUIChararcter is in targetCell
 	private boolean isInPlace() {
 
 		float tolerance = 1f;
@@ -401,6 +420,43 @@ public abstract class GUICharacter {
 		return getCurrentX() == getTargetX() && getCurrentY() == getTargetY() && isInPlaceHeight && isInPlaceWidth;
 	}
 
+	// End(Miscellaneous methods)
+
+	// ↓ Getters and setters ↓
+
+	/**
+	 * Returns the associated Character
+	 * 
+	 * @return The associated Character
+	 */
+	public abstract Character getMyself();
+
+	/**
+	 * Returns the GUI in which the GUICharacter is set
+	 * 
+	 * @return The GUI in which the GUICharacter is set
+	 */
+	public GUI getGUI() {
+		return mainUserInterface;
+	}
+
+	/**
+	 * Returns the GUICharacter's team
+	 * 
+	 * @return The GUICharacter's team
+	 */
+	public Team getTeam() {
+		return this.team;
+	}
+
+	/**
+	 * Returns the next x coordinate in pixel of the GUICharacter
+	 * 
+	 * @param delta
+	 *            The delay since the last call of the
+	 *            {@link gui.GUICharacter#update(GUI, int)} method
+	 * @return The next x coordinate in pixel of the GUICharacter
+	 */
 	private float getNextXPx(int delta) {
 		float nextX = getCurrentXPx();
 
@@ -413,6 +469,14 @@ public abstract class GUICharacter {
 		return nextX;
 	}
 
+	/**
+	 * Returns the next y coordinate in pixel of the GUICharacter
+	 * 
+	 * @param delta
+	 *            The delay since the last call of the
+	 *            {@link gui.GUICharacter#update(GUI, int)} method
+	 * @return The next y coordinate in pixel of the GUICharacter
+	 */
 	private float getNextYPx(int delta) {
 		float nextY = getCurrentYPx();
 
@@ -425,65 +489,128 @@ public abstract class GUICharacter {
 		return nextY;
 	}
 
+	/**
+	 * Returns the current x coordinate of the GUICharacter in pixels
+	 * 
+	 * @return The current x coordinate of the GUICharacter in pixels
+	 */
 	private float getCurrentXPx() {
 		return xPx;
 	}
 
+	/**
+	 * Returns the current y coordinate of the GUICharacter in pixels
+	 * 
+	 * @return The current y coordinate of the GUICharacter in pixels
+	 */
 	private float getCurrentYPx() {
 		return yPx;
 	}
 
+	/**
+	 * Returns the target x coordinate of the GUICharacter in pixels
+	 * 
+	 * @return The target x coordinate of the GUICharacter in pixels
+	 */
 	private float getTargetXPx() {
 		int xplayer = this.getMyself().getX();
 		return mainUserInterface.cellToPixelX(xplayer);
-		// return xPxTarget;
 	}
 
+	/**
+	 * Returns the target y coordinate of the GUICharacter in pixels
+	 * 
+	 * @return The target y coordinate of the GUICharacter in pixels
+	 */
 	private float getTargetYPx() {
 		int yplayer = this.getMyself().getY();
 		return mainUserInterface.cellToPixelY(yplayer);
-		// return yPxTarget;
 	}
 
+	/**
+	 * Returns the current x coordinate of the GUICharacter in cell
+	 * 
+	 * @return The current x coordinate of the GUICharacter in cell
+	 */
 	public int getCurrentX() {
 		return xCell;
 	}
 
+	/**
+	 * Returns the current y coordinate of the GUICharacter in cell
+	 * 
+	 * @return The current y coordinate of the GUICharacter in cell
+	 */
 	public int getCurrentY() {
 		return yCell;
 	}
 
+	/**
+	 * Returns the target x coordinate of the GUICharacter in cell
+	 * 
+	 * @return The target x coordinate of the GUICharacter in cell
+	 */
 	private int getTargetX() {
 		return mySelf.getX();
 	}
 
+	/**
+	 * Returns the target y coordinate of the GUICharacter in cell
+	 * 
+	 * @return The target y coordinate of the GUICharacter in cell
+	 */
 	private int getTargetY() {
 		return mySelf.getY();
 	}
 
+	/**
+	 * Sets the x coordinate of the GUICharacter, in cell
+	 * 
+	 * @param x
+	 *            The x coordinate at which the GUICharacter should be placed
+	 */
 	private void setCurrentX(int x) {
 		xCell = x;
 	}
 
+	/**
+	 * Sets the y coordinate of the GUICharacter, in cell
+	 * 
+	 * @param y
+	 *            The y coordinate at which the GUICharacter should be placed
+	 */
 	private void setCurrentY(int y) {
 		yCell = y;
 	}
 
+	/**
+	 * Returns the current direction of the GUICharacter
+	 * 
+	 * @return The current direction of the GUICharacter
+	 */
 	private Direction getDirection() {
 		return dir;
 	}
 
+	/**
+	 * Sets the direction of the GUICharacter
+	 * 
+	 * @param dir
+	 *            The direction at which the GUICharacter should be set
+	 */
 	private void setDirection(Direction dir) {
 		this.dir = dir;
 	}
 
-	public abstract Character getMyself();
-
-	public GUI getGUI() {
-		return mainUserInterface;
-	}
-
+	/**
+	 * Requests the launch of an animation
+	 * 
+	 * @param actionRequest
+	 */
 	public void setActionRequest(boolean actionRequest) {
 		this.actionRequest = actionRequest;
 	}
+
+	// End(Getters and setters)
+
 }

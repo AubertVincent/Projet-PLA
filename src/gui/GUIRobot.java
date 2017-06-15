@@ -68,7 +68,7 @@ public class GUIRobot extends GUICharacter {
 
 	public GUIRobot(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team, Robot robot,
 			GUIPlayer guiPlayer) {
-		super(userInterface, x, y, dir, animationDuration, team, robot);
+		super(userInterface, animationDuration, robot);
 
 		animationsList.add(ClassicAck.class);
 		animationsList.add(MoveDir.class);

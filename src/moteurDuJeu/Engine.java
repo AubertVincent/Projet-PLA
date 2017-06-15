@@ -56,6 +56,18 @@ public class Engine {
 		this.playPhase = PlayPhase.playerMovement;
 	}
 
+	public boolean everyoneWaiting() {
+		boolean allWaiting = true;
+		for (Player currentPlayer : getPlayerList()) {
+			for (Robot currentRobot : currentPlayer.getRobotList()) {
+				if (!currentRobot.getState().equals(State.Wait)) {
+					allWaiting = false;
+				}
+			}
+		}
+		return allWaiting;
+	}
+
 	/**
 	 * 
 	 * @param team
