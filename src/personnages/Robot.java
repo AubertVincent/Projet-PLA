@@ -48,6 +48,8 @@ public class Robot extends Character {
 		possibleActionsList.add(operateur.ClassicAck.class);
 	}
 
+	// ↓ Constructor, update and render ↓
+
 	public Robot(int x, int y, Map map, GUI userInterface, _Sequence myAutomaton, Player player) {
 		super(x, y, map, player.getBase());
 
@@ -70,17 +72,9 @@ public class Robot extends Character {
 		}
 	}
 
-	public static List<Class<?>> getPossibleActionsList() {
-		return possibleActionsList;
-	}
+	// End(Constructor, update and render)
 
-	public Map getExplorationMap() {
-		return explorationMap;
-	}
-
-	public void setExplorationMap(Map explorationMap) {
-		this.explorationMap = explorationMap;
-	}
+	// ↓ Miscellaneous methods ↓
 
 	@Override
 	public boolean isPlayer() {
@@ -95,29 +89,6 @@ public class Robot extends Character {
 	@Override
 	public boolean isObstacle() {
 		return false;
-	}
-
-	public _Sequence getAutomaton() {
-		return this.myAutomaton;
-	}
-
-	public void setAutomaton(_Sequence automaton) {
-		this.myAutomaton = automaton;
-		this.dropAblePickAbleList.clear();
-		this.dropAblePickAbleList = myAutomaton.sequenceToPickAbleList(getX(), getY(), this.getMap());
-	}
-
-	public GUIRobot getMyselfGUI() {
-		return this.mySelfGUI;
-	}
-
-	@Override
-	public Player getPlayer() {
-		return this.player;
-	}
-
-	public List<PickAble> getDropAblePickAbleList() {
-		return dropAblePickAbleList;
 	}
 
 	protected void dropPickables() {
@@ -236,18 +207,6 @@ public class Robot extends Character {
 		// }
 	}
 
-	public void fillActionList() throws NotDoableException {
-		myAutomaton.addActionToActionList(this);
-	}
-
-	public void removeAnAction(Action action) {
-		this.automatonInList.remove(action);
-	}
-
-	public List<Action> getAutomatonInList() {
-		return this.automatonInList;
-	}
-
 	public void die() {
 
 		player.removeFromRobotList(this);
@@ -321,6 +280,45 @@ public class Robot extends Character {
 		}
 	}
 
+	// End(Miscellaneous methods)
+
+	// ↓ Getters and setters ↓
+
+	public static List<Class<?>> getPossibleActionsList() {
+		return possibleActionsList;
+	}
+
+	public Map getExplorationMap() {
+		return explorationMap;
+	}
+
+	public void setExplorationMap(Map explorationMap) {
+		this.explorationMap = explorationMap;
+	}
+
+	public _Sequence getAutomaton() {
+		return this.myAutomaton;
+	}
+
+	public void setAutomaton(_Sequence automaton) {
+		this.myAutomaton = automaton;
+		this.dropAblePickAbleList.clear();
+		this.dropAblePickAbleList = myAutomaton.sequenceToPickAbleList(getX(), getY(), this.getMap());
+	}
+
+	public GUIRobot getMyselfGUI() {
+		return this.mySelfGUI;
+	}
+
+	@Override
+	public Player getPlayer() {
+		return this.player;
+	}
+
+	public List<PickAble> getDropAblePickAbleList() {
+		return dropAblePickAbleList;
+	}
+
 	public void setXY(int x, int y) {
 		this.getMap().moveCharacter(this, x, y);
 		super.x = x;
@@ -355,4 +353,18 @@ public class Robot extends Character {
 		this.movePoints = 10;
 		this.remainingAttacks = 1;
 	}
+
+	public void fillActionList() throws NotDoableException {
+		myAutomaton.addActionToActionList(this);
+	}
+
+	public void removeAnAction(Action action) {
+		this.automatonInList.remove(action);
+	}
+
+	public List<Action> getAutomatonInList() {
+		return this.automatonInList;
+	}
+
+	// End(Getters and setters)
 }

@@ -48,6 +48,8 @@ public class Player extends Character {
 
 	protected GUIPlayer mySelfGUI;
 
+	// ↓ Constructor, update and render ↓
+
 	/**
 	 * Set a new Player
 	 * 
@@ -72,10 +74,6 @@ public class Player extends Character {
 	 * @param recall
 	 *            Player's recall's time
 	 */
-
-	public static List<Class<?>> getPossibleActionsList() {
-		return possibleActionsList;
-	}
 
 	public Player(Base base, carte.Map entityMap, GUI userInterface) throws Exception {
 		super(base.getX(), base.getY(), entityMap, base);
@@ -102,6 +100,10 @@ public class Player extends Character {
 
 	}
 
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
+
 	public void addRobot(Object obj, Robot robot) {
 		robotList.add(obj, robot);
 	}
@@ -116,30 +118,14 @@ public class Player extends Character {
 		return false;
 	}
 
-	public GUIPlayer getMyselfGUI() {
-		return this.mySelfGUI;
-	}
-
 	@Override
 	public boolean isObstacle() {
 		return false;
 	}
 
-	public Besace getBesace() {
-		return besace;
-	}
-
-	public void setBesace(Besace besace) {
-		this.besace = besace;
-	}
-
 	@Override
 	public boolean isPickAble() {
 		return false;
-	}
-
-	public List<Robot> getRobotList() {
-		return robotList.getRobotList();
 	}
 
 	public void removeFromRobotList(Robot robot) {
@@ -166,15 +152,6 @@ public class Player extends Character {
 			removeFromRobotList(currentRobot);
 			map.remove(currentRobot);
 		}
-	}
-
-	private Engine getEngine() {
-		return this.getMyselfGUI().getGUI().getEngine();
-	}
-
-	@Override
-	public Player getPlayer() {
-		return this;
 	}
 
 	// For this version of the game, Player have just to drop his besace
@@ -316,5 +293,39 @@ public class Player extends Character {
 			return false;
 		}
 	}
+	// End(Miscellaneous methods)
+
+	// ↓ Getters and setters ↓
+
+	public static List<Class<?>> getPossibleActionsList() {
+		return possibleActionsList;
+	}
+
+	private Engine getEngine() {
+		return this.getMyselfGUI().getGUI().getEngine();
+	}
+
+	@Override
+	public Player getPlayer() {
+		return this;
+	}
+
+	public Besace getBesace() {
+		return besace;
+	}
+
+	public void setBesace(Besace besace) {
+		this.besace = besace;
+	}
+
+	public List<Robot> getRobotList() {
+		return robotList.getRobotList();
+	}
+
+	public GUIPlayer getMyselfGUI() {
+		return this.mySelfGUI;
+	}
+
+	// End(Getters and setters)
 
 }

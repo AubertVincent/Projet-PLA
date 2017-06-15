@@ -32,6 +32,8 @@ public abstract class Character extends Entity {
 
 	private State state;
 
+	// ↓ Constructor, update and render ↓
+
 	public Character(int x, int y, Map entityMap, Base base) {
 
 		super(x, y, entityMap);
@@ -70,13 +72,9 @@ public abstract class Character extends Entity {
 		}
 	}
 
-	public Base getBase() {
-		return base;
-	}
+	// End(Constructor, update and render)
 
-	public void setBase(Base base) {
-		this.base = base;
-	}
+	// ↓ Miscellaneous methods ↓
 
 	public abstract boolean isPlayer();
 
@@ -97,95 +95,6 @@ public abstract class Character extends Entity {
 	@Override
 	public boolean isPickAble() {
 		return false;
-	}
-
-	public Team getTeam() {
-		return team;
-	}
-
-	public void setTeam(Team team) {
-		this.team = team;
-	}
-
-	public Direction getDirection() {
-		return this.direction;
-	}
-
-	public void setDirection(Direction direction) {
-		this.direction = direction;
-	}
-
-	public int getLife() {
-		return this.life;
-	}
-
-	public void setLife(int life) {
-		this.life = life;
-	}
-
-	public int getVision() {
-		return this.vision;
-	}
-
-	public void setVision(int vision) {
-		this.vision = vision;
-	}
-
-	public int getAttack() {
-		return this.damages;
-	}
-
-	public void setAttack(int attack) {
-		this.damages = attack;
-	}
-
-	public int getRange() {
-		return this.range;
-	}
-
-	public void setRange(int range) {
-		this.range = range;
-	}
-
-	public int getMovePoints() {
-		return this.movePoints;
-	}
-
-	public void setMovePoints(int movePoints) {
-		this.movePoints = movePoints;
-	}
-
-	public int getRecall() {
-		return this.recall;
-	}
-
-	public void setRecall(int recall) {
-		this.recall = recall;
-	}
-
-	public int getAttackPoints() {
-		return this.remainingAttacks;
-	}
-
-	public void setAttackPoints(int aP) {
-		this.remainingAttacks = aP;
-	}
-
-	public void newPosition(int x, int y) {
-		super.x = x;
-		super.y = y;
-	}
-
-	@Override
-	public void setX(int x) {
-		this.getMap().moveCharacter(this, x, this.getY());
-		super.setX(x);
-	}
-
-	@Override
-	public void setY(int y) {
-		this.getMap().moveCharacter(this, this.getX(), y);
-		super.setY(y);
 	}
 
 	public void goTo(Direction dir, int lg) {
@@ -343,14 +252,6 @@ public abstract class Character extends Entity {
 		}
 	}
 
-	public State getState() {
-		return state;
-	}
-
-	public void setState(State state) {
-		this.state = state;
-	}
-
 	public abstract void die();
 
 	public void kill(Character character) {
@@ -365,4 +266,115 @@ public abstract class Character extends Entity {
 	public abstract Player getPlayer();
 
 	public abstract void resetAttributes();
+
+	// End(Miscellaneous methods)
+
+	// ↓ Getters and setters ↓
+
+	public Base getBase() {
+		return base;
+	}
+
+	public void setBase(Base base) {
+		this.base = base;
+	}
+
+	public Team getTeam() {
+		return team;
+	}
+
+	public void setTeam(Team team) {
+		this.team = team;
+	}
+
+	public Direction getDirection() {
+		return this.direction;
+	}
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
+	}
+
+	public int getLife() {
+		return this.life;
+	}
+
+	public void setLife(int life) {
+		this.life = life;
+	}
+
+	public int getVision() {
+		return this.vision;
+	}
+
+	public void setVision(int vision) {
+		this.vision = vision;
+	}
+
+	public int getAttack() {
+		return this.damages;
+	}
+
+	public void setAttack(int attack) {
+		this.damages = attack;
+	}
+
+	public int getRange() {
+		return this.range;
+	}
+
+	public void setRange(int range) {
+		this.range = range;
+	}
+
+	public int getMovePoints() {
+		return this.movePoints;
+	}
+
+	public void setMovePoints(int movePoints) {
+		this.movePoints = movePoints;
+	}
+
+	public int getRecall() {
+		return this.recall;
+	}
+
+	public void setRecall(int recall) {
+		this.recall = recall;
+	}
+
+	public int getAttackPoints() {
+		return this.remainingAttacks;
+	}
+
+	public void setAttackPoints(int aP) {
+		this.remainingAttacks = aP;
+	}
+
+	public void newPosition(int x, int y) {
+		super.x = x;
+		super.y = y;
+	}
+
+	@Override
+	public void setX(int x) {
+		this.getMap().moveCharacter(this, x, this.getY());
+		super.setX(x);
+	}
+
+	@Override
+	public void setY(int y) {
+		this.getMap().moveCharacter(this, this.getX(), y);
+		super.setY(y);
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
+	// End(Getters and setters)
 }
