@@ -1,5 +1,7 @@
 package personnages;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +13,7 @@ import entite.Direction;
 import gui.GUI;
 import gui.GUIPlayer;
 import moteurDuJeu.Engine;
+import pickable.PickAble;
 import pickable.PickClassicAck;
 
 public class Player extends Character {
@@ -153,5 +156,34 @@ public class Player extends Character {
 	@Override
 	public Player getPlayer() {
 		return this;
+	}
+
+	// For this version of the game, Player have just to drop his besace
+	protected void dropPickables() {
+		for (Iterator<Class<? extends PickAble>> iterator = getBesace().get().keySet().iterator(); iterator
+				.hasNext();) {
+			Class<? extends PickAble> currentPickAbleClass = iterator.next();
+			int numberOfCurrentPickAble = getBesace().get(currentPickAbleClass);
+			for (int i = 0; i < numberOfCurrentPickAble; i++) {
+				Constructor<? extends PickAble> pickAbleConstructor;
+				try {
+					pickAbleConstructor = currentPickAbleClass.getConstructor(Integer.class, Integer.class,
+							carte.Map.class);
+					PickAble pickAble;
+					try {
+						pickAble = pickAbleConstructor.newInstance(this.getX(), this.getY(), this.map);
+						this.getCell().setEntity(pickAble);
+						this.getBesace().remove(currentPickAbleClass);
+					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+							| InvocationTargetException e) {
+						e.printStackTrace();
+					}
+				} catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }

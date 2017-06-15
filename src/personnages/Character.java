@@ -1,7 +1,5 @@
 package personnages;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,26 +12,7 @@ import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUICharacter;
-import operateur.Action;
-import operateur.ClassicAck;
-import operateur.MoveDir;
-import operateur.PickUp;
-import operateur.Priority;
-import operateur.RandomBar;
-import operateur.Recall;
-import operateur.Succession;
-import operateur.SuicideBomber;
-import operateur.Tunnel;
 import pickable.PickAble;
-import pickable.PickClassicAck;
-import pickable.PickMoveDir;
-import pickable.PickPickUp;
-import pickable.PickPriority;
-import pickable.PickRandomBar;
-import pickable.PickRecall;
-import pickable.PickSuccession;
-import pickable.PickSuicideBomber;
-import pickable.PickTunnel;
 
 public abstract class Character extends Entity {
 
@@ -46,7 +25,6 @@ public abstract class Character extends Entity {
 	protected int remainingAttacks;
 	protected int recall;
 
-	protected List<Action> actionList = new ArrayList<Action>();
 	protected static List<Class<?>> possibleActionsList = new LinkedList<Class<?>>();
 	protected Team team;
 	protected Base base;
@@ -383,10 +361,6 @@ public abstract class Character extends Entity {
 		this.state = state;
 	}
 
-	public List<Action> getActionList() {
-		return actionList;
-	}
-
 	public abstract void die();
 
 	public void kill(Character character) {
@@ -395,40 +369,7 @@ public abstract class Character extends Entity {
 		character.setState(State.Dying);
 	}
 
-	private void dropPickables() {
-		for (Iterator<Action> iterator = this.getActionList().iterator(); iterator.hasNext();) {
-			Action currentAction = iterator.next();
-			this.getMap().setEntity(actionToPickAble(currentAction, this.getX(), this.getY(), this.getMap()));
-			actionList.remove(currentAction);
-		}
-
-	}
-
-	private PickAble actionToPickAble(Action action, int x, int y, Map pickableMap) {
-		PickAble pickAble;
-		if (action.getClass().equals(ClassicAck.class)) {
-			pickAble = new PickClassicAck(x, y, pickableMap);
-		} else if (action.getClass().equals(MoveDir.class)) {
-			pickAble = new PickMoveDir(x, y, pickableMap);
-		} else if (action.getClass().equals(PickUp.class)) {
-			pickAble = new PickPickUp(x, y, pickableMap);
-		} else if (action.getClass().equals(Priority.class)) {
-			pickAble = new PickPriority(x, y, pickableMap);
-		} else if (action.getClass().equals(RandomBar.class)) {
-			pickAble = new PickRandomBar(x, y, pickableMap);
-		} else if (action.getClass().equals(Recall.class)) {
-			pickAble = new PickRecall(x, y, pickableMap);
-		} else if (action.getClass().equals(Succession.class)) {
-			pickAble = new PickSuccession(x, y, pickableMap);
-		} else if (action.getClass().equals(SuicideBomber.class)) {
-			pickAble = new PickSuicideBomber(x, y, pickableMap);
-		} else if (action.getClass().equals(Tunnel.class)) {
-			pickAble = new PickTunnel(x, y, pickableMap);
-		} else {
-			pickAble = null;
-		}
-		return pickAble;
-	}
+	protected abstract void dropPickables();
 
 	public abstract GUICharacter getMyselfGUI();
 

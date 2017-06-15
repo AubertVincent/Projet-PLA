@@ -171,7 +171,7 @@ public class Explore extends Movement {
 	// @Override
 	// public void execute(Robot r) throws NotDoableException {
 	// int range = r.getMovePoints();
-	// int x = r.getX();
+	// int x = r.getX() ;
 	// int y = r.getY();
 	//
 	// int c = -range;
