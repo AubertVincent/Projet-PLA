@@ -155,6 +155,7 @@ public class Player extends Character {
 			Robot currentRobot = iterator.next();
 			this.kill(currentRobot);
 			removeFromRobotList(currentRobot);
+			map.remove(currentRobot);
 		}
 	}
 
