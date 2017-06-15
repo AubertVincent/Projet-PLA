@@ -370,9 +370,9 @@ public abstract class Character extends Entity {
 		try {
 			character.dropPickables();
 		} catch (NotDoableException e) {
-			// Should never append
 		}
 		character.setState(State.Dying);
+		this.getMyselfGUI().setActionRequest(true);
 
 	}
 

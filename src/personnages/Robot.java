@@ -138,6 +138,7 @@ public class Robot extends Character {
 			currentPickAble.setX(this.getX());
 			currentPickAble.setY(this.getY());
 			this.getMap().setEntity(currentPickAble);
+			this.getMap().addPickAble(currentPickAble);
 			// dropAblePickAbleList.remove(currentPickAble);
 		}
 		dropAblePickAbleList.clear();
@@ -164,13 +165,12 @@ public class Robot extends Character {
 				// The list in which are all the entities present on the cell
 				// targeted
 				List<Entity> testEntityList = testCell.getEntityList();
-				// int i = 0;
 				// Run through the list of entities
-				for (Iterator<Entity> entityIterator = testEntityList.iterator(); entityIterator.hasNext();) {
+				List<Entity> testEntityListCopy = new ArrayList<Entity>(testEntityList);
+				for (Iterator<Entity> entityIterator = testEntityListCopy.iterator(); entityIterator.hasNext();) {
 					Entity eCourant = entityIterator.next();
 					// If the entity is a robot, kill it
 					if (eCourant instanceof Robot) {
-
 						this.kill((Robot) eCourant);
 					}
 				}
