@@ -12,10 +12,7 @@ public class MoveDir extends Movement {
 	private Direction dir;
 	private Integer lg;
 
-	@Override
-	public String toString() {
-		return "MC" + lg.toString() + dir.toString();
-	}
+	// ↓ Constructor, update and render ↓
 
 	/**
 	 * Set a new move by means of its direction and its length
@@ -30,11 +27,14 @@ public class MoveDir extends Movement {
 		this.lg = lg;
 	}
 
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
+
 	/**
 	 * A move can be done if there is no obstacle
 	 */
 	@Override
-
 	protected boolean isDoable(Robot r) {
 		int x = r.getX();
 		int y = r.getY();
@@ -117,30 +117,15 @@ public class MoveDir extends Movement {
 	}
 
 	@Override
-	public void cancel(Robot r) throws NotDoableException {
-		if (!isDoable(r)) {
-			throw new NotDoableException("An obstacle is on his path");
-		}
-		switch (dir) {
-		case NORTH:
-			dir = Direction.SOUTH;
-			break;
-		case SOUTH:
-			dir = Direction.NORTH;
-			break;
-		case EAST:
-			dir = Direction.WEST;
-			break;
-		case WEST:
-			dir = Direction.EAST;
-			break;
-		}
-		r.goTo(dir, lg);
-	}
-
-	@Override
 	public Class<? extends PickAble> getPickable() {
 		return PickMoveDir.class;
 	}
+
+	@Override
+	public String toString() {
+		return "MC" + lg.toString() + dir.toString();
+	}
+
+	// End(Miscellaneous methods)
 
 }

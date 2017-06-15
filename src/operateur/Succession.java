@@ -9,10 +9,7 @@ import sequence._Sequence;
 
 public class Succession extends Behavior {
 
-	@Override
-	public String toString() {
-		return ";   ";
-	}
+	// ↓ Constructor, update and render ↓
 
 	/**
 	 * Set a new behavior by means of its 2 actions
@@ -25,6 +22,10 @@ public class Succession extends Behavior {
 	public Succession() {
 		super();
 	}
+
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
 
 	@Override
 	public void execute(Robot r, _Sequence left, _Sequence right) throws NotDoableException {
@@ -56,20 +57,6 @@ public class Succession extends Behavior {
 		return new PickSuccession(x, y, map);
 	}
 
-	/**
-	 * check if the two actions are doable
-	 */
-	// @Override
-	// protected boolean isDoable(Entity e) {
-	// return A.isDoable(e) && B.isDoable(e);
-	// }
-	//
-	// protected void execute(Entity e) throws GameException {
-	// if (!(isDoable(e))) {
-	// throw new GameException("Une des deux actions n'est pas réalisable");
-	// }
-	// A.execute(e);
-	// B.execute(e);
-	// }
+	// End(Miscellaneous methods)
 
 }

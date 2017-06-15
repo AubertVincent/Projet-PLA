@@ -9,6 +9,8 @@ import sequence._Sequence;
 
 public class Priority extends Behavior {
 
+	// ↓ Constructor, update and render ↓
+
 	/**
 	 * Set a new behavior by means of its 2 actions
 	 * 
@@ -21,13 +23,9 @@ public class Priority extends Behavior {
 		super();
 	}
 
-	// /**
-	// * check if one of the two actions is doable
-	// */
-	// @Override
-	// protected boolean isDoable(Entity e) {
-	// return A.isDoable(e) || B.isDoable(e);
-	// }
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
 
 	@Override
 	public void execute(Robot r, _Sequence left, _Sequence right) throws NotDoableException {
@@ -60,15 +58,6 @@ public class Priority extends Behavior {
 		return new PickPriority(x, y, map);
 	}
 
-	// @Override
-	// protected void execute(Entity e) throws GameException {
-	// if (isDoable(e)) {
-	// throw new GameException("Aucune des deux actions n'est possible");
-	// }
-	// if (A.isDoable(e)) {
-	// A.execute(e);
-	// } else {
-	// B.execute(e);
-	// }
-	// }
+	// End(Miscellaneous methods)
+
 }

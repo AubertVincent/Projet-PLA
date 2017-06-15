@@ -11,6 +11,7 @@ import sequence._Sequence;
 
 public class RandomBar extends Behavior {
 
+	// ↓ Constructor, update and render ↓
 	/**
 	 * Set a new behavior by means of its 2 actions
 	 * 
@@ -22,6 +23,10 @@ public class RandomBar extends Behavior {
 	public RandomBar() {
 
 	}
+
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
 
 	@Override
 	public void execute(Robot r, _Sequence left, _Sequence right) throws NotDoableException {
@@ -63,5 +68,7 @@ public class RandomBar extends Behavior {
 	public PickAble behaviorToPickAble(int x, int y, Map map) {
 		return new PickRandomBar(x, y, map);
 	}
+
+	// End(Miscellaneous methods)
 
 }

@@ -14,10 +14,15 @@ import pickable.PickExplore;
 
 public class Explore extends Movement {
 
+	// ↓ Constructor, update and render ↓
+
 	public Explore() {
 		super();
 	}
 
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
 	@Override
 	public String toString() {
 		return "E";
@@ -46,12 +51,6 @@ public class Explore extends Movement {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public void cancel(Robot r) throws NotDoableException {
-		// Useless with the current implementation
-
 	}
 
 	@Override
@@ -304,5 +303,7 @@ public class Explore extends Movement {
 	//
 	// }
 	// }
+
+	// End(Miscellaneous methods)
 
 }

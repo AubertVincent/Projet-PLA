@@ -14,10 +14,28 @@ public class RandomMove extends Action implements _Random {
 	// Direction of the movement
 	private Direction direction;
 
+	// ↓ Constructor, update and render ↓
+
 	public RandomMove() {
 		super();
 	}
 
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
+
+	/**
+	 * return true if the cell the robot should go is reachable
+	 * 
+	 * @param r
+	 *            : The robot we have to move
+	 * @param dir
+	 *            : Direction where the robot should go to
+	 * @param lg
+	 *            : Number of cells that the robot needs to traverse
+	 * @return If there is any obstacle on this robot's path, or if he's going
+	 *         outside the map the function return false
+	 */
 	protected boolean isReachable(Robot r, Direction dir, int lg) {
 		int x = r.getX();
 		int y = r.getY();
@@ -55,6 +73,12 @@ public class RandomMove extends Action implements _Random {
 		}
 	}
 
+	/**
+	 * @param r
+	 *            : The robot which is going to execution this action
+	 * @return Nothing
+	 * 
+	 */
 	@Override
 	public void execute(Robot r) throws NotDoableException {
 		// Test
@@ -121,25 +145,6 @@ public class RandomMove extends Action implements _Random {
 	}
 
 	@Override
-	public void cancel(Robot r) throws NotDoableException {
-		switch (direction) {
-		case NORTH:
-			direction = Direction.SOUTH;
-			break;
-		case SOUTH:
-			direction = Direction.NORTH;
-			break;
-		case WEST:
-			direction = Direction.EAST;
-			break;
-		case EAST:
-			direction = Direction.WEST;
-			break;
-		}
-		r.goTo(direction, lg);
-	}
-
-	@Override
 	protected boolean isDoable(Robot r) {
 		int x = r.getX();
 		int y = r.getY();
@@ -172,5 +177,7 @@ public class RandomMove extends Action implements _Random {
 	public Class<? extends PickAble> getPickable() {
 		return PickRandomMove.class;
 	}
+
+	// End(Miscellaneous methods)
 
 }
