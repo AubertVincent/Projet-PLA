@@ -73,6 +73,7 @@ public class MoveDir extends Movement {
 					break;
 				}
 			}
+
 		} else {
 			return false;
 		}

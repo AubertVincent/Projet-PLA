@@ -269,9 +269,14 @@ public class Robot extends Character {
 	 *            y coordinate on the map
 	 */
 	public void teleport(int x, int y) {
-		this.setX(x);
-		this.setY(y);
-		this.pickUp();
+		if (this.getState().equals(State.Wait)) {
+			this.setState(State.TeleportMove);
+			this.getMyselfGUI().setActionRequest(true);
+			this.setX(x);
+			this.setY(y);
+
+			this.pickUp();
+		}
 	}
 
 	public void recall(int time) {

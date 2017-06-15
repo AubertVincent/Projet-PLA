@@ -283,6 +283,8 @@ public abstract class GUICharacter {
 			if ((beginTimeAnimation + animationDuration) <= (int) System.currentTimeMillis()) {
 				setCurrentX(mySelf.getX());
 				setCurrentY(mySelf.getY());
+				xPx = mainUserInterface.cellToPixelX(mySelf.getX());
+				yPx = mainUserInterface.cellToPixelY(mySelf.getY());
 				mySelf.setState(State.Wait);
 			}
 			break;

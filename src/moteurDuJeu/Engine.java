@@ -158,28 +158,6 @@ public class Engine {
 		this.playPhase = playPhase;
 	}
 
-	// public void executeAllRobot() {
-	// if (getPlayPhase().equals(PlayPhase.automatonExecution)) {
-	// int myRandom;
-	// List<Robot> executionRobotList = new LinkedList<Robot>();
-	// // get each players
-	// for (Player player : playerList) {
-	// executionRobotList.addAll(player.getRobotList());
-	// }
-	// while (executionRobotList.size() != 0) {
-	// myRandom = (int) (Math.random() * executionRobotList.size());
-	// Robot currentRobot = executionRobotList.get(myRandom);
-	// try {
-	// currentRobot.execute();
-	// } catch (NotDoableException e) {
-	// e.getMessage();
-	// }
-	// executionRobotList.remove(currentRobot);
-	// }
-	// this.setPlayPhase(PlayPhase.playerMovement);
-	// }
-	// }
-
 	public void remove(Player player) {
 		this.playerList.remove(player);
 		if (currentModifier.equals(player)) {
@@ -268,11 +246,11 @@ public class Engine {
 							&& currentRobot.getCurrentAction() < currentRobot.getAutomatonInList().size()) {
 						allEmpty = false;
 						currentRobot.getAutomatonInList().get(currentRobot.getCurrentAction()).execute(currentRobot);
-						currentRobot.setNextAction();
 					}
 				} catch (NotDoableException e) {
 					e.getMessage();
 				}
+				currentRobot.setNextAction();
 				executedRobotList.remove(currentRobot);
 			}
 			if (allEmpty) {
