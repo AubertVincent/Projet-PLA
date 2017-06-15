@@ -20,7 +20,6 @@ import moteurDuJeu.Engine;
 import moteurDuJeu.PlayPhase;
 import personnages.Player;
 import personnages.Robot;
-import personnages.State;
 import pickable.PickAble;
 import pickable.PickPickUp;
 
@@ -189,25 +188,12 @@ public class GUI extends BasicGame {
 		}
 
 		try {
-			if (everyoneWaiting() && engine.getPlayPhase().equals(PlayPhase.automatonExecution)) {
+			if (engine.everyoneWaiting() && engine.getPlayPhase().equals(PlayPhase.automatonExecution)) {
 				engine.step();
 			}
 		} catch (Exception e) {
 			e.getMessage();
 		}
-	}
-
-	private boolean everyoneWaiting() {
-		boolean allWaiting = true;
-		for (Player currentPlayer : engine.getPlayerList()) {
-			for (Robot currentRobot : currentPlayer.getRobotList()) {
-				if (!currentRobot.getState().equals(State.Wait)) {
-					allWaiting = false;
-				}
-			}
-		}
-		return allWaiting;
-
 	}
 
 	@Override
