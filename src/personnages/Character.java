@@ -55,8 +55,8 @@ public abstract class Character extends Entity {
 			this.vision = 1;
 			this.damages = 2;
 			this.range = 4;
-			this.movePoints = 20;
-			this.remainingAttacks = 3;
+			this.movePoints = 10;
+			this.remainingAttacks = 1;
 			this.recall = 3;
 			this.team = base.getBaseTeam();
 			this.base = base;
@@ -281,10 +281,6 @@ public abstract class Character extends Entity {
 				this.getMap().removePickAble(e);
 			}
 			this.getPickAbleList().clear();
-			// TEST
-			// boolean test =
-			// this.getMyselfGUI().getGUI().getEngine().isEndOfGame();
-			// System.out.println(test);
 			if (this.getMyselfGUI().getGUI().getEngine().isEndOfGame()) {
 				this.getMyselfGUI().getGUI().setPlayPhase(PlayPhase.endOfGame);
 			}
@@ -387,4 +383,6 @@ public abstract class Character extends Entity {
 	public abstract GUICharacter getMyselfGUI();
 
 	public abstract Player getPlayer();
+
+	public abstract void resetAttributes();
 }

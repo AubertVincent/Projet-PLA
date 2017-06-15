@@ -311,7 +311,6 @@ public class GUI extends BasicGame {
 			switch (key) {
 			case Input.KEY_SPACE:
 				engine.setPlayPhase(PlayPhase.automatonExecution);
-				engine.resetAllRobot();
 				break;
 			}
 		}
