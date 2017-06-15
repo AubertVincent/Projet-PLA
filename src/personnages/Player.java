@@ -296,7 +296,7 @@ public class Player extends Character {
 	}
 
 	public void resetAttributes() {
-		this.movePoints = 100;
+		this.movePoints = 20;
 		this.remainingAttacks = 5;
 	}
 }
