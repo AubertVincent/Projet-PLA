@@ -171,6 +171,7 @@ public class Robot extends Character {
 					Entity eCourant = entityIterator.next();
 					// If the entity is a robot, kill it
 					if (eCourant instanceof Robot) {
+						this.getMyselfGUI().setActionRequest(true);
 						this.kill((Robot) eCourant);
 					}
 				}

@@ -318,6 +318,7 @@ public abstract class Character extends Entity {
 			this.setAttackPoints(this.getAttackPoints() - 1);
 
 			if (opponent != null && opponent.getLife() <= 0) {
+				this.getMyselfGUI().setActionRequest(true);
 				this.kill(opponent);
 			}
 		} catch (NotDoableException e) {
@@ -370,7 +371,6 @@ public abstract class Character extends Entity {
 		character.dropPickables();
 
 		character.setState(State.Dying);
-		this.getMyselfGUI().setActionRequest(true);
 
 	}
 
