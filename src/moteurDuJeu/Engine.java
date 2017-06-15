@@ -38,6 +38,7 @@ public class Engine {
 	private boolean isModifying;
 
 	private int nbrOperatorInitOnMap = 10;
+
 	private int nbrOperatorInGame = nbrOperatorInitOnMap;
 
 	private Team winners = null;
@@ -228,6 +229,7 @@ public class Engine {
 
 	private void modifyRobot(Robot currentModified, _Sequence sequence) {
 		currentModifier.setState(State.RobotCreation);
+		currentModifier.getMyselfGUI().setActionRequest(true);
 		currentModified.setAutomaton(sequence);
 		try {
 			currentModified.getAutomatonInList().clear();
@@ -295,14 +297,13 @@ public class Engine {
 		boolean isAllPickedByOnePlayer = false;
 
 		for (Player player : playerList) {
-			// TEST
-			System.out.println("num = " + player.numberOfOwnedPickAble() + " in game = " + nbrOperatorInGame);
-			isAllPickedByOnePlayer = isAllPickedByOnePlayer || player.numberOfOwnedPickAble() == nbrOperatorInGame;
+			System.out.println("Jen ai autant que ca :" + player.numberOfOwnedPickAble());
+			isAllPickedByOnePlayer = isAllPickedByOnePlayer || (player.numberOfOwnedPickAble() >= nbrOperatorInGame);
 		}
 
 		if (isAllPickedByOnePlayer) {
 			for (Player player : playerList) {
-				if (player.numberOfOwnedPickAble() == nbrOperatorInGame) {
+				if (player.numberOfOwnedPickAble() >= nbrOperatorInGame) {
 					this.setPlayPhase(PlayPhase.endOfGame);
 					this.winners = player.getTeam();
 				}

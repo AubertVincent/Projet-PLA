@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import carte.Base;
 import carte.Cell;
 import carte.Coordinates;
 import carte.Map;
@@ -71,19 +70,6 @@ public class Robot extends Character {
 		}
 	}
 
-	// For test delete when it's over
-	public Robot(Base base, Map entityMap, _Sequence myAutomaton, Player player) {
-		super(base.getX(), base.getY(), entityMap, base);
-		this.myAutomaton = myAutomaton;
-		this.player = player;
-		this.explorationMap = entityMap;
-		this.explorationMap.getCell(this.x, this.y).setExplored(true);
-
-		this.myAutomaton = myAutomaton;
-		this.player = player;
-		this.player.addRobot(new Coordinates(base.getX(), base.getY()), this);
-	}
-
 	public static List<Class<?>> getPossibleActionsList() {
 		return possibleActionsList;
 	}
@@ -117,6 +103,8 @@ public class Robot extends Character {
 
 	public void setAutomaton(_Sequence automaton) {
 		this.myAutomaton = automaton;
+		this.dropAblePickAbleList.clear();
+		this.dropAblePickAbleList = myAutomaton.sequenceToPickAbleList(getX(), getY(), this.getMap());
 	}
 
 	public GUIRobot getMyselfGUI() {
@@ -139,7 +127,6 @@ public class Robot extends Character {
 			currentPickAble.setY(this.getY());
 			this.getMap().setEntity(currentPickAble);
 			this.getMap().addPickAble(currentPickAble);
-			// dropAblePickAbleList.remove(currentPickAble);
 		}
 		dropAblePickAbleList.clear();
 	}
