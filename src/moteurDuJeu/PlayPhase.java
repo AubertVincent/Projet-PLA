@@ -14,4 +14,16 @@ public enum PlayPhase {
 		return value;
 	}
 
+	public static String toString(PlayPhase phase) {
+		switch (phase) {
+		case playerMovement:
+			return "Phase de mouvement des joueurs";
+		case behaviorModification:
+			return "Phase de Modification et création";
+		case automatonExecution:
+			return "Phase de mouvement des unités";
+		}
+		return null;
+	}
+
 }
