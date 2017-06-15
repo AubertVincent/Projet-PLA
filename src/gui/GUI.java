@@ -255,52 +255,52 @@ public class GUI extends BasicGame {
 		if (engine.getPlayPhase().equals(PlayPhase.playerMovement)) {
 			switch (key) {
 
-			case Input.KEY_UP:
+			case Input.KEY_Z:
 				engine.goTo(engine.getPlayer(Team.ROUGE), Direction.NORTH);
 				break;
-			case Input.KEY_LEFT:
+			case Input.KEY_Q:
 				engine.goTo(engine.getPlayer(Team.ROUGE), Direction.WEST);
 				break;
-			case Input.KEY_DOWN:
+			case Input.KEY_S:
 				engine.goTo(engine.getPlayer(Team.ROUGE), Direction.SOUTH);
 				break;
-			case Input.KEY_RIGHT:
+			case Input.KEY_D:
 				engine.goTo(engine.getPlayer(Team.ROUGE), Direction.EAST);
 				break;
-			case Input.KEY_Z:
+			case Input.KEY_UP:
 				engine.goTo(engine.getPlayer(Team.BLEU), Direction.NORTH);
 				break;
-			case Input.KEY_Q:
+			case Input.KEY_LEFT:
 				engine.goTo(engine.getPlayer(Team.BLEU), Direction.WEST);
 				break;
-			case Input.KEY_S:
+			case Input.KEY_DOWN:
 				engine.goTo(engine.getPlayer(Team.BLEU), Direction.SOUTH);
 				break;
-			case Input.KEY_D:
+			case Input.KEY_RIGHT:
 				engine.goTo(engine.getPlayer(Team.BLEU), Direction.EAST);
 				break;
-			case Input.KEY_F:
+			case Input.KEY_O:
 				engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.NORTH);
 				break;
-			case Input.KEY_C:
+			case Input.KEY_K:
 				engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.WEST);
 				break;
-			case Input.KEY_V:
+			case Input.KEY_L:
 				engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.SOUTH);
 				break;
-			case Input.KEY_B:
+			case Input.KEY_M:
 				engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.EAST);
 				break;
-			case Input.KEY_O:
+			case Input.KEY_F:
 				engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.NORTH);
 				break;
-			case Input.KEY_K:
+			case Input.KEY_C:
 				engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.WEST);
 				break;
-			case Input.KEY_L:
+			case Input.KEY_V:
 				engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.SOUTH);
 				break;
-			case Input.KEY_M:
+			case Input.KEY_B:
 				engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.EAST);
 				break;
 			case Input.KEY_SPACE:
