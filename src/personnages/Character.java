@@ -320,9 +320,7 @@ public abstract class Character extends Entity {
 			if (opponent != null && opponent.getLife() <= 0) {
 				this.kill(opponent);
 			}
-		}
-
-		catch (NotDoableException e) {
+		} catch (NotDoableException e) {
 			e.getMessage();
 		}
 
