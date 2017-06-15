@@ -18,6 +18,14 @@ public class Cell {
 	boolean isfree;
 	boolean isExplored;
 
+	/**
+	 * Created a new empty cell with x and y coordinates
+	 * 
+	 * @param x
+	 *            the cell's x coordinated
+	 * @param y
+	 *            the cell's x coordinated
+	 */
 	public Cell(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -26,8 +34,17 @@ public class Cell {
 		isExplored = false;
 	}
 
+	/**
+	 * Created a new cell with x and y coordinates and an entity on it
+	 * 
+	 * @param x
+	 *            the cell's x coordinated
+	 * @param y
+	 *            the cell's x coordinated
+	 * @param ent
+	 *            the Entity to set on the cell
+	 */
 	public Cell(int x, int y, Entity ent) {
-
 		this.y = y;
 		entityList = new ArrayList<Entity>();
 		this.setEntity(ent);
@@ -35,37 +52,78 @@ public class Cell {
 		isExplored = false;
 	}
 
+	/**
+	 * Used to remove the entity given
+	 * 
+	 * @param entity
+	 *            the Entity to remove from the cell
+	 */
 	public void remove(Entity entity) {
 		entityList.remove(entity);
 		isfree = entityList.isEmpty();
 	}
 
+	/**
+	 * Used the check if the cell is either empty or not
+	 * 
+	 * @return true if the current cell is empty
+	 */
 	public boolean isEmpty() {
 		return entityList.isEmpty();
 	}
 
+	/**
+	 * Used the check if the cell is either explored or not
+	 * 
+	 * @return true if the current cell is explored
+	 */
 	public boolean isExplored() {
 		return isExplored;
 	}
 
+	/**
+	 * used to set the current cell to either explored or not
+	 * 
+	 * @param isExplored
+	 *            true => the cell is explored, false => the cell is unExplored
+	 */
 	public void setExplored(boolean isExplored) {
 		this.isExplored = isExplored;
 	}
 
+	/**
+	 * Used to check if the cell is either free or not
+	 * 
+	 * @return true if the cell is free
+	 */
 	public boolean isFree() {
 		return this.isfree;
 	}
 
+	/**
+	 * Set a new entity on the current cell
+	 * 
+	 * @param ent
+	 *            the new entity to set on the cell
+	 */
 	public void setEntity(Entity ent) {
 		entityList.add(ent);
 		this.isfree = false;
 	}
 
+	/**
+	 * Free the current cell
+	 */
 	public void FreeCell() {
 		isfree = true;
 		entityList.clear();
 	}
 
+	/**
+	 * Used to get the pickable entity on the current cell
+	 * 
+	 * @return the cell's Pickable list
+	 */
 	public List<PickAble> getPickAbleList() {
 		List<PickAble> pickableList = new ArrayList<PickAble>();
 		for (Entity e : entityList) {
@@ -76,10 +134,16 @@ public class Cell {
 		return pickableList;
 	}
 
+	/**
+	 * Used to get all the entity of the cell
+	 * 
+	 * @return the entity list of the current cell
+	 */
 	public List<Entity> getEntityList() {
 		return entityList;
 	}
 
+	// TODO : je sais pas ce que s'est a partir de la
 	@SuppressWarnings("unchecked")
 	public Class<PickAble> pickableEntity() {
 		List<Entity> entityList = this.getEntityList();
@@ -92,6 +156,7 @@ public class Cell {
 		return null;
 	}
 
+	// TODO : je sais pas
 	public void freePick(Class<PickAble> ramasse) {
 		List<Entity> entityList = this.getEntityList();
 		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
@@ -102,6 +167,7 @@ public class Cell {
 		}
 	}
 
+	// TODO : je sais pas
 	public boolean isReachable() {
 		List<Entity> entityList = this.getEntityList();
 		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
@@ -113,8 +179,8 @@ public class Cell {
 		return true;
 	}
 
+	// TODO : je sais pas
 	public Character getOpponent(Team team) throws NotDoableException {
-
 		for (Iterator<Entity> it = this.entityList.iterator(); it.hasNext();) {
 			Entity ent = it.next();
 			if (ent.isCharacter()) {
@@ -126,6 +192,7 @@ public class Cell {
 		throw new NotDoableException("Il est vrai j'ai trop d'adversaire ... mais pas là");
 	}
 
+	// TODO : je sais pas
 	public boolean opponentHere(Team team) {
 		for (Iterator<Entity> it = this.entityList.iterator(); it.hasNext();) {
 			Entity currentEntity = it.next();
@@ -138,14 +205,25 @@ public class Cell {
 		return false;
 	}
 
+	/**
+	 * Used to get the current X of the cell
+	 * 
+	 * @return the current cell X coordinate
+	 */
 	public int getX() {
 		return this.x;
 	}
 
+	/**
+	 * Used to get the current Y of the cell
+	 * 
+	 * @return the current cell Y coordinate
+	 */
 	public int getY() {
 		return this.y;
 	}
 
+	// TODO : je sais pas
 	public boolean pickAbleHere() {
 		List<Entity> entityList = this.getEntityList();
 		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
@@ -157,6 +235,7 @@ public class Cell {
 		return false;
 	}
 
+	// TODO : je sais pas
 	public boolean robotHere() {
 		List<Entity> entityList = this.getEntityList();
 		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {

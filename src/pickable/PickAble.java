@@ -11,6 +11,9 @@ public abstract class PickAble extends Entity {
 
 	GUIPickAble guiPickAble;
 
+	/**
+	 * Used to set all the possible pickAble in a list
+	 */
 	public static List<Class<? extends PickAble>> possiblePickAbleList = new LinkedList<Class<? extends PickAble>>();
 	static {
 
@@ -19,7 +22,6 @@ public abstract class PickAble extends Entity {
 		possiblePickAbleList.add(PickTunnel.class);
 		possiblePickAbleList.add(PickMoveDir.class);
 		possiblePickAbleList.add(PickRecall.class);
-		// possiblePickAbleList.add(PickPickUp.class);
 		possiblePickAbleList.add(PickSuccession.class);
 		possiblePickAbleList.add(PickRandomBar.class);
 		possiblePickAbleList.add(PickPriority.class);
@@ -27,25 +29,49 @@ public abstract class PickAble extends Entity {
 
 	}
 
+	/**
+	 * Used to create a new PickAble
+	 * 
+	 * @param x
+	 *            the x coordinate of the pickAble
+	 * @param y
+	 *            the y coordinate of the pickAble
+	 * @param entityMap
+	 *            the map used to set the pickAble
+	 */
 	public PickAble(Integer x, Integer y, Map entityMap) {
 		super(x, y, entityMap);
 		guiPickAble = new GUIPickAble(this, entityMap.getGUI());
 	}
 
+	/**
+	 * Used to get if the pickable is a character
+	 */
 	@Override
 	public boolean isCharacter() {
 		return false;
 	}
 
+	/**
+	 * used to get if the pickable is a pickAble
+	 */
 	public boolean isPickAble() {
 		return true;
 	}
 
+	/**
+	 * used to get if the pickable is an obstacle
+	 */
 	@Override
 	public boolean isObstacle() {
 		return false;
 	}
 
+	/**
+	 * get the GUI representation of the current pickAble
+	 * 
+	 * @return
+	 */
 	public GUIPickAble getGUIPickAble() {
 		return this.guiPickAble;
 	}
@@ -91,6 +117,17 @@ public abstract class PickAble extends Entity {
 		return toString;
 	}
 
+	/**
+	 * USed to get a random pickAble to place it during the game initialisation
+	 * 
+	 * @param x
+	 *            the x coordinate of the pickAble to set
+	 * @param y
+	 *            the y coordinate of the pickAble to set
+	 * @param myMap
+	 *            the map used to set the pickAble
+	 * @return the new pickable randomly created
+	 */
 	public static PickAble randomPickable(int x, int y, Map myMap) {
 		PickAble newOperator = null;
 		int pickable = (int) ((int) 1 + (Math.random() * (9)));
@@ -127,6 +164,11 @@ public abstract class PickAble extends Entity {
 		return newOperator;
 	}
 
+	/**
+	 * Used to get the list of all the existing pickAble
+	 * 
+	 * @return the list of all the existing pickAble
+	 */
 	public static List<Class<? extends PickAble>> getPossiblePickAbleList() {
 		return possiblePickAbleList;
 	}
