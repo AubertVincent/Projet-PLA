@@ -70,7 +70,7 @@ public class Besace {
 			Class<? extends PickAble> currentClass;
 			currentClass = mapIter.next();
 			if (currentClass.equals(PickExplore.class)) {
-				besace.put(currentClass, 1);
+				besace.put(currentClass, 3);
 			} else {
 				besace.put(currentClass, 10);
 			}
@@ -110,9 +110,7 @@ public class Besace {
 	}
 
 	public void remove(Class<? extends PickAble> myClass) {
-		if (!myClass.equals(PickExplore.class)) {
-			besace.put(myClass, Math.max(0, besace.get(myClass) - 1));
-		}
+		besace.put(myClass, Math.max(0, besace.get(myClass) - 1));
 
 	}
 
