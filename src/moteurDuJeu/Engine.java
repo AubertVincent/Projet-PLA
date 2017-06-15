@@ -37,7 +37,7 @@ public class Engine {
 
 	private boolean isModifying;
 
-	private int nbrOperatorInitOnMap = 1;
+	private int nbrOperatorInitOnMap = 10;
 	private int nbrOperatorInGame = nbrOperatorInitOnMap;
 
 	private Team winners = null;
