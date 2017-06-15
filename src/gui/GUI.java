@@ -16,7 +16,6 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import entite.Direction;
 import entite.Team;
-import exceptions.NotDoableException;
 import moteurDuJeu.Engine;
 import moteurDuJeu.PlayPhase;
 import personnages.Player;
@@ -106,7 +105,9 @@ public class GUI extends BasicGame {
 				Robot currentRobot = itrRobot.next();
 				GUIRobot guiRobot = currentRobot.getMyselfGUI();
 				try {
-					guiRobot.render(g);
+					if (guiRobot.getMyself().getIsVisible()) {
+						guiRobot.render(g);
+					}
 				} catch (Exception e) {
 
 					e.printStackTrace();
@@ -246,75 +247,70 @@ public class GUI extends BasicGame {
 
 	@Override
 	public void keyPressed(int key, char c) {
-		try {
-			System.out.println("Phase de jeu : " + engine.getPlayPhase().toString());
+		System.out.println("Phase de jeu : " + engine.getPlayPhase().toString());
 
-			if (engine.getPlayPhase().equals(PlayPhase.playerMovement)) {
-				switch (key) {
+		if (engine.getPlayPhase().equals(PlayPhase.playerMovement)) {
+			switch (key) {
 
-				case Input.KEY_UP:
-					engine.goTo(engine.getPlayer(Team.ROUGE), Direction.NORTH);
-					break;
-				case Input.KEY_LEFT:
-					engine.goTo(engine.getPlayer(Team.ROUGE), Direction.WEST);
-					break;
-				case Input.KEY_DOWN:
-					engine.goTo(engine.getPlayer(Team.ROUGE), Direction.SOUTH);
-					break;
-				case Input.KEY_RIGHT:
-					engine.goTo(engine.getPlayer(Team.ROUGE), Direction.EAST);
-					break;
-				case Input.KEY_Z:
-					engine.goTo(engine.getPlayer(Team.BLEU), Direction.NORTH);
-					break;
-				case Input.KEY_Q:
-					engine.goTo(engine.getPlayer(Team.BLEU), Direction.WEST);
-					break;
-				case Input.KEY_S:
-					engine.goTo(engine.getPlayer(Team.BLEU), Direction.SOUTH);
-					break;
-				case Input.KEY_D:
-					engine.goTo(engine.getPlayer(Team.BLEU), Direction.EAST);
-					break;
-				case Input.KEY_F:
-					engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.NORTH);
-					break;
-				case Input.KEY_C:
-					engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.WEST);
-					break;
-				case Input.KEY_V:
-					engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.SOUTH);
-					break;
-				case Input.KEY_B:
-					engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.EAST);
-					break;
-				case Input.KEY_O:
-					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.NORTH);
-					break;
-				case Input.KEY_K:
-					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.WEST);
-					break;
-				case Input.KEY_L:
-					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.SOUTH);
-					break;
-				case Input.KEY_M:
-					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.EAST);
-					break;
-				case Input.KEY_SPACE:
-					engine.setPlayPhase(PlayPhase.behaviorModification);
-					break;
-				}
-			} else if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
-				switch (key) {
-				case Input.KEY_SPACE:
-					engine.setPlayPhase(PlayPhase.automatonExecution);
-					engine.resetAllRobot();
-					break;
-				}
+			case Input.KEY_UP:
+				engine.goTo(engine.getPlayer(Team.ROUGE), Direction.NORTH);
+				break;
+			case Input.KEY_LEFT:
+				engine.goTo(engine.getPlayer(Team.ROUGE), Direction.WEST);
+				break;
+			case Input.KEY_DOWN:
+				engine.goTo(engine.getPlayer(Team.ROUGE), Direction.SOUTH);
+				break;
+			case Input.KEY_RIGHT:
+				engine.goTo(engine.getPlayer(Team.ROUGE), Direction.EAST);
+				break;
+			case Input.KEY_Z:
+				engine.goTo(engine.getPlayer(Team.BLEU), Direction.NORTH);
+				break;
+			case Input.KEY_Q:
+				engine.goTo(engine.getPlayer(Team.BLEU), Direction.WEST);
+				break;
+			case Input.KEY_S:
+				engine.goTo(engine.getPlayer(Team.BLEU), Direction.SOUTH);
+				break;
+			case Input.KEY_D:
+				engine.goTo(engine.getPlayer(Team.BLEU), Direction.EAST);
+				break;
+			case Input.KEY_F:
+				engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.NORTH);
+				break;
+			case Input.KEY_C:
+				engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.WEST);
+				break;
+			case Input.KEY_V:
+				engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.SOUTH);
+				break;
+			case Input.KEY_B:
+				engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.EAST);
+				break;
+			case Input.KEY_O:
+				engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.NORTH);
+				break;
+			case Input.KEY_K:
+				engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.WEST);
+				break;
+			case Input.KEY_L:
+				engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.SOUTH);
+				break;
+			case Input.KEY_M:
+				engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.EAST);
+				break;
+			case Input.KEY_SPACE:
+				engine.setPlayPhase(PlayPhase.behaviorModification);
+				break;
 			}
-
-		} catch (NotDoableException e) {
-
+		} else if (engine.getPlayPhase().equals(PlayPhase.behaviorModification)) {
+			switch (key) {
+			case Input.KEY_SPACE:
+				engine.setPlayPhase(PlayPhase.automatonExecution);
+				engine.resetAllRobot();
+				break;
+			}
 		}
 	}
 

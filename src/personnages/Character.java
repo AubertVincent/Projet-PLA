@@ -76,7 +76,7 @@ public abstract class Character extends Entity {
 			this.vision = 1;
 			this.damages = 2;
 			this.range = 4;
-			this.movePoints = 32;
+			this.movePoints = 20;
 			this.remainingAttacks = 3;
 			this.recall = 3;
 			this.team = base.getBaseTeam();
@@ -200,6 +200,11 @@ public abstract class Character extends Entity {
 		}
 	}
 
+	public void newPosition(int x, int y) {
+		super.x = x;
+		super.y = y;
+	}
+
 	@Override
 	public void setX(int x) {
 		this.getMap().moveCharacter(this, x, this.getY());
@@ -218,7 +223,7 @@ public abstract class Character extends Entity {
 			boolean moveSucces = false;
 			this.getMyselfGUI().setActionRequest(true);
 			for (int i = 0; i < lg; i++) {
-				if (this instanceof Robot) {
+				if (this instanceof Robot && ((Robot) this).getIsVisible()) {
 
 					switch (dir) {
 					case SOUTH:
@@ -239,7 +244,7 @@ public abstract class Character extends Entity {
 						break;
 					}
 
-				} else {
+				} else if (this instanceof Player) {
 					if (this.getMovePoints() > 0) {
 
 						switch (dir) {

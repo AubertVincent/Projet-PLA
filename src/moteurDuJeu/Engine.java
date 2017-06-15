@@ -109,7 +109,7 @@ public class Engine {
 		}
 	}
 
-	public void classicAtk(Character character, Direction dir) throws NotDoableException {
+	public void classicAtk(Character character, Direction dir) {
 		if (character.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.playerMovement)) {
 			Cell target = null;
 			switch (dir) {
@@ -126,6 +126,7 @@ public class Engine {
 				target = getMap().getCell(character.getX() - 1, character.getY());
 				break;
 			}
+
 			character.setDirection(dir);
 			character.classicAtk(target);
 
@@ -137,21 +138,22 @@ public class Engine {
 
 	private void createRobot(GUI userInterface, Player player, _Sequence sequence) {
 
-		player.setState(State.RobotCreation);
-		player.getMyselfGUI().setActionRequest(true);
-		int Xbase;
-		int Ybase;
-		Xbase = player.getBase().getX();
-		Ybase = player.getBase().getY();
-		if (!getMap().getCell(Xbase, Ybase).isReachable()) {
-			Cell freeCell = getMap().nearestFreeCell(Xbase, Ybase);
-			Xbase = freeCell.getX();
-			Ybase = freeCell.getY();
+		if (currentModifier.getState().equals(State.Wait) && this.playPhase.equals(PlayPhase.behaviorModification)) {
+			player.setState(State.RobotCreation);
+			player.getMyselfGUI().setActionRequest(true);
+			int Xbase;
+			int Ybase;
+			Xbase = player.getBase().getX();
+			Ybase = player.getBase().getY();
+			if (!getMap().getCell(Xbase, Ybase).isReachable()) {
+				Cell freeCell = getMap().nearestFreeCell(Xbase, Ybase);
+				Xbase = freeCell.getX();
+				Ybase = freeCell.getY();
 
+			}
+			Robot robot = new Robot(Xbase, Ybase, myMap, userInterface, sequence, player);
+			robot.pickUp();
 		}
-		Robot robot = new Robot(Xbase, Ybase, myMap, userInterface, sequence, player);
-		player.setState(State.Wait);
-		robot.pickUp();
 	}
 
 	public void setPlayPhase(PlayPhase playPhase) {
@@ -201,6 +203,7 @@ public class Engine {
 	}
 
 	public void setRobotBehavior(GUI userInterface, _Sequence sequence) {
+
 		if (isModifying && !isCreating) {
 			this.modifyRobot(currentModified, sequence);
 		} else if (!isModifying && isCreating) {
@@ -248,6 +251,7 @@ public class Engine {
 						currentRobot.getAutomatonInList().get(currentRobot.getCurrentAction()).execute(currentRobot);
 					}
 				} catch (NotDoableException e) {
+					currentRobot.getAutomatonInList().clear();
 					e.getMessage();
 				}
 				currentRobot.setNextAction();
@@ -267,6 +271,7 @@ public class Engine {
 					robot.getAutomatonInList().clear();
 					robot.fillActionList();
 					robot.setFirstAction();
+					robot.resetAttributes();
 				} catch (NotDoableException e) {
 					e.getMessage();
 				}

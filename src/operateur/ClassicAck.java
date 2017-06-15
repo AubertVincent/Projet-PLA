@@ -41,7 +41,8 @@ public class ClassicAck extends Attack {
 		// check if this robot is not in a corner
 		boolean isInCorner = ((x == 0 && y == 0) || (x == 0 && y == myMap.mapHeight() - 1)
 				|| (x == myMap.mapWidth() - 1 && y == 0) || (x == myMap.mapWidth() - 1 && y == myMap.mapHeight() - 1));
-		// All those tests if the robot is on the border of the map. We don't
+		// All those tests if the robot is on the border of the map. We
+		// don't
 		// want to get a cell outside the map.
 		// And it checks if there is an opponent around the robot.
 		if (x == 0 && y == 0) {
@@ -83,6 +84,7 @@ public class ClassicAck extends Attack {
 					&& !(testNorth.opponentHere(team)));
 			return b;
 		}
+
 	}
 
 	@Override
