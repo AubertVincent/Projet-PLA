@@ -192,9 +192,7 @@ public class Engine {
 
 	public void remove(Player player) {
 		this.playerList.remove(player);
-		if (currentModifier.equals(player)) {
-			currentModifier = null;
-		}
+
 	}
 
 	public GUICharacter getGUICharactereFromMouse(int x, int y) {

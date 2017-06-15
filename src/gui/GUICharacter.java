@@ -233,7 +233,7 @@ public abstract class GUICharacter {
 			g.drawAnimation(animationsList.get(operateur.MoveDir.class)[dir.toInt()], xAnim, yAnim);
 			break;
 		case Dead:
-			throw new Exception("Trying to render a dead character");
+			// throw new Exception("Trying to render a dead character");
 		}
 	}
 
