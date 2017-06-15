@@ -42,7 +42,7 @@ public abstract class Character extends Entity {
 			this.vision = 5;
 			this.damages = 3;
 			this.range = 3;
-			this.movePoints = 100;
+			this.movePoints = 20;
 			this.remainingAttacks = 5;
 			this.recall = 3;
 

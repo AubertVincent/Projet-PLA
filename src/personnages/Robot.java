@@ -171,12 +171,12 @@ public class Robot extends Character {
 					// If the entity is a robot, kill it
 					if (eCourant instanceof Robot) {
 
-						((Robot) eCourant).setLife(0);
+						this.kill((Robot) eCourant);
 					}
 				}
 			}
 			// Suicide the robot which is executing SuicideBomber
-			this.setLife(0);
+			this.kill(this);
 		}
 
 	}
@@ -365,5 +365,6 @@ public class Robot extends Character {
 
 	public void resetAttributes() {
 		this.movePoints = 10;
+		this.remainingAttacks = 1;
 	}
 }

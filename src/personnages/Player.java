@@ -179,6 +179,7 @@ public class Player extends Character {
 				for (int i = 0; i < numberOfCurrentPickAble; i++) {
 					PickAble pickableToDrop = new PickPriority(getX(), getY(), this.getMap());
 					this.getCell().setEntity(pickableToDrop);
+					this.map.addPickAble(pickableToDrop);
 					this.getBesace().remove(currentPickAbleClass);
 				}
 
@@ -186,6 +187,7 @@ public class Player extends Character {
 				for (int i = 0; i < numberOfCurrentPickAble; i++) {
 					PickAble pickableToDrop = new PickRandomBar(getX(), getY(), this.getMap());
 					this.getCell().setEntity(pickableToDrop);
+					this.map.addPickAble(pickableToDrop);
 					this.getBesace().remove(currentPickAbleClass);
 				}
 
@@ -193,6 +195,7 @@ public class Player extends Character {
 				for (int i = 0; i < numberOfCurrentPickAble; i++) {
 					PickAble pickableToDrop = new PickSuccession(getX(), getY(), this.getMap());
 					this.getCell().setEntity(pickableToDrop);
+					this.map.addPickAble(pickableToDrop);
 					this.getBesace().remove(currentPickAbleClass);
 				}
 
@@ -200,6 +203,7 @@ public class Player extends Character {
 				for (int i = 0; i < numberOfCurrentPickAble; i++) {
 					PickAble pickableToDrop = new PickClassicAck(getX(), getY(), this.getMap());
 					this.getCell().setEntity(pickableToDrop);
+					this.map.addPickAble(pickableToDrop);
 					this.getBesace().remove(currentPickAbleClass);
 				}
 
@@ -207,6 +211,7 @@ public class Player extends Character {
 				for (int i = 0; i < numberOfCurrentPickAble; i++) {
 					PickAble pickableToDrop = new PickMoveDir(getX(), getY(), this.getMap());
 					this.getCell().setEntity(pickableToDrop);
+					this.map.addPickAble(pickableToDrop);
 					this.getBesace().remove(currentPickAbleClass);
 				}
 
@@ -214,6 +219,7 @@ public class Player extends Character {
 				for (int i = 0; i < numberOfCurrentPickAble; i++) {
 					PickAble pickableToDrop = new PickPickUp(getX(), getY(), this.getMap());
 					this.getCell().setEntity(pickableToDrop);
+					this.map.addPickAble(pickableToDrop);
 					this.getBesace().remove(currentPickAbleClass);
 				}
 
@@ -221,6 +227,7 @@ public class Player extends Character {
 				for (int i = 0; i < numberOfCurrentPickAble; i++) {
 					PickAble pickableToDrop = new PickRandomMove(getX(), getY(), this.getMap());
 					this.getCell().setEntity(pickableToDrop);
+					this.map.addPickAble(pickableToDrop);
 					this.getBesace().remove(currentPickAbleClass);
 				}
 
@@ -228,6 +235,7 @@ public class Player extends Character {
 				for (int i = 0; i < numberOfCurrentPickAble; i++) {
 					PickAble pickableToDrop = new PickRecall(getX(), getY(), this.getMap());
 					this.getCell().setEntity(pickableToDrop);
+					this.map.addPickAble(pickableToDrop);
 					this.getBesace().remove(currentPickAbleClass);
 				}
 
@@ -235,6 +243,7 @@ public class Player extends Character {
 				for (int i = 0; i < numberOfCurrentPickAble; i++) {
 					PickAble pickableToDrop = new PickSuicideBomber(getX(), getY(), this.getMap());
 					this.getCell().setEntity(pickableToDrop);
+					this.map.addPickAble(pickableToDrop);
 					this.getBesace().remove(currentPickAbleClass);
 				}
 
@@ -242,6 +251,7 @@ public class Player extends Character {
 				for (int i = 0; i < numberOfCurrentPickAble; i++) {
 					PickAble pickableToDrop = new PickTunnel(getX(), getY(), this.getMap());
 					this.getCell().setEntity(pickableToDrop);
+					this.map.addPickAble(pickableToDrop);
 					this.getBesace().remove(currentPickAbleClass);
 				}
 
@@ -286,7 +296,7 @@ public class Player extends Character {
 	}
 
 	public void resetAttributes() {
-		this.movePoints = 100;
+		this.movePoints = 20;
 		this.remainingAttacks = 5;
 	}
 }
