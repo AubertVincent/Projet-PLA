@@ -45,6 +45,7 @@ public class GUI extends BasicGame {
 	private int HeightRect = 300;
 	private PlayPhase phase;
 	private String guiphase;
+	private Image image;
 
 	public static void main(String[] args) throws SlickException {
 		GUI mainUI = new GUI();
@@ -84,9 +85,13 @@ public class GUI extends BasicGame {
 		map.render(0, 0, 2);
 		map.render(0, 0, 3);
 
+		g.setColor(Color.white);
 		phase = engine.getPlayPhase();
 		guiphase = PlayPhase.toString(phase);
 		g.drawString(guiphase, WindowWidth / 3, 4);
+		g.drawString("33.00", WindowWidth - 50, 4);
+		g.drawString("33.17", WindowWidth - 55, WindowHeight - 25);
+		g.drawString("00.17", 5, WindowHeight - 25);
 
 		for (Iterator<PickAble> itr = engine.getMap().getPickAbleList().iterator(); itr.hasNext();) {
 			PickAble currentPickable = itr.next();
@@ -122,6 +127,16 @@ public class GUI extends BasicGame {
 		if (behaviorInputNeeded) {
 			this.rectBesace.render(container, g, engine.getCurrentModifier().getBesace());
 			this.inputTextField.render(container, g);
+		}
+
+		if (engine.getPlayPhase().equals(PlayPhase.endOfGame)) {
+			if (engine.getWinningTeam().equals(Team.ROUGE)) {
+				image = new Image("res/RedWinning.png");
+				image.draw(0, 0);
+			} else if (engine.getWinningTeam().equals(Team.BLEU)) {
+				image = new Image("res/BlueWinning.png");
+				image.draw(0, 0);
+			}
 		}
 	}
 
@@ -245,52 +260,84 @@ public class GUI extends BasicGame {
 			switch (key) {
 
 			case Input.KEY_Z:
-				engine.goTo(engine.getPlayer(Team.ROUGE), Direction.NORTH);
+				if (!engine.getPlayer(Team.ROUGE).isDie()) {
+					engine.goTo(engine.getPlayer(Team.ROUGE), Direction.NORTH);
+				}
 				break;
 			case Input.KEY_Q:
-				engine.goTo(engine.getPlayer(Team.ROUGE), Direction.WEST);
+				if (!engine.getPlayer(Team.ROUGE).isDie()) {
+					engine.goTo(engine.getPlayer(Team.ROUGE), Direction.WEST);
+				}
 				break;
 			case Input.KEY_S:
-				engine.goTo(engine.getPlayer(Team.ROUGE), Direction.SOUTH);
+				if (!engine.getPlayer(Team.ROUGE).isDie()) {
+					engine.goTo(engine.getPlayer(Team.ROUGE), Direction.SOUTH);
+				}
 				break;
 			case Input.KEY_D:
-				engine.goTo(engine.getPlayer(Team.ROUGE), Direction.EAST);
+				if (!engine.getPlayer(Team.ROUGE).isDie()) {
+					engine.goTo(engine.getPlayer(Team.ROUGE), Direction.EAST);
+				}
 				break;
 			case Input.KEY_UP:
-				engine.goTo(engine.getPlayer(Team.BLEU), Direction.NORTH);
+				if (!engine.getPlayer(Team.BLEU).isDie()) {
+					engine.goTo(engine.getPlayer(Team.BLEU), Direction.NORTH);
+				}
 				break;
 			case Input.KEY_LEFT:
-				engine.goTo(engine.getPlayer(Team.BLEU), Direction.WEST);
+				if (!engine.getPlayer(Team.BLEU).isDie()) {
+					engine.goTo(engine.getPlayer(Team.BLEU), Direction.WEST);
+				}
 				break;
 			case Input.KEY_DOWN:
-				engine.goTo(engine.getPlayer(Team.BLEU), Direction.SOUTH);
+				if (!engine.getPlayer(Team.BLEU).isDie()) {
+					engine.goTo(engine.getPlayer(Team.BLEU), Direction.SOUTH);
+				}
 				break;
 			case Input.KEY_RIGHT:
-				engine.goTo(engine.getPlayer(Team.BLEU), Direction.EAST);
+				if (!engine.getPlayer(Team.BLEU).isDie()) {
+					engine.goTo(engine.getPlayer(Team.BLEU), Direction.EAST);
+				}
 				break;
 			case Input.KEY_O:
-				engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.NORTH);
+				if (!engine.getPlayer(Team.BLEU).isDie()) {
+					engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.NORTH);
+				}
 				break;
 			case Input.KEY_K:
-				engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.WEST);
+				if (!engine.getPlayer(Team.BLEU).isDie()) {
+					engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.WEST);
+				}
 				break;
 			case Input.KEY_L:
-				engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.SOUTH);
+				if (!engine.getPlayer(Team.BLEU).isDie()) {
+					engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.SOUTH);
+				}
 				break;
 			case Input.KEY_M:
-				engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.EAST);
+				if (!engine.getPlayer(Team.BLEU).isDie()) {
+					engine.classicAtk(engine.getPlayer(Team.BLEU), Direction.EAST);
+				}
 				break;
 			case Input.KEY_F:
-				engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.NORTH);
+				if (!engine.getPlayer(Team.ROUGE).isDie()) {
+					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.NORTH);
+				}
 				break;
 			case Input.KEY_C:
-				engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.WEST);
+				if (!engine.getPlayer(Team.ROUGE).isDie()) {
+					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.WEST);
+				}
 				break;
 			case Input.KEY_V:
-				engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.SOUTH);
+				if (!engine.getPlayer(Team.ROUGE).isDie()) {
+					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.SOUTH);
+				}
 				break;
 			case Input.KEY_B:
-				engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.EAST);
+				if (!engine.getPlayer(Team.ROUGE).isDie()) {
+					engine.classicAtk(engine.getPlayer(Team.ROUGE), Direction.EAST);
+				}
 				break;
 			case Input.KEY_SPACE:
 				engine.setPlayPhase(PlayPhase.behaviorModification);

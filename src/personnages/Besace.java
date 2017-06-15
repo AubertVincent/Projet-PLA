@@ -157,11 +157,13 @@ public class Besace {
 		return resultingSequence;
 	}
 
-	public int numberOfElement() {
+	public int numberOfElementPickAble() {
 		int numberOfElement = 0;
 		for (Iterator<Class<? extends PickAble>> iterator = this.get().keySet().iterator(); iterator.hasNext();) {
 			Class<? extends PickAble> currentPickable = iterator.next();
-			numberOfElement = numberOfElement + (besace.get(currentPickable));
+			if (!currentPickable.equals(PickExplore.class)) {
+				numberOfElement = numberOfElement + (besace.get(currentPickable));
+			}
 
 		}
 		return numberOfElement;
