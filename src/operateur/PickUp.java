@@ -20,7 +20,6 @@ public class PickUp extends Action {
 			// Should never happen
 			throw new NotDoableException("Impossible de ramasser");
 		} else {
-			robot.pickUp();
 
 		}
 	}

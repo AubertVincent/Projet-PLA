@@ -12,6 +12,7 @@ import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUICharacter;
+import moteurDuJeu.PlayPhase;
 import pickable.PickAble;
 
 public abstract class Character extends Entity {
@@ -170,14 +171,6 @@ public abstract class Character extends Entity {
 		this.remainingAttacks = aP;
 	}
 
-	public Besace getBesace() throws Exception {
-		if (this instanceof Player) {
-			return this.getBesace();
-		} else {
-			throw new Exception("Pas de besace pour un robot");
-		}
-	}
-
 	public void newPosition(int x, int y) {
 		super.x = x;
 		super.y = y;
@@ -268,24 +261,19 @@ public abstract class Character extends Entity {
 
 	public void pickUp() {
 		Besace besaceOfCurrentPlayer;
-		try {
-			if (this instanceof Player) {
-				besaceOfCurrentPlayer = this.getBesace();
-			} else {
-				besaceOfCurrentPlayer = this.getPlayer().getBesace();
-			}
-			List<PickAble> pickableList = this.getPickAbleList();
-			for (Entity e : pickableList) {
-				besaceOfCurrentPlayer.add(((PickAble) e).getClass());
-				this.getMap().removePickAble(e);
-			}
-			this.getPickAbleList().clear();
-			if (this.getMyselfGUI().getGUI().getEngine().isEndOfGame()) {
-				this.getMyselfGUI().getGUI().getEngine().setPlayPhaseEndOfGame();
-			}
-
-		} catch (Exception e1) {
-			e1.getMessage();
+		if (this instanceof Player) {
+			besaceOfCurrentPlayer = ((Player) this).getBesace();
+		} else {
+			besaceOfCurrentPlayer = this.getPlayer().getBesace();
+		}
+		List<PickAble> pickableList = this.getPickAbleList();
+		for (Entity e : pickableList) {
+			besaceOfCurrentPlayer.add(((PickAble) e).getClass());
+			this.getMap().removePickAble(e);
+		}
+		this.getPickAbleList().clear();
+		if (this.getMyselfGUI().getGUI().getEngine().isEndOfGame()) {
+			this.getMyselfGUI().getGUI().getEngine().setPlayPhase(PlayPhase.endOfGame);
 		}
 
 	}
@@ -366,11 +354,8 @@ public abstract class Character extends Entity {
 	public abstract void die();
 
 	public void kill(Character character) {
-
 		character.dropPickables();
-
 		character.setState(State.Dying);
-
 	}
 
 	protected abstract void dropPickables();
