@@ -37,7 +37,7 @@ public class Engine {
 
 	private boolean isModifying;
 
-	private int nbrOperatorInitOnMap = 10;
+	private int nbrOperatorInitOnMap = 128;
 
 	private int nbrOperatorInGame = nbrOperatorInitOnMap;
 
@@ -297,7 +297,6 @@ public class Engine {
 		boolean isAllPickedByOnePlayer = false;
 
 		for (Player player : playerList) {
-			System.out.println("Jen ai autant que ca :" + player.numberOfOwnedPickAble());
 			isAllPickedByOnePlayer = isAllPickedByOnePlayer || (player.numberOfOwnedPickAble() >= nbrOperatorInGame);
 		}
 
