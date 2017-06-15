@@ -106,6 +106,12 @@ public class Explore extends Movement {
 			if (randomCpt != 0) {
 				// Go to a random cell of the previous list
 				myRandom = (int) (Math.random() * randomCpt);
+				// Except if there is an pickable around this robot
+				for (int i = 0; i < reachable.size(); i++) {
+					if (reachable.get(i).pickAbleHere()) {
+						myRandom = i;
+					}
+				}
 				if (reachable.get(myRandom).getX() < x && reachable.get(myRandom).getY() == y) {
 					r.getExplorationMap().getCell(x - 1, y).setExplored(true);
 					r.goTo(Direction.WEST, 1);

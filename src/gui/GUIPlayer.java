@@ -52,6 +52,7 @@ public class GUIPlayer extends GUICharacter {
 							+ " sprites from " + "res/Player/SpriteSheet" + currentAction.getSimpleName() + ".png");
 		}
 	}
+
 	List<Class<? extends operateur.Action>> animationsList = new LinkedList<Class<? extends operateur.Action>>();
 
 	public GUIPlayer(GUI userInterface, int x, int y, Direction dir, int animationDuration, Team team, Player player)
