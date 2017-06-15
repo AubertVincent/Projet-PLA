@@ -154,6 +154,7 @@ public class Robot extends Character {
 	 * Suicide a robot and kill the robots around it
 	 */
 	public void suicideBomber(List<Cell> listCell) {
+		this.getMyselfGUI().setActionRequest(true);
 		// Run through the list of targets
 		if (this.getState().equals(State.Wait)) {
 			this.setState(State.SuicideBomberAttack);
@@ -299,6 +300,7 @@ public class Robot extends Character {
 	}
 
 	public void recall(int time) {
+
 		if (this.getState().equals(State.Wait)) {
 
 			// First execution of recall, this robot is now not display on the
@@ -325,10 +327,9 @@ public class Robot extends Character {
 				this.getMap().setEntity(new Obstacle(this.getBase().getX() - 1, this.getBase().getY(), this.getMap()));
 				this.getExplorationMap().getCell(getX(), getY()).setExplored(true);
 				this.setIsVisible(true);
-				// this.pickUp();
+				this.life = 3;
 			}
 		}
-
 	}
 
 	public void setXY(int x, int y) {

@@ -267,13 +267,15 @@ public class Engine {
 			}
 			if (allEmpty) {
 				this.setPlayPhase(PlayPhase.playerMovement);
+				this.resetAllCharacter();
 
 			}
 		}
 	}
 
-	public void resetAllRobot() {
+	public void resetAllCharacter() {
 		for (Player player : playerList) {
+			player.resetAttributes();
 			for (Robot robot : player.getRobotList()) {
 				try {
 					robot.getAutomatonInList().clear();

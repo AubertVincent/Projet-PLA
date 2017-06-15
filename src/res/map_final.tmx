@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="34" height="18" tilewidth="32" tileheight="32" nextobjectid="18">
+ <tileset firstgid="1" name="roguelikeSheet_transparentx2" tilewidth="32" tileheight="32" spacing="2" tilecount="1767" columns="57">
+  <image source="roguelikeSheet_transparentx2.png" width="1936" height="1052"/>
+ </tileset>
+ <layer name="background" width="34" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+3SwQ2AIAxA0SaCQ6E4hrqHgLq9NUBSFY9QDpD8C5e+NFUA4Ao1YBpTif8JO7pnPeTJYqv0M+n/GBw7mX1mdMSZGyYTDkN24Qo4ZuktIqThu6Pc2ddtLJLHkXLFO+V00Ptojua4o6/t49+hQ5wODfU5uCw1OwRDBrsAnGl0IZAJAAA=
+  </data>
+ </layer>
+ <layer name="background2" width="34" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA92WWwqEMAxFA1oXpaPuYnAfPkZXoQt0MTZMC7FERa2hKJyfguZweyECAHRCZJpKAaTMeaHpozUlXCfZoSUz6Tsfc/YjDsNNjyNHnFlrFOPREI9OwOOr/i6xoWEy2vuGD5eW6UZ+wsMXbhe3OvNkNvi4XbR3JZkHzuS6KO2xhfXw1cE3eVhC8Aghj1DupfTscyZjunOkM5mJL3pMZOdI+HD/A+iRG0ZnB0qC+3YBm+HzlZAJAAA=
+  </data>
+ </layer>
+ <layer name="entredeux" width="34" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA2NgGL5AmGmgXUBdIMPKwPCYBcEXQvNfIVROlBFC8xPhf5EBDCNeoH/4WQmrW8tCWA0uII7Ff6JoYiB3eBDhDnoCWBySCoiJc2z2EEoH6GmNmoCQ3Y8piH8YoHdZgC+80OMWPT2SCuzRMK0AKWmykApxRqq91I5jYszDVr6QIk+KfdQMU2oDXOUOqeXRSAcA+dBHR5AJAAA=
+  </data>
+ </layer>
+ <layer name="batiment" width="34" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA2NgYGAwYWZgMAViCyC2BOKBAoPFHZ0sDAxhQFzIDGEPFAgE2n2eAYIDB9AdXSzY2ZQCE1ZgfLNSzzxygRvQDVWMqGKjaRECljAxMCxlGvi0eAMaP7RKi6NgFIyCUTDQAAATym+ikAkAAA==
+  </data>
+ </layer>
+ <layer name="obstacles" width="34" height="18" visible="0">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA82Uyw0AIAhDPbj/oE7hnVCRT8UmHEyEvgi45hjr08gK1UAeLA6LUfrcvovGfzoj/4xnRp4eRH21POTJ5IjKy1H5TpY/e08lg7zr4XjRN8R5k8fi6FLHvlgzXFXPc0eb14paGTF6E/mPuv/WE0dXbMj2we+QCQAA
+  </data>
+ </layer>
+ <layer name="premplan" width="34" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA2NgGAWEwLKBdsAIAibMDAymQGwBxJbMA+2agQPZTAwMOUwD7QrcIH+QuG3FIHHHKBgFo2AUUAoAj38jwJAJAAA=
+  </data>
+ </layer>
+ <layer name="premprem" width="34" height="18">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA2NgGAUjDRxiYWA4zDLQrhgFhEAw40C7YBSMglEwCkYBvQAAmLoZQ5AJAAA=
+  </data>
+ </layer>
+</map>

@@ -155,6 +155,7 @@ public class Player extends Character {
 			Robot currentRobot = iterator.next();
 			this.kill(currentRobot);
 			removeFromRobotList(currentRobot);
+			map.remove(currentRobot);
 		}
 	}
 
@@ -282,5 +283,10 @@ public class Player extends Character {
 			possession += robot.getDropAblePickAbleList().size();
 		}
 		return possession;
+	}
+
+	public void resetAttributes() {
+		this.movePoints = 100;
+		this.remainingAttacks = 5;
 	}
 }

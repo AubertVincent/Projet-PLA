@@ -9,6 +9,7 @@ import java.util.Map;
 import operateur.Action;
 import pickable.PickAble;
 import pickable.PickClassicAck;
+import pickable.PickExplore;
 import pickable.PickMoveDir;
 import pickable.PickPriority;
 import pickable.PickRandomBar;
@@ -56,11 +57,11 @@ public class Besace {
 		possiblePickAbleList.add(PickTunnel.class);
 		possiblePickAbleList.add(PickMoveDir.class);
 		possiblePickAbleList.add(PickRecall.class);
-		// possiblePickAbleList.add(PickPickUp.class);
 		possiblePickAbleList.add(PickSuccession.class);
 		possiblePickAbleList.add(PickRandomBar.class);
 		possiblePickAbleList.add(PickPriority.class);
 		possiblePickAbleList.add(PickRandomMove.class);
+		possiblePickAbleList.add(PickExplore.class);
 	}
 
 	public void init() {
@@ -68,7 +69,11 @@ public class Besace {
 		for (Iterator<Class<? extends PickAble>> mapIter = possiblePickAbleList.iterator(); mapIter.hasNext();) {
 			Class<? extends PickAble> currentClass;
 			currentClass = mapIter.next();
-			besace.put(currentClass, 10);
+			if (currentClass.equals(PickExplore.class)) {
+				besace.put(currentClass, 1);
+			} else {
+				besace.put(currentClass, 10);
+			}
 		}
 
 	}
@@ -105,7 +110,9 @@ public class Besace {
 	}
 
 	public void remove(Class<? extends PickAble> myClass) {
-		besace.put(myClass, Math.max(0, besace.get(myClass) - 1));
+		if (!myClass.equals(PickExplore.class)) {
+			besace.put(myClass, Math.max(0, besace.get(myClass) - 1));
+		}
 
 	}
 

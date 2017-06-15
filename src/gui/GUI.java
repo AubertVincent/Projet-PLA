@@ -44,6 +44,8 @@ public class GUI extends BasicGame {
 	private GUIBesace rectBesace;
 	private int WidthRect = 32 * 20;
 	private int HeightRect = 300;
+	private PlayPhase phase;
+	private String guiphase;
 
 	public static void main(String[] args) throws SlickException {
 		GUI mainUI = new GUI();
@@ -63,7 +65,7 @@ public class GUI extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 
 		this.container = container;
-		map = new TiledMap("res/map.tmx");
+		map = new TiledMap("res/map_final.tmx");
 		inputTextField = new GUIBehaviorInput(container, this, WindowWidth, WindowHeight);
 		rectBesace = new GUIBesace(container, WindowHeight, WidthRect, HeightRect, cellWidth);
 
@@ -75,10 +77,14 @@ public class GUI extends BasicGame {
 
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
-		map.render(0, 0, 3);
 		map.render(0, 0, 0);
 		map.render(0, 0, 1);
 		map.render(0, 0, 2);
+		map.render(0, 0, 3);
+
+		phase = engine.getPlayPhase();
+		guiphase = PlayPhase.toString(phase);
+		g.drawString(guiphase, WindowWidth / 3, 4);
 
 		for (Iterator<PickAble> itr = engine.getMap().getPickAbleList().iterator(); itr.hasNext();) {
 			PickAble currentPickable = itr.next();
@@ -109,15 +115,12 @@ public class GUI extends BasicGame {
 			}
 
 		}
-
-		map.render(0, 0, 4);
 		map.render(0, 0, 5);
-
+		map.render(0, 0, 6);
 		if (behaviorInputNeeded) {
 			this.rectBesace.render(container, g, engine.getCurrentModifier().getBesace());
 			this.inputTextField.render(container, g);
 		}
-
 	}
 
 	/**
@@ -308,7 +311,6 @@ public class GUI extends BasicGame {
 			switch (key) {
 			case Input.KEY_SPACE:
 				engine.setPlayPhase(PlayPhase.automatonExecution);
-				engine.resetAllRobot();
 				break;
 			}
 		}

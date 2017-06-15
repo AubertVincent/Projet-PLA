@@ -71,9 +71,10 @@ public class Explore extends Movement {
 		// Execution of this function is made step by step and depends of number
 		// of move points. We have to check if this action is doable on each
 		// iteration
+		x = r.getX();
+		y = r.getY();
 		while (movepoints > 0) {
-			x = r.getX();
-			y = r.getY();
+
 			if (!isDoable(r)) {
 				throw new NotDoableException("This robot is surround by obstacle");
 			}
@@ -114,16 +115,20 @@ public class Explore extends Movement {
 				}
 				if (reachable.get(myRandom).getX() < x && reachable.get(myRandom).getY() == y) {
 					r.getExplorationMap().getCell(x - 1, y).setExplored(true);
-					r.goTo(Direction.WEST, 1);
+					r.addActionToActionList(new MoveDir(Direction.WEST, 1));
+					x -= 1;
 				} else if (reachable.get(myRandom).getX() > x && reachable.get(myRandom).getY() == y) {
 					r.getExplorationMap().getCell(x + 1, y).setExplored(true);
-					r.goTo(Direction.EAST, 1);
+					r.addActionToActionList(new MoveDir(Direction.EAST, 1));
+					x += 1;
 				} else if (reachable.get(myRandom).getX() == x && reachable.get(myRandom).getY() < y) {
 					r.getExplorationMap().getCell(x, y - 1).setExplored(true);
-					r.goTo(Direction.NORTH, 1);
+					r.addActionToActionList(new MoveDir(Direction.NORTH, 1));
+					y -= 1;
 				} else if (reachable.get(myRandom).getX() == x && reachable.get(myRandom).getY() > y) {
 					r.getExplorationMap().getCell(x, y + 1).setExplored(true);
-					r.goTo(Direction.SOUTH, 1);
+					r.addActionToActionList(new MoveDir(Direction.SOUTH, 1));
+					y += 1;
 				}
 				// Else, fill the list with the reachable cells
 			} else {
@@ -149,16 +154,16 @@ public class Explore extends Movement {
 				// Go to a random cell of the previous list
 				if (reachable.get(myRandom).getX() < x && reachable.get(myRandom).getY() == y) {
 					r.getExplorationMap().getCell(x - 1, y).setExplored(true);
-					r.goTo(Direction.WEST, 1);
+					r.addActionToActionList(new MoveDir(Direction.WEST, 1));
 				} else if (reachable.get(myRandom).getX() > x && reachable.get(myRandom).getY() == y) {
 					r.getExplorationMap().getCell(x + 1, y).setExplored(true);
-					r.goTo(Direction.EAST, 1);
+					r.addActionToActionList(new MoveDir(Direction.EAST, 1));
 				} else if (reachable.get(myRandom).getX() == x && reachable.get(myRandom).getY() < y) {
 					r.getExplorationMap().getCell(x, y - 1).setExplored(true);
-					r.goTo(Direction.NORTH, 1);
+					r.addActionToActionList(new MoveDir(Direction.NORTH, 1));
 				} else if (reachable.get(myRandom).getX() == x && reachable.get(myRandom).getY() > y) {
 					r.getExplorationMap().getCell(x, y + 1).setExplored(true);
-					r.goTo(Direction.SOUTH, 1);
+					r.addActionToActionList(new MoveDir(Direction.SOUTH, 1));
 				}
 			}
 			// Use a move point
