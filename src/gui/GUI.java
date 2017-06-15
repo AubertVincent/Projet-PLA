@@ -423,9 +423,4 @@ public class GUI extends BasicGame {
 
 	}
 
-	public void setPlayPhase(PlayPhase endofgame) {
-		engine.setPlayPhase(PlayPhase.endOfGame);
-
-	}
-
 }

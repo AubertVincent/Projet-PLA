@@ -326,4 +326,9 @@ public class Engine {
 		}
 		return allWaiting;
 	}
+
+	public void setPlayPhaseEndOfGame() {
+		setPlayPhase(PlayPhase.endOfGame);
+
+	}
 }

@@ -7,6 +7,8 @@ import java.util.List;
 import org.newdawn.slick.SlickException;
 
 import carte.Base;
+import carte.Cell;
+import carte.Obstacle;
 import entite.Direction;
 import gui.GUI;
 import gui.GUIPlayer;
@@ -152,6 +154,14 @@ public class Player extends Character {
 
 		for (Iterator<Robot> iterator = getRobotList().iterator(); iterator.hasNext();) {
 			Robot currentRobot = iterator.next();
+			if (currentRobot.getX() == currentRobot.getBase().getX() - 1
+					&& currentRobot.getY() == currentRobot.getBase().getY()) {
+				Cell tmp = currentRobot.getMap().nearestFreeCell(this.getBase().getX(), this.getBase().getY());
+				currentRobot.setXY(tmp.getX(), tmp.getY());
+				currentRobot.getMap()
+						.setEntity(new Obstacle(this.getBase().getX() - 1, this.getBase().getY(), this.getMap()));
+
+			}
 			this.kill(currentRobot);
 			removeFromRobotList(currentRobot);
 			map.remove(currentRobot);

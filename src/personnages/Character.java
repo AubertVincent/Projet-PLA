@@ -12,7 +12,6 @@ import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUICharacter;
-import moteurDuJeu.PlayPhase;
 import pickable.PickAble;
 
 public abstract class Character extends Entity {
@@ -282,7 +281,7 @@ public abstract class Character extends Entity {
 			}
 			this.getPickAbleList().clear();
 			if (this.getMyselfGUI().getGUI().getEngine().isEndOfGame()) {
-				this.getMyselfGUI().getGUI().setPlayPhase(PlayPhase.endOfGame);
+				this.getMyselfGUI().getGUI().getEngine().setPlayPhaseEndOfGame();
 			}
 
 		} catch (Exception e1) {
