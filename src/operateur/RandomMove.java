@@ -32,17 +32,17 @@ public class RandomMove extends Action implements _Random {
 					}
 					break;
 				case SOUTH:
-					if (y + i < 0 || y + i > r.getMap().mapHeight() || !(r.getMap().getCell(x, y + 1).isReachable())) {
+					if (y + i < 0 || y + i > r.getMap().mapHeight() || !(r.getMap().getCell(x, y + i).isReachable())) {
 						return false;
 					}
 					break;
 				case EAST:
-					if (x + i < 0 || x + i > r.getMap().mapWidth() || !(r.getMap().getCell(x + 1, y).isReachable())) {
+					if (x + i < 0 || x + i > r.getMap().mapWidth() || !(r.getMap().getCell(x + i, y).isReachable())) {
 						return false;
 					}
 					break;
 				case WEST:
-					if (x - i < 0 || x - i > r.getMap().mapWidth() || !(r.getMap().getCell(x - 1, y).isReachable())) {
+					if (x - i < 0 || x - i > r.getMap().mapWidth() || !(r.getMap().getCell(x - i, y).isReachable())) {
 						return false;
 					}
 					break;
