@@ -37,7 +37,7 @@ public class Engine {
 
 	private boolean isModifying;
 
-	private int nbrOperatorInitOnMap = 2;
+	private int nbrOperatorInitOnMap = 1;
 	private int nbrOperatorInGame = nbrOperatorInitOnMap;
 
 	private Team winners = null;
@@ -295,6 +295,8 @@ public class Engine {
 		boolean isAllPickedByOnePlayer = false;
 
 		for (Player player : playerList) {
+			// TEST
+			System.out.println("num = " + player.numberOfOwnedPickAble() + " in game = " + nbrOperatorInGame);
 			isAllPickedByOnePlayer = isAllPickedByOnePlayer || player.numberOfOwnedPickAble() == nbrOperatorInGame;
 		}
 
@@ -313,4 +315,15 @@ public class Engine {
 		return winners;
 	}
 
+	public boolean everyoneWaiting() {
+		boolean allWaiting = true;
+		for (Player currentPlayer : this.getPlayerList()) {
+			for (Robot currentRobot : currentPlayer.getRobotList()) {
+				if (!currentRobot.getState().equals(State.Wait)) {
+					allWaiting = false;
+				}
+			}
+		}
+		return allWaiting;
+	}
 }

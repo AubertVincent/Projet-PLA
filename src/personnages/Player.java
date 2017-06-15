@@ -288,7 +288,7 @@ public class Player extends Character {
 	 * @return
 	 */
 	public int numberOfOwnedPickAble() {
-		int possession = this.getBesace().numberOfElement();
+		int possession = this.getBesace().numberOfElementPickAble();
 		for (Robot robot : this.getRobotList()) {
 			possession += robot.getDropAblePickAbleList().size();
 		}
@@ -299,4 +299,13 @@ public class Player extends Character {
 		this.movePoints = 20;
 		this.remainingAttacks = 5;
 	}
+
+	public boolean isDie() {
+		if (this.getState().equals(State.Dead)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }
