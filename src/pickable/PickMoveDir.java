@@ -4,7 +4,7 @@ import carte.Map;
 
 public class PickMoveDir extends PickAble {
 
-	public PickMoveDir(int x, int y, Map entityMap) {
+	public PickMoveDir(Integer x, Integer y, Map entityMap) {
 		super(x, y, entityMap);
 	}
 

@@ -27,7 +27,7 @@ public abstract class PickAble extends Entity {
 
 	}
 
-	public PickAble(int x, int y, Map entityMap) {
+	public PickAble(Integer x, Integer y, Map entityMap) {
 		super(x, y, entityMap);
 		guiPickAble = new GUIPickAble(this, entityMap.getGUI());
 	}

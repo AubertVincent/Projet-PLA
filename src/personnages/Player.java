@@ -1,5 +1,6 @@
 package personnages;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +12,7 @@ import entite.Direction;
 import gui.GUI;
 import gui.GUIPlayer;
 import moteurDuJeu.Engine;
-import pickable.PickClassicAck;
+import pickable.PickAble;
 
 public class Player extends Character {
 
@@ -77,7 +78,8 @@ public class Player extends Character {
 		}
 		robotList = new RobotList();
 		this.besace = new Besace();
-		besace.add(PickClassicAck.class);
+		// comment for test
+		// besace.add(PickClassicAck.class);
 		entityMap.setEntity(this);
 	}
 
@@ -153,5 +155,44 @@ public class Player extends Character {
 	@Override
 	public Player getPlayer() {
 		return this;
+	}
+
+	// For this version of the game, Player have just to drop his besace
+	protected void dropPickables() {
+		for (Iterator<Class<? extends PickAble>> iterator = getBesace().get().keySet().iterator(); iterator
+				.hasNext();) {
+			Class<? extends PickAble> currentPickAbleClass = iterator.next();
+			int numberOfCurrentPickAble = getBesace().get(currentPickAbleClass);
+			for (int i = 0; i < numberOfCurrentPickAble; i++) {
+
+				try {
+					PickAble pickable = currentPickAbleClass
+							.getConstructor(Integer.class, Integer.class, carte.Map.class)
+							.newInstance(getX(), getY(), this.getMap());
+					this.getCell().setEntity(pickable);
+					this.getBesace().remove(currentPickAbleClass);
+
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					e.printStackTrace();
+				}
+
+			}
+		}
+	}
+
+	/**
+	 * This function return number of element owned by this player, it means
+	 * number of operator in robots' player on the map and number of operator in
+	 * his besace
+	 * 
+	 * @return
+	 */
+	public int numberOfOwnedPickAble() {
+		int possession = this.getBesace().numberOfElement();
+		for (Robot robot : this.getRobotList()) {
+			possession += robot.getDropAblePickAbleList().size();
+		}
+		return possession;
 	}
 }

@@ -15,6 +15,7 @@ import test.SequenceCorrector;
 public class GUIBehaviorInput {
 
 	private static final String defaultInstructions = "(MC2S;MC2E)";
+
 	private GUI userInterface;
 	private TextField textField;
 	int textFieldHeight;

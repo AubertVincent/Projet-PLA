@@ -13,7 +13,6 @@ import pickable.PickAble;
 
 public class Map {
 
-	private int nbrOperatorInit = 128;
 	private int width = 34;
 	private int height = 18;
 
@@ -51,7 +50,7 @@ public class Map {
 		int randomX = (int) (Math.random() * (width));
 		int randomY = (int) (Math.random() * (height));
 		PickAble newPickAble;
-		for (int i = 0; i < nbrOperatorInit; i++) {
+		for (int i = 0; i < engine.getNbrOperatorInitOnMap(); i++) {
 			while (!map[randomX][randomY].isFree()) {
 				randomX = (int) (Math.random() * (width));
 				randomY = (int) (Math.random() * (height));

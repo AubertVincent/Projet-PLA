@@ -86,7 +86,6 @@ public class ClassicAck extends Attack {
 	}
 
 	@Override
-
 	public void execute(Robot r) throws NotDoableException {
 		// test
 		// System.out.println("J'execute une attaque classique !");

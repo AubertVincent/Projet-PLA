@@ -1,5 +1,6 @@
 package operateur;
 
+import carte.Map;
 import exceptions.NotDoableException;
 import personnages.Robot;
 import pickable.PickAble;
@@ -15,5 +16,7 @@ public abstract class Behavior {
 	}
 
 	public abstract Class<? extends PickAble> getPickable();
+
+	public abstract PickAble behaviorToPickAble(int x, int y, Map map);
 
 }

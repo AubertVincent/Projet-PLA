@@ -37,6 +37,9 @@ public class Engine {
 
 	private boolean isModifying;
 
+	private int nbrOperatorInitOnMap = 1;
+	private int nbrOperatorInGame = nbrOperatorInitOnMap;
+
 	/**
 	 * Create an Engine Object An Engine has a map and a list of its players
 	 * 
@@ -49,6 +52,9 @@ public class Engine {
 			playerList.add(new Player(new Base(Team.ROUGE), myMap, userInterface));
 			playerList.add(new Player(new Base(Team.BLEU), myMap, userInterface));
 
+			for (Player player : playerList) {
+				nbrOperatorInGame += player.numberOfOwnedPickAble();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -81,6 +87,10 @@ public class Engine {
 
 	public Map getMap() {
 		return this.myMap;
+	}
+
+	public int getNbrOperatorInitOnMap() {
+		return nbrOperatorInitOnMap;
 	}
 
 	public void goTo(Character player, Direction dir) {
@@ -294,6 +304,14 @@ public class Engine {
 				}
 			}
 		}
+	}
 
+	public boolean isEndOfGame() {
+		boolean isAllPickedByOnePlayer = false;
+		for (Player player : playerList) {
+			isAllPickedByOnePlayer = isAllPickedByOnePlayer || player.numberOfOwnedPickAble() == nbrOperatorInGame;
+		}
+
+		return isAllPickedByOnePlayer;
 	}
 }

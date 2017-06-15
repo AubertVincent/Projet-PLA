@@ -201,6 +201,7 @@ public class GUI extends BasicGame {
 			}
 		}
 		return allWaiting;
+
 	}
 
 	@Override
@@ -386,6 +387,11 @@ public class GUI extends BasicGame {
 
 	private void setBehaviorInputNeeded(boolean behaviorInputNeeded) {
 		this.behaviorInputNeeded = behaviorInputNeeded;
+
+	}
+
+	public void setPlayPhase(PlayPhase endofgame) {
+		engine.setPlayPhase(PlayPhase.endOfGame);
 
 	}
 
