@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.Font;
 import java.util.Iterator;
 
 import org.newdawn.slick.AppGameContainer;
@@ -11,7 +10,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.tiled.TiledMap;
 
 import entite.Direction;
@@ -25,11 +23,6 @@ import personnages.State;
 import pickable.PickAble;
 
 public class GUI extends BasicGame {
-
-	// Test
-	private Font font;
-	private TrueTypeFont ttf;
-	// End(Test)
 
 	private GameContainer container;
 	private TiledMap map;
@@ -75,9 +68,6 @@ public class GUI extends BasicGame {
 		engine = new Engine(this);
 
 		setBehaviorInputNeeded(false);
-		// TODO It's a backup, may be used in GUIBehviorInput.drawCorrectedList
-		// font = new Font("Verdana", Font.BOLD, 20);
-		// ttf = new TrueTypeFont(font, true);
 
 	}
 

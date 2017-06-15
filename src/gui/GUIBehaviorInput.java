@@ -28,7 +28,6 @@ public class GUIBehaviorInput {
 
 	private boolean inputUpToDate;
 	private boolean inputCorrect;
-	private boolean setForCurrentRequest;
 
 	/**
 	 * 
@@ -55,7 +54,6 @@ public class GUIBehaviorInput {
 		inputCorrect = false;
 		this.userInterface = userInterface;
 		inputCorrect = false;
-		setForCurrentRequest = false;
 	}
 
 	protected GUIBehaviorInput(GameContainer container, GUI userInterface, int WindowWidth, int WindowHeight) {
@@ -87,7 +85,6 @@ public class GUIBehaviorInput {
 			if (inputCorrect) {
 				inputUpToDate = true;
 				inputCorrect = false;
-				setForCurrentRequest = false;
 				this.textField.setFocus(false);
 
 			}

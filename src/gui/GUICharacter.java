@@ -29,12 +29,8 @@ public abstract class GUICharacter {
 
 	// Coordinates in pixels
 	private float xPx, yPx;
-	// Coordinates to reach in pixels
-	private float xPxTarget, yPxTarget;
 	// Coordinates in cell's position in map
 	private int xCell, yCell;
-	// Coordinates to reach in cell's position in map
-	private int xCellTarget, yCellTarget;
 
 	private Direction dir;
 
@@ -179,14 +175,11 @@ public abstract class GUICharacter {
 		this.mainUserInterface = userInterface;
 		this.xCell = x;
 		this.yCell = y;
-		setTargetX(getCurrentX());
-		setTargetY(getCurrentY());
 		this.xPx = mainUserInterface.cellToPixelX(getCurrentX());
 		this.yPx = mainUserInterface.cellToPixelY(getCurrentY());
 		this.dir = dir;
 		initAnimations(animationDuration);
 
-		// TODO If animation is longer than animationDuration, set it here
 		this.animationDuration = animationDuration * 6;
 
 		this.team = team;
@@ -424,16 +417,6 @@ public abstract class GUICharacter {
 
 	private void setCurrentY(int y) {
 		yCell = y;
-	}
-
-	private void setTargetX(int x) {
-		xCellTarget = x;
-		xPxTarget = mainUserInterface.cellToPixelX(xCellTarget);
-	}
-
-	private void setTargetY(int y) {
-		yCellTarget = y;
-		yPxTarget = mainUserInterface.cellToPixelY(yCellTarget);
 	}
 
 	private Direction getDirection() {
