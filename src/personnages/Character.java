@@ -76,27 +76,14 @@ public abstract class Character extends Entity {
 
 	// ↓ Miscellaneous methods ↓
 
-	public abstract boolean isPlayer();
-
-	public abstract boolean isRobot();
-
-	public boolean isCharacter() {
-		return true;
-	}
-
-	public boolean isOperator() {
-		return false;
-	}
-
-	public boolean isObstacle() {
-		return false;
-	}
-
-	@Override
-	public boolean isPickAble() {
-		return false;
-	}
-
+	/**
+	 * Move this character and pick up each pickable on his road.
+	 * 
+	 * @param dir
+	 *            The direction we are moving
+	 * @param lg
+	 *            the number of cell we are moving
+	 */
 	public void goTo(Direction dir, int lg) {
 		if (this.getState().equals(State.Wait)) {
 			this.setState(State.ClassiqueMove);
@@ -168,6 +155,9 @@ public abstract class Character extends Entity {
 		}
 	}
 
+	/**
+	 * pick the pickables on the current cell of this character
+	 */
 	public void pickUp() {
 		Besace besaceOfCurrentPlayer;
 		if (this instanceof Player) {
@@ -223,6 +213,13 @@ public abstract class Character extends Entity {
 
 	}
 
+	/**
+	 * cancel the action classicAck
+	 * 
+	 * @param target
+	 *            The character to be restored its previous characteristics
+	 * @throws NotDoableException
+	 */
 	public void cancelClassicAtk(Cell target) throws NotDoableException {
 		try {
 			Character opponent = target.getOpponent(this.team);
@@ -242,6 +239,17 @@ public abstract class Character extends Entity {
 		}
 	}
 
+	/**
+	 * Drop a pickable on a cell
+	 * 
+	 * @param x
+	 *            x coordinate
+	 * @param y
+	 *            y coordinate
+	 * @param picked
+	 *            class of the pickable that we want drop
+	 * @param map
+	 */
 	public void placePickAble(int x, int y, Class<PickAble> picked, Map map) {
 		try {
 			map.getCell(x, y).setEntity(picked.newInstance());
@@ -252,8 +260,18 @@ public abstract class Character extends Entity {
 		}
 	}
 
+	/**
+	 * delete all reference of this character in memory
+	 */
 	public abstract void die();
 
+	/**
+	 * the character target drop his besace for a player or his pickable for a
+	 * robot
+	 * 
+	 * @param character
+	 *            the target
+	 */
 	public void kill(Character character) {
 		character.dropPickables();
 		character.setState(State.Dying);
@@ -270,6 +288,27 @@ public abstract class Character extends Entity {
 	// End(Miscellaneous methods)
 
 	// ↓ Getters and setters ↓
+
+	public abstract boolean isPlayer();
+
+	public abstract boolean isRobot();
+
+	public boolean isCharacter() {
+		return true;
+	}
+
+	public boolean isOperator() {
+		return false;
+	}
+
+	public boolean isObstacle() {
+		return false;
+	}
+
+	@Override
+	public boolean isPickAble() {
+		return false;
+	}
 
 	public Base getBase() {
 		return base;

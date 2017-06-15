@@ -10,12 +10,15 @@ public class RobotList {
 
 	private Map<Class<?>, Map<Object, Robot>> fromClassToMap;
 
+	// ↓ Constructor, update and render ↓
 	public RobotList() {
 		// robotListInteger = new HashMap<Integer, Robot>();
 		// robotListCoordinates = new HashMap<Coordinates, Robot>();
 		fromClassToMap = new HashMap<Class<?>, Map<Object, Robot>>();
 	}
+	// End(Constructor, update and render)
 
+	// ↓ Miscellaneous methods ↓
 	public void add(Object obj, Robot robot) {
 		// Search if the Map for the Class of obj already existss
 		Class<?> objClass = obj.getClass();
@@ -57,7 +60,9 @@ public class RobotList {
 			}
 		}
 	}
+	// End(Miscellaneous methods)
 
+	// ↓ Getters and setters ↓
 	public Object getRobotInfoFromClass(Class<?> classRobot, Robot robot) {
 		Map<Object, Robot> currentClassMap;
 		for (Class<?> currentClass : fromClassToMap.keySet()) {
@@ -105,5 +110,6 @@ public class RobotList {
 		}
 		return robotList;
 	}
+	// End(Getters and setters)
 
 }

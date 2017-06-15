@@ -29,25 +29,6 @@ public class Besace {
 
 	private Map<Class<? extends PickAble>, Integer> besace;
 
-	public boolean containsKey(Class<? extends PickAble> c) {
-		return besace.containsKey(c);
-	}
-
-	@Override
-	public String toString() {
-		String str = new String();
-		for (Iterator<Class<? extends PickAble>> itr = besace.keySet().iterator(); itr.hasNext();) {
-			Class<? extends PickAble> currentClass = itr.next();
-			Integer currentInteger = besace.get(currentClass);
-			str += "<" + currentClass.getSimpleName() + "," + currentInteger.toString() + ">,";
-		}
-		return str;
-	}
-
-	public Integer get(Class<? extends PickAble> c) {
-		return besace.get(c);
-	}
-
 	protected static List<Class<? extends PickAble>> possiblePickAbleList = new LinkedList<Class<? extends PickAble>>();
 
 	static {
@@ -64,19 +45,7 @@ public class Besace {
 		possiblePickAbleList.add(PickExplore.class);
 	}
 
-	public void init() {
-
-		for (Iterator<Class<? extends PickAble>> mapIter = possiblePickAbleList.iterator(); mapIter.hasNext();) {
-			Class<? extends PickAble> currentClass;
-			currentClass = mapIter.next();
-			if (currentClass.equals(PickExplore.class)) {
-				besace.put(currentClass, 3);
-			} else {
-				besace.put(currentClass, 10);
-			}
-		}
-
-	}
+	// ↓ Constructor, update and render ↓
 
 	public Besace() {
 		super();
@@ -93,25 +62,44 @@ public class Besace {
 		}
 
 	}
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
+
+	public boolean containsKey(Class<? extends PickAble> c) {
+		return besace.containsKey(c);
+	}
+
+	@Override
+	public String toString() {
+		String str = new String();
+		for (Iterator<Class<? extends PickAble>> itr = besace.keySet().iterator(); itr.hasNext();) {
+			Class<? extends PickAble> currentClass = itr.next();
+			Integer currentInteger = besace.get(currentClass);
+			str += "<" + currentClass.getSimpleName() + "," + currentInteger.toString() + ">,";
+		}
+		return str;
+	}
+
+	public void init() {
+
+		for (Iterator<Class<? extends PickAble>> mapIter = possiblePickAbleList.iterator(); mapIter.hasNext();) {
+			Class<? extends PickAble> currentClass;
+			currentClass = mapIter.next();
+			if (currentClass.equals(PickExplore.class)) {
+				besace.put(currentClass, 3);
+			} else {
+				besace.put(currentClass, 10);
+			}
+		}
+
+	}
 
 	/*
 	 * Return the entire besace
 	 */
 	public Map<Class<? extends PickAble>, Integer> get() {
 		return besace;
-	}
-
-	public void set(Map<Class<? extends PickAble>, Integer> besace) {
-		this.besace = besace;
-	}
-
-	public void add(Class<? extends PickAble> myClass) {
-		besace.put(myClass, besace.get(myClass) + 1);
-	}
-
-	public void remove(Class<? extends PickAble> myClass) {
-		besace.put(myClass, Math.max(0, besace.get(myClass) - 1));
-
 	}
 
 	public _IncompleteSequence correctSequence(_Sequence sequence) {
@@ -168,6 +156,25 @@ public class Besace {
 		}
 		return numberOfElement;
 	}
+	// End(Miscellaneous methods)
+
+	// ↓ Getters and setters ↓
+	public Integer get(Class<? extends PickAble> c) {
+		return besace.get(c);
+	}
+
+	public void set(Map<Class<? extends PickAble>, Integer> besace) {
+		this.besace = besace;
+	}
+
+	public void add(Class<? extends PickAble> myClass) {
+		besace.put(myClass, besace.get(myClass) + 1);
+	}
+
+	public void remove(Class<? extends PickAble> myClass) {
+		besace.put(myClass, Math.max(0, besace.get(myClass) - 1));
+
+	}
 
 	public void add(_Sequence sequence) {
 		// Base case
@@ -197,5 +204,6 @@ public class Besace {
 		}
 
 	}
+	// End(Getters and setters)
 
 }

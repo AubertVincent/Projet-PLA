@@ -91,6 +91,9 @@ public class Robot extends Character {
 		return false;
 	}
 
+	/**
+	 * The robot throws the pickable which constitutes it
+	 */
 	protected void dropPickables() {
 		for (Iterator<PickAble> iterator = this.getDropAblePickAbleList().listIterator(); iterator.hasNext();) {
 			PickAble currentPickAble = iterator.next();
@@ -207,6 +210,9 @@ public class Robot extends Character {
 		// }
 	}
 
+	/**
+	 * remove all reference to this
+	 */
 	public void die() {
 
 		player.removeFromRobotList(this);

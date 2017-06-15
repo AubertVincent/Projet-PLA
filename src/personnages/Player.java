@@ -132,6 +132,9 @@ public class Player extends Character {
 		robotList.remove(robot);
 	}
 
+	/**
+	 * remove all reference to this
+	 */
 	public void die() {
 		this.getMap().remove(this);
 		this.getEngine().remove(this);
@@ -154,7 +157,9 @@ public class Player extends Character {
 		}
 	}
 
-	// For this version of the game, Player have just to drop his besace
+	/*
+	 * For this version of the game, Player have just to drop his besace
+	 */
 	protected void dropPickables() {
 		for (Iterator<Class<? extends PickAble>> iterator = getBesace().get().keySet().iterator(); iterator
 				.hasNext();) {
@@ -281,11 +286,17 @@ public class Player extends Character {
 		return possession;
 	}
 
+	/**
+	 * use to initialize each player round
+	 */
 	public void resetAttributes() {
 		this.movePoints = 20;
 		this.remainingAttacks = 5;
 	}
 
+	/**
+	 * @return true if this player is die
+	 */
 	public boolean isDie() {
 		if (this.getState().equals(State.Dead)) {
 			return true;
