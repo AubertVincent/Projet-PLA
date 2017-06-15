@@ -1,0 +1,10 @@
+To give a behavior to a robot as sequence of action(s), please follow the following grammar :
+
+
+S ≔ Compo | Action
+Compo ≔ ‘-’ Action ‘>’ Action ‘-’ | ‘( ‘S op S ‘)’
+Action ≔ ‘M’ Mouv | ‘A’ Atk | ‘R’ Rand | ‘E’
+op ≔ ‘;’ | ‘/’
+Mouv  ≔ ‘R’ Digit | ‘C’ Digit Direction | ‘T’ Digit Direction
+Atk ≔ ‘C’ | ‘S’
+Rand ≔ ‘M’
