@@ -51,10 +51,10 @@ public abstract class Character extends Entity {
 			this.state = State.Wait;
 		} else if (this instanceof Robot) {
 			this.direction = Direction.SOUTH;
-			this.life = 5;
+			this.life = 3;
 			this.vision = 1;
-			this.damages = 2;
-			this.range = 4;
+			this.damages = 1;
+			this.range = 1;
 			this.movePoints = 10;
 			this.remainingAttacks = 1;
 			this.recall = 3;
