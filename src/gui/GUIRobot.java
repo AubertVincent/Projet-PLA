@@ -11,6 +11,7 @@ import entite.Team;
 import operateur.ClassicAck;
 import operateur.MoveDir;
 import personnages.Robot;
+import util.Pair;
 
 public class GUIRobot extends GUICharacter {
 
@@ -38,14 +39,16 @@ public class GUIRobot extends GUICharacter {
 	// Given EVERY POSSIBLE doable action (by the Robot), gives the paths to
 	// its
 	// animation and its number of sprites
-	protected static Map<Class<?>, String> actionSpritePath = new HashMap<Class<?>, String>();
+	protected static Map<Class<?>, Pair<String, String>> actionSpritePath = new HashMap<Class<?>, Pair<String, String>>();
 	protected static Map<Class<?>, Integer> actionSpriteNumberOfSprites = new HashMap<Class<?>, Integer>();
 	static {
 		// Puts every possible action's sprite in actionSpritePath
 		List<Class<?>> possibleActionList = Robot.getPossibleActionsList();
 		for (Iterator<Class<?>> action = possibleActionList.iterator(); action.hasNext();) {
 			Class<?> currentAction = action.next();
-			actionSpritePath.put(currentAction, "res/Robot/SpriteSheet" + currentAction.getSimpleName() + ".png");
+			actionSpritePath.put(currentAction,
+					new Pair<String, String>("res/Robot/Bleu/SpriteSheet" + currentAction.getSimpleName() + ".png",
+							"res/Robot/Rouge/SpriteSheet" + currentAction.getSimpleName() + ".png"));
 			actionSpriteNumberOfSprites.put(currentAction, numberOfSprites.get(currentAction));
 			System.out
 					.println("For " + currentAction.getSimpleName() + " will load " + numberOfSprites.get(currentAction)

@@ -77,20 +77,52 @@ public abstract class GUICharacter {
 			SpriteSheet currentSpriteSheet = null;
 			int currentNumberOfSprites = 0;
 			if (this instanceof GUIPlayer) {
-				try {
-					currentSpriteSheet = new SpriteSheet(GUIPlayer.actionSpritePath.get(currentAction),
-							spriteSheetWidth, spriteSheetHeight);
-				} catch (SlickException e) {
-					e.printStackTrace();
+				if (getTeam().equals(Team.BLEU)) {
+					try {
+						currentSpriteSheet = new SpriteSheet(GUIPlayer.actionSpritePath.get(currentAction).getFirst(),
+								spriteSheetWidth, spriteSheetHeight);
+					} catch (SlickException e) {
+						e.printStackTrace();
+					}
+				} else if (getTeam().equals(Team.ROUGE)) {
+					try {
+						currentSpriteSheet = new SpriteSheet(GUIPlayer.actionSpritePath.get(currentAction).getSecond(),
+								spriteSheetWidth, spriteSheetHeight);
+					} catch (SlickException e) {
+						e.printStackTrace();
+					}
+				} else {
+					try {
+						throw new Exception("Unimplemented team");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 				currentNumberOfSprites = GUIPlayer.actionSpriteNumberOfSprites.get(currentAction);
+
 			} else if (this instanceof GUIRobot) {
-				try {
-					currentSpriteSheet = new SpriteSheet(GUIRobot.actionSpritePath.get(currentAction), spriteSheetWidth,
-							spriteSheetHeight);
-				} catch (SlickException e) {
-					e.printStackTrace();
+				if (getTeam().equals(Team.BLEU)) {
+					try {
+						currentSpriteSheet = new SpriteSheet(GUIRobot.actionSpritePath.get(currentAction).getFirst(),
+								spriteSheetWidth, spriteSheetHeight);
+					} catch (SlickException e) {
+						e.printStackTrace();
+					}
+				} else if (getTeam().equals(Team.ROUGE)) {
+					try {
+						currentSpriteSheet = new SpriteSheet(GUIRobot.actionSpritePath.get(currentAction).getSecond(),
+								spriteSheetWidth, spriteSheetHeight);
+					} catch (SlickException e) {
+						e.printStackTrace();
+					}
+				} else {
+					try {
+						throw new Exception("Unimplemented team");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
+
 				currentNumberOfSprites = GUIRobot.actionSpriteNumberOfSprites.get(currentAction);
 			} else {
 				try {
@@ -118,13 +150,24 @@ public abstract class GUICharacter {
 		// Get death animation informations and then load it
 
 		int deathNumberOfSprites;
-		SpriteSheet deathtSpriteSheet;
+		SpriteSheet deathtSpriteSheet = null;
 		if (this instanceof GUIPlayer) {
 			deathNumberOfSprites = 6;
 			try {
-				deathtSpriteSheet = new SpriteSheet("res/Player/SpriteSheetDeath.png", spriteSheetWidth,
-						spriteSheetHeight);
 				// Load death animation
+				if (getTeam().equals(Team.BLEU)) {
+					deathtSpriteSheet = new SpriteSheet("res/Player/Bleu/SpriteSheetDeath.png", spriteSheetWidth,
+							spriteSheetHeight);
+				} else if (getTeam().equals(Team.ROUGE)) {
+					deathtSpriteSheet = new SpriteSheet("res/Player/Rouge/SpriteSheetDeath.png", spriteSheetWidth,
+							spriteSheetHeight);
+				} else {
+					try {
+						throw new Exception("Unimplemented team");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 				deathAnimation = new Animation[1];
 				deathAnimation[0] = loadAnimation(deathtSpriteSheet, 0, deathNumberOfSprites, 0, animationDuration);
 
@@ -134,8 +177,13 @@ public abstract class GUICharacter {
 		} else if (this instanceof GUIRobot) {
 			deathNumberOfSprites = 6;
 			try {
-				deathtSpriteSheet = new SpriteSheet("res/Player/SpriteSheetDeath.png", spriteSheetWidth,
-						spriteSheetHeight);
+				if (getTeam().equals(Team.BLEU)) {
+					deathtSpriteSheet = new SpriteSheet("res/Player/Bleu/SpriteSheetDeath.png", spriteSheetWidth,
+							spriteSheetHeight);
+				} else if (getTeam().equals(Team.ROUGE)) {
+					deathtSpriteSheet = new SpriteSheet("res/Player/Rouge/SpriteSheetDeath.png", spriteSheetWidth,
+							spriteSheetHeight);
+				}
 				Animation[] deathAnimation = new Animation[1];
 				deathAnimation[0] = loadAnimation(deathtSpriteSheet, 0, deathNumberOfSprites, 0, animationDuration);
 
@@ -178,12 +226,14 @@ public abstract class GUICharacter {
 		this.xPx = mainUserInterface.cellToPixelX(getCurrentX());
 		this.yPx = mainUserInterface.cellToPixelY(getCurrentY());
 		this.dir = dir;
+
+		this.team = team;
+		this.mySelf = character;
+
 		initAnimations(animationDuration);
 
 		this.animationDuration = animationDuration * 6;
 
-		this.team = team;
-		this.mySelf = character;
 	}
 
 	/**
