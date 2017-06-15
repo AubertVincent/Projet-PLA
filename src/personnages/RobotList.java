@@ -26,18 +26,21 @@ public class RobotList {
 	}
 
 	// TEST
-	private void printList() {
-		Map<Object, Robot> currentClassMap;
-		for (Map.Entry<Class<?>, Map<Object, Robot>> currentClass : fromClassToMap.entrySet()) {
-			currentClassMap = currentClass.getValue();
-			for (Map.Entry<Object, Robot> currentClassMapCell : currentClassMap.entrySet()) {
-				System.out.println("Coordonnée de ce robot :" + currentClassMapCell.getValue().getX() + ";"
-						+ currentClassMapCell.getValue().getY() + "  Class :"
-						+ currentClassMapCell.getKey().getClass());
-			}
-
-		}
-	}
+	// private void printList() {
+	// Map<Object, Robot> currentClassMap;
+	// for (Map.Entry<Class<?>, Map<Object, Robot>> currentClass :
+	// fromClassToMap.entrySet()) {
+	// currentClassMap = currentClass.getValue();
+	// for (Map.Entry<Object, Robot> currentClassMapCell :
+	// currentClassMap.entrySet()) {
+	// System.out.println("Coordonnée de ce robot :" +
+	// currentClassMapCell.getValue().getX() + ";"
+	// + currentClassMapCell.getValue().getY() + " Class :"
+	// + currentClassMapCell.getKey().getClass());
+	// }
+	//
+	// }
+	// }
 
 	public void remove(Robot robot) {
 		Map<Object, Robot> currentClassMap;

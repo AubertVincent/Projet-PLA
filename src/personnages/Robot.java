@@ -17,14 +17,15 @@ import gui.GUIRobot;
 import operateur.Action;
 import pickable.PickAble;
 import sequence._Sequence;
-import util.Pair;
 
 public class Robot extends Character {
 
 	protected _Sequence myAutomaton;
-	private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>> targetsLife;
+	// Used to be used in Cancel
+	// private java.util.Map<Pair<Direction, Integer>, Pair<Robot, Integer>>
+	// targetsLife;
 	private GUIRobot mySelfGUI;
-	protected List<PickAble> pickAbleList;
+	protected List<PickAble> dropAblePickAbleList;
 	private Player player;
 	private Map explorationMap;
 
@@ -51,7 +52,7 @@ public class Robot extends Character {
 	public Robot(int x, int y, Map map, GUI userInterface, _Sequence myAutomaton, Player player) {
 		super(x, y, map, player.getBase());
 
-		this.pickAbleList = myAutomaton.sequenceToPickAbleList(x, y, map);
+		this.dropAblePickAbleList = myAutomaton.sequenceToPickAbleList(x, y, map);
 		this.myAutomaton = myAutomaton;
 		this.mySelfGUI = new GUIRobot(userInterface, x, y, Direction.SOUTH, 100, base.getBaseTeam(), this,
 				player.getMyselfGUI());
@@ -127,19 +128,19 @@ public class Robot extends Character {
 		return this.player;
 	}
 
-	public List<PickAble> getPickAbleList() {
-		return pickAbleList;
+	public List<PickAble> getDropAblePickAbleList() {
+		return dropAblePickAbleList;
 	}
 
 	protected void dropPickables() {
-		for (Iterator<PickAble> iterator = this.getPickAbleList().iterator(); iterator.hasNext();) {
+		for (Iterator<PickAble> iterator = this.getDropAblePickAbleList().listIterator(); iterator.hasNext();) {
 			PickAble currentPickAble = iterator.next();
 			currentPickAble.setX(this.getX());
 			currentPickAble.setY(this.getY());
 			this.getMap().setEntity(currentPickAble);
-			pickAbleList.remove(currentPickAble);
+			// dropAblePickAbleList.remove(currentPickAble);
 		}
-
+		dropAblePickAbleList.clear();
 	}
 
 	/**
@@ -176,6 +177,74 @@ public class Robot extends Character {
 			// Suicide the robot which is executing SuicideBomber
 			this.setLife(0);
 		}
+
+	}
+
+	// FIXME or delete if not needed
+	public void cancelSuicideBomber() {
+
+		// int x = this.getX();
+		// int y = this.getY();
+		// List<Entity> northEntityList = this.entityMap.getCell(x, y -
+		// 1).getListEntity();
+		// List<Entity> southEntityList = this.entityMap.getCell(x, y +
+		// 1).getListEntity();
+		// List<Entity> westEntityList = this.entityMap.getCell(x - 1,
+		// y).getListEntity();
+		// List<Entity> eastEntityList = this.entityMap.getCell(x + 1,
+		// y).getListEntity();
+		//
+		// int i = 0;
+		// for (Iterator<Entity> entityIterator = northEntityList.iterator();
+		// entityIterator.hasNext();) {
+		// Entity eCourant = entityIterator.next();
+		// if (eCourant instanceof Robot) {
+		// Pair<Direction, Integer> key = new Pair<Direction,
+		// Integer>(Direction.NORTH, i);
+		// Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
+		// ((Robot) eCourant).setLife(robotLife.getSecond());
+		// i++;
+		// }
+		// }
+		//
+		// i = 0;
+		// for (Iterator<Entity> entityIterator = southEntityList.iterator();
+		// entityIterator.hasNext();) {
+		// Entity eCourant = entityIterator.next();
+		// if (eCourant instanceof Robot) {
+		// Pair<Direction, Integer> key = new Pair<Direction,
+		// Integer>(Direction.SOUTH, i);
+		// Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
+		// ((Robot) eCourant).setLife(robotLife.getSecond());
+		// i++;
+		// }
+		// }
+		//
+		// i = 0;
+		// for (Iterator<Entity> entityIterator = westEntityList.iterator();
+		// entityIterator.hasNext();) {
+		// Entity eCourant = entityIterator.next();
+		// if (eCourant instanceof Robot) {
+		// Pair<Direction, Integer> key = new Pair<Direction,
+		// Integer>(Direction.WEST, i);
+		// Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
+		// ((Robot) eCourant).setLife(robotLife.getSecond());
+		// i++;
+		// }
+		// }
+		//
+		// i = 0;
+		// for (Iterator<Entity> entityIterator = eastEntityList.iterator();
+		// entityIterator.hasNext();) {
+		// Entity eCourant = entityIterator.next();
+		// if (eCourant instanceof Robot) {
+		// Pair<Direction, Integer> key = new Pair<Direction,
+		// Integer>(Direction.EAST, i);
+		// Pair<Robot, Integer> robotLife = this.targetsLife.get(key);
+		// ((Robot) eCourant).setLife(robotLife.getSecond());
+		// i++;
+		// }
+		// }
 	}
 
 	public void fillActionList() throws NotDoableException {
@@ -198,13 +267,14 @@ public class Robot extends Character {
 		this.mySelfGUI = null;
 
 		// Remove every occurrence of current robot in targetsLife
-		for (Iterator<Pair<Direction, Integer>> iterator = targetsLife.keySet().iterator(); iterator.hasNext();) {
-			Pair<Direction, Integer> currentPair = iterator.next();
-			Robot currentRobot = targetsLife.get(currentPair).getFirst();
-			if (currentRobot.equals(this)) {
-				targetsLife.remove(currentPair);
-			}
-		}
+		// for (Iterator<Pair<Direction, Integer>> iterator =
+		// targetsLife.keySet().iterator(); iterator.hasNext();) {
+		// Pair<Direction, Integer> currentPair = iterator.next();
+		// Robot currentRobot = targetsLife.get(currentPair).getFirst();
+		// if (currentRobot.equals(this)) {
+		// targetsLife.remove(currentPair);
+		// }
+		// }
 
 		this.getMap().remove(this);
 	}

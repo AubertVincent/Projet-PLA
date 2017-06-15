@@ -24,7 +24,6 @@ public class SuicideBomber extends Attack {
 		int y = r.getY();
 
 		Map myMap = r.getMap();
-
 		if (x + 1 < r.getMap().mapWidth() && myMap.getCell(x + 1, y).robotHere()
 				&& myMap.getCell(x + 1, y).opponentHere(r.getTeam())) {
 			return true;

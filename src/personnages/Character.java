@@ -12,6 +12,7 @@ import entite.Team;
 import exceptions.GameException;
 import exceptions.NotDoableException;
 import gui.GUICharacter;
+import moteurDuJeu.PlayPhase;
 import pickable.PickAble;
 
 public abstract class Character extends Entity {
@@ -41,7 +42,7 @@ public abstract class Character extends Entity {
 			this.vision = 5;
 			this.damages = 3;
 			this.range = 3;
-			this.movePoints = 50;
+			this.movePoints = 100;
 			this.remainingAttacks = 5;
 			this.recall = 3;
 
@@ -280,6 +281,13 @@ public abstract class Character extends Entity {
 				this.getMap().removePickAble(e);
 			}
 			this.getPickAbleList().clear();
+			// TEST
+			// boolean test =
+			// this.getMyselfGUI().getGUI().getEngine().isEndOfGame();
+			// System.out.println(test);
+			if (this.getMyselfGUI().getGUI().getEngine().isEndOfGame()) {
+				this.getMyselfGUI().getGUI().setPlayPhase(PlayPhase.endOfGame);
+			}
 
 		} catch (Exception e1) {
 			e1.getMessage();
@@ -302,6 +310,7 @@ public abstract class Character extends Entity {
 	 */
 	public void classicAtk(Cell target) {
 		this.setState(State.ClassicAttack);
+		this.getMyselfGUI().setActionRequest(true);
 		Character opponent = null;
 		try {
 
@@ -314,7 +323,6 @@ public abstract class Character extends Entity {
 
 			if (opponent != null && opponent.getLife() <= 0) {
 				this.kill(opponent);
-
 			}
 		}
 
@@ -365,11 +373,16 @@ public abstract class Character extends Entity {
 
 	public void kill(Character character) {
 
-		character.dropPickables();
+		try {
+			character.dropPickables();
+		} catch (NotDoableException e) {
+			// Should never append
+		}
 		character.setState(State.Dying);
+
 	}
 
-	protected abstract void dropPickables();
+	protected abstract void dropPickables() throws NotDoableException;
 
 	public abstract GUICharacter getMyselfGUI();
 

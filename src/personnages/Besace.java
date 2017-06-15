@@ -10,7 +10,6 @@ import operateur.Action;
 import pickable.PickAble;
 import pickable.PickClassicAck;
 import pickable.PickMoveDir;
-import pickable.PickPickUp;
 import pickable.PickPriority;
 import pickable.PickRandomBar;
 import pickable.PickRandomMove;
@@ -57,7 +56,7 @@ public class Besace {
 		possiblePickAbleList.add(PickTunnel.class);
 		possiblePickAbleList.add(PickMoveDir.class);
 		possiblePickAbleList.add(PickRecall.class);
-		possiblePickAbleList.add(PickPickUp.class);
+		// possiblePickAbleList.add(PickPickUp.class);
 		possiblePickAbleList.add(PickSuccession.class);
 		possiblePickAbleList.add(PickRandomBar.class);
 		possiblePickAbleList.add(PickPriority.class);

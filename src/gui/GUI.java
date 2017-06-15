@@ -1,7 +1,8 @@
 package gui;
 
-import java.awt.Font;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
@@ -11,7 +12,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.tiled.TiledMap;
 
 import entite.Direction;
@@ -22,13 +22,9 @@ import personnages.Player;
 import personnages.Robot;
 import personnages.State;
 import pickable.PickAble;
+import pickable.PickPickUp;
 
 public class GUI extends BasicGame {
-
-	// Test
-	private Font font;
-	private TrueTypeFont ttf;
-	// End(Test)
 
 	private GameContainer container;
 	private TiledMap map;
@@ -89,8 +85,9 @@ public class GUI extends BasicGame {
 
 		for (Iterator<PickAble> itr = engine.getMap().getPickAbleList().iterator(); itr.hasNext();) {
 			PickAble currentPickable = itr.next();
-
-			currentPickable.getGUIPickAble().render();
+			if (!(currentPickable instanceof PickPickUp)) {
+				currentPickable.getGUIPickAble().render();
+			}
 		}
 
 		for (Iterator<Player> itrPlayer = engine.getPlayerList().iterator(); itrPlayer.hasNext();) {
@@ -169,10 +166,15 @@ public class GUI extends BasicGame {
 			this.inputTextField.update(container, engine.getCurrentModifier());
 		}
 
-		for (Player currentPlayer : engine.getPlayerList()) {
+		List<Player> playerListCopy = new ArrayList<Player>(engine.getPlayerList());
+		for (Iterator<Player> playerIterator = playerListCopy.listIterator(); playerIterator.hasNext();) {
+			Player currentPlayer = playerIterator.next();
 			GUIPlayer guiCurrentPlayer = currentPlayer.getMyselfGUI();
 			guiCurrentPlayer.update(this, delta);
-			for (Robot currentRobot : currentPlayer.getRobotList()) {
+
+			for (Iterator<Robot> robotIterator = currentPlayer.getRobotList().listIterator(); robotIterator
+					.hasNext();) {
+				Robot currentRobot = robotIterator.next();
 				GUIRobot guiCurrentRobot = currentRobot.getMyselfGUI();
 				guiCurrentRobot.update(this, delta);
 			}
@@ -202,6 +204,7 @@ public class GUI extends BasicGame {
 			}
 		}
 		return allWaiting;
+
 	}
 
 	@Override
@@ -382,6 +385,11 @@ public class GUI extends BasicGame {
 
 	private void setBehaviorInputNeeded(boolean behaviorInputNeeded) {
 		this.behaviorInputNeeded = behaviorInputNeeded;
+
+	}
+
+	public void setPlayPhase(PlayPhase endofgame) {
+		engine.setPlayPhase(PlayPhase.endOfGame);
 
 	}
 

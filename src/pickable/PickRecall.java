@@ -4,7 +4,7 @@ import carte.Map;
 
 public class PickRecall extends PickAble {
 
-	public PickRecall(int x, int y, Map entityMap) {
+	public PickRecall(Integer x, Integer y, Map entityMap) {
 		super(x, y, entityMap);
 	}
 
