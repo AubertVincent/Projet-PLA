@@ -57,6 +57,11 @@ public class Succession extends Behavior {
 		return new PickSuccession(x, y, map);
 	}
 
+	@Override
+	public String toString() {
+		return ";   ";
+	}
+
 	// End(Miscellaneous methods)
 
 }
