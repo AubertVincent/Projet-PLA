@@ -37,7 +37,7 @@ public abstract class GUICharacter {
 	private Team team;
 
 	Map<Class<?>, Animation[]> animationsList = new HashMap<Class<?>, Animation[]>();
-	Animation[] deathAnimation;
+	private Animation[] deathAnimation;
 
 	private boolean actionRequest;
 	private int animationDuration;
@@ -382,7 +382,7 @@ public abstract class GUICharacter {
 					deathtSpriteSheet = new SpriteSheet("res/Player/Rouge/SpriteSheetDeath.png", spriteSheetWidth,
 							spriteSheetHeight);
 				}
-				Animation[] deathAnimation = new Animation[1];
+				this.deathAnimation = new Animation[1];
 				deathAnimation[0] = loadAnimation(deathtSpriteSheet, 0, deathNumberOfSprites, 0, animationDuration);
 
 			} catch (SlickException e) {
