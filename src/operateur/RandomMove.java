@@ -9,11 +9,6 @@ import pickable.PickRandomMove;
 
 public class RandomMove extends Action implements _Random {
 
-	// Length of the movement
-	private int lg;
-	// Direction of the movement
-	private Direction direction;
-
 	// ↓ Constructor, update and render ↓
 
 	public RandomMove() {
@@ -113,8 +108,6 @@ public class RandomMove extends Action implements _Random {
 			// another direction thanks to the random while we didn't get a one
 			// which is reachable or on the map
 		} while (!isReachable(r, dir, lg));
-		this.direction = dir;
-		this.lg = lg;
 		r.setDirection(dir);
 
 		// Set all the cell being explored to explored in the explorationMap of
