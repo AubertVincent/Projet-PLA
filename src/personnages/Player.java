@@ -101,7 +101,7 @@ public class Player extends Character {
 		for (Iterator<Robot> iterator = getRobotList().iterator(); iterator.hasNext();) {
 			Robot currentRobot = iterator.next();
 			if (currentRobot.getX() == currentRobot.getBase().getX() - 1
-					&& currentRobot.getY() == currentRobot.getBase().getY()) {
+					&& (currentRobot.getY() == currentRobot.getBase().getY())) {
 				Cell tmp = currentRobot.getMap().nearestFreeCell(this.getBase().getX(), this.getBase().getY());
 				currentRobot.setXY(tmp.getX(), tmp.getY());
 				currentRobot.getMap()

@@ -8,7 +8,7 @@ public class Base {
 	private int x;
 	private int y;
 	private Team baseTeam;
-	private static final int xBleu = 30;
+	private static final int xBleu = 29;
 	private static final int yBleu = 8;
 	private static final int xRouge = 2;
 	private static final int yRouge = 4;

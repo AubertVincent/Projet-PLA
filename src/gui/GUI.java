@@ -1,6 +1,8 @@
 package gui;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
@@ -83,11 +85,15 @@ public class GUI extends BasicGame {
 			this.inputTextField.update(container, engine.getCurrentModifier());
 		}
 
-		// FIXME
-		for (Player currentPlayer : engine.getPlayerList()) {
+		List<Player> playerListCopy = new ArrayList<Player>(engine.getPlayerList());
+		for (Iterator<Player> playerIterator = playerListCopy.listIterator(); playerIterator.hasNext();) {
+			Player currentPlayer = playerIterator.next();
 			GUIPlayer guiCurrentPlayer = currentPlayer.getMyselfGUI();
 			guiCurrentPlayer.update(this, delta);
-			for (Robot currentRobot : currentPlayer.getRobotList()) {
+
+			for (Iterator<Robot> robotIterator = currentPlayer.getRobotList().listIterator(); robotIterator
+					.hasNext();) {
+				Robot currentRobot = robotIterator.next();
 				GUIRobot guiCurrentRobot = currentRobot.getMyselfGUI();
 				guiCurrentRobot.update(this, delta);
 			}
@@ -98,10 +104,13 @@ public class GUI extends BasicGame {
 			engine.setRobotBehavior(this, inputTextField.getReceivedSequence());
 		}
 
-		if (engine.everyoneWaiting() && engine.getPlayPhase().equals(PlayPhase.automatonExecution)) {
-			engine.step();
+		try {
+			if (engine.everyoneWaiting() && engine.getPlayPhase().equals(PlayPhase.automatonExecution)) {
+				engine.step();
+			}
+		} catch (Exception e) {
+			e.getMessage();
 		}
-		setBehaviorInputNeeded(false);
 
 	}
 
