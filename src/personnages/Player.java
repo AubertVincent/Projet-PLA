@@ -255,7 +255,7 @@ public class Player extends Character {
 	 * @return true if this player is die
 	 */
 	public boolean isDie() {
-		if (this.getState().equals(State.Dead)) {
+		if (this.getState().equals(null)) {
 			return true;
 		} else {
 			return false;
