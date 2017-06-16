@@ -275,6 +275,7 @@ public abstract class Character extends Entity {
 	public void kill(Character character) {
 		character.dropPickables();
 		character.setState(State.Dying);
+		character.getMyselfGUI().setActionRequest(true);
 	}
 
 	protected abstract void dropPickables();
