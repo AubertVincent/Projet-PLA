@@ -68,7 +68,6 @@ public class Explore extends Movement {
 		int myRandom = 0;
 		int priorityCellToGo = 0;
 		Map execMap = r.getExplorationMap();
-		boolean isExplored = false;
 
 		// List of the reachable cells
 		List<Cell> reachable = new ArrayList<Cell>();
