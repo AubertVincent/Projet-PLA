@@ -11,6 +11,7 @@ import pickable.PickClassicAck;
 
 public class ClassicAck extends Attack {
 
+	// ↓ Constructor, update and render ↓
 	/**
 	 * Set a new classicAck by leans of its attacker and its opponent
 	 * 
@@ -23,6 +24,10 @@ public class ClassicAck extends Attack {
 	public ClassicAck() {
 		super();
 	}
+
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
 
 	/**
 	 * A classicAck is doable if there is an opponent entity
@@ -93,7 +98,7 @@ public class ClassicAck extends Attack {
 		// System.out.println("J'execute une attaque classique !");
 		// end test
 		if (!isDoable(r)) {
-			throw new NotDoableException("Il n'y a personne à attaquer ou pas assez de point d'attaque");
+			throw new NotDoableException("There is anobody to attack or you didn't have enough attack points");
 		} else {
 
 			int x = r.getX();
@@ -128,45 +133,6 @@ public class ClassicAck extends Attack {
 	}
 
 	@Override
-	public void cancel(Robot r) throws NotDoableException {
-		if (!isDoable(r)) {
-			throw new NotDoableException("Il n'y a personne à attaquer");
-		} else {
-
-			int x = r.getX();
-			int y = r.getY();
-			Team team = r.getTeam();
-			Map myMap = r.getMap();
-
-			Direction d;
-			Cell testEast = myMap.getCell(x + 1, y);
-			Cell testSouth = myMap.getCell(x, y - 1);
-			Cell testNorth = myMap.getCell(x, y + 1);
-			Cell testWest = myMap.getCell(x - 1, y);
-			Cell target = null;
-			if (testEast.opponentHere(team)) {
-				d = Direction.EAST;
-				r.setDirection(d);
-				target = testEast;
-			} else if (testNorth.opponentHere(team)) {
-				d = Direction.NORTH;
-				r.setDirection(d);
-				target = testNorth;
-			} else if (testWest.opponentHere(team)) {
-				d = Direction.WEST;
-				r.setDirection(d);
-				target = testWest;
-			} else if (testSouth.opponentHere(team)) {
-				d = Direction.SOUTH;
-				r.setDirection(d);
-				target = testSouth;
-			}
-			r.cancelClassicAtk(target);
-
-		}
-	}
-
-	@Override
 	public Class<? extends PickAble> getPickable() {
 		return PickClassicAck.class;
 	}
@@ -175,5 +141,7 @@ public class ClassicAck extends Attack {
 	public String toString() {
 		return " AC ";
 	}
+
+	// End(Miscellaneous methods)
 
 }

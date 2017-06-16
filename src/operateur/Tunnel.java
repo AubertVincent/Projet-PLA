@@ -9,10 +9,7 @@ public class Tunnel extends Movement {
 
 	protected Integer x;
 	protected Integer y;
-	// Used in the case of the need of the cancel method
-	// private int lastX;
-	// private int lastY;
-	// private boolean lastExploration = false;
+	// ↓ Constructor, update and render ↓
 
 	/**
 	 * set a new Tunnel by means of its arrival coordinates
@@ -31,6 +28,10 @@ public class Tunnel extends Movement {
 	public Tunnel() {
 		super();
 	}
+
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
 
 	/**
 	 * Check if there is no obstacle on the arrival
@@ -52,7 +53,7 @@ public class Tunnel extends Movement {
 		// System.out.println("J'execute le tunnel !");
 		// endtest
 		if (!isDoable(r)) {
-			throw new NotDoableException("La case d'arrivée est inateignable");
+			throw new NotDoableException("This cell is unreachable");
 		}
 		// Used in the case of the need of the cancel method
 		// this.lastX = x;
@@ -71,15 +72,6 @@ public class Tunnel extends Movement {
 	}
 
 	@Override
-	public void cancel(Robot r) throws NotDoableException {
-		// r.teleport(lastX, lastY);
-		// if (lastExploration) {
-		// r.getExplorationMap().getCell(x, y).setExplored(false);
-		// }
-
-	}
-
-	@Override
 	public String toString() {
 		return "MT" + x.toString() + "." + y.toString();
 	}
@@ -88,5 +80,7 @@ public class Tunnel extends Movement {
 	public Class<? extends PickAble> getPickable() {
 		return PickTunnel.class;
 	}
+
+	// End(Miscellaneous methods)
 
 }

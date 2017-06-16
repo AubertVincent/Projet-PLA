@@ -8,14 +8,13 @@ import pickable.PickRecall;
 public class Recall extends Movement {
 
 	protected Integer time;
-	// Used in the case of the need of the cancel method
-	// private int lastX;
-	// private int lastY;
+	// ↓ Constructor, update and render ↓
 
 	/**
 	 * Set a new recall by means of its time
 	 * 
 	 * @param time
+	 *            before the robot can go outside his base after a recall
 	 */
 	public Recall(int time) {
 		super();
@@ -25,6 +24,9 @@ public class Recall extends Movement {
 	public Recall() {
 		super();
 	}
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
 
 	/**
 	 * A recall is always doable
@@ -45,13 +47,6 @@ public class Recall extends Movement {
 	}
 
 	@Override
-	public void cancel(Robot r) throws NotDoableException {
-		// Call back this robot at his previous position
-		// r.getEntityMap().getCell(r.getX(), r.getY()).setExplored(false);
-		// r.teleport(this.lastX, this.lastY);
-	}
-
-	@Override
 	public String toString() {
 		return " MR" + time.toString();
 	}
@@ -60,5 +55,6 @@ public class Recall extends Movement {
 	public Class<? extends PickAble> getPickable() {
 		return PickRecall.class;
 	}
+	// End(Miscellaneous methods)
 
 }

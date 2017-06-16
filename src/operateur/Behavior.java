@@ -8,6 +8,8 @@ import sequence._Sequence;
 
 public abstract class Behavior {
 
+	// ↓ Miscellaneous methods ↓
+
 	public abstract void execute(Robot r, _Sequence left, _Sequence right) throws NotDoableException;
 
 	@Override
@@ -19,4 +21,5 @@ public abstract class Behavior {
 
 	public abstract PickAble behaviorToPickAble(int x, int y, Map map);
 
+	// End(Miscellaneous methods)
 }

@@ -9,15 +9,28 @@ import pickable.PickRandomMove;
 
 public class RandomMove extends Action implements _Random {
 
-	// Length of the movement
-	private int lg;
-	// Direction of the movement
-	private Direction direction;
+	// ↓ Constructor, update and render ↓
 
 	public RandomMove() {
 		super();
 	}
 
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
+
+	/**
+	 * return true if the cell the robot should go is reachable
+	 * 
+	 * @param r
+	 *            : The robot we have to move
+	 * @param dir
+	 *            : Direction where the robot should go to
+	 * @param lg
+	 *            : Number of cells that the robot needs to traverse
+	 * @return If there is any obstacle on this robot's path, or if he's going
+	 *         outside the map the function return false
+	 */
 	protected boolean isReachable(Robot r, Direction dir, int lg) {
 		int x = r.getX();
 		int y = r.getY();
@@ -32,17 +45,17 @@ public class RandomMove extends Action implements _Random {
 					}
 					break;
 				case SOUTH:
-					if (y + i < 0 || y + i > r.getMap().mapHeight() || !(r.getMap().getCell(x, y + 1).isReachable())) {
+					if (y + i < 0 || y + i > r.getMap().mapHeight() || !(r.getMap().getCell(x, y + i).isReachable())) {
 						return false;
 					}
 					break;
 				case EAST:
-					if (x + i < 0 || x + i > r.getMap().mapWidth() || !(r.getMap().getCell(x + 1, y).isReachable())) {
+					if (x + i < 0 || x + i > r.getMap().mapWidth() || !(r.getMap().getCell(x + i, y).isReachable())) {
 						return false;
 					}
 					break;
 				case WEST:
-					if (x - i < 0 || x - i > r.getMap().mapWidth() || !(r.getMap().getCell(x - 1, y).isReachable())) {
+					if (x - i < 0 || x - i > r.getMap().mapWidth() || !(r.getMap().getCell(x - i, y).isReachable())) {
 						return false;
 					}
 					break;
@@ -55,6 +68,12 @@ public class RandomMove extends Action implements _Random {
 		}
 	}
 
+	/**
+	 * @param r
+	 *            : The robot which is going to execution this action
+	 * @return Nothing
+	 * 
+	 */
 	@Override
 	public void execute(Robot r) throws NotDoableException {
 		// Test
@@ -67,44 +86,30 @@ public class RandomMove extends Action implements _Random {
 		int d = 0;
 		int lg = 0;
 		// To verify if this the direction we got is not outside the map
-		boolean isOnMap = false;
 		Direction dir = null;
 		do {
 			lg = (int) (Math.random() * r.getMovePoints()) + 1;
 			d = (int) (Math.random() * 4);
 			switch (d) {
 			case 0:
-				if (r.getY() > 0) {
-					isOnMap = true;
-					dir = Direction.NORTH;
-				}
+				dir = Direction.NORTH;
 				break;
 			case 1:
-				if (r.getX() > 0) {
-					isOnMap = true;
-					dir = Direction.WEST;
-				}
+				dir = Direction.WEST;
 				break;
 			case 2:
-				if (r.getY() < r.map.mapHeight() - 1) {
-					isOnMap = true;
-					dir = Direction.SOUTH;
-				}
+				dir = Direction.SOUTH;
 				break;
 			case 3:
-				if (r.getX() < r.map.mapWidth() - 1) {
-					isOnMap = true;
-					dir = Direction.EAST;
-				}
+				dir = Direction.EAST;
 				break;
 			}
-			r.setDirection(dir);
 			// if the cell we got is not on map or not reachable, we try to get
 			// another direction thanks to the random while we didn't get a one
 			// which is reachable or on the map
-		} while (!isOnMap || !isReachable(r, dir, lg));
-		this.direction = dir;
-		this.lg = lg;
+		} while (!isReachable(r, dir, lg));
+		r.setDirection(dir);
+
 		// Set all the cell being explored to explored in the explorationMap of
 		// the robot
 		switch (dir) {
@@ -130,25 +135,6 @@ public class RandomMove extends Action implements _Random {
 			break;
 		}
 		r.goTo(dir, lg);
-	}
-
-	@Override
-	public void cancel(Robot r) throws NotDoableException {
-		switch (direction) {
-		case NORTH:
-			direction = Direction.SOUTH;
-			break;
-		case SOUTH:
-			direction = Direction.NORTH;
-			break;
-		case WEST:
-			direction = Direction.EAST;
-			break;
-		case EAST:
-			direction = Direction.WEST;
-			break;
-		}
-		r.goTo(direction, lg);
 	}
 
 	@Override
@@ -184,5 +170,7 @@ public class RandomMove extends Action implements _Random {
 	public Class<? extends PickAble> getPickable() {
 		return PickRandomMove.class;
 	}
+
+	// End(Miscellaneous methods)
 
 }

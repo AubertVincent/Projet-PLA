@@ -68,7 +68,6 @@ public class GUIRobot extends GUICharacter {
 	 *            The robot that is linked to its graphical representation
 	 */
 	public GUIRobot(GUI userInterface, int animationDuration, Robot robot) {
-
 		super(userInterface, animationDuration, robot);
 
 		animationsList.add(ClassicAck.class);

@@ -144,6 +144,10 @@ public class Robot extends Character {
 	/**
 	 * remove all reference to this
 	 */
+	public void cancelSuicideBomber() {
+		;
+	}
+
 	public void die() {
 
 		player.removeFromRobotList(this);

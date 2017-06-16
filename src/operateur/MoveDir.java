@@ -12,10 +12,7 @@ public class MoveDir extends Movement {
 	private Direction dir;
 	private Integer lg;
 
-	@Override
-	public String toString() {
-		return "MC" + lg.toString() + dir.toString();
-	}
+	// ↓ Constructor, update and render ↓
 
 	/**
 	 * Set a new move by means of its direction and its length
@@ -30,11 +27,14 @@ public class MoveDir extends Movement {
 		this.lg = lg;
 	}
 
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
+
 	/**
 	 * A move can be done if there is no obstacle
 	 */
 	@Override
-
 	protected boolean isDoable(Robot r) {
 		int x = r.getX();
 		int y = r.getY();
@@ -85,10 +85,7 @@ public class MoveDir extends Movement {
 		// System.out.println("J'execute un mouvement !");
 		// end test
 		if (!isDoable(r)) {
-			// TODO Dissociates 2 cases : it's not doable because of movepoint
-			// or obstacle
-			throw new NotDoableException(
-					"Vous ne pouvez pas vous deplacer ici (Pas assez de points de mouvement ou case inateignable)");
+			throw new NotDoableException("You can't go there (Not enough move points or unreachable cell)");
 		}
 		switch (dir) {
 		// For the function explore : put explored on every cell this robot went
@@ -120,30 +117,15 @@ public class MoveDir extends Movement {
 	}
 
 	@Override
-	public void cancel(Robot r) throws NotDoableException {
-		if (!isDoable(r)) {
-			throw new NotDoableException("Un obstacle est sur votre chemin");
-		}
-		switch (dir) {
-		case NORTH:
-			dir = Direction.SOUTH;
-			break;
-		case SOUTH:
-			dir = Direction.NORTH;
-			break;
-		case EAST:
-			dir = Direction.WEST;
-			break;
-		case WEST:
-			dir = Direction.EAST;
-			break;
-		}
-		r.goTo(dir, lg);
-	}
-
-	@Override
 	public Class<? extends PickAble> getPickable() {
 		return PickMoveDir.class;
 	}
+
+	@Override
+	public String toString() {
+		return "MC" + lg.toString() + dir.toString();
+	}
+
+	// End(Miscellaneous methods)
 
 }

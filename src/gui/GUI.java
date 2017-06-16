@@ -83,6 +83,7 @@ public class GUI extends BasicGame {
 			this.inputTextField.update(container, engine.getCurrentModifier());
 		}
 
+		// FIXME
 		for (Player currentPlayer : engine.getPlayerList()) {
 			GUIPlayer guiCurrentPlayer = currentPlayer.getMyselfGUI();
 			guiCurrentPlayer.update(this, delta);
@@ -100,6 +101,7 @@ public class GUI extends BasicGame {
 		if (engine.everyoneWaiting() && engine.getPlayPhase().equals(PlayPhase.automatonExecution)) {
 			engine.step();
 		}
+		setBehaviorInputNeeded(false);
 
 	}
 

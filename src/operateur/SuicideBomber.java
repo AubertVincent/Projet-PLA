@@ -12,8 +12,7 @@ import pickable.PickSuicideBomber;
 
 public class SuicideBomber extends Attack {
 
-	// Life of the robot before it suicides
-	private int lastLife;
+	// ↓ Miscellaneous methods ↓
 
 	@Override
 	public boolean isDoable(Robot r) {
@@ -48,7 +47,7 @@ public class SuicideBomber extends Attack {
 		// System.out.println("J'execute suicide Bomber !");
 		// end test
 		if (!isDoable(r)) {
-			throw new NotDoableException("Il n'y a personne à tuer");
+			throw new NotDoableException("There is anybody to kill");
 		} else {
 			// The list in which the targets will be put
 			List<Cell> targets = new ArrayList<Cell>();
@@ -75,12 +74,12 @@ public class SuicideBomber extends Attack {
 		}
 	}
 
-	@Override
-	public void cancel(Robot r) throws NotDoableException {
+	public void cancelSuicideBomber(Robot r) throws NotDoableException {
 		;
 	}
 
 	@Override
+
 	public Class<? extends PickAble> getPickable() {
 		return PickSuicideBomber.class;
 	}
@@ -89,5 +88,7 @@ public class SuicideBomber extends Attack {
 	public String toString() {
 		return " AS ";
 	}
+
+	// End(Miscellaneous methods)
 
 }

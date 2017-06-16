@@ -14,6 +14,8 @@ public abstract class PickAble extends Entity {
 	/**
 	 * Used to set all the possible pickAble in a list
 	 */
+	// ↓ Miscellaneous methods ↓
+
 	public static List<Class<? extends PickAble>> possiblePickAbleList = new LinkedList<Class<? extends PickAble>>();
 	static {
 
@@ -172,4 +174,7 @@ public abstract class PickAble extends Entity {
 	public static List<Class<? extends PickAble>> getPossiblePickAbleList() {
 		return possiblePickAbleList;
 	}
+
+	// End(Miscellaneous methods)
+
 }

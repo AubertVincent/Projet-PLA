@@ -16,7 +16,7 @@ public class Cell {
 
 	protected List<Entity> entityList;
 	boolean isfree;
-	boolean isExplored;
+	private boolean isExplored;
 
 	/**
 	 * Created a new empty cell with x and y coordinates

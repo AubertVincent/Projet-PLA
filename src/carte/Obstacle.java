@@ -39,7 +39,6 @@ public class Obstacle extends Entity {
 	 */
 	@Override
 	public boolean isPickAble() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

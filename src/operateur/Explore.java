@@ -1,6 +1,7 @@
 package operateur;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import carte.Cell;
@@ -13,10 +14,15 @@ import pickable.PickExplore;
 
 public class Explore extends Movement {
 
+	// ↓ Constructor, update and render ↓
+
 	public Explore() {
 		super();
 	}
 
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
 	@Override
 	public String toString() {
 		return "E";
@@ -48,24 +54,21 @@ public class Explore extends Movement {
 	}
 
 	@Override
-	public void cancel(Robot r) throws NotDoableException {
-		// Useless with the current implementation
-
-	}
-
-	@Override
 	public void execute(Robot r) throws NotDoableException {
 		// test
 		// System.out.println("J'execute le tunnel !");
 		// end test
 		if (!isDoable(r)) {
-			throw new NotDoableException("Ce robot est entouré d'obstacles");
+			throw new NotDoableException("This robot is surround by obstacle");
 		}
 		int movepoints = r.getMovePoints();
 		int x;
 		int y;
 		int randomCpt = 0;
 		int myRandom = 0;
+		int priorityCellToGo = 0;
+		Map execMap = r.getExplorationMap();
+
 		// List of the reachable cells
 		List<Cell> reachable = new ArrayList<Cell>();
 		// Execution of this function is made step by step and depends of number
@@ -74,9 +77,9 @@ public class Explore extends Movement {
 		x = r.getX();
 		y = r.getY();
 		while (movepoints > 0) {
-
+			priorityCellToGo = 0;
 			if (!isDoable(r)) {
-				throw new NotDoableException("Ce robot est entouré d'obstacles");
+				throw new NotDoableException("This robot is surround by obstacle");
 			}
 			reachable.clear();
 			// Used to get a random cell in the previous list
@@ -89,7 +92,7 @@ public class Explore extends Movement {
 				randomCpt++;
 			}
 			if (x + 1 < r.getMap().mapWidth() && r.getMap().getCell(x + 1, y).isReachable()
-					&& !(r.getMap().getCell(x + 1, y).isExplored())) {
+					&& (r.getMap().getCell(x + 1, y).isExplored() == false)) {
 				reachable.add(r.getMap().getCell(x + 1, y));
 				randomCpt++;
 			}
@@ -107,22 +110,35 @@ public class Explore extends Movement {
 			if (randomCpt != 0) {
 				// Go to a random cell of the previous list
 				myRandom = (int) (Math.random() * randomCpt);
+				// Except if there is an pickable around this robot
+				for (Iterator<Cell> iterator = reachable.iterator(); iterator.hasNext();) {
+					Cell currentCell = iterator.next();
+					if (!(execMap.getCell(currentCell.getX(), currentCell.getY()).isExplored())
+							&& currentCell.pickAbleHere()) {
+						myRandom = priorityCellToGo;
+					}
+					priorityCellToGo++;
+				}
 				if (reachable.get(myRandom).getX() < x && reachable.get(myRandom).getY() == y) {
 					r.getExplorationMap().getCell(x - 1, y).setExplored(true);
 					r.addActionToActionList(new MoveDir(Direction.WEST, 1));
 					x -= 1;
+					execMap.getCell(x, y).setExplored(true);
 				} else if (reachable.get(myRandom).getX() > x && reachable.get(myRandom).getY() == y) {
 					r.getExplorationMap().getCell(x + 1, y).setExplored(true);
 					r.addActionToActionList(new MoveDir(Direction.EAST, 1));
 					x += 1;
+					execMap.getCell(x, y).setExplored(true);
 				} else if (reachable.get(myRandom).getX() == x && reachable.get(myRandom).getY() < y) {
 					r.getExplorationMap().getCell(x, y - 1).setExplored(true);
 					r.addActionToActionList(new MoveDir(Direction.NORTH, 1));
 					y -= 1;
+					execMap.getCell(x, y).setExplored(true);
 				} else if (reachable.get(myRandom).getX() == x && reachable.get(myRandom).getY() > y) {
 					r.getExplorationMap().getCell(x, y + 1).setExplored(true);
 					r.addActionToActionList(new MoveDir(Direction.SOUTH, 1));
 					y += 1;
+					execMap.getCell(x, y).setExplored(true);
 				}
 				// Else, fill the list with the reachable cells
 			} else {
@@ -145,19 +161,37 @@ public class Explore extends Movement {
 					randomCpt++;
 				}
 				myRandom = (int) (Math.random() * randomCpt);
+
 				// Go to a random cell of the previous list
+				// Except if there is a pickable around this robot
+				for (Iterator<Cell> iterator = reachable.iterator(); iterator.hasNext();) {
+					Cell currentCell = iterator.next();
+					if (!(execMap.getCell(currentCell.getX(), currentCell.getY()).isExplored())
+							&& currentCell.pickAbleHere()) {
+						myRandom = priorityCellToGo;
+					}
+					priorityCellToGo++;
+				}
 				if (reachable.get(myRandom).getX() < x && reachable.get(myRandom).getY() == y) {
 					r.getExplorationMap().getCell(x - 1, y).setExplored(true);
 					r.addActionToActionList(new MoveDir(Direction.WEST, 1));
+					x -= 1;
+					execMap.getCell(x, y).setExplored(true);
 				} else if (reachable.get(myRandom).getX() > x && reachable.get(myRandom).getY() == y) {
 					r.getExplorationMap().getCell(x + 1, y).setExplored(true);
 					r.addActionToActionList(new MoveDir(Direction.EAST, 1));
+					x += 1;
+					execMap.getCell(x, y).setExplored(true);
 				} else if (reachable.get(myRandom).getX() == x && reachable.get(myRandom).getY() < y) {
 					r.getExplorationMap().getCell(x, y - 1).setExplored(true);
 					r.addActionToActionList(new MoveDir(Direction.NORTH, 1));
+					y -= 1;
+					execMap.getCell(x, y).setExplored(true);
 				} else if (reachable.get(myRandom).getX() == x && reachable.get(myRandom).getY() > y) {
 					r.getExplorationMap().getCell(x, y + 1).setExplored(true);
 					r.addActionToActionList(new MoveDir(Direction.SOUTH, 1));
+					y += 1;
+					execMap.getCell(x, y).setExplored(true);
 				}
 			}
 			// Use a move point
@@ -268,5 +302,7 @@ public class Explore extends Movement {
 	//
 	// }
 	// }
+
+	// End(Miscellaneous methods)
 
 }

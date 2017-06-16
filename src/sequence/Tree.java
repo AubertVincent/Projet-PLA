@@ -14,11 +14,17 @@ public class Tree implements _Sequence {
 	Behavior op;
 	_Sequence left, right;
 
+	// ↓ Constructor, update and render ↓
+
 	public Tree(Behavior op, _Sequence left, _Sequence right) {
 		this.op = op;
 		this.left = left;
 		this.right = right;
 	}
+
+	// End(Constructor, update and render)
+
+	// ↓ Miscellaneous methods ↓
 
 	@Override
 	public boolean isAction() {
@@ -69,5 +75,7 @@ public class Tree implements _Sequence {
 		pickAbleList.addAll(getRight().sequenceToPickAbleList(x, y, map));
 		return pickAbleList;
 	}
+
+	// End(Miscellaneous methods)
 
 }

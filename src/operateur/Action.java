@@ -35,9 +35,13 @@ public abstract class Action implements _Sequence, _IncompleteSequence {
 	/**
 	 * Check is an entity is able to execute an action
 	 * 
-	 * @param e
-	 *            The entity which do the action
-	 * @return
+	 * @param r
+	 *            : Looks if the action is feasible for this robot
+	 * @return If this action is doable for this robot then return true
+	 */
+	/**
+	 *
+	 * @return If this action is doable for this robot then return true
 	 */
 	protected abstract boolean isDoable(Robot r);
 
@@ -64,9 +68,6 @@ public abstract class Action implements _Sequence, _IncompleteSequence {
 	public boolean isEmptyLeaf() {
 		return false;
 	}
-
-	// May become useful in the case of a game update
-	public abstract void cancel(Robot r) throws NotDoableException;
 
 	public abstract Class<? extends PickAble> getPickable();
 
