@@ -8,7 +8,6 @@ import carte.Cell;
 import carte.Coordinates;
 import carte.Map;
 import carte.Obstacle;
-import entite.Direction;
 import entite.Entity;
 import exceptions.NotDoableException;
 import gui.GUI;
@@ -55,8 +54,7 @@ public class Robot extends Character {
 
 		this.dropAblePickAbleList = myAutomaton.sequenceToPickAbleList(x, y, map);
 		this.myAutomaton = myAutomaton;
-		this.mySelfGUI = new GUIRobot(userInterface, x, y, Direction.SOUTH, 100, base.getBaseTeam(), this,
-				player.getMyselfGUI());
+		this.mySelfGUI = new GUIRobot(userInterface, 100, this);
 		this.player = player;
 		this.player.addRobot(new Coordinates(x, y), this);
 		map.setEntity(this);
@@ -152,16 +150,6 @@ public class Robot extends Character {
 
 		this.mySelfGUI.setMySelf(null);
 		this.mySelfGUI = null;
-
-		// Remove every occurrence of current robot in targetsLife
-		// for (Iterator<Pair<Direction, Integer>> iterator =
-		// targetsLife.keySet().iterator(); iterator.hasNext();) {
-		// Pair<Direction, Integer> currentPair = iterator.next();
-		// Robot currentRobot = targetsLife.get(currentPair).getFirst();
-		// if (currentRobot.equals(this)) {
-		// targetsLife.remove(currentPair);
-		// }
-		// }
 
 		this.getMap().remove(this);
 	}

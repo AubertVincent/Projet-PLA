@@ -37,7 +37,7 @@ public class Engine {
 
 	private boolean isModifying;
 
-	private int nbrOperatorInitOnMap = 128;
+	private int nbrOperatorInitOnMap = 1;
 
 	private int nbrOperatorInGame = nbrOperatorInitOnMap;
 

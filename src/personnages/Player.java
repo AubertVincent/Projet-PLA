@@ -4,12 +4,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.newdawn.slick.SlickException;
-
 import carte.Base;
 import carte.Cell;
 import carte.Obstacle;
-import entite.Direction;
 import gui.GUI;
 import gui.GUIPlayer;
 import moteurDuJeu.Engine;
@@ -50,41 +47,9 @@ public class Player extends Character {
 
 	// ↓ Constructor, update and render ↓
 
-	/**
-	 * Set a new Player
-	 * 
-	 * @param x
-	 *            x coordinate on the map
-	 * @param y
-	 *            y coordinate on the map
-	 * @param direction
-	 *            Where the character is oriented
-	 * @param map
-	 *            The map on which the entity is located
-	 * @param life
-	 *            Player's life
-	 * @param vision
-	 *            Player's vision range
-	 * @param damages
-	 *            Player's attack
-	 * @param range
-	 *            Player's range
-	 * @param movePoints
-	 *            Player's move points
-	 * @param recall
-	 *            Player's recall's time
-	 */
-
-	public Player(Base base, carte.Map entityMap, GUI userInterface) throws Exception {
+	public Player(Base base, carte.Map entityMap, GUI userInterface) {
 		super(base.getX(), base.getY(), entityMap, base);
-		try {
-			this.mySelfGUI = new GUIPlayer(userInterface, getX(), getY(), Direction.SOUTH, 100, base.getBaseTeam(),
-					this);
-		} catch (SlickException e) {
-			e.getMessage();
-		} catch (Exception e) {
-			e.getMessage();
-		}
+		this.mySelfGUI = new GUIPlayer(userInterface, 100, this);
 		robotList = new RobotList();
 		this.besace = new Besace();
 		// comment for test
