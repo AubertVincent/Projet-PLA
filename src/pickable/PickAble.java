@@ -114,6 +114,9 @@ public abstract class PickAble extends Entity {
 		case "PickSuicideBomber":
 			toString = "AS : Attaque Suicide";
 			break;
+		case "PickExplore":
+			toString = "E : Mouvement d'exploration";
+			break;
 		}
 
 		return toString;
