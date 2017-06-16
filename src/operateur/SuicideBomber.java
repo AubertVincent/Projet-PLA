@@ -77,12 +77,7 @@ public class SuicideBomber extends Attack {
 
 	@Override
 	public void cancel(Robot r) throws NotDoableException {
-		if (!isDoable(r)) {
-			throw new NotDoableException("Il n'y a personne à ressusciter");
-		} else {
-			r.setLife(this.lastLife);
-			r.cancelSuicideBomber();
-		}
+		;
 	}
 
 	@Override

@@ -143,7 +143,11 @@ public class Cell {
 		return entityList;
 	}
 
-	// TODO : je sais pas ce que s'est a partir de la
+	/**
+	 * Used to list all the pickable of the cell
+	 * 
+	 * @return the pickable list of the current cell
+	 */
 	@SuppressWarnings("unchecked")
 	public Class<PickAble> pickableEntity() {
 		List<Entity> entityList = this.getEntityList();
@@ -156,7 +160,12 @@ public class Cell {
 		return null;
 	}
 
-	// TODO : je sais pas
+	/**
+	 * Used to remove the pickable given from the entity list of the cell
+	 * 
+	 * @param ramasse
+	 *            the pickable which should be remove
+	 */
 	public void freePick(Class<PickAble> ramasse) {
 		List<Entity> entityList = this.getEntityList();
 		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
@@ -167,7 +176,11 @@ public class Cell {
 		}
 	}
 
-	// TODO : je sais pas
+	/**
+	 * Check if a cell can be reach
+	 * 
+	 * @return If the cell has no character nor obstacle, return true
+	 */
 	public boolean isReachable() {
 		List<Entity> entityList = this.getEntityList();
 		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
@@ -179,7 +192,14 @@ public class Cell {
 		return true;
 	}
 
-	// TODO : je sais pas
+	/**
+	 * Get the opponent in the cell of the character who call the method
+	 * 
+	 * @param team
+	 *            The team of the character who want to get his opponent
+	 * @return The first opponent in the entity list of the cell
+	 * @throws NotDoableException
+	 */
 	public Character getOpponent(Team team) throws NotDoableException {
 		for (Iterator<Entity> it = this.entityList.iterator(); it.hasNext();) {
 			Entity ent = it.next();
@@ -192,7 +212,13 @@ public class Cell {
 		throw new NotDoableException("Il est vrai j'ai trop d'adversaire ... mais pas là");
 	}
 
-	// TODO : je sais pas
+	/**
+	 * Check if there is an opponent on the cell
+	 * 
+	 * @param team
+	 *            the team of the character who call the function
+	 * @return if there is an opponent here, return true
+	 */
 	public boolean opponentHere(Team team) {
 		for (Iterator<Entity> it = this.entityList.iterator(); it.hasNext();) {
 			Entity currentEntity = it.next();
@@ -223,7 +249,11 @@ public class Cell {
 		return this.y;
 	}
 
-	// TODO : je sais pas
+	/**
+	 * Check if there is a pickable on the cell
+	 * 
+	 * @return if there is a pickable on the cell, return true
+	 */
 	public boolean pickAbleHere() {
 		List<Entity> entityList = this.getEntityList();
 		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {
@@ -235,7 +265,11 @@ public class Cell {
 		return false;
 	}
 
-	// TODO : je sais pas
+	/**
+	 * Check if there is a robot on the cell
+	 * 
+	 * @return if there is a robot on the cell, return true
+	 */
 	public boolean robotHere() {
 		List<Entity> entityList = this.getEntityList();
 		for (Iterator<Entity> entityIterator = entityList.iterator(); entityIterator.hasNext();) {

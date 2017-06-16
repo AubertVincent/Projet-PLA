@@ -11,14 +11,23 @@ public class RobotList {
 	private Map<Class<?>, Map<Object, Robot>> fromClassToMap;
 
 	// ↓ Constructor, update and render ↓
+	/**
+	 * Used to create a new Robot List
+	 */
 	public RobotList() {
-		// robotListInteger = new HashMap<Integer, Robot>();
-		// robotListCoordinates = new HashMap<Coordinates, Robot>();
 		fromClassToMap = new HashMap<Class<?>, Map<Object, Robot>>();
 	}
-	// End(Constructor, update and render)
+	// End(Constructor)
 
 	// ↓ Miscellaneous methods ↓
+	/**
+	 * Used to add a new robot to the player's robot list
+	 * 
+	 * @param obj
+	 *            the object who reference the robot in the list
+	 * @param robot
+	 *            the to add at the list
+	 */
 	public void add(Object obj, Robot robot) {
 		// Search if the Map for the Class of obj already existss
 		Class<?> objClass = obj.getClass();
@@ -28,26 +37,14 @@ public class RobotList {
 		fromClassToMap.get(objClass).put(obj, robot);
 	}
 
-	// TEST
-	// private void printList() {
-	// Map<Object, Robot> currentClassMap;
-	// for (Map.Entry<Class<?>, Map<Object, Robot>> currentClass :
-	// fromClassToMap.entrySet()) {
-	// currentClassMap = currentClass.getValue();
-	// for (Map.Entry<Object, Robot> currentClassMapCell :
-	// currentClassMap.entrySet()) {
-	// System.out.println("Coordonnée de ce robot :" +
-	// currentClassMapCell.getValue().getX() + ";"
-	// + currentClassMapCell.getValue().getY() + " Class :"
-	// + currentClassMapCell.getKey().getClass());
-	// }
-	//
-	// }
-	// }
-
+	/**
+	 * Used to remove the given robot from the player's robot list
+	 * 
+	 * @param robot
+	 *            the robot to remove
+	 */
 	public void remove(Robot robot) {
 		Map<Object, Robot> currentClassMap;
-
 		for (Iterator<Map.Entry<Class<?>, Map<Object, Robot>>> itr = fromClassToMap.entrySet().iterator(); itr
 				.hasNext();) {
 			Map.Entry<Class<?>, Map<Object, Robot>> entry = itr.next();
@@ -63,10 +60,18 @@ public class RobotList {
 	// End(Miscellaneous methods)
 
 	// ↓ Getters and setters ↓
+	/**
+	 * Used to get a robot's information from it
+	 * 
+	 * @param classRobot
+	 *            the robot's reference
+	 * @param robot
+	 *            the robot to get information
+	 * @return
+	 */
 	public Object getRobotInfoFromClass(Class<?> classRobot, Robot robot) {
 		Map<Object, Robot> currentClassMap;
 		for (Class<?> currentClass : fromClassToMap.keySet()) {
-
 			if (classRobot.equals(currentClass)) {
 				currentClassMap = fromClassToMap.get(currentClass);
 				for (Object currentClassMapCell : currentClassMap.keySet()) {
@@ -79,6 +84,13 @@ public class RobotList {
 		return null;
 	}
 
+	/**
+	 * Used to get a robot in the rebolist from its reference
+	 * 
+	 * @param obj
+	 *            the robot's reference
+	 * @return the robot
+	 */
 	public Robot getRobotFromInfo(Object obj) {
 		Map<Object, Robot> currentClassMap;
 		for (Class<?> currentClass : fromClassToMap.keySet()) {
@@ -94,6 +106,11 @@ public class RobotList {
 		return null;
 	}
 
+	/**
+	 * Used to get the whole player's robot list
+	 * 
+	 * @return the player's robot list
+	 */
 	public List<Robot> getRobotList() {
 		List<Robot> robotList = new ArrayList<Robot>();
 		Map<Object, Robot> currentClassMap;
