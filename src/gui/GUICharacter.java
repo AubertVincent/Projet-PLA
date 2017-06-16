@@ -207,7 +207,6 @@ public abstract class GUICharacter {
 			break;
 		case Dying:
 			g.drawAnimation(deathAnimation[0], xAnim, yAnim);
-
 			break;
 		case RobotCreation:
 			g.drawAnimation(animationsList.get(operateur.CreateRobot.class)[dir.toInt() + 4], xAnim, yAnim);
